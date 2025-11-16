@@ -452,3 +452,85 @@ class WizardService:
             raise ValueError(
                 f"Invalid travel type. Must be one of: {', '.join(valid_types)}"
             )
+
+    def save_budget(
+        self,
+        budget_amount: int,
+        budget_category: str
+    ) -> None:
+        """
+        Save budget information for step 4.
+
+        Validates budget amount and category before saving.
+
+        Args:
+            budget_amount (int): Total budget in KSh
+            budget_category (str): Budget category (budget, mid-range, luxury)
+
+        Raises:
+            ValueError: If budget data is invalid
+        """
+        self._validate_budget(budget_amount, budget_category)
+
+        # Calculate per person budget
+        group_data = self.get_travel_group_data()
+        total_travelers = group_data.get('total_travelers', 1)
+        per_person_budget = budget_amount // total_travelers
+
+        step_data = {
+            'budget_amount': budget_amount,
+            'budget_category': budget_category,
+            'per_person_budget': per_person_budget,
+            'total_travelers': total_travelers
+        }
+
+        self.session_manager.save_step_data(4, step_data)
+
+    def get_budget_data(self) -> Dict[str, Any]:
+        """
+        Retrieve budget data.
+
+        Returns:
+            Dict[str, Any]: Budget data or empty dict
+        """
+        return self.session_manager.get_step_data(4)
+
+    def _validate_budget(
+        self,
+        budget_amount: int,
+        budget_category: str
+    ) -> None:
+        """
+        Validate budget parameters.
+
+        Args:
+            budget_amount (int): Budget amount in KSh
+            budget_category (str): Budget category
+
+        Raises:
+            ValueError: If any parameter is invalid
+            TypeError: If types are incorrect
+        """
+        # Validate types
+        if not isinstance(budget_amount, int):
+            raise TypeError("Budget amount must be an integer")
+
+        if not isinstance(budget_category, str):
+            raise TypeError("Budget category must be a string")
+
+        # Validate budget amount
+        MIN_BUDGET = 10000  # KSh 10,000
+        MAX_BUDGET = 500000  # KSh 500,000
+
+        if budget_amount < MIN_BUDGET:
+            raise ValueError(f"Budget must be at least KSh {MIN_BUDGET:,}")
+
+        if budget_amount > MAX_BUDGET:
+            raise ValueError(f"Budget cannot exceed KSh {MAX_BUDGET:,}")
+
+        # Validate budget category
+        valid_categories = ['budget', 'mid-range', 'luxury']
+        if budget_category not in valid_categories:
+            raise ValueError(
+                f"Invalid budget category. Must be one of: {', '.join(valid_categories)}"
+            )

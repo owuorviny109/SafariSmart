@@ -517,9 +517,172 @@ class TravelGroupSelectionView(View):
         return render(request, self.template_name, context)
 
 
-def wizard_step_4(request):
-    """Step 4: Budget"""
-    return render(request, 'core/wizard_step_4.html', {'step': 4})
+class BudgetSelectionView(View):
+    """
+    Handles budget selection for wizard.
+
+    This view manages budget amount selection via slider and
+    budget category selection (budget, mid-range, luxury).
+    Calculates per-person costs.
+
+    Attributes:
+        template_name (str): Path to template file
+        BUDGET_CATEGORIES (list): Available budget categories
+
+    Methods:
+        get: Display budget selection interface
+        post: Process and validate budget
+
+    Example:
+        URL: /wizard/budget/
+        GET: Renders slider and category buttons
+        POST: Validates inputs and advances to interests step
+    """
+
+    template_name = 'core/budget_selection.html'
+
+    # Budget categories
+    BUDGET_CATEGORIES = [
+        {
+            'value': 'budget',
+            'label': 'Budget',
+            'icon': 'piggy-bank',
+            'description': 'Affordable options',
+            'range': 'KSh 10k - 50k'
+        },
+        {
+            'value': 'mid-range',
+            'label': 'Mid-Range',
+            'icon': 'wallet2',
+            'description': 'Comfortable travel',
+            'range': 'KSh 50k - 150k'
+        },
+        {
+            'value': 'luxury',
+            'label': 'Luxury',
+            'icon': 'gem',
+            'description': 'Premium experience',
+            'range': 'KSh 150k+'
+        },
+    ]
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        """
+        Display budget selection page.
+
+        Shows budget slider and category buttons. Pre-fills if user
+        is returning to this step.
+
+        Args:
+            request (HttpRequest): HTTP request object
+
+        Returns:
+            HttpResponse: Rendered template with budget options
+        """
+        wizard_service = WizardService(request.session)
+
+        # Get previously selected data if any
+        budget_data = wizard_service.get_budget_data()
+        budget_amount = budget_data.get('budget_amount', 100000)
+        selected_category = budget_data.get('budget_category')
+
+        # Get previous step data for context
+        destinations = wizard_service.get_selected_destinations()
+        duration_data = wizard_service.get_duration_data()
+        group_data = wizard_service.get_travel_group_data()
+
+        # Calculate per person budget
+        total_travelers = group_data.get('total_travelers', 1)
+        per_person_budget = budget_amount // total_travelers
+
+        context = {
+            'budget_categories': self.BUDGET_CATEGORIES,
+            'budget_amount': budget_amount,
+            'selected_category': selected_category,
+            'per_person_budget': per_person_budget,
+            'destinations': destinations,
+            'duration_days': duration_data.get('duration_days'),
+            'total_travelers': total_travelers,
+            'step': 4,
+            'total_steps': 5,
+            'progress_percentage': 80,
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request: HttpRequest) -> HttpResponse:
+        """
+        Process budget selection.
+
+        Validates budget, saves to session, and redirects to step 5.
+
+        Args:
+            request (HttpRequest): HTTP request object with POST data
+
+        Returns:
+            HttpResponse: Redirect to step 5 or error response
+        """
+        wizard_service = WizardService(request.session)
+
+        # Get data from POST
+        budget_str = request.POST.get('budget_amount', '100000')
+        budget_category = request.POST.get('budget_category', '')
+
+        # Convert to integer
+        try:
+            budget_amount = int(budget_str)
+        except (ValueError, TypeError):
+            return self._render_error(
+                request,
+                wizard_service,
+                "Invalid budget amount"
+            )
+
+        # Validate and save using service
+        try:
+            wizard_service.save_budget(budget_amount, budget_category)
+        except ValueError as e:
+            return self._render_error(request, wizard_service, str(e))
+
+        # Redirect to interests selection
+        return redirect('core:interests_selection')
+
+    def _render_error(
+        self,
+        request: HttpRequest,
+        wizard_service: WizardService,
+        error_message: str
+    ) -> HttpResponse:
+        """
+        Render page with error message.
+
+        Args:
+            request (HttpRequest): HTTP request object
+            wizard_service (WizardService): Wizard service instance
+            error_message (str): Error message to display
+
+        Returns:
+            HttpResponse: Rendered template with error
+        """
+        destinations = wizard_service.get_selected_destinations()
+        duration_data = wizard_service.get_duration_data()
+        group_data = wizard_service.get_travel_group_data()
+
+        context = {
+            'budget_categories': self.BUDGET_CATEGORIES,
+            'budget_amount': 100000,
+            'selected_category': None,
+            'per_person_budget': 100000 // group_data.get('total_travelers', 1),
+            'destinations': destinations,
+            'duration_days': duration_data.get('duration_days'),
+            'total_travelers': group_data.get('total_travelers', 1),
+            'step': 4,
+            'total_steps': 5,
+            'progress_percentage': 80,
+            'error_message': error_message,
+        }
+
+        return render(request, self.template_name, context)
 
 
 def wizard_step_5(request):
