@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.landing_page, name='landing'),
     
     # Wizard flow
-    path('wizard/step-1/', views.wizard_step_1, name='wizard_step_1'),
+    path('wizard/step-1/', views.WizardStep1View.as_view(), name='wizard_step_1'),
     path('wizard/step-2/', views.wizard_step_2, name='wizard_step_2'),
     path('wizard/step-3/', views.wizard_step_3, name='wizard_step_3'),
     path('wizard/step-4/', views.wizard_step_4, name='wizard_step_4'),
