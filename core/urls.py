@@ -12,7 +12,7 @@ urlpatterns = [
     path('wizard/duration/', views.DurationSelectionView.as_view(), name='duration_selection'),
     path('wizard/travel-group/', views.TravelGroupSelectionView.as_view(), name='travel_group_selection'),
     path('wizard/budget/', views.BudgetSelectionView.as_view(), name='budget_selection'),
-    path('wizard/interests/', views.wizard_step_5, name='interests_selection'),
+    path('wizard/interests/', views.InterestsSelectionView.as_view(), name='interests_selection'),
     path('wizard/generating/', views.wizard_generating, name='itinerary_generation'),
     
     # Itinerary

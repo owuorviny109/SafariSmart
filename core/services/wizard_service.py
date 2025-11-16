@@ -534,3 +534,81 @@ class WizardService:
             raise ValueError(
                 f"Invalid budget category. Must be one of: {', '.join(valid_categories)}"
             )
+
+    def save_interests(self, interests: List[str]) -> None:
+        """
+        Save user interests for step 5.
+
+        Validates interests list before saving.
+
+        Args:
+            interests (List[str]): List of selected interests
+
+        Raises:
+            ValueError: If interests data is invalid
+        """
+        self._validate_interests(interests)
+
+        step_data = {
+            'interests': interests,
+            'interest_count': len(interests)
+        }
+
+        self.session_manager.save_step_data(5, step_data)
+        self.session_manager.mark_completed()
+
+    def get_interests_data(self) -> Dict[str, Any]:
+        """
+        Retrieve interests data.
+
+        Returns:
+            Dict[str, Any]: Interests data or empty dict
+        """
+        return self.session_manager.get_step_data(5)
+
+    def _validate_interests(self, interests: List[str]) -> None:
+        """
+        Validate interests list.
+
+        Args:
+            interests (List[str]): List of interests
+
+        Raises:
+            ValueError: If interests are invalid
+            TypeError: If type is incorrect
+        """
+        # Validate type
+        if not isinstance(interests, list):
+            raise TypeError("Interests must be a list")
+
+        # Validate not empty
+        if not interests:
+            raise ValueError("At least one interest must be selected")
+
+        # Validate maximum
+        if len(interests) > 10:
+            raise ValueError("Maximum 10 interests allowed")
+
+        # Validate each interest
+        valid_interests = [
+            'wildlife',
+            'culture',
+            'food',
+            'adventure',
+            'relaxation',
+            'photography',
+            'history',
+            'nature',
+            'beach',
+            'nightlife'
+        ]
+
+        for interest in interests:
+            if not isinstance(interest, str):
+                raise TypeError("Each interest must be a string")
+
+            if interest not in valid_interests:
+                raise ValueError(
+                    f"Invalid interest: {interest}. "
+                    f"Must be one of: {', '.join(valid_interests)}"
+                )

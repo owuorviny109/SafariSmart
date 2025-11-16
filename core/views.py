@@ -685,9 +685,195 @@ class BudgetSelectionView(View):
         return render(request, self.template_name, context)
 
 
-def wizard_step_5(request):
-    """Step 5: Interests"""
-    return render(request, 'core/wizard_step_5.html', {'step': 5})
+class InterestsSelectionView(View):
+    """
+    Handles interests selection for wizard (final step).
+
+    This view manages the selection of user interests to personalize
+    the itinerary. Multi-select with visual cards.
+
+    Attributes:
+        template_name (str): Path to template file
+        INTERESTS (list): Available interest options
+
+    Methods:
+        get: Display interests selection interface
+        post: Process selections and complete wizard
+
+    Example:
+        URL: /wizard/interests/
+        GET: Renders interest cards
+        POST: Validates and redirects to generation
+    """
+
+    template_name = 'core/interests_selection.html'
+
+    # Interest options
+    INTERESTS = [
+        {
+            'value': 'wildlife',
+            'label': 'Wildlife',
+            'icon': 'binoculars-fill',
+            'description': 'Safari & animals'
+        },
+        {
+            'value': 'culture',
+            'label': 'Culture',
+            'icon': 'people-fill',
+            'description': 'Local traditions'
+        },
+        {
+            'value': 'food',
+            'label': 'Food',
+            'icon': 'cup-hot-fill',
+            'description': 'Culinary experiences'
+        },
+        {
+            'value': 'adventure',
+            'label': 'Adventure',
+            'icon': 'lightning-fill',
+            'description': 'Thrilling activities'
+        },
+        {
+            'value': 'relaxation',
+            'label': 'Relaxation',
+            'icon': 'sun-fill',
+            'description': 'Rest & unwind'
+        },
+        {
+            'value': 'photography',
+            'label': 'Photography',
+            'icon': 'camera-fill',
+            'description': 'Scenic views'
+        },
+        {
+            'value': 'history',
+            'label': 'History',
+            'icon': 'book-fill',
+            'description': 'Historical sites'
+        },
+        {
+            'value': 'nature',
+            'label': 'Nature',
+            'icon': 'tree-fill',
+            'description': 'Natural beauty'
+        },
+        {
+            'value': 'beach',
+            'label': 'Beach',
+            'icon': 'umbrella-fill',
+            'description': 'Coastal activities'
+        },
+        {
+            'value': 'nightlife',
+            'label': 'Nightlife',
+            'icon': 'moon-stars-fill',
+            'description': 'Evening entertainment'
+        },
+    ]
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        """
+        Display interests selection page.
+
+        Shows interest cards for multi-select. Pre-fills if user
+        is returning to this step.
+
+        Args:
+            request (HttpRequest): HTTP request object
+
+        Returns:
+            HttpResponse: Rendered template with interest options
+        """
+        wizard_service = WizardService(request.session)
+
+        # Get previously selected interests if any
+        interests_data = wizard_service.get_interests_data()
+        selected_interests = interests_data.get('interests', [])
+
+        # Get all previous step data for summary
+        destinations = wizard_service.get_selected_destinations()
+        duration_data = wizard_service.get_duration_data()
+        group_data = wizard_service.get_travel_group_data()
+        budget_data = wizard_service.get_budget_data()
+
+        context = {
+            'interests': self.INTERESTS,
+            'selected_interests': selected_interests,
+            'destinations': destinations,
+            'duration_days': duration_data.get('duration_days'),
+            'total_travelers': group_data.get('total_travelers', 1),
+            'budget_amount': budget_data.get('budget_amount', 0),
+            'step': 5,
+            'total_steps': 5,
+            'progress_percentage': 100,
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request: HttpRequest) -> HttpResponse:
+        """
+        Process interests selection and complete wizard.
+
+        Validates selections, saves to session, and redirects to
+        itinerary generation.
+
+        Args:
+            request (HttpRequest): HTTP request object with POST data
+
+        Returns:
+            HttpResponse: Redirect to generation or error response
+        """
+        wizard_service = WizardService(request.session)
+
+        # Get selected interests from POST data
+        interests = request.POST.getlist('interests')
+
+        # Validate and save using service
+        try:
+            wizard_service.save_interests(interests)
+        except ValueError as e:
+            return self._render_error(request, wizard_service, str(e))
+
+        # Redirect to itinerary generation
+        return redirect('core:itinerary_generation')
+
+    def _render_error(
+        self,
+        request: HttpRequest,
+        wizard_service: WizardService,
+        error_message: str
+    ) -> HttpResponse:
+        """
+        Render page with error message.
+
+        Args:
+            request (HttpRequest): HTTP request object
+            wizard_service (WizardService): Wizard service instance
+            error_message (str): Error message to display
+
+        Returns:
+            HttpResponse: Rendered template with error
+        """
+        destinations = wizard_service.get_selected_destinations()
+        duration_data = wizard_service.get_duration_data()
+        group_data = wizard_service.get_travel_group_data()
+        budget_data = wizard_service.get_budget_data()
+
+        context = {
+            'interests': self.INTERESTS,
+            'selected_interests': [],
+            'destinations': destinations,
+            'duration_days': duration_data.get('duration_days'),
+            'total_travelers': group_data.get('total_travelers', 1),
+            'budget_amount': budget_data.get('budget_amount', 0),
+            'step': 5,
+            'total_steps': 5,
+            'progress_percentage': 100,
+            'error_message': error_message,
+        }
+
+        return render(request, self.template_name, context)
 
 
 def wizard_generating(request):
