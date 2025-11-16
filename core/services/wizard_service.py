@@ -197,30 +197,45 @@ class WizardService:
         """
         self.session_manager = WizardSessionManager(session)
         
-    def save_destinations(self, destination_ids: List[int]) -> None:
+    def save_destinations(
+        self, 
+        destination_ids: List[int],
+        custom_destinations: List[str] = None
+    ) -> None:
         """
-        Save selected destination IDs for step 1.
+        Save selected destination IDs and custom destinations for step 1.
         
         Validates destination IDs exist before saving.
         
         Args:
             destination_ids (List[int]): List of destination IDs
+            custom_destinations (List[str], optional): List of custom destination names
             
         Raises:
             ValueError: If destination IDs are invalid
         """
-        self._validate_destination_ids(destination_ids)
+        if custom_destinations is None:
+            custom_destinations = []
+            
+        # Validate at least one destination
+        if not destination_ids and not custom_destinations:
+            raise ValueError("At least one destination must be selected")
+            
+        # Validate destination IDs if provided
+        if destination_ids:
+            self._validate_destination_ids(destination_ids)
         
         step_data = {
             'destination_ids': destination_ids,
-            'destination_count': len(destination_ids)
+            'custom_destinations': custom_destinations,
+            'destination_count': len(destination_ids) + len(custom_destinations)
         }
         
         self.session_manager.save_step_data(1, step_data)
         
     def get_selected_destinations(self) -> List[Destination]:
         """
-        Retrieve selected destination objects.
+        Retrieve selected destination objects (database destinations only).
         
         Returns:
             List[Destination]: List of Destination model instances
@@ -232,6 +247,31 @@ class WizardService:
             return []
             
         return list(Destination.objects.filter(id__in=destination_ids))
+    
+    def get_custom_destinations(self) -> List[str]:
+        """
+        Retrieve custom destination names.
+        
+        Returns:
+            List[str]: List of custom destination names
+        """
+        step_data = self.session_manager.get_step_data(1)
+        return step_data.get('custom_destinations', [])
+    
+    def get_all_destination_names(self) -> List[str]:
+        """
+        Get all destination names (both database and custom).
+        
+        Returns:
+            List[str]: Combined list of all destination names
+        """
+        db_destinations = self.get_selected_destinations()
+        custom_destinations = self.get_custom_destinations()
+        
+        all_names = [dest.name for dest in db_destinations]
+        all_names.extend(custom_destinations)
+        
+        return all_names
         
     def _validate_destination_ids(self, destination_ids: List[int]) -> None:
         """
@@ -243,9 +283,6 @@ class WizardService:
         Raises:
             ValueError: If any destination ID is invalid
         """
-        if not destination_ids:
-            raise ValueError("At least one destination must be selected")
-            
         if not isinstance(destination_ids, list):
             raise TypeError("Destination IDs must be a list")
             

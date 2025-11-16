@@ -7,6 +7,9 @@ urlpatterns = [
     # Landing page
     path('', views.landing_page, name='landing'),
     
+    # Quick trip planner
+    path('quick-trip/', views.quick_trip, name='quick_trip'),
+    
     # Wizard flow - descriptive names
     path('wizard/destinations/', views.DestinationSelectionView.as_view(), name='destination_selection'),
     path('wizard/duration/', views.DurationSelectionView.as_view(), name='duration_selection'),

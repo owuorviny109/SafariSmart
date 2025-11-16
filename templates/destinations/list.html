@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Explore Destinations - SafariSmart Kenya{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="bg-success text-white py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="bi bi-compass"></i> Explore Kenya Destinations
+        </h1>
+        <p class="lead">Discover amazing places across Kenya - from wildlife safaris to pristine beaches</p>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="d-flex flex-wrap gap-2 justify-content-center">
+            <a href="{% url 'destinations:list' %}" 
+               class="btn {% if not selected_type %}btn-success{% else %}btn-outline-success{% endif %}">
+                All Destinations
+            </a>
+            <a href="?type=safari" 
+               class="btn {% if selected_type == 'safari' %}btn-success{% else %}btn-outline-success{% endif %}">
+                <i class="bi bi-binoculars"></i> Safari
+            </a>
+            <a href="?type=beach" 
+               class="btn {% if selected_type == 'beach' %}btn-success{% else %}btn-outline-success{% endif %}">
+                <i class="bi bi-umbrella-fill"></i> Beach
+            </a>
+            <a href="?type=mountain" 
+               class="btn {% if selected_type == 'mountain' %}btn-success{% else %}btn-outline-success{% endif %}">
+                <i class="bi bi-mountain"></i> Mountain
+            </a>
+            <a href="?type=cultural" 
+               class="btn {% if selected_type == 'cultural' %}btn-success{% else %}btn-outline-success{% endif %}">
+                <i class="bi bi-people"></i> Cultural
+            </a>
+            <a href="?type=city" 
+               class="btn {% if selected_type == 'city' %}btn-success{% else %}btn-outline-success{% endif %}">
+                <i class="bi bi-building"></i> City
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Destinations Grid -->
+<section class="py-5">
+    <div class="container">
+        {% if destinations %}
+        <div class="row g-4">
+            {% for destination in destinations %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card destination-card h-100 shadow-sm">
+                    {% if destination.image %}
+                    <img src="{{ destination.image.url }}" 
+                         class="card-img-top" 
+                         alt="{{ destination.name }}"
+                         style="height: 250px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-success text-white d-flex align-items-center justify-content-center" 
+                         style="height: 250px;">
+                        <i class="bi bi-image display-1 opacity-50"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">{{ destination.name }}</h5>
+                        <p class="card-text text-muted flex-grow-1">
+                            {{ destination.description|truncatewords:20 }}
+                        </p>
+                        
+                        <div class="mb-3">
+                            <span class="badge bg-success me-1">
+                                <i class="bi bi-tag"></i> {{ destination.get_destination_type_display }}
+                            </span>
+                            <span class="badge bg-secondary">
+                                <i class="bi bi-cash"></i> KSh {{ destination.average_cost_per_day }}/day
+                            </span>
+                        </div>
+                        
+                        <!-- Weather Info -->
+                        {% for dest_name, weather in weather_data.items %}
+                        {% if dest_name == destination.name %}
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <img src="https://openweathermap.org/img/wn/{{ weather.icon }}.png" 
+                                     alt="{{ weather.description }}"
+                                     style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <strong>{{ weather.temperature }}°C</strong>
+                                    <br>
+                                    <small class="text-muted text-capitalize">{{ weather.description }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        
+                        {% if destination.best_time_to_visit %}
+                        <p class="small text-muted mb-2">
+                            <i class="bi bi-calendar-check"></i> Best time: {{ destination.best_time_to_visit }}
+                        </p>
+                        {% endif %}
+                        
+                        <a href="{% url 'destinations:detail' destination.slug %}" 
+                           class="btn btn-outline-success w-100">
+                            <i class="bi bi-info-circle"></i> View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-search display-1 text-muted"></i>
+            <h3 class="mt-3">No destinations found</h3>
+            <p class="text-muted">Try selecting a different category</p>
+            <a href="{% url 'destinations:list' %}" class="btn btn-success">View All</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-3">Ready to Plan Your Trip?</h2>
+        <p class="lead text-muted mb-4">Let our AI create a personalized itinerary for you</p>
+        <a href="{% url 'core:destination_selection' %}" class="btn btn-success btn-lg px-5">
+            <i class="bi bi-magic"></i> Start Planning
+        </a>
+    </div>
+</section>
+{% endblock %}

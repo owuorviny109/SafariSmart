@@ -109,7 +109,7 @@ class DestinationSelectionView(View):
         
     def post(self, request: HttpRequest) -> HttpResponse:
         """
-        Process selected destinations.
+        Process selected destinations including custom ones.
         
         Validates selections, saves to session, and redirects to step 2.
         
@@ -124,7 +124,22 @@ class DestinationSelectionView(View):
         # Get selected destination IDs from POST data
         destination_ids = request.POST.getlist('destinations')
         
-        # Convert to integers
+        # Get custom destinations
+        import json
+        custom_destinations_json = request.POST.get('custom_destinations', '[]')
+        try:
+            custom_destinations = json.loads(custom_destinations_json)
+        except json.JSONDecodeError:
+            custom_destinations = []
+        
+        # Validate at least one destination selected
+        if not destination_ids and not custom_destinations:
+            return self._render_error(
+                request,
+                "Please select at least one destination or add a custom one."
+            )
+        
+        # Convert IDs to integers
         try:
             destination_ids = [int(id) for id in destination_ids]
         except (ValueError, TypeError):
@@ -135,7 +150,7 @@ class DestinationSelectionView(View):
             
         # Validate and save using service
         try:
-            wizard_service.save_destinations(destination_ids)
+            wizard_service.save_destinations(destination_ids, custom_destinations)
         except ValueError as e:
             return self._render_error(request, str(e))
             
@@ -942,13 +957,51 @@ class ItineraryGenerationView(View):
         return render(request, self.template_name, context)
 
 
-def itinerary_detail(request, share_code):
-    """View generated itinerary"""
+def itinerary_detail(request: HttpRequest, share_code: str) -> HttpResponse:
+    """
+    Display itinerary detail page.
+    
+    This view handles the display of a generated itinerary using
+    service classes for data preparation and formatting.
+    
+    Args:
+        request (HttpRequest): HTTP request object
+        share_code (str): Unique share code for itinerary
+        
+    Returns:
+        HttpResponse: Rendered itinerary detail page
+        
+    Example:
+        URL: /itinerary/abc-123-def-456/
+        Displays: Full itinerary with route visualization
+    """
+    from core.services import ItineraryDisplayService, ShareService
+    
+    # Get itinerary
     itinerary = get_object_or_404(Itinerary, share_code=share_code)
+    
+    # Increment view count
     itinerary.increment_view_count()
-    return render(request, 'core/itinerary_detail.html', {
-        'itinerary': itinerary
-    })
+    
+    # Prepare display data using service
+    display_service = ItineraryDisplayService()
+    display_data = display_service.prepare_display_data(itinerary)
+    
+    # Prepare share data using service
+    share_service = ShareService()
+    share_data = share_service.prepare_share_data(itinerary)
+    
+    # Build context
+    context = {
+        **display_data,
+        'share_data': share_data,
+        'is_authenticated': request.user.is_authenticated,
+        'login_url': f"/login/?next={request.path}"
+    }
+    
+    logger.info(f"Displaying itinerary {itinerary.id} (views: {itinerary.view_count})")
+    
+    return render(request, 'core/itinerary_detail_new.html', context)
 
 
 def shared_itinerary(request, share_code):
@@ -963,6 +1016,176 @@ def dashboard(request):
     return render(request, 'core/dashboard.html', {
         'itineraries': itineraries
     })
+
+
+def quick_trip(request: HttpRequest) -> HttpResponse:
+    """
+    Quick trip planner - parse natural language input and generate itinerary.
+    
+    Accepts input like: "2 days trip to Kakamega with 20000 budget"
+    Parses it and generates itinerary directly.
+    
+    Args:
+        request (HttpRequest): HTTP request object
+        
+    Returns:
+        HttpResponse: Redirect to generated itinerary or error
+    """
+    if request.method != 'POST':
+        return redirect('core:landing')
+    
+    trip_description = request.POST.get('trip_description', '').strip()
+    
+    if not trip_description:
+        logger.warning("Quick trip: Empty description")
+        return redirect('core:landing')
+    
+    # Validate input
+    from core.services.quick_trip_parser import QuickTripParser, QuickTripValidationError
+    
+    try:
+        from datetime import datetime, timedelta
+        from django.contrib import messages
+        from core.services.abuse_detector import AbuseDetector
+        
+        now = datetime.now().timestamp()
+        
+        # Initialize abuse detector
+        abuse_detector = AbuseDetector()
+        ip_address = abuse_detector.get_client_ip(request)
+        session_key = request.session.session_key or 'anonymous'
+        
+        # Check if IP is blocked (severe abuse)
+        is_blocked, block_reason, remaining_seconds = abuse_detector.is_blocked(ip_address, session_key)
+        if is_blocked:
+            logger.warning(f"Blocked IP {ip_address} attempted quick trip")
+            messages.error(request, f"{block_reason} Please use the step-by-step planner.")
+            return redirect('core:destination_selection')
+        
+        # Session-level tracking (lighter abuse)
+        invalid_attempts = request.session.get('quick_trip_invalid_attempts', [])
+        # Remove old entries (older than 10 minutes)
+        invalid_attempts = [ts for ts in invalid_attempts if now - ts < 600]
+        
+        # Check for session-level abuse (10 invalid attempts in 10 minutes)
+        if len(invalid_attempts) >= 10:
+            logger.warning(f"Quick trip session abuse detected for {session_key}")
+            # Temporarily block session for 30 minutes
+            block_until = request.session.get('quick_trip_blocked_until', 0)
+            if now < block_until:
+                remaining_minutes = int((block_until - now) / 60)
+                messages.error(
+                    request,
+                    f"Too many invalid attempts. Try again in {remaining_minutes} minutes or use the step-by-step planner."
+                )
+                return redirect('core:destination_selection')
+            else:
+                # Set new block
+                request.session['quick_trip_blocked_until'] = now + 1800  # 30 minutes
+                messages.error(
+                    request,
+                    "Too many invalid attempts. Quick trip feature is temporarily disabled for 30 minutes. "
+                    "Please use the step-by-step planner."
+                )
+                return redirect('core:destination_selection')
+        
+        # Check if session is currently blocked
+        block_until = request.session.get('quick_trip_blocked_until', 0)
+        if now < block_until:
+            remaining_minutes = int((block_until - now) / 60)
+            messages.error(
+                request,
+                f"Quick trip feature is temporarily disabled. Try again in {remaining_minutes} minutes or use the step-by-step planner."
+            )
+            return redirect('core:destination_selection')
+        
+        # Validate before parsing
+        parser = QuickTripParser()
+        validation_error = parser.validate_input(trip_description)
+        
+        if validation_error:
+            logger.warning(f"Quick trip validation failed from IP {ip_address}: {validation_error}")
+            
+            # Track invalid attempt (both session and IP)
+            invalid_attempts.append(now)
+            request.session['quick_trip_invalid_attempts'] = invalid_attempts
+            abuse_detector.track_invalid_attempt(ip_address, session_key)
+            
+            # Get IP-level attempt count
+            ip_attempt_count = abuse_detector.get_invalid_attempt_count(ip_address)
+            
+            # Show progressive warnings
+            if ip_attempt_count >= 40:
+                messages.error(
+                    request,
+                    f"{validation_error} (WARNING: {ip_attempt_count}/50 attempts - continued abuse will result in 24-hour block)"
+                )
+            elif len(invalid_attempts) >= 7:
+                messages.warning(
+                    request,
+                    f"{validation_error} ({len(invalid_attempts)}/10 attempts - feature will be temporarily disabled after 10 invalid attempts)"
+                )
+            else:
+                messages.error(request, validation_error)
+            
+            return redirect('core:landing')
+        
+        # Rate limiting - max 5 successful quick trips per session per hour
+        quick_trips = request.session.get('quick_trips', [])
+        # Remove old entries (older than 1 hour)
+        quick_trips = [ts for ts in quick_trips if now - ts < 3600]
+        
+        if len(quick_trips) >= 5:
+            logger.warning(f"Quick trip rate limit exceeded for session {session_key}")
+            messages.warning(
+                request, 
+                "You've reached the limit of 5 quick trips per hour. Please use the step-by-step planner or try again later."
+            )
+            return redirect('core:destination_selection')
+        
+        # Clear invalid attempts on successful validation
+        request.session['quick_trip_invalid_attempts'] = []
+        abuse_detector.clear_attempts(ip_address, session_key)
+        
+        # Add to rate limit tracker
+        quick_trips.append(now)
+        request.session['quick_trips'] = quick_trips
+        
+        # Parse the natural language input
+        trip_data = parser.parse(trip_description)
+        
+        # Generate itinerary using parsed data
+        itinerary_data = ItineraryGeneratorFactory.generate_with_fallback(trip_data)
+        
+        # Save to database
+        itinerary = Itinerary.objects.create(
+            user=request.user if request.user.is_authenticated else None,
+            title=itinerary_data['title'],
+            duration_days=itinerary_data['duration_days'],
+            adults_count=trip_data.get('adults_count', 2),
+            children_count=trip_data.get('children_count', 0),
+            travel_type=trip_data.get('travel_type', 'friends'),
+            total_budget=itinerary_data['budget_amount'],
+            budget_category=trip_data.get('budget_category', 'mid-range'),
+            itinerary_data={'content': itinerary_data['content'], 'generated_by': itinerary_data['generated_by']},
+            cost_breakdown={},
+            is_saved=request.user.is_authenticated
+        )
+        
+        # Add destinations if any were parsed
+        if trip_data.get('destinations'):
+            for dest in trip_data['destinations']:
+                itinerary.destinations.add(dest)
+        
+        logger.info(f"Quick trip generated: {itinerary.share_code}")
+        
+        # Redirect to itinerary
+        return redirect('core:itinerary_detail', share_code=itinerary.share_code)
+        
+    except Exception as e:
+        logger.error(f"Quick trip generation failed: {e}")
+        # Fall back to wizard
+        return redirect('core:destination_selection')
 
 
 def generate_itinerary_api(request: HttpRequest) -> JsonResponse:
