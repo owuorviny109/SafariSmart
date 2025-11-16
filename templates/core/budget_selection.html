@@ -1,0 +1,450 @@
+{% extends 'base.html' %}
+
+{% block title %}Step 4: Budget - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wizard-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 15px;
+    }
+    
+    .progress-bar-custom {
+        height: 8px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--kenya-green) 0%, #008800 100%);
+        transition: width 0.3s ease;
+    }
+    
+    .step-indicator {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .step-indicator h2 {
+        color: var(--kenya-green);
+        margin-bottom: 10px;
+    }
+    
+    .trip-summary {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+    
+    .summary-item {
+        display: inline-block;
+        margin: 0 10px;
+        padding: 10px 15px;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        font-size: 14px;
+    }
+    
+    .summary-item i {
+        color: var(--kenya-green);
+        margin-right: 5px;
+    }
+    
+    .budget-slider-section {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        border: 2px solid #e0e0e0;
+        margin-bottom: 30px;
+    }
+    
+    .budget-display {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .budget-amount {
+        font-size: 48px;
+        font-weight: bold;
+        color: var(--kenya-green);
+        margin-bottom: 10px;
+    }
+    
+    .per-person-budget {
+        font-size: 18px;
+        color: #666;
+    }
+    
+    .per-person-budget strong {
+        color: var(--kenya-green);
+    }
+    
+    .slider-container {
+        padding: 0 20px;
+        margin-bottom: 20px;
+    }
+    
+    .budget-slider {
+        width: 100%;
+        height: 8px;
+        border-radius: 5px;
+        background: linear-gradient(to right, #e9ecef 0%, var(--kenya-green) 100%);
+        outline: none;
+        -webkit-appearance: none;
+    }
+    
+    .budget-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--kenya-green);
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    
+    .budget-slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--kenya-green);
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    
+    .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #666;
+        padding: 0 10px;
+    }
+    
+    .budget-categories {
+        margin-bottom: 30px;
+    }
+    
+    .budget-categories h5 {
+        color: var(--kenya-green);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .category-card {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .category-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .category-card.selected {
+        border-color: var(--kenya-green);
+        background: rgba(0, 102, 0, 0.05);
+    }
+    
+    .category-card .check-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 24px;
+        height: 24px;
+        background: var(--kenya-green);
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+    }
+    
+    .category-card.selected .check-icon {
+        display: flex;
+    }
+    
+    .category-icon {
+        font-size: 36px;
+        color: var(--kenya-green);
+        margin-bottom: 10px;
+    }
+    
+    .category-label {
+        font-weight: bold;
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .category-description {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+    
+    .category-range {
+        font-size: 12px;
+        color: var(--kenya-green);
+        font-weight: bold;
+    }
+    
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+    
+    .btn-back {
+        padding: 12px 30px;
+        background: white;
+        border: 2px solid var(--kenya-green);
+        color: var(--kenya-green);
+    }
+    
+    .btn-back:hover {
+        background: var(--kenya-green);
+        color: white;
+    }
+    
+    .btn-next {
+        padding: 12px 40px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
+    .btn-next:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .error-alert {
+        margin-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+        .budget-amount {
+            font-size: 36px;
+        }
+        
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .summary-item {
+            display: block;
+            margin: 5px 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wizard-container">
+    <!-- Progress Bar -->
+    <div class="progress-bar-custom">
+        <div class="progress-fill" style="width: {{ progress_percentage }}%;"></div>
+    </div>
+    
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+        <h2>Step {{ step }} of {{ total_steps }}</h2>
+        <p class="lead">What's your budget?</p>
+        <p class="text-muted">Set your total trip budget</p>
+    </div>
+    
+    <!-- Error Message -->
+    {% if error_message %}
+    <div class="alert alert-danger error-alert alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> {{ error_message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+    
+    <!-- Trip Summary -->
+    <div class="trip-summary text-center">
+        <span class="summary-item">
+            <i class="bi bi-geo-alt-fill"></i>
+            <strong>{{ destinations|length }}</strong> Destinations
+        </span>
+        <span class="summary-item">
+            <i class="bi bi-calendar-check"></i>
+            <strong>{{ duration_days }}</strong> Days
+        </span>
+        <span class="summary-item">
+            <i class="bi bi-people-fill"></i>
+            <strong>{{ total_travelers }}</strong> Traveler{{ total_travelers|pluralize }}
+        </span>
+    </div>
+    
+    <form method="post" id="wizardForm">
+        {% csrf_token %}
+        
+        <!-- Budget Slider Section -->
+        <div class="budget-slider-section">
+            <div class="budget-display">
+                <div class="budget-amount" id="budgetDisplay">
+                    KSh <span id="budgetValue">{{ budget_amount|floatformat:0 }}</span>
+                </div>
+                <div class="per-person-budget">
+                    <i class="bi bi-person"></i>
+                    <strong>KSh <span id="perPersonValue">{{ per_person_budget|floatformat:0 }}</span></strong> per person
+                </div>
+            </div>
+            
+            <div class="slider-container">
+                <input type="range" 
+                       class="budget-slider" 
+                       id="budgetSlider"
+                       name="budget_amount"
+                       min="10000" 
+                       max="500000" 
+                       step="5000"
+                       value="{{ budget_amount }}">
+            </div>
+            
+            <div class="slider-labels">
+                <span>KSh 10k</span>
+                <span>KSh 500k</span>
+            </div>
+        </div>
+        
+        <!-- Budget Categories -->
+        <div class="budget-categories">
+            <h5><i class="bi bi-tag-fill"></i> Budget Category</h5>
+            <div class="category-grid">
+                {% for category in budget_categories %}
+                <div class="category-card {% if selected_category == category.value %}selected{% endif %}" 
+                     data-category="{{ category.value }}">
+                    <div class="check-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <div class="category-icon">
+                        <i class="bi bi-{{ category.icon }}"></i>
+                    </div>
+                    <div class="category-label">{{ category.label }}</div>
+                    <div class="category-description">{{ category.description }}</div>
+                    <div class="category-range">{{ category.range }}</div>
+                    <input type="radio" 
+                           name="budget_category" 
+                           value="{{ category.value }}" 
+                           {% if selected_category == category.value %}checked{% endif %}
+                           style="display: none;">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <a href="{% url 'core:travel_group_selection' %}" class="btn btn-back">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+            <button type="submit" class="btn btn-primary btn-next" id="btnNext" disabled>
+                Next Step <i class="bi bi-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const budgetSlider = document.getElementById('budgetSlider');
+    const budgetValue = document.getElementById('budgetValue');
+    const perPersonValue = document.getElementById('perPersonValue');
+    const categoryCards = document.querySelectorAll('.category-card');
+    const btnNext = document.getElementById('btnNext');
+    
+    const totalTravelers = {{ total_travelers }};
+    
+    // Format number with commas
+    function formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+    // Update budget display
+    function updateBudgetDisplay() {
+        const budget = parseInt(budgetSlider.value);
+        const perPerson = Math.floor(budget / totalTravelers);
+        
+        budgetValue.textContent = formatNumber(budget);
+        perPersonValue.textContent = formatNumber(perPerson);
+        
+        // Auto-select category based on budget
+        autoSelectCategory(budget);
+    }
+    
+    // Auto-select budget category based on amount
+    function autoSelectCategory(budget) {
+        let suggestedCategory = 'budget';
+        
+        if (budget >= 150000) {
+            suggestedCategory = 'luxury';
+        } else if (budget >= 50000) {
+            suggestedCategory = 'mid-range';
+        }
+        
+        // Only auto-select if no category is currently selected
+        const hasSelection = document.querySelector('input[name="budget_category"]:checked');
+        if (!hasSelection) {
+            const categoryCard = document.querySelector(`[data-category="${suggestedCategory}"]`);
+            if (categoryCard) {
+                categoryCard.click();
+            }
+        }
+    }
+    
+    // Slider change handler
+    budgetSlider.addEventListener('input', updateBudgetDisplay);
+    
+    // Category card click handler
+    categoryCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            categoryCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            this.classList.add('selected');
+            
+            // Check the radio button
+            const radio = this.querySelector('input[type="radio"]');
+            radio.checked = true;
+            
+            // Update button state
+            updateNextButton();
+        });
+    });
+    
+    // Update next button state
+    function updateNextButton() {
+        const selectedCategory = document.querySelector('input[name="budget_category"]:checked');
+        btnNext.disabled = !selectedCategory;
+    }
+    
+    // Initialize
+    updateBudgetDisplay();
+    updateNextButton();
+});
+</script>
+{% endblock %}

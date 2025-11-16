@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}My Trips - SafariSmart Kenya{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="bg-success text-white py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="bi bi-suitcase-lg"></i> My Trips
+        </h1>
+        <p class="lead">View and manage your saved itineraries</p>
+    </div>
+</section>
+
+<!-- Dashboard Content -->
+<section class="py-5">
+    <div class="container">
+        {% if itineraries %}
+        <div class="row g-4">
+            {% for itinerary in itineraries %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ itinerary.title }}</h5>
+                        
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar3"></i> {{ itinerary.duration_days }} day{% if itinerary.duration_days > 1 %}s{% endif %}
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                <i class="bi bi-people"></i> 
+                                {{ itinerary.adults_count }} adult{% if itinerary.adults_count > 1 %}s{% endif %}
+                                {% if itinerary.children_count > 0 %}
+                                    + {{ itinerary.children_count }} child{% if itinerary.children_count > 1 %}ren{% endif %}
+                                {% endif %}
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                <i class="bi bi-cash"></i> KSh {{ itinerary.total_budget|floatformat:0 }}
+                            </small>
+                        </div>
+                        
+                        <!-- Destinations -->
+                        <div class="mb-3">
+                            <strong class="small">Destinations:</strong>
+                            <div class="mt-1">
+                                {% for destination in itinerary.destinations.all|slice:":3" %}
+                                <span class="badge bg-success me-1 mb-1">{{ destination.name }}</span>
+                                {% endfor %}
+                                {% if itinerary.destinations.count > 3 %}
+                                <span class="badge bg-secondary">+{{ itinerary.destinations.count|add:"-3" }} more</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Metadata -->
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="bi bi-clock"></i> Created {{ itinerary.created_at|date:"M d, Y" }}
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                <i class="bi bi-eye"></i> {{ itinerary.view_count }} view{% if itinerary.view_count != 1 %}s{% endif %}
+                            </small>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'core:itinerary_detail' itinerary.share_code %}" 
+                               class="btn btn-success">
+                                <i class="bi bi-eye"></i> View Itinerary
+                            </a>
+                            <button class="btn btn-outline-secondary btn-sm" 
+                                    onclick="copyShareLink('{{ itinerary.share_code }}')">
+                                <i class="bi bi-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-5">
+            <i class="bi bi-suitcase display-1 text-muted"></i>
+            <h3 class="mt-4">No Saved Trips Yet</h3>
+            <p class="text-muted mb-4">Start planning your perfect Kenya adventure</p>
+            <a href="{% url 'core:destination_selection' %}" class="btn btn-success btn-lg px-5">
+                <i class="bi bi-magic"></i> Plan Your First Trip
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Share Modal (for copy link functionality) -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="shareToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong class="me-auto">Link Copied!</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            Share link copied to clipboard
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyShareLink(shareCode) {
+    const url = window.location.origin + '/itinerary/' + shareCode + '/';
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(url).then(function() {
+        // Show toast notification
+        const toastEl = document.getElementById('shareToast');
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }).catch(function(err) {
+        alert('Failed to copy link: ' + err);
+    });
+}
+</script>
+{% endblock %}

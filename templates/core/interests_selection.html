@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+
+{% block title %}Step 5: Interests - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wizard-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 15px;
+    }
+    
+    .progress-bar-custom {
+        height: 8px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--kenya-green) 0%, #008800 100%);
+        transition: width 0.3s ease;
+        animation: fillProgress 1s ease-out;
+    }
+    
+    @keyframes fillProgress {
+        from { width: 0%; }
+    }
+    
+    .step-indicator {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .step-indicator h2 {
+        color: var(--kenya-green);
+        margin-bottom: 10px;
+    }
+    
+    .step-indicator .badge {
+        background: var(--kenya-green);
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+    
+    .trip-summary {
+        background: linear-gradient(135deg, var(--kenya-green) 0%, #008800 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .trip-summary h5 {
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+    
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    .summary-item {
+        background: rgba(255,255,255,0.2);
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+    }
+    
+    .summary-item i {
+        font-size: 24px;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .summary-item strong {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 3px;
+    }
+    
+    .summary-item small {
+        opacity: 0.9;
+    }
+    
+    .interests-section h5 {
+        color: var(--kenya-green);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .interests-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .interest-card {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 25px 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        background: white;
+    }
+    
+    .interest-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        border-color: var(--kenya-green);
+    }
+    
+    .interest-card.selected {
+        border-color: var(--kenya-green);
+        background: rgba(0, 102, 0, 0.05);
+    }
+    
+    .interest-card .check-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 28px;
+        height: 28px;
+        background: var(--kenya-green);
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 16px;
+        animation: checkPop 0.3s ease-out;
+    }
+    
+    @keyframes checkPop {
+        0% { transform: scale(0); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+    
+    .interest-card.selected .check-icon {
+        display: flex;
+    }
+    
+    .interest-icon {
+        font-size: 42px;
+        color: var(--kenya-green);
+        margin-bottom: 12px;
+    }
+    
+    .interest-label {
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .interest-description {
+        font-size: 12px;
+        color: #666;
+    }
+    
+    .selection-counter {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+    
+    .selection-counter .count {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--kenya-green);
+    }
+    
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+    
+    .btn-back {
+        padding: 12px 30px;
+        background: white;
+        border: 2px solid var(--kenya-green);
+        color: var(--kenya-green);
+    }
+    
+    .btn-back:hover {
+        background: var(--kenya-green);
+        color: white;
+    }
+    
+    .btn-generate {
+        padding: 12px 40px;
+        font-size: 18px;
+        font-weight: bold;
+        background: linear-gradient(135deg, var(--kenya-green) 0%, #008800 100%);
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,102,0,0.3);
+    }
+    
+    .btn-generate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,102,0,0.4);
+    }
+    
+    .btn-generate:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .error-alert {
+        margin-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+        .interests-grid {
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        }
+        
+        .summary-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wizard-container">
+    <!-- Progress Bar -->
+    <div class="progress-bar-custom">
+        <div class="progress-fill" style="width: {{ progress_percentage }}%;"></div>
+    </div>
+    
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+        <h2>Final Step: {{ step }} of {{ total_steps }}</h2>
+        <span class="badge">Almost there!</span>
+        <p class="lead mt-3">What interests you most?</p>
+        <p class="text-muted">Select your interests to personalize your itinerary</p>
+    </div>
+    
+    <!-- Error Message -->
+    {% if error_message %}
+    <div class="alert alert-danger error-alert alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> {{ error_message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+    
+    <!-- Trip Summary -->
+    <div class="trip-summary">
+        <h5><i class="bi bi-clipboard-check"></i> Your Trip Summary</h5>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <i class="bi bi-geo-alt-fill"></i>
+                <strong>{{ destinations|length }}</strong>
+                <small>Destinations</small>
+            </div>
+            <div class="summary-item">
+                <i class="bi bi-calendar-check"></i>
+                <strong>{{ duration_days }}</strong>
+                <small>Days</small>
+            </div>
+            <div class="summary-item">
+                <i class="bi bi-people-fill"></i>
+                <strong>{{ total_travelers }}</strong>
+                <small>Traveler{{ total_travelers|pluralize }}</small>
+            </div>
+            <div class="summary-item">
+                <i class="bi bi-cash-stack"></i>
+                <strong>KSh {{ budget_amount|floatformat:0 }}</strong>
+                <small>Budget</small>
+            </div>
+        </div>
+    </div>
+    
+    <form method="post" id="wizardForm">
+        {% csrf_token %}
+        
+        <!-- Selection Counter -->
+        <div class="selection-counter">
+            <span class="count" id="selectedCount">0</span>
+            <span class="text-muted"> interest(s) selected</span>
+            <small class="d-block mt-2 text-muted">Select at least one interest</small>
+        </div>
+        
+        <!-- Interests Section -->
+        <div class="interests-section">
+            <h5><i class="bi bi-heart-fill"></i> Choose Your Interests</h5>
+            <div class="interests-grid">
+                {% for interest in interests %}
+                <div class="interest-card {% if interest.value in selected_interests %}selected{% endif %}" 
+                     data-interest="{{ interest.value }}">
+                    <div class="check-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <div class="interest-icon">
+                        <i class="bi bi-{{ interest.icon }}"></i>
+                    </div>
+                    <div class="interest-label">{{ interest.label }}</div>
+                    <div class="interest-description">{{ interest.description }}</div>
+                    <input type="checkbox" 
+                           name="interests" 
+                           value="{{ interest.value }}" 
+                           {% if interest.value in selected_interests %}checked{% endif %}
+                           style="display: none;">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <a href="{% url 'core:budget_selection' %}" class="btn btn-back">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+            <button type="submit" class="btn btn-primary btn-generate" id="btnGenerate" disabled>
+                <i class="bi bi-magic"></i> Generate My Itinerary
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const interestCards = document.querySelectorAll('.interest-card');
+    const selectedCountEl = document.getElementById('selectedCount');
+    const btnGenerate = document.getElementById('btnGenerate');
+    
+    // Initialize selected count
+    updateSelectedCount();
+    
+    // Interest card click handler
+    interestCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            
+            // Toggle checkbox
+            checkbox.checked = !checkbox.checked;
+            
+            // Toggle selected class
+            this.classList.toggle('selected');
+            
+            // Update count
+            updateSelectedCount();
+        });
+    });
+    
+    // Update selected count and button state
+    function updateSelectedCount() {
+        const selectedCount = document.querySelectorAll('input[name="interests"]:checked').length;
+        selectedCountEl.textContent = selectedCount;
+        
+        // Enable/disable generate button
+        if (selectedCount > 0) {
+            btnGenerate.disabled = false;
+        } else {
+            btnGenerate.disabled = true;
+        }
+    }
+    
+    // Add loading state on form submit
+    document.getElementById('wizardForm').addEventListener('submit', function() {
+        btnGenerate.disabled = true;
+        btnGenerate.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
+    });
+});
+</script>
+{% endblock %}

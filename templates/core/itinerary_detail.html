@@ -1,0 +1,459 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ itinerary.title }} - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    .itinerary-header {
+        background: linear-gradient(135deg, var(--kenya-green) 0%, #008800 100%);
+        color: white;
+        padding: 60px 0 40px;
+        margin-bottom: 40px;
+    }
+    
+    .itinerary-title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    
+    .itinerary-meta {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .meta-item i {
+        font-size: 24px;
+    }
+    
+    .itinerary-content {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        white-space: pre-wrap;
+        line-height: 1.8;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+    }
+    
+    .badge-ai {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .badge-template {
+        background: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+    
+    .destination-route {
+        position: relative;
+        padding: 20px 0;
+    }
+    
+    .route-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .route-marker {
+        width: 40px;
+        height: 40px;
+        background: var(--kenya-green);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .route-content {
+        flex: 1;
+        padding: 8px 0;
+    }
+    
+    .route-content h6 {
+        color: #333;
+        font-weight: 600;
+    }
+    
+    .route-connector {
+        width: 3px;
+        height: 30px;
+        background: linear-gradient(to bottom, var(--kenya-green), #008800);
+        margin-left: 18px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    @media (max-width: 768px) {
+        .itinerary-title {
+            font-size: 28px;
+        }
+        
+        .itinerary-content {
+            padding: 20px;
+        }
+        
+        .route-item {
+            gap: 10px;
+        }
+        
+        .route-marker {
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+        }
+        
+        .route-connector {
+            margin-left: 16px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="itinerary-header">
+    <div class="container">
+        <h1 class="itinerary-title">{{ itinerary.title }}</h1>
+        
+        <div class="itinerary-meta">
+            <div class="meta-item">
+                <i class="bi bi-calendar-check"></i>
+                <span>{{ itinerary.duration_days }} Day{{ itinerary.duration_days|pluralize }}</span>
+            </div>
+            
+            <div class="meta-item">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span>{{ itinerary.destinations.count }} Destination{{ itinerary.destinations.count|pluralize }}</span>
+            </div>
+            
+            <div class="meta-item">
+                <i class="bi bi-cash-stack"></i>
+                <span>KSh {{ itinerary.total_budget|floatformat:0 }}</span>
+            </div>
+            
+            <div class="meta-item">
+                <i class="bi bi-eye-fill"></i>
+                <span>{{ itinerary.view_count }} view{{ itinerary.view_count|pluralize }}</span>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            {% if itinerary.itinerary_data.generated_by == 'gemini-ai' %}
+            <span class="badge-ai">
+                <i class="bi bi-stars"></i>
+                AI-Generated
+            </span>
+            {% else %}
+            <span class="badge-template">Template-Based</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="container">
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="btn btn-success" onclick="window.print()">
+            <i class="bi bi-printer"></i> Print
+        </button>
+        
+        <button class="btn btn-outline-success" onclick="shareItinerary()">
+            <i class="bi bi-share"></i> Share
+        </button>
+        
+        {% if user.is_authenticated %}
+        <button class="btn btn-outline-success" onclick="saveItinerary()">
+            <i class="bi bi-bookmark"></i> Save
+        </button>
+        {% endif %}
+        
+        <a href="{% url 'core:destination_selection' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Plan Another Trip
+        </a>
+    </div>
+    
+    <!-- Destinations Map -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="bi bi-map"></i> Your Journey
+            </h5>
+            
+            <!-- Destination Route -->
+            <div class="destination-route mt-3">
+                {% for destination in itinerary.destinations.all %}
+                <div class="route-item">
+                    <div class="route-marker">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <div class="route-content">
+                        <h6 class="mb-1">{{ destination.name }}</h6>
+                        <small class="text-muted">
+                            <i class="bi bi-tag"></i> {{ destination.destination_type|title }}
+                            {% if destination.county %}
+                            • <i class="bi bi-pin-map"></i> {{ destination.county }}
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+                {% if not forloop.last %}
+                <div class="route-connector"></div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            
+            <!-- Destination Badges -->
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                {% for destination in itinerary.destinations.all %}
+                <span class="badge bg-success" style="font-size: 14px; padding: 8px 12px;">
+                    <i class="bi bi-check-circle"></i> {{ destination.name }}
+                </span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Itinerary Content -->
+    <div class="itinerary-content">
+        {{ itinerary.itinerary_data.content|linebreaks }}
+    </div>
+    
+    <!-- Cost Breakdown -->
+    {% if itinerary.cost_breakdown %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="bi bi-calculator"></i> Cost Breakdown
+            </h5>
+            <div class="table-responsive mt-3">
+                <table class="table">
+                    <tbody>
+                        {% for item, cost in itinerary.cost_breakdown.items %}
+                        <tr>
+                            <td>{{ item|title }}</td>
+                            <td class="text-end"><strong>KSh {{ cost|floatformat:0 }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Footer Info -->
+    <div class="card mb-5">
+        <div class="card-body text-center">
+            <p class="mb-2">
+                <i class="bi bi-calendar"></i>
+                Generated on {{ itinerary.created_at|date:"F d, Y" }}
+            </p>
+            <p class="text-muted mb-2">
+                <small>Share Code: <code>{{ itinerary.share_code }}</code></small>
+            </p>
+            {% if itinerary.itinerary_data.generated_by == 'gemini-ai' %}
+            <p class="text-muted mb-0">
+                <small><i class="bi bi-stars"></i> Powered by AI • Personalized for you</small>
+            </p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Feedback Section -->
+    <div class="card mb-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+        <div class="card-body text-center py-4">
+            <h5 class="mb-3">Love your itinerary?</h5>
+            <p class="text-muted mb-3">Share it with friends planning their Kenya adventure!</p>
+            <button class="btn btn-success btn-lg" onclick="shareItinerary()">
+                <i class="bi bi-share"></i> Share This Trip
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Back to Top Button -->
+<button id="backToTop" class="btn btn-success" style="
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    border: none;
+" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <i class="bi bi-arrow-up" style="font-size: 20px;"></i>
+</button>
+
+<script>
+function shareItinerary() {
+    const url = window.location.href;
+    const title = '{{ itinerary.title|escapejs }}';
+    
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: 'Check out my Kenya safari itinerary! 🦁🌍',
+            url: url
+        }).then(() => {
+            showToast('Shared successfully!', 'success');
+        }).catch(err => {
+            if (err.name !== 'AbortError') {
+                copyToClipboard(url);
+            }
+        });
+    } else {
+        copyToClipboard(url);
+    }
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('Link copied to clipboard! 📋', 'success');
+    }).catch(err => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('Link copied to clipboard! 📋', 'success');
+    });
+}
+
+function saveItinerary() {
+    {% if user.is_authenticated %}
+        // TODO: Implement save functionality
+        showToast('Itinerary saved! ✓', 'success');
+    {% else %}
+        showToast('Please login to save itineraries', 'info');
+        setTimeout(() => {
+            window.location.href = '/login/?next={{ request.path }}';
+        }, 1500);
+    {% endif %}
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast-notification toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#28a745' : type === 'info' ? '#17a2b8' : '#ffc107'};
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 9999;
+        animation: slideIn 0.3s ease-out;
+        font-weight: 500;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Back to top button
+window.addEventListener('scroll', function() {
+    const backToTop = document.getElementById('backToTop');
+    if (window.pageYOffset > 300) {
+        backToTop.style.display = 'flex';
+    } else {
+        backToTop.style.display = 'none';
+    }
+});
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+    
+    @media print {
+        .action-buttons,
+        .card:has(.bi-map),
+        button,
+        .badge-ai,
+        .badge-template {
+            display: none !important;
+        }
+        
+        .itinerary-header {
+            background: white !important;
+            color: black !important;
+            padding: 20px 0 !important;
+        }
+        
+        .itinerary-content {
+            box-shadow: none !important;
+            border: 1px solid #ddd;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

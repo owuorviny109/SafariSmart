@@ -1018,7 +1018,531 @@ class GeminiService:
 
 ---
 
-## 10. SUMMARY
+## 10. NAMING CONVENTIONS
+
+### Python Code
+
+#### Classes
+**Convention:** `PascalCase` (CapitalizedWords)
+
+**Examples:**
+```python
+✅ DestinationSelectionView
+✅ DurationSelectionView
+✅ WizardService
+✅ WizardSessionManager
+
+❌ WizardStep1View  # Don't use numbers
+❌ wizard_service   # Not snake_case for classes
+```
+
+#### Functions and Methods
+**Convention:** `snake_case` (lowercase_with_underscores)
+
+**Examples:**
+```python
+✅ save_destinations()
+✅ get_selected_destinations()
+✅ validate_duration()
+
+❌ saveDestinations()     # Not camelCase
+❌ save_step_1_data()     # Avoid numbers
+```
+
+#### Variables
+**Convention:** `snake_case`
+
+#### Constants
+**Convention:** `UPPER_SNAKE_CASE`
+
+### Files and Directories
+
+#### Python Files
+**Convention:** `snake_case.py`
+
+**Examples:**
+```
+✅ wizard_service.py
+✅ destination_selection.py
+
+❌ WizardService.py        # Not PascalCase
+❌ wizardStep1.py          # Not camelCase
+```
+
+#### Template Files
+**Convention:** `snake_case.html` or `descriptive_name.html`
+
+**Examples:**
+```
+✅ destination_selection.html
+✅ duration_selection.html
+
+❌ wizard_step_1.html      # Don't use numbers
+❌ WizardStep1.html        # Not PascalCase
+```
+
+### URLs
+
+#### URL Patterns
+**Convention:** `kebab-case` (lowercase-with-hyphens)
+
+**Examples:**
+```python
+✅ path('wizard/destinations/', ...)
+✅ path('wizard/travel-group/', ...)
+
+❌ path('wizard/step_1/', ...)        # Not snake_case
+❌ path('wizard/travelGroup/', ...)   # Not camelCase
+```
+
+#### URL Names
+**Convention:** `snake_case`
+
+**Examples:**
+```python
+✅ name='destination_selection'
+✅ name='travel_group_selection'
+
+❌ name='wizard_step_1'        # Don't use numbers
+❌ name='destinationSelection' # Not camelCase
+```
+
+### View Names
+
+#### Class-Based Views
+**Convention:** `DescriptiveNameView`
+
+**Pattern:** `[Purpose][Action]View`
+
+**Examples:**
+```python
+✅ DestinationSelectionView
+✅ DurationSelectionView
+✅ ItineraryDetailView
+
+❌ WizardStep1View         # Don't use numbers
+❌ Step1View               # Not descriptive enough
+```
+
+### Service Layer
+
+**Convention:** `PurposeService` or `PurposeManager`
+
+**Examples:**
+```python
+✅ WizardService
+✅ WizardSessionManager
+✅ GeminiService
+
+❌ WizardServiceClass      # Don't add "Class"
+❌ wizard_service          # Not snake_case for classes
+```
+
+### Summary Table
+
+| Element | Convention | Example |
+|---------|-----------|---------|
+| Classes | PascalCase | `DestinationSelectionView` |
+| Functions | snake_case | `save_destinations()` |
+| Variables | snake_case | `destination_ids` |
+| Constants | UPPER_SNAKE_CASE | `MAX_DURATION_DAYS` |
+| Files | snake_case.py | `wizard_service.py` |
+| Templates | snake_case.html | `destination_selection.html` |
+| URLs | kebab-case | `/wizard/travel-group/` |
+| URL Names | snake_case | `travel_group_selection` |
+
+---
+
+## 11. FILE ORGANIZATION AND CODE SPLITTING
+
+### Maximum File Size Guidelines
+
+**GUIDELINE: Aim to keep files under 500 lines when possible.**
+
+**However, there are valid exceptions:**
+
+#### When to Keep Files Together (Even if >500 lines)
+
+**Valid Reasons to Exceed 500 Lines:**
+
+1. **Cohesive Functionality**
+   - All code serves ONE clear purpose
+   - Splitting would break logical flow
+   - Example: `wizard_service.py` with all wizard operations
+
+2. **Related Views**
+   - Multiple views for same feature
+   - Share common logic and context
+   - Example: All wizard step views in one file
+
+3. **Model Definitions**
+   - Complex model with many fields
+   - Related model methods
+   - Manager classes for same model
+
+4. **API Endpoints**
+   - All endpoints for one resource
+   - Shared serializers and permissions
+   - RESTful resource operations
+
+**Key Question: "Would splitting make it HARDER to understand?"**
+
+If YES → Keep together even if large
+If NO → Split into smaller files
+
+### Why This Matters
+
+**Problems with Large Files:**
+- Hard to navigate and find code
+- Difficult to understand and maintain
+- Merge conflicts in version control
+- Violates Single Responsibility Principle
+- Slows down IDE performance
+- Makes code reviews painful
+
+**Benefits of Small Files:**
+- Easy to locate specific functionality
+- Clear separation of concerns
+- Easier to test individual components
+- Better code organization
+- Faster to load and navigate
+- Simpler code reviews
+
+### How to Split Files
+
+#### Views (core/views.py)
+
+**BAD - Everything in one file:**
+```python
+# core/views.py (1000+ lines)
+class DestinationSelectionView(View):
+    pass
+
+class DurationSelectionView(View):
+    pass
+
+class TravelGroupSelectionView(View):
+    pass
+
+class BudgetSelectionView(View):
+    pass
+
+class InterestsSelectionView(View):
+    pass
+```
+
+**GOOD - Split by feature:**
+```python
+# core/views/__init__.py
+from .landing import landing_page
+from .wizard_views import (
+    DestinationSelectionView,
+    DurationSelectionView,
+    TravelGroupSelectionView,
+    BudgetSelectionView,
+    InterestsSelectionView
+)
+from .itinerary_views import (
+    ItineraryDetailView,
+    SharedItineraryView
+)
+from .dashboard_views import DashboardView
+
+# core/views/wizard_views.py (200 lines)
+class DestinationSelectionView(View):
+    pass
+
+class DurationSelectionView(View):
+    pass
+
+# core/views/itinerary_views.py (150 lines)
+class ItineraryDetailView(View):
+    pass
+```
+
+#### Services (core/services/)
+
+**BAD - One giant service:**
+```python
+# core/services/wizard_service.py (800+ lines)
+class WizardService:
+    # 50 methods handling everything
+    pass
+```
+
+**GOOD - Split by responsibility:**
+```python
+# core/services/wizard_session_manager.py
+class WizardSessionManager:
+    """Handles session operations only."""
+    pass
+
+# core/services/wizard_validator.py
+class WizardValidator:
+    """Handles validation only."""
+    pass
+
+# core/services/wizard_service.py
+class WizardService:
+    """Orchestrates wizard operations."""
+    def __init__(self):
+        self.session_manager = WizardSessionManager()
+        self.validator = WizardValidator()
+```
+
+#### Models
+
+**BAD - All models in one file:**
+```python
+# core/models.py (600+ lines)
+class Destination(models.Model):
+    pass
+
+class Itinerary(models.Model):
+    pass
+
+class WizardSession(models.Model):
+    pass
+
+class Review(models.Model):
+    pass
+```
+
+**GOOD - Split by domain:**
+```python
+# core/models/__init__.py
+from .destination import Destination
+from .itinerary import Itinerary
+from .wizard import WizardSession
+from .review import Review
+
+# core/models/destination.py (100 lines)
+class Destination(models.Model):
+    pass
+
+# core/models/itinerary.py (150 lines)
+class Itinerary(models.Model):
+    pass
+```
+
+### File Organization Patterns
+
+#### Pattern 1: Feature-Based Organization
+```
+core/
+├── views/
+│   ├── __init__.py
+│   ├── landing.py          # Landing page views
+│   ├── wizard_views.py     # Wizard step views
+│   ├── itinerary_views.py  # Itinerary views
+│   └── dashboard_views.py  # Dashboard views
+├── services/
+│   ├── __init__.py
+│   ├── wizard_service.py
+│   ├── itinerary_service.py
+│   └── gemini_service.py
+└── models/
+    ├── __init__.py
+    ├── destination.py
+    ├── itinerary.py
+    └── wizard.py
+```
+
+#### Pattern 2: Component-Based Organization
+```
+core/
+├── wizard/
+│   ├── __init__.py
+│   ├── views.py
+│   ├── services.py
+│   ├── models.py
+│   └── validators.py
+├── itinerary/
+│   ├── __init__.py
+│   ├── views.py
+│   ├── services.py
+│   └── models.py
+└── dashboard/
+    ├── __init__.py
+    └── views.py
+```
+
+### When to Split a File
+
+**MUST Split When:**
+- File has MULTIPLE unrelated responsibilities
+- Contains classes from different domains
+- Mixing different layers (views + services + models)
+- Causes frequent merge conflicts
+- Code review is confusing due to mixed concerns
+
+**SHOULD Split When:**
+- File exceeds 1000 lines
+- Contains more than 10 classes
+- Has multiple independent features
+- Difficult to find specific code
+- Takes more than 5 seconds to scroll through
+
+**MAY Keep Together When:**
+- File is 500-1000 lines but cohesive
+- All code serves ONE clear purpose
+- Splitting would require complex imports
+- Related functionality that's easier to understand together
+- Single feature with multiple related components
+
+**Example: Our Current Files**
+
+```python
+# core/views.py (904 lines)
+# Contains: All wizard views (5 steps)
+# Decision: KEEP TOGETHER
+# Reason: All views are for wizard feature, share context,
+#         easier to see full wizard flow in one place
+
+# core/services/wizard_service.py (614 lines)  
+# Contains: All wizard business logic
+# Decision: KEEP TOGETHER
+# Reason: Single responsibility (wizard operations),
+#         methods are interdependent, cohesive unit
+```
+
+**Counter-Example: When to Split**
+
+```python
+# BAD: core/views.py (1500 lines)
+# Contains: Wizard views + Dashboard + Admin + API + Reports
+# Decision: MUST SPLIT
+# Reason: Multiple unrelated features, different domains
+
+# GOOD: Split into:
+# - core/views/wizard.py (500 lines)
+# - core/views/dashboard.py (300 lines)  
+# - core/views/admin.py (400 lines)
+# - core/views/api.py (300 lines)
+```
+
+### Refactoring Checklist
+
+When splitting a large file:
+
+1. **Identify Logical Groups**
+   - Group related classes/functions
+   - Look for natural boundaries
+   - Consider Single Responsibility Principle
+
+2. **Create New Files**
+   - Use descriptive names
+   - Follow naming conventions
+   - Add proper docstrings
+
+3. **Update Imports**
+   - Create __init__.py with exports
+   - Update all import statements
+   - Test that nothing breaks
+
+4. **Verify Functionality**
+   - Run tests
+   - Check for import errors
+   - Ensure all features work
+
+### Example: Splitting core/views.py
+
+**Current State (Too Large):**
+```python
+# core/views.py (1000+ lines)
+# Contains: landing, 5 wizard views, itinerary views, dashboard
+```
+
+**Refactored Structure:**
+```python
+# core/views/__init__.py
+"""
+Module: views package
+Purpose: View layer for core application
+
+This package contains all view classes organized by feature.
+"""
+
+from .landing import landing_page
+from .wizard import (
+    DestinationSelectionView,
+    DurationSelectionView,
+    TravelGroupSelectionView,
+    BudgetSelectionView,
+    InterestsSelectionView
+)
+from .itinerary import ItineraryDetailView, SharedItineraryView
+from .dashboard import DashboardView
+
+__all__ = [
+    'landing_page',
+    'DestinationSelectionView',
+    'DurationSelectionView',
+    'TravelGroupSelectionView',
+    'BudgetSelectionView',
+    'InterestsSelectionView',
+    'ItineraryDetailView',
+    'SharedItineraryView',
+    'DashboardView',
+]
+
+# core/views/landing.py (50 lines)
+"""Landing page view."""
+
+def landing_page(request):
+    pass
+
+# core/views/wizard.py (300 lines)
+"""Wizard step views."""
+
+class DestinationSelectionView(View):
+    pass
+
+class DurationSelectionView(View):
+    pass
+
+# core/views/itinerary.py (200 lines)
+"""Itinerary display views."""
+
+class ItineraryDetailView(View):
+    pass
+
+# core/views/dashboard.py (100 lines)
+"""User dashboard views."""
+
+class DashboardView(View):
+    pass
+```
+
+### Enforcement
+
+**Code Review Requirements:**
+- [ ] Each file has single, clear purpose (CRITICAL)
+- [ ] Files over 1000 lines must be justified
+- [ ] No mixing of unrelated concerns
+- [ ] Related code is grouped together
+- [ ] Imports are clean and organized
+- [ ] __init__.py properly exports public API when split
+
+**File Size Thresholds:**
+- **< 500 lines**: ✅ Ideal
+- **500-1000 lines**: ⚠️ Acceptable if cohesive
+- **> 1000 lines**: 🚫 Requires justification or split
+
+**Automated Checks:**
+```bash
+# Check for files over 1000 lines (warning threshold)
+find . -name "*.py" -exec wc -l {} \; | awk '$1 > 1000 {print}'
+```
+
+**Pull Request Guidelines:**
+- Files under 1000 lines: Generally accepted
+- Files over 1000 lines: Reviewer must verify single responsibility
+- Files with mixed concerns: Must be split regardless of size
+
+---
+
+## 12. SUMMARY
 
 All code in SafariSmart Kenya must:
 1. Follow OOP principles strictly
@@ -1030,6 +1554,8 @@ All code in SafariSmart Kenya must:
 7. Handle errors properly
 8. Include unit tests
 9. Follow Django best practices
-10. Pass code review checklist
+10. Follow naming conventions strictly
+11. Keep files under 500 lines (split if larger)
+12. Pass code review checklist
 
 No exceptions to these standards will be accepted.

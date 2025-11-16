@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+
+{% block title %}Generating Your Itinerary - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, var(--kenya-green) 0%, #008800 100%);
+        min-height: 100vh;
+    }
+    
+    .generation-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px 15px;
+    }
+    
+    .generation-card {
+        background: white;
+        border-radius: 20px;
+        padding: 50px 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+    
+    .loading-icon {
+        font-size: 80px;
+        color: var(--kenya-green);
+        animation: pulse 2s ease-in-out infinite;
+        margin-bottom: 30px;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+    }
+    
+    .generation-title {
+        font-size: 32px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .generation-subtitle {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 40px;
+    }
+    
+    .progress-bar-container {
+        background: #e9ecef;
+        height: 8px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--kenya-green) 0%, #008800 100%);
+        width: 0%;
+        animation: progressFill 8s ease-in-out forwards;
+    }
+    
+    @keyframes progressFill {
+        0% { width: 0%; }
+        100% { width: 95%; }
+    }
+    
+    .loading-messages {
+        min-height: 60px;
+        margin-bottom: 40px;
+    }
+    
+    .loading-message {
+        font-size: 16px;
+        color: var(--kenya-green);
+        font-weight: 500;
+        opacity: 0;
+        animation: fadeInOut 3s ease-in-out;
+        position: absolute;
+        width: 100%;
+        left: 0;
+    }
+    
+    @keyframes fadeInOut {
+        0%, 100% { opacity: 0; transform: translateY(10px); }
+        10%, 90% { opacity: 1; transform: translateY(0); }
+    }
+    
+    .loading-message:nth-child(1) { animation-delay: 0s; }
+    .loading-message:nth-child(2) { animation-delay: 3s; }
+    .loading-message:nth-child(3) { animation-delay: 6s; }
+    .loading-message:nth-child(4) { animation-delay: 9s; }
+    .loading-message:nth-child(5) { animation-delay: 12s; }
+    
+    .trip-summary-box {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 25px;
+        margin-top: 30px;
+    }
+    
+    .trip-summary-box h6 {
+        color: var(--kenya-green);
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        text-align: left;
+    }
+    
+    .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .summary-item i {
+        font-size: 24px;
+        color: var(--kenya-green);
+    }
+    
+    .summary-item-text strong {
+        display: block;
+        color: #333;
+        font-size: 16px;
+    }
+    
+    .summary-item-text small {
+        color: #666;
+        font-size: 13px;
+    }
+    
+    .spinner-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 30px 0;
+    }
+    
+    .spinner-dot {
+        width: 15px;
+        height: 15px;
+        background: var(--kenya-green);
+        border-radius: 50%;
+        animation: bounce 1.4s ease-in-out infinite;
+    }
+    
+    .spinner-dot:nth-child(1) { animation-delay: -0.32s; }
+    .spinner-dot:nth-child(2) { animation-delay: -0.16s; }
+    
+    @keyframes bounce {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+    }
+    
+    @media (max-width: 768px) {
+        .generation-card {
+            padding: 30px 20px;
+        }
+        
+        .generation-title {
+            font-size: 24px;
+        }
+        
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="generation-container">
+    <div class="generation-card">
+        <!-- Loading Icon -->
+        <div class="loading-icon">
+            <i class="bi bi-magic"></i>
+        </div>
+        
+        <!-- Title -->
+        <h1 class="generation-title">Creating Your Perfect Itinerary</h1>
+        <p class="generation-subtitle">Our AI is crafting a personalized Kenya adventure just for you</p>
+        
+        <!-- Progress Bar -->
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill"></div>
+        </div>
+        
+        <!-- Loading Messages -->
+        <div class="loading-messages" style="position: relative;">
+            <div class="loading-message">
+                <i class="bi bi-check-circle-fill"></i> Analyzing your preferences...
+            </div>
+            <div class="loading-message">
+                <i class="bi bi-map-fill"></i> Finding optimal routes between destinations...
+            </div>
+            <div class="loading-message">
+                <i class="bi bi-calendar-check-fill"></i> Calculating best times for activities...
+            </div>
+            <div class="loading-message">
+                <i class="bi bi-cash-stack"></i> Optimizing your budget allocation...
+            </div>
+            <div class="loading-message">
+                <i class="bi bi-stars"></i> Adding personalized recommendations...
+            </div>
+        </div>
+        
+        <!-- Spinner -->
+        <div class="spinner-container">
+            <div class="spinner-dot"></div>
+            <div class="spinner-dot"></div>
+            <div class="spinner-dot"></div>
+        </div>
+        
+        <!-- Trip Summary -->
+        <div class="trip-summary-box">
+            <h6><i class="bi bi-clipboard-check"></i> Your Trip Details</h6>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <div class="summary-item-text">
+                        <strong>{{ destinations|length }}</strong>
+                        <small>Destinations</small>
+                    </div>
+                </div>
+                
+                <div class="summary-item">
+                    <i class="bi bi-calendar-check"></i>
+                    <div class="summary-item-text">
+                        <strong>{{ duration_days }} Days</strong>
+                        <small>{% if start_date %}Starting {{ start_date }}{% else %}Duration{% endif %}</small>
+                    </div>
+                </div>
+                
+                <div class="summary-item">
+                    <i class="bi bi-people-fill"></i>
+                    <div class="summary-item-text">
+                        <strong>{{ total_travelers }}</strong>
+                        <small>Traveler{{ total_travelers|pluralize }}</small>
+                    </div>
+                </div>
+                
+                <div class="summary-item">
+                    <i class="bi bi-cash-stack"></i>
+                    <div class="summary-item-text">
+                        <strong>KSh {{ budget_amount|floatformat:0 }}</strong>
+                        <small>{{ budget_category|title }} Budget</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Destinations List -->
+            <div class="mt-4">
+                <small class="text-muted d-block mb-2">Visiting:</small>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    {% for destination in destinations %}
+                    <span class="badge bg-success">{{ destination.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Interests -->
+            {% if interests %}
+            <div class="mt-3">
+                <small class="text-muted d-block mb-2">Interests:</small>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    {% for interest in interests %}
+                    <span class="badge bg-secondary">{{ interest|title }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <p class="text-muted mt-4 mb-0">
+            <small>This usually takes 10-15 seconds...</small>
+        </p>
+    </div>
+</div>
+
+<!-- AI Generation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                      getCookie('csrftoken');
+    
+    console.log('Starting itinerary generation...');
+    console.log('CSRF Token:', csrfToken ? 'Found' : 'Missing');
+    
+    // Call API to generate itinerary
+    fetch('{% url "core:generate_itinerary_api" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        if (data.status === 'success') {
+            console.log('Itinerary generated:', data.itinerary.generated_by);
+            
+            // Redirect to itinerary detail page
+            setTimeout(() => {
+                window.location.href = data.redirect_url;
+            }, 2000); // Small delay to show completion
+        } else {
+            console.error('Generation failed:', data.message);
+            if (data.debug) {
+                console.error('Debug info:', data.debug);
+            }
+            alert('Failed to generate itinerary: ' + data.message);
+            window.location.href = '{% url "core:interests_selection" %}';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred: ' + error.message + '. Please try again.');
+        window.location.href = '{% url "core:interests_selection" %}';
+    });
+    
+    // Helper function to get CSRF cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
+{% endblock %}

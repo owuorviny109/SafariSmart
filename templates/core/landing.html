@@ -5,10 +5,49 @@
 <section class="hero-section text-center">
     <div class="container">
         <h1 class="display-3 fw-bold mb-4">🇰🇪 Plan Your Perfect Kenya Adventure</h1>
-        <p class="lead mb-5">AI-powered trip planning for the ultimate Kenyan experience</p>
-        <a href="{% url 'core:wizard_step_1' %}" class="btn btn-light btn-lg px-5 py-3">
-            <i class="bi bi-magic"></i> Start Planning Now
-        </a>
+        <p class="lead mb-4">AI-powered trip planning for the ultimate Kenyan experience</p>
+        
+        <!-- Quick Trip Input -->
+        <div class="card mx-auto mb-4" style="max-width: 700px; background: rgba(255,255,255,0.95);">
+            <div class="card-body p-4">
+                <h5 class="text-success mb-3">
+                    <i class="bi bi-lightning-charge-fill"></i> Quick Trip Planner
+                </h5>
+                <form method="post" action="{% url 'core:quick_trip' %}" id="quickTripForm">
+                    {% csrf_token %}
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-white">
+                            <i class="bi bi-chat-dots text-success"></i>
+                        </span>
+                        <input type="text" 
+                               class="form-control" 
+                               name="trip_description"
+                               id="quickTripInput"
+                               placeholder="Include: days, destination, budget (e.g., 3 days to Maasai Mara with 50000)"
+                               minlength="15"
+                               maxlength="200"
+                               required>
+                        <button class="btn btn-success px-4" type="submit" id="quickTripBtn">
+                            <i class="bi bi-magic"></i> Generate
+                        </button>
+                    </div>
+                    <small class="text-muted d-block mt-2">
+                        <i class="bi bi-info-circle"></i> <strong>Required:</strong> Number of days + Destination + Budget amount
+                        <br>
+                        <i class="bi bi-check-circle text-success"></i> Good: "2 days trip to Kakamega with 20000 budget"
+                        <br>
+                        <i class="bi bi-x-circle text-danger"></i> Bad: "I want to travel" (missing details)
+                    </small>
+                </form>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <p class="text-white mb-2">Or use the detailed wizard</p>
+            <a href="{% url 'core:destination_selection' %}" class="btn btn-outline-light btn-lg px-5">
+                <i class="bi bi-list-check"></i> Step-by-Step Planner
+            </a>
+        </div>
     </div>
 </section>
 
@@ -74,9 +113,80 @@
     <div class="container">
         <h2 class="mb-4">Ready to Explore Kenya?</h2>
         <p class="lead mb-4">Let AI create your perfect itinerary in minutes</p>
-        <a href="{% url 'core:wizard_step_1' %}" class="btn btn-light btn-lg px-5">
+        <a href="{% url 'core:destination_selection' %}" class="btn btn-light btn-lg px-5">
             <i class="bi bi-rocket-takeoff"></i> Start Your Journey
         </a>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('quickTripForm');
+    const input = document.getElementById('quickTripInput');
+    const btn = document.getElementById('quickTripBtn');
+    
+    // Real-time validation
+    input.addEventListener('input', function() {
+        const value = this.value.trim();
+        const hasNumber = /\d/.test(value);
+        const hasDestination = value.length > 10;
+        const isValid = hasNumber && hasDestination && value.length >= 15;
+        
+        if (isValid) {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+        } else if (value.length > 0) {
+            input.classList.remove('is-valid');
+            input.classList.add('is-invalid');
+        } else {
+            input.classList.remove('is-valid', 'is-invalid');
+        }
+    });
+    
+    // Form submission validation
+    form.addEventListener('submit', function(e) {
+        const value = input.value.trim();
+        
+        // Check minimum requirements
+        if (value.length < 15) {
+            e.preventDefault();
+            alert('Please provide more details. Include: days, destination, and budget.');
+            return false;
+        }
+        
+        // Check for numbers (days or budget)
+        if (!/\d+/.test(value)) {
+            e.preventDefault();
+            alert('Please include number of days and budget amount.');
+            return false;
+        }
+        
+        // Check for excessive length
+        if (value.length > 200) {
+            e.preventDefault();
+            alert('Please keep your description under 200 characters.');
+            return false;
+        }
+        
+        // Check for spam patterns (all caps, excessive punctuation)
+        if (value === value.toUpperCase() && value.length > 20) {
+            e.preventDefault();
+            alert('Please use normal capitalization.');
+            return false;
+        }
+        
+        if ((value.match(/[!?]/g) || []).length > 3) {
+            e.preventDefault();
+            alert('Please use less punctuation.');
+            return false;
+        }
+        
+        // Disable button to prevent double submission
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
+    });
+});
+</script>
 {% endblock %}

@@ -7,13 +7,16 @@ urlpatterns = [
     # Landing page
     path('', views.landing_page, name='landing'),
     
-    # Wizard flow
-    path('wizard/step-1/', views.wizard_step_1, name='wizard_step_1'),
-    path('wizard/step-2/', views.wizard_step_2, name='wizard_step_2'),
-    path('wizard/step-3/', views.wizard_step_3, name='wizard_step_3'),
-    path('wizard/step-4/', views.wizard_step_4, name='wizard_step_4'),
-    path('wizard/step-5/', views.wizard_step_5, name='wizard_step_5'),
-    path('wizard/generating/', views.wizard_generating, name='wizard_generating'),
+    # Quick trip planner
+    path('quick-trip/', views.quick_trip, name='quick_trip'),
+    
+    # Wizard flow - descriptive names
+    path('wizard/destinations/', views.DestinationSelectionView.as_view(), name='destination_selection'),
+    path('wizard/duration/', views.DurationSelectionView.as_view(), name='duration_selection'),
+    path('wizard/travel-group/', views.TravelGroupSelectionView.as_view(), name='travel_group_selection'),
+    path('wizard/budget/', views.BudgetSelectionView.as_view(), name='budget_selection'),
+    path('wizard/interests/', views.InterestsSelectionView.as_view(), name='interests_selection'),
+    path('wizard/generating/', views.ItineraryGenerationView.as_view(), name='itinerary_generation'),
     
     # Itinerary
     path('itinerary/<uuid:share_code>/', views.itinerary_detail, name='itinerary_detail'),
@@ -21,4 +24,7 @@ urlpatterns = [
     
     # Dashboard
     path('dashboard/', views.dashboard, name='dashboard'),
+    
+    # API endpoints
+    path('api/generate-itinerary/', views.generate_itinerary_api, name='generate_itinerary_api'),
 ]

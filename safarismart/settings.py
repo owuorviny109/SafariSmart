@@ -139,6 +139,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Gemini AI
 GEMINI_API_KEY = config('GEMINI_API_KEY', default='')
 
+# OpenWeatherMap API
+OPENWEATHER_API_KEY = config('OPENWEATHER_API_KEY', default='')
+
 # Session settings for wizard
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # 24 hours
