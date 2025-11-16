@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-4">🇰🇪 Plan Your Perfect Kenya Adventure</h1>
+        <p class="lead mb-5">AI-powered trip planning for the ultimate Kenyan experience</p>
+        <a href="{% url 'core:wizard_step_1' %}" class="btn btn-light btn-lg px-5 py-3">
+            <i class="bi bi-magic"></i> Start Planning Now
+        </a>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="display-4 text-success mb-3"><i class="bi bi-1-circle"></i></div>
+                <h4>Choose Destinations</h4>
+                <p class="text-muted">Select from 20 amazing Kenya locations</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="display-4 text-success mb-3"><i class="bi bi-2-circle"></i></div>
+                <h4>Set Preferences</h4>
+                <p class="text-muted">Tell us your budget, dates, and interests</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="display-4 text-success mb-3"><i class="bi bi-3-circle"></i></div>
+                <h4>Get Your Itinerary</h4>
+                <p class="text-muted">AI creates your perfect day-by-day plan</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Destinations -->
+{% if featured_destinations %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Destinations</h2>
+        <div class="row g-4">
+            {% for destination in featured_destinations %}
+            <div class="col-md-4">
+                <div class="card destination-card h-100">
+                    {% if destination.image %}
+                    <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-success text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="bi bi-image display-1"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ destination.name }}</h5>
+                        <p class="card-text text-muted small">{{ destination.description|truncatewords:15 }}</p>
+                        <span class="badge bg-success">{{ destination.get_destination_type_display }}</span>
+                        <span class="badge bg-secondary">KSh {{ destination.average_cost_per_day }}/day</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'destinations:list' %}" class="btn btn-outline-success">View All Destinations</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="py-5 bg-success text-white text-center">
+    <div class="container">
+        <h2 class="mb-4">Ready to Explore Kenya?</h2>
+        <p class="lead mb-4">Let AI create your perfect itinerary in minutes</p>
+        <a href="{% url 'core:wizard_step_1' %}" class="btn btn-light btn-lg px-5">
+            <i class="bi bi-rocket-takeoff"></i> Start Your Journey
+        </a>
+    </div>
+</section>
+{% endblock %}
