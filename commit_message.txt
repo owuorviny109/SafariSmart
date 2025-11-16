@@ -1,127 +1,130 @@
-Task 2.5 Complete: Interests Selection (Final Wizard Step)
+Task 2.6 Complete: Itinerary Generation Loading Screen
 
 SUMMARY
 -------
-Implemented the final wizard step with multi-select interest cards.
-Completes the 5-step wizard flow with comprehensive trip summary.
+Implemented animated loading screen that displays while AI generates
+the itinerary. Shows wizard summary and progress messages.
 
 FEATURES IMPLEMENTED
 --------------------
-1. Interest Cards (10 options)
-   - Wildlife (Safari & animals)
-   - Culture (Local traditions)
-   - Food (Culinary experiences)
-   - Adventure (Thrilling activities)
-   - Relaxation (Rest & unwind)
-   - Photography (Scenic views)
-   - History (Historical sites)
-   - Nature (Natural beauty)
-   - Beach (Coastal activities)
-   - Nightlife (Evening entertainment)
+1. Animated Loading Icon
+   - Pulsing magic wand icon
+   - Smooth CSS animations
+   - Eye-catching visual
 
-2. Multi-Select Functionality
-   - Click to select/deselect
-   - Visual checkmarks
-   - Animated selection feedback
-   - Real-time counter
+2. Progress Bar
+   - Animated fill from 0% to 95%
+   - 8-second animation duration
+   - Gradient background
 
-3. Complete Trip Summary
-   - Shows all previous selections
-   - Destinations count
-   - Duration in days
-   - Total travelers
-   - Total budget
-   - Styled with gradient background
+3. Sequential Loading Messages
+   - "Analyzing your preferences..."
+   - "Finding optimal routes..."
+   - "Calculating best times..."
+   - "Optimizing budget allocation..."
+   - "Adding personalized recommendations..."
+   - Fade in/out animations
+   - 3-second intervals
 
-4. Validation
-   - At least 1 interest required
-   - Maximum 10 interests allowed
-   - Server-side validation in WizardService
-   - Client-side validation in JavaScript
-   - Type checking for list and strings
+4. Bouncing Spinner
+   - Three animated dots
+   - Staggered bounce effect
+   - Continuous loop
 
-5. User Experience
-   - 100% progress bar (complete!)
-   - "Final Step" indicator
-   - Selection counter
-   - Generate button with loading state
-   - Smooth animations
+5. Complete Trip Summary
+   - All wizard selections displayed
+   - Destinations count and list
+   - Duration and dates
+   - Travelers count
+   - Budget amount and category
+   - Selected interests
+   - Styled summary box
+
+6. Full-Screen Experience
+   - Green gradient background
+   - Centered white card
+   - Professional loading experience
    - Responsive design
-
-SERVICE LAYER
--------------
-Extended WizardService with:
-- save_interests(interests_list)
-- get_interests_data()
-- _validate_interests() - comprehensive validation
-- Marks wizard as completed
-
-Validation Rules:
-- Must be a list
-- At least 1 interest required
-- Maximum 10 interests
-- Each must be valid interest string
 
 VIEW LAYER
 ----------
-Created InterestsSelectionView (Class-Based View):
+Created ItineraryGenerationView (Class-Based View):
 - Follows DescriptiveNameView pattern
-- GET: Display interest cards with full summary
-- POST: Validate, save, and redirect to generation
-- Error handling with user-friendly messages
-- Pre-fills data if returning to step
+- GET: Display loading screen with summary
+- Validates wizard is completed
+- Redirects to start if incomplete
+- Gathers all wizard data for display
 
 TEMPLATE
 --------
-Created interests_selection.html:
-- Multi-select interest cards
-- Complete trip summary card
-- Real-time selection counter
-- JavaScript for interactions
-- Loading state on submit
-- Animated progress bar
-- Back button to budget
-- Generate button to itinerary generation
+Created itinerary_generation.html:
+- Full-screen loading experience
+- Multiple CSS animations
+- Progress bar animation
+- Sequential message display
+- Bouncing spinner
+- Trip summary display
+- Responsive layout
+- TODO: AJAX polling for actual generation
+
+ANIMATIONS
+----------
+1. Pulse: Loading icon scales and fades
+2. ProgressFill: Bar fills over 8 seconds
+3. FadeInOut: Messages appear/disappear
+4. Bounce: Spinner dots bounce
+5. All smooth, professional animations
+
+USER EXPERIENCE
+---------------
+- Engaging loading experience
+- Shows what AI is doing
+- Displays trip summary for review
+- Estimated time: 10-15 seconds
+- Prevents user from leaving
+- Builds anticipation
 
 NAMING CONVENTIONS
 ------------------
-View: InterestsSelectionView (PascalCase)
-Template: interests_selection.html (snake_case)
-URL: /wizard/interests/ (kebab-case)
-URL Name: interests_selection (snake_case)
+View: ItineraryGenerationView (PascalCase)
+Template: itinerary_generation.html (snake_case)
+URL: /wizard/generating/ (kebab-case)
+URL Name: itinerary_generation (snake_case)
 
 CODE QUALITY
 ------------
 - Comprehensive docstrings
 - Type hints on all methods
-- Input validation at multiple layers
-- Error handling with custom exceptions
+- Validates wizard completion
+- Error handling (redirects if incomplete)
 - Zero linting errors
 - Follows SOLID principles
-- Smooth animations and transitions
 
-WIZARD COMPLETION
------------------
-All 5 wizard steps now complete:
+NEXT STEPS
+----------
+Phase 2 Complete! All wizard steps done:
 ✅ Step 1: Destination Selection
 ✅ Step 2: Duration Selection
 ✅ Step 3: Travel Group Selection
 ✅ Step 4: Budget Selection
 ✅ Step 5: Interests Selection
-
-Wizard session marked as completed after this step.
+✅ Step 6: Generation Loading Screen
 
 FILES CHANGED
 -------------
 Modified:
-- core/services/wizard_service.py (added interests methods)
-- core/views.py (added InterestsSelectionView)
+- core/views.py (added ItineraryGenerationView)
 - core/urls.py (updated URL pattern)
+- INSTRUCTIONS.md (updated file size guidelines)
 
 New:
-- templates/core/interests_selection.html
+- templates/core/itinerary_generation.html
 
-NEXT TASK
----------
-Task 2.6: Generating Screen (Loading animation)
-Task 3: Gemini AI Integration (Actual itinerary generation)
+NEXT PHASE
+----------
+Phase 3: Gemini AI Integration
+- Implement actual itinerary generation
+- Create GeminiService class
+- Parse AI responses
+- Save to Itinerary model
+- Display results

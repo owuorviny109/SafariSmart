@@ -13,7 +13,7 @@ urlpatterns = [
     path('wizard/travel-group/', views.TravelGroupSelectionView.as_view(), name='travel_group_selection'),
     path('wizard/budget/', views.BudgetSelectionView.as_view(), name='budget_selection'),
     path('wizard/interests/', views.InterestsSelectionView.as_view(), name='interests_selection'),
-    path('wizard/generating/', views.wizard_generating, name='itinerary_generation'),
+    path('wizard/generating/', views.ItineraryGenerationView.as_view(), name='itinerary_generation'),
     
     # Itinerary
     path('itinerary/<uuid:share_code>/', views.itinerary_detail, name='itinerary_detail'),

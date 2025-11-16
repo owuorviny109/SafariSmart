@@ -876,9 +876,66 @@ class InterestsSelectionView(View):
         return render(request, self.template_name, context)
 
 
-def wizard_generating(request):
-    """Loading screen while AI generates itinerary"""
-    return render(request, 'core/wizard_generating.html')
+class ItineraryGenerationView(View):
+    """
+    Displays loading screen while AI generates itinerary.
+
+    This view shows animated loading messages while the itinerary
+    is being generated in the background. Uses AJAX to poll for
+    completion status.
+
+    Attributes:
+        template_name (str): Path to template file
+
+    Methods:
+        get: Display loading screen with wizard summary
+
+    Example:
+        URL: /wizard/generating/
+        GET: Shows loading animation
+        Redirects to itinerary when complete
+    """
+
+    template_name = 'core/itinerary_generation.html'
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        """
+        Display itinerary generation loading screen.
+
+        Shows all wizard selections and animated loading messages.
+
+        Args:
+            request (HttpRequest): HTTP request object
+
+        Returns:
+            HttpResponse: Rendered loading template
+        """
+        wizard_service = WizardService(request.session)
+
+        # Get all wizard data for display
+        destinations = wizard_service.get_selected_destinations()
+        duration_data = wizard_service.get_duration_data()
+        group_data = wizard_service.get_travel_group_data()
+        budget_data = wizard_service.get_budget_data()
+        interests_data = wizard_service.get_interests_data()
+
+        # Check if wizard is completed
+        if not wizard_service.session_manager.is_completed():
+            # Redirect back to start if wizard not completed
+            return redirect('core:destination_selection')
+
+        context = {
+            'destinations': destinations,
+            'duration_days': duration_data.get('duration_days'),
+            'start_date': duration_data.get('start_date'),
+            'total_travelers': group_data.get('total_travelers', 1),
+            'travel_type': group_data.get('travel_type'),
+            'budget_amount': budget_data.get('budget_amount', 0),
+            'budget_category': budget_data.get('budget_category'),
+            'interests': interests_data.get('interests', []),
+        }
+
+        return render(request, self.template_name, context)
 
 
 def itinerary_detail(request, share_code):
