@@ -6,6 +6,38 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/itinerary_detail.css' %}">
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+      crossorigin=""/>
+<style>
+    #itinerary-map {
+        height: 500px;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+    .map-section {
+        margin: 30px 0;
+    }
+    .map-section h3 {
+        margin-bottom: 20px;
+        color: var(--kenya-green);
+    }
+    .leaflet-popup-content-wrapper {
+        border-radius: 8px;
+    }
+    .leaflet-popup-content {
+        margin: 15px;
+        font-size: 14px;
+    }
+    .popup-destination-name {
+        font-weight: bold;
+        color: var(--kenya-green);
+        margin-bottom: 5px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -51,8 +83,19 @@
 
 <!-- Content -->
 <div class="container">
+    <!-- Interactive Map -->
+    <div class="map-section">
+        <h3>
+            <i class="bi bi-map"></i> Your Safari Route
+        </h3>
+        <div id="itinerary-map"></div>
+        <p class="text-muted small text-center">
+            <i class="bi bi-info-circle"></i> Interactive map showing your destinations and route
+        </p>
+    </div>
+    
     <!-- Action Buttons -->
-    <div class="action-buttons">
+    <div class="action-buttons"></div>
         <button class="btn btn-success" onclick="window.print()">
             <i class="bi bi-printer"></i> Print
         </button>
@@ -238,6 +281,11 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+        crossorigin=""></script>
+
 <script src="{% static 'js/itinerary_detail.js' %}"></script>
 <script>
     // Initialize application
@@ -250,5 +298,113 @@
         isAuthenticated: {{ is_authenticated|yesno:"true,false" }},
         loginUrl: "{{ login_url|escapejs }}"
     });
+    
+    // Initialize map
+    function initializeMap() {
+        // Destination data from Django
+        const destinations = {{ route_data|safe }};
+        
+        if (!destinations || destinations.length === 0) {
+            document.getElementById('itinerary-map').innerHTML = 
+                '<div class="alert alert-info">No destination coordinates available for map display.</div>';
+            return;
+        }
+        
+        // Initialize map centered on Kenya
+        const map = L.map('itinerary-map').setView([-1.2921, 36.8219], 6);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Create markers and collect coordinates for bounds
+        const markers = [];
+        const coordinates = [];
+        
+        destinations.forEach((dest, index) => {
+            if (dest.latitude && dest.longitude) {
+                const lat = parseFloat(dest.latitude);
+                const lng = parseFloat(dest.longitude);
+                coordinates.push([lat, lng]);
+                
+                // Create custom icon with number
+                const customIcon = L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="background-color: #006600; color: white; width: 30px; height: 30px; 
+                                  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                  font-weight: bold; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                              ${index + 1}
+                           </div>`,
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                });
+                
+                // Add marker
+                const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
+                
+                // Add popup
+                marker.bindPopup(`
+                    <div class="popup-destination-name">${index + 1}. ${dest.name}</div>
+                    <div class="text-muted small">${dest.county || 'Kenya'}</div>
+                `);
+                
+                markers.push(marker);
+            }
+        });
+        
+        // Draw route lines between destinations
+        if (coordinates.length > 1) {
+            const polyline = L.polyline(coordinates, {
+                color: '#006600',
+                weight: 3,
+                opacity: 0.7,
+                dashArray: '10, 10'
+            }).addTo(map);
+            
+            // Fit map to show all destinations
+            const bounds = L.latLngBounds(coordinates);
+            map.fitBounds(bounds, { padding: [50, 50] });
+        } else if (coordinates.length === 1) {
+            // Single destination - center on it
+            map.setView(coordinates[0], 10);
+        }
+        
+        // Add scale control
+        L.control.scale().addTo(map);
+        
+        // Calculate and display total distance
+        if (coordinates.length > 1) {
+            let totalDistance = 0;
+            for (let i = 0; i < coordinates.length - 1; i++) {
+                const from = L.latLng(coordinates[i]);
+                const to = L.latLng(coordinates[i + 1]);
+                totalDistance += from.distanceTo(to);
+            }
+            
+            // Convert to kilometers
+            const distanceKm = (totalDistance / 1000).toFixed(0);
+            
+            // Add distance info to map
+            const info = L.control({ position: 'bottomleft' });
+            info.onAdd = function() {
+                const div = L.DomUtil.create('div', 'map-info');
+                div.style.backgroundColor = 'white';
+                div.style.padding = '10px';
+                div.style.borderRadius = '5px';
+                div.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+                div.innerHTML = `
+                    <strong><i class="bi bi-signpost"></i> Total Distance:</strong><br>
+                    ~${distanceKm} km
+                `;
+                return div;
+            };
+            info.addTo(map);
+        }
+    }
+    
+    // Initialize map when DOM is ready
+    document.addEventListener('DOMContentLoaded', initializeMap);
 </script>
 {% endblock %}

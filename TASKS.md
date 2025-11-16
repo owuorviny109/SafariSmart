@@ -137,12 +137,12 @@
 
 ## PHASE 4: ITINERARY DISPLAY (Priority: HIGH) 🚧 IN PROGRESS
 
-### Task 4.1: Itinerary Result Page ✅ BASIC COMPLETE
+### Task 4.1: Itinerary Result Page ✅ COMPLETE
 - [x] Create template: `templates/core/itinerary_detail.html`
 - [x] Display trip summary header
 - [x] Show itinerary content
 - [x] Add action buttons (Print, Share, Save, Plan Another)
-- [ ] Add interactive map (Google Maps or Leaflet)
+- [x] Add interactive map (Leaflet + OpenStreetMap) ✅ FREE!
 - [ ] Show cost breakdown table
 - [ ] Improve styling and layout
 - [ ] Add day-by-day timeline with cards

@@ -75,7 +75,9 @@ class RouteVisualizationService:
                 'name': destination.name,
                 'type': destination.destination_type.title(),
                 'county': destination.county or 'Kenya',
-                'icon': self._get_destination_icon(destination.destination_type)
+                'icon': self._get_destination_icon(destination.destination_type),
+                'latitude': str(destination.latitude) if destination.latitude else None,
+                'longitude': str(destination.longitude) if destination.longitude else None
             }
             route_data.append(route_item)
             
