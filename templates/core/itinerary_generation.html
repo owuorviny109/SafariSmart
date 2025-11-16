@@ -177,6 +177,7 @@
 {% endblock %}
 
 {% block content %}
+{% csrf_token %}
 <div class="generation-container">
     <div class="generation-card">
         <!-- Loading Icon -->
@@ -285,19 +286,71 @@
     </div>
 </div>
 
-<!-- Auto-redirect after animation (for now, will be replaced with actual AI generation) -->
+<!-- AI Generation Script -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // TODO: Replace with actual AJAX polling for itinerary generation status
-    // For now, just show the loading animation
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                      getCookie('csrftoken');
     
-    // Simulate generation time (15 seconds)
-    setTimeout(function() {
-        // TODO: Redirect to actual itinerary result
-        // window.location.href = '/itinerary/result/';
-        console.log('Itinerary generation complete (simulated)');
-    }, 15000);
+    console.log('Starting itinerary generation...');
+    console.log('CSRF Token:', csrfToken ? 'Found' : 'Missing');
+    
+    // Call API to generate itinerary
+    fetch('{% url "core:generate_itinerary_api" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        if (data.status === 'success') {
+            console.log('Itinerary generated:', data.itinerary.generated_by);
+            
+            // Redirect to itinerary detail page
+            setTimeout(() => {
+                window.location.href = data.redirect_url;
+            }, 2000); // Small delay to show completion
+        } else {
+            console.error('Generation failed:', data.message);
+            if (data.debug) {
+                console.error('Debug info:', data.debug);
+            }
+            alert('Failed to generate itinerary: ' + data.message);
+            window.location.href = '{% url "core:interests_selection" %}';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred: ' + error.message + '. Please try again.');
+        window.location.href = '{% url "core:interests_selection" %}';
+    });
+    
+    // Helper function to get CSRF cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 });
 </script>
-{% endblock %}
 {% endblock %}

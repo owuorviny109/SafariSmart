@@ -64,6 +64,13 @@ cp .env.example .env
 # Edit .env and add your GEMINI_API_KEY
 ```
 
+**Get Gemini API Key:**
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Sign in and create an API key
+3. Add to `.env`: `GEMINI_API_KEY=your-key-here`
+
+See [AI_SETUP.md](AI_SETUP.md) for detailed AI configuration.
+
 ### 5. Run Migrations
 ```bash
 python manage.py migrate
@@ -74,12 +81,17 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-### 7. Load Destinations (Coming Soon)
+### 7. Load Destinations
 ```bash
-python manage.py loaddata kenya_destinations
+python manage.py loaddata destinations/fixtures/kenya_destinations.json
 ```
 
-### 8. Run Development Server
+### 8. Test AI Integration (Optional)
+```bash
+python manage.py shell < test_ai_generation.py
+```
+
+### 9. Run Development Server
 ```bash
 python manage.py runserver
 ```
@@ -88,19 +100,31 @@ Visit http://127.0.0.1:8000/
 
 ## Development Status
 
-### Completed
+### ✅ Completed (Phase 1-3)
 - [x] Django project setup
 - [x] Database models
 - [x] Admin panels
 - [x] Base templates with Bootstrap 5
 - [x] Landing page
 - [x] URL routing
+- [x] Kenya destinations fixture (20 destinations)
+- [x] Wizard flow (5 steps complete)
+- [x] **Gemini AI integration** 🎉
+- [x] Template fallback system
+- [x] Itinerary generation API
+- [x] Loading animations
 
-### In Progress
-- [ ] Kenya destinations fixture
-- [ ] Wizard flow (5 steps)
-- [ ] Gemini AI integration
-- [ ] Itinerary display
+### 🚧 In Progress (Phase 4)
+- [ ] Itinerary detail page styling
+- [ ] User authentication flow
+- [ ] Dashboard with saved trips
+- [ ] Share functionality
+
+### 📋 Planned (Phase 5+)
+- [ ] Rate limiting (5 itineraries/month free)
+- [ ] Premium tier (Stripe/M-Pesa)
+- [ ] PDF export
+- [ ] Email itineraries
 
 See [TASKS.md](TASKS.md) for detailed task list.
 
@@ -113,9 +137,29 @@ All code must follow the standards defined in [INSTRUCTIONS.md](INSTRUCTIONS.md)
 - Type hints
 - Unit tests
 
+## AI Integration
+
+SafariSmart uses **Google Gemini AI** to generate personalized itineraries:
+
+- **Cost**: ~$0.002 per itinerary (negligible for MVP)
+- **Fallback**: Automatic template generation if AI fails
+- **Free Tier**: 60 requests/minute (generous for testing)
+
+### How It Works
+
+1. User completes 5-step wizard
+2. AI analyzes preferences (destinations, budget, interests)
+3. Generates day-by-day itinerary with activities, costs, tips
+4. Falls back to templates if AI unavailable
+5. Saves to database with shareable link
+
+See [AI_SETUP.md](AI_SETUP.md) for detailed documentation.
+
 ## API Keys Required
 
 - **Gemini API**: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+  - Free tier: 60 requests/minute
+  - Cost: ~$0.002 per itinerary
 
 ## Contributing
 

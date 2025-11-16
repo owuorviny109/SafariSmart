@@ -15,16 +15,20 @@ Author: SafariSmart Kenya Team
 Date: 2025-11-16
 """
 
+import logging
 from typing import Dict, Any
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.views import View
 from django.views.generic import TemplateView
+from django.conf import settings
 
 from .models import WizardSession, Itinerary
-from .services import WizardService
+from .services import WizardService, ItineraryGeneratorFactory
 from destinations.models import Destination
+
+logger = logging.getLogger(__name__)
 
 
 def landing_page(request: HttpRequest) -> HttpResponse:
@@ -959,3 +963,102 @@ def dashboard(request):
     return render(request, 'core/dashboard.html', {
         'itineraries': itineraries
     })
+
+
+def generate_itinerary_api(request: HttpRequest) -> JsonResponse:
+    """
+    API endpoint to generate itinerary using AI.
+    
+    This endpoint processes wizard data and generates an itinerary
+    using Gemini AI with automatic fallback to template generator.
+    
+    Args:
+        request (HttpRequest): HTTP request object
+        
+    Returns:
+        JsonResponse: Generated itinerary data or error
+        
+    Example:
+        POST /api/generate-itinerary/
+        Returns: {
+            'status': 'success',
+            'itinerary': {...},
+            'share_code': 'abc123'
+        }
+    """
+    if request.method != 'POST':
+        return JsonResponse({
+            'status': 'error',
+            'message': 'POST method required'
+        }, status=405)
+        
+    try:
+        wizard_service = WizardService(request.session)
+        
+        # Verify wizard is completed
+        if not wizard_service.session_manager.is_completed():
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Wizard not completed'
+            }, status=400)
+            
+        # Gather all wizard data
+        preferences = {
+            'destinations': wizard_service.get_selected_destinations(),
+            'duration_days': wizard_service.get_duration_data().get('duration_days'),
+            'start_date': wizard_service.get_duration_data().get('start_date'),
+            'budget_amount': wizard_service.get_budget_data().get('budget_amount'),
+            'budget_category': wizard_service.get_budget_data().get('budget_category'),
+            'adults_count': wizard_service.get_travel_group_data().get('adults_count'),
+            'children_count': wizard_service.get_travel_group_data().get('children_count'),
+            'travel_type': wizard_service.get_travel_group_data().get('travel_type'),
+            'interests': wizard_service.get_interests_data().get('interests', []),
+        }
+        
+        # Generate itinerary with AI (automatic fallback to template)
+        itinerary_data = ItineraryGeneratorFactory.generate_with_fallback(preferences)
+        
+        # Save to database
+        itinerary = Itinerary.objects.create(
+            user=request.user if request.user.is_authenticated else None,
+            title=itinerary_data['title'],
+            duration_days=itinerary_data['duration_days'],
+            adults_count=preferences['adults_count'],
+            children_count=preferences['children_count'],
+            travel_type=preferences['travel_type'],
+            total_budget=itinerary_data['budget_amount'],
+            budget_category=preferences['budget_category'],
+            itinerary_data={'content': itinerary_data['content'], 'generated_by': itinerary_data['generated_by']},
+            cost_breakdown={},  # Can be populated later
+            is_saved=request.user.is_authenticated
+        )
+        
+        # Add destinations
+        for dest in preferences['destinations']:
+            itinerary.destinations.add(dest)
+            
+        logger.info(
+            f"Generated itinerary {itinerary.share_code} "
+            f"using {itinerary_data['generated_by']}"
+        )
+        
+        return JsonResponse({
+            'status': 'success',
+            'itinerary': {
+                'id': itinerary.id,
+                'title': itinerary.title,
+                'share_code': str(itinerary.share_code),
+                'generated_by': itinerary_data['generated_by']
+            },
+            'redirect_url': f'/itinerary/{itinerary.share_code}/'
+        })
+        
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        logger.error(f"Itinerary generation failed: {str(e)}\n{error_details}")
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Failed to generate itinerary: {str(e)}',
+            'debug': error_details if settings.DEBUG else None
+        }, status=500)

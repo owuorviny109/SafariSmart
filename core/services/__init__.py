@@ -10,5 +10,16 @@ Date: 2025-11-16
 """
 
 from .wizard_service import WizardService, WizardSessionManager
+from .itinerary_generator import (
+    GeminiItineraryGenerator,
+    TemplateItineraryGenerator,
+    ItineraryGeneratorFactory
+)
 
-__all__ = ['WizardService', 'WizardSessionManager']
+__all__ = [
+    'WizardService',
+    'WizardSessionManager',
+    'GeminiItineraryGenerator',
+    'TemplateItineraryGenerator',
+    'ItineraryGeneratorFactory'
+]

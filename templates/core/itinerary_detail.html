@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ itinerary.title }} - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    .itinerary-header {
+        background: linear-gradient(135deg, var(--kenya-green) 0%, #008800 100%);
+        color: white;
+        padding: 60px 0 40px;
+        margin-bottom: 40px;
+    }
+    
+    .itinerary-title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    
+    .itinerary-meta {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .meta-item i {
+        font-size: 24px;
+    }
+    
+    .itinerary-content {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        white-space: pre-wrap;
+        line-height: 1.8;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+    }
+    
+    .badge-ai {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .badge-template {
+        background: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+        .itinerary-title {
+            font-size: 28px;
+        }
+        
+        .itinerary-content {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="itinerary-header">
+    <div class="container">
+        <h1 class="itinerary-title">{{ itinerary.title }}</h1>
+        
+        <div class="itinerary-meta">
+            <div class="meta-item">
+                <i class="bi bi-calendar-check"></i>
+                <span>{{ itinerary.duration_days }} Day{{ itinerary.duration_days|pluralize }}</span>
+            </div>
+            
+            <div class="meta-item">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span>{{ itinerary.destinations.count }} Destination{{ itinerary.destinations.count|pluralize }}</span>
+            </div>
+            
+            <div class="meta-item">
+                <i class="bi bi-cash-stack"></i>
+                <span>KSh {{ itinerary.total_budget|floatformat:0 }}</span>
+            </div>
+            
+            <div class="meta-item">
+                <i class="bi bi-eye-fill"></i>
+                <span>{{ itinerary.view_count }} view{{ itinerary.view_count|pluralize }}</span>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            {% if itinerary.itinerary_data.generated_by == 'gemini-ai' %}
+            <span class="badge-ai">
+                <i class="bi bi-stars"></i>
+                AI-Generated
+            </span>
+            {% else %}
+            <span class="badge-template">Template-Based</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="container">
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="btn btn-success" onclick="window.print()">
+            <i class="bi bi-printer"></i> Print
+        </button>
+        
+        <button class="btn btn-outline-success" onclick="shareItinerary()">
+            <i class="bi bi-share"></i> Share
+        </button>
+        
+        {% if user.is_authenticated %}
+        <button class="btn btn-outline-success" onclick="saveItinerary()">
+            <i class="bi bi-bookmark"></i> Save
+        </button>
+        {% endif %}
+        
+        <a href="{% url 'core:destination_selection' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Plan Another Trip
+        </a>
+    </div>
+    
+    <!-- Destinations -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="bi bi-map"></i> Destinations
+            </h5>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                {% for destination in itinerary.destinations.all %}
+                <span class="badge bg-success" style="font-size: 14px; padding: 8px 12px;">
+                    {{ destination.name }}
+                </span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Itinerary Content -->
+    <div class="itinerary-content">
+        {{ itinerary.itinerary_data.content }}
+    </div>
+    
+    <!-- Footer Info -->
+    <div class="card mb-5">
+        <div class="card-body text-center">
+            <p class="mb-2">
+                <i class="bi bi-calendar"></i>
+                Generated on {{ itinerary.created_at|date:"F d, Y" }}
+            </p>
+            <p class="text-muted mb-0">
+                <small>Share Code: {{ itinerary.share_code }}</small>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+function shareItinerary() {
+    const url = window.location.href;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ itinerary.title }}',
+            text: 'Check out my Kenya safari itinerary!',
+            url: url
+        }).catch(err => console.log('Share failed:', err));
+    } else {
+        // Fallback: Copy to clipboard
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    }
+}
+
+function saveItinerary() {
+    alert('Save functionality coming soon!');
+}
+</script>
+{% endblock %}

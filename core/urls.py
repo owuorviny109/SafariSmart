@@ -21,4 +21,7 @@ urlpatterns = [
     
     # Dashboard
     path('dashboard/', views.dashboard, name='dashboard'),
+    
+    # API endpoints
+    path('api/generate-itinerary/', views.generate_itinerary_api, name='generate_itinerary_api'),
 ]
