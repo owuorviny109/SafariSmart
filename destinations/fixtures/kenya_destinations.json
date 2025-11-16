@@ -1,0 +1,382 @@
+[
+  {
+    "model": "destinations.destination",
+    "pk": 1,
+    "fields": {
+      "name": "Maasai Mara National Reserve",
+      "slug": "maasai-mara-national-reserve",
+      "description": "World-renowned for the Great Migration, Maasai Mara offers unparalleled wildlife viewing. Home to the Big Five and over 450 bird species, this iconic reserve provides authentic safari experiences with traditional Maasai culture.",
+      "destination_type": "safari",
+      "county": "Narok",
+      "latitude": "-1.5000",
+      "longitude": "35.1500",
+      "best_time_to_visit": "July to October (Great Migration), January to February",
+      "average_cost_per_day": 25000,
+      "popular_activities": "Game drives, Hot air balloon safaris, Maasai village visits, Bird watching, Photography",
+      "is_featured": true,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 2,
+    "fields": {
+      "name": "Amboseli National Park",
+      "slug": "amboseli-national-park",
+      "description": "Famous for its large elephant herds and stunning views of Mount Kilimanjaro. Amboseli offers excellent wildlife photography opportunities with Africa's highest mountain as a backdrop.",
+      "destination_type": "safari",
+      "county": "Kajiado",
+      "latitude": "-2.6527",
+      "longitude": "37.2606",
+      "best_time_to_visit": "June to October, January to February",
+      "average_cost_per_day": 20000,
+      "popular_activities": "Elephant watching, Game drives, Bird watching, Maasai cultural tours, Photography",
+      "is_featured": true,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 3,
+    "fields": {
+      "name": "Diani Beach",
+      "slug": "diani-beach",
+      "description": "Pristine white sand beach on the Indian Ocean coast. Perfect for relaxation, water sports, and marine life encounters. Consistently ranked among Africa's best beaches.",
+      "destination_type": "beach",
+      "county": "Kwale",
+      "latitude": "-4.2833",
+      "longitude": "39.5833",
+      "best_time_to_visit": "December to March, July to October",
+      "average_cost_per_day": 15000,
+      "popular_activities": "Snorkeling, Scuba diving, Kite surfing, Dolphin watching, Beach relaxation",
+      "is_featured": true,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 4,
+    "fields": {
+      "name": "Nairobi City",
+      "slug": "nairobi-city",
+      "description": "Kenya's vibrant capital city blending modern urban life with wildlife experiences. Home to museums, markets, restaurants, and the only national park within a capital city.",
+      "destination_type": "city",
+      "county": "Nairobi",
+      "latitude": "-1.2921",
+      "longitude": "36.8219",
+      "best_time_to_visit": "Year-round",
+      "average_cost_per_day": 12000,
+      "popular_activities": "Nairobi National Park, Giraffe Centre, Karen Blixen Museum, Shopping, Dining",
+      "is_featured": true,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 5,
+    "fields": {
+      "name": "Mount Kenya",
+      "slug": "mount-kenya",
+      "description": "Africa's second-highest mountain offering challenging treks and stunning alpine scenery. A UNESCO World Heritage Site with diverse ecosystems from bamboo forests to glaciers.",
+      "destination_type": "mountain",
+      "county": "Kirinyaga",
+      "latitude": "-0.1521",
+      "longitude": "37.3084",
+      "best_time_to_visit": "January to February, August to September",
+      "average_cost_per_day": 18000,
+      "popular_activities": "Mountain climbing, Hiking, Wildlife viewing, Photography, Camping",
+      "is_featured": true,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 6,
+    "fields": {
+      "name": "Tsavo National Park",
+      "slug": "tsavo-national-park",
+      "description": "Kenya's largest national park, divided into Tsavo East and West. Famous for red elephants, diverse landscapes, and the man-eating lions of Tsavo legend.",
+      "destination_type": "safari",
+      "county": "Taita-Taveta",
+      "latitude": "-3.0000",
+      "longitude": "38.5000",
+      "best_time_to_visit": "June to October, January to February",
+      "average_cost_per_day": 18000,
+      "popular_activities": "Game drives, Bird watching, Mzima Springs visit, Rock climbing, Photography",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 7,
+    "fields": {
+      "name": "Lake Nakuru National Park",
+      "slug": "lake-nakuru-national-park",
+      "description": "Famous for millions of flamingos creating a pink shoreline. Home to both black and white rhinos, making it a crucial conservation area.",
+      "destination_type": "safari",
+      "county": "Nakuru",
+      "latitude": "-0.3667",
+      "longitude": "36.0833",
+      "best_time_to_visit": "Year-round, best June to March",
+      "average_cost_per_day": 16000,
+      "popular_activities": "Flamingo watching, Rhino tracking, Game drives, Bird watching, Baboon Cliff viewpoint",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 8,
+    "fields": {
+      "name": "Watamu",
+      "slug": "watamu",
+      "description": "Coastal paradise with pristine beaches, coral reefs, and marine national park. Perfect for diving, snorkeling, and turtle watching.",
+      "destination_type": "beach",
+      "county": "Kilifi",
+      "latitude": "-3.3500",
+      "longitude": "40.0167",
+      "best_time_to_visit": "October to March",
+      "average_cost_per_day": 14000,
+      "popular_activities": "Snorkeling, Scuba diving, Turtle watching, Deep sea fishing, Beach walks",
+      "is_featured": true,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 9,
+    "fields": {
+      "name": "Lamu Island",
+      "slug": "lamu-island",
+      "description": "UNESCO World Heritage Site with Swahili culture and architecture. Car-free island with donkeys as main transport, offering a step back in time.",
+      "destination_type": "cultural",
+      "county": "Lamu",
+      "latitude": "-2.2717",
+      "longitude": "40.9020",
+      "best_time_to_visit": "July to March",
+      "average_cost_per_day": 13000,
+      "popular_activities": "Dhow sailing, Cultural tours, Beach relaxation, Swahili cuisine, Historical sites",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 10,
+    "fields": {
+      "name": "Samburu National Reserve",
+      "slug": "samburu-national-reserve",
+      "description": "Remote northern reserve with unique wildlife including Grevy's zebra, reticulated giraffe, and Somali ostrich. Rich Samburu culture and dramatic landscapes.",
+      "destination_type": "safari",
+      "county": "Samburu",
+      "latitude": "0.5667",
+      "longitude": "37.5333",
+      "best_time_to_visit": "June to October, December to March",
+      "average_cost_per_day": 22000,
+      "popular_activities": "Game drives, Samburu cultural visits, Bird watching, River walks, Photography",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 11,
+    "fields": {
+      "name": "Hell's Gate National Park",
+      "slug": "hells-gate-national-park",
+      "description": "Unique park where you can walk, cycle, and rock climb among wildlife. Dramatic gorges, geothermal features, and inspiration for The Lion King.",
+      "destination_type": "safari",
+      "county": "Nakuru",
+      "latitude": "-0.9167",
+      "longitude": "36.3167",
+      "best_time_to_visit": "Year-round",
+      "average_cost_per_day": 8000,
+      "popular_activities": "Cycling, Rock climbing, Hiking, Gorge walking, Wildlife viewing",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 12,
+    "fields": {
+      "name": "Mombasa",
+      "slug": "mombasa",
+      "description": "Historic coastal city with beautiful beaches, Fort Jesus, and vibrant Swahili culture. Gateway to Kenya's coast with rich Arab and Portuguese influences.",
+      "destination_type": "city",
+      "county": "Mombasa",
+      "latitude": "-4.0435",
+      "longitude": "39.6682",
+      "best_time_to_visit": "December to March, July to October",
+      "average_cost_per_day": 11000,
+      "popular_activities": "Fort Jesus tours, Beach visits, Old Town exploration, Water sports, Dining",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 13,
+    "fields": {
+      "name": "Lake Naivasha",
+      "slug": "lake-naivasha",
+      "description": "Freshwater lake surrounded by flower farms and wildlife. Boat rides among hippos, Crescent Island walks, and nearby Hell's Gate make it perfect for day trips.",
+      "destination_type": "safari",
+      "county": "Nakuru",
+      "latitude": "-0.7667",
+      "longitude": "36.3500",
+      "best_time_to_visit": "Year-round",
+      "average_cost_per_day": 10000,
+      "popular_activities": "Boat rides, Crescent Island walks, Bird watching, Cycling, Flower farm tours",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 14,
+    "fields": {
+      "name": "Malindi",
+      "slug": "malindi",
+      "description": "Historic coastal town with Italian influences, beautiful beaches, and marine park. Vasco da Gama pillar and vibrant nightlife.",
+      "destination_type": "beach",
+      "county": "Kilifi",
+      "latitude": "-3.2167",
+      "longitude": "40.1167",
+      "best_time_to_visit": "October to March",
+      "average_cost_per_day": 12000,
+      "popular_activities": "Beach relaxation, Snorkeling, Historical tours, Water sports, Dining",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 15,
+    "fields": {
+      "name": "Ol Pejeta Conservancy",
+      "slug": "ol-pejeta-conservancy",
+      "description": "Leading wildlife conservancy and home to the last two northern white rhinos. Chimpanzee sanctuary and excellent Big Five viewing.",
+      "destination_type": "safari",
+      "county": "Laikipia",
+      "latitude": "0.0000",
+      "longitude": "36.9000",
+      "best_time_to_visit": "June to October, January to February",
+      "average_cost_per_day": 20000,
+      "popular_activities": "Game drives, Rhino tracking, Chimpanzee sanctuary visit, Night drives, Conservation tours",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 16,
+    "fields": {
+      "name": "Aberdare National Park",
+      "slug": "aberdare-national-park",
+      "description": "Misty mountain park with waterfalls, bamboo forests, and unique tree hotels. Home to elephants, leopards, and rare bongo antelope.",
+      "destination_type": "mountain",
+      "county": "Nyandarua",
+      "latitude": "-0.3833",
+      "longitude": "36.7000",
+      "best_time_to_visit": "January to February, June to September",
+      "average_cost_per_day": 17000,
+      "popular_activities": "Tree hotel stays, Waterfall visits, Trout fishing, Forest walks, Wildlife viewing",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 17,
+    "fields": {
+      "name": "Nairobi National Park",
+      "slug": "nairobi-national-park",
+      "description": "Unique park with city skyline backdrop. Only 7km from city center, offering quick safari experiences with lions, rhinos, and giraffes.",
+      "destination_type": "safari",
+      "county": "Nairobi",
+      "latitude": "-1.3733",
+      "longitude": "36.8583",
+      "best_time_to_visit": "Year-round, best June to February",
+      "average_cost_per_day": 7000,
+      "popular_activities": "Game drives, Picnics, Bird watching, Photography, Animal orphanage visit",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 18,
+    "fields": {
+      "name": "Giraffe Centre",
+      "slug": "giraffe-centre",
+      "description": "Conservation center in Nairobi where you can feed and interact with endangered Rothschild giraffes. Educational and family-friendly experience.",
+      "destination_type": "cultural",
+      "county": "Nairobi",
+      "latitude": "-1.3333",
+      "longitude": "36.7500",
+      "best_time_to_visit": "Year-round",
+      "average_cost_per_day": 5000,
+      "popular_activities": "Giraffe feeding, Nature walks, Educational tours, Photography, Gift shopping",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 19,
+    "fields": {
+      "name": "Karen Blixen Museum",
+      "slug": "karen-blixen-museum",
+      "description": "Historic farmhouse of 'Out of Africa' author Karen Blixen. Beautiful colonial architecture and gardens offering glimpse into Kenya's colonial past.",
+      "destination_type": "cultural",
+      "county": "Nairobi",
+      "latitude": "-1.3500",
+      "longitude": "36.7167",
+      "best_time_to_visit": "Year-round",
+      "average_cost_per_day": 4000,
+      "popular_activities": "Museum tours, Garden walks, Photography, Historical learning, Coffee at cafe",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  },
+  {
+    "model": "destinations.destination",
+    "pk": 20,
+    "fields": {
+      "name": "Meru National Park",
+      "slug": "meru-national-park",
+      "description": "Remote wilderness park made famous by 'Born Free' lioness Elsa. Diverse landscapes with rivers, swamps, and excellent wildlife including rare species.",
+      "destination_type": "safari",
+      "county": "Meru",
+      "latitude": "0.0500",
+      "longitude": "38.2000",
+      "best_time_to_visit": "June to September, December to March",
+      "average_cost_per_day": 19000,
+      "popular_activities": "Game drives, Elsa's grave visit, Bird watching, River walks, Photography",
+      "is_featured": false,
+      "created_at": "2025-11-16T00:00:00Z",
+      "updated_at": "2025-11-16T00:00:00Z"
+    }
+  }
+]

@@ -18,8 +18,8 @@
 ## PHASE 1: SEED DATA & ADMIN (Priority: HIGH)
 
 ### Task 1.1: Create Kenya Destinations Fixture
-- [ ] Create `destinations/fixtures/kenya_destinations.json`
-- [ ] Add 20 Kenya destinations with data:
+- [x] Create `destinations/fixtures/kenya_destinations.json`
+- [x] Add 20 Kenya destinations with data:
   - Maasai Mara (Safari)
   - Amboseli National Park (Safari)
   - Diani Beach (Beach)
@@ -40,8 +40,8 @@
   - Ol Pejeta Conservancy (Safari)
   - Aberdare National Park (Mountain)
   - Meru National Park (Safari)
-- [ ] Include: name, description, type, county, best time, avg cost, activities
-- [ ] Load fixture: `python manage.py loaddata kenya_destinations`
+- [x] Include: name, description, type, county, best time, avg cost, activities
+- [x] Load fixture: `python manage.py loaddata kenya_destinations`
 
 ### Task 1.2: Test Admin Panel
 - [ ] Login to admin (http://127.0.0.1:8000/admin/)
