@@ -1,0 +1,499 @@
+{% extends 'base.html' %}
+
+{% block title %}Step 3: Travel Group - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wizard-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 15px;
+    }
+    
+    .progress-bar-custom {
+        height: 8px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--kenya-green) 0%, #008800 100%);
+        transition: width 0.3s ease;
+    }
+    
+    .step-indicator {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .step-indicator h2 {
+        color: var(--kenya-green);
+        margin-bottom: 10px;
+    }
+    
+    .trip-summary {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+    
+    .summary-item {
+        display: inline-block;
+        margin: 0 15px;
+        padding: 10px 20px;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .summary-item i {
+        color: var(--kenya-green);
+        margin-right: 8px;
+    }
+    
+    .counter-section {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        border: 2px solid #e0e0e0;
+        margin-bottom: 30px;
+    }
+    
+    .counter-section h5 {
+        color: var(--kenya-green);
+        margin-bottom: 25px;
+        text-align: center;
+    }
+    
+    .counter-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .counter-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .counter-label i {
+        font-size: 24px;
+        color: var(--kenya-green);
+    }
+    
+    .counter-label-text h6 {
+        margin: 0;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .counter-label-text p {
+        margin: 0;
+        font-size: 13px;
+        color: #666;
+    }
+    
+    .counter-controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .counter-btn {
+        width: 40px;
+        height: 40px;
+        border: 2px solid var(--kenya-green);
+        background: white;
+        color: var(--kenya-green);
+        border-radius: 50%;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .counter-btn:hover:not(:disabled) {
+        background: var(--kenya-green);
+        color: white;
+    }
+    
+    .counter-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+    
+    .counter-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        min-width: 40px;
+        text-align: center;
+    }
+    
+    .travel-type-section {
+        margin-bottom: 30px;
+    }
+    
+    .travel-type-section h5 {
+        color: var(--kenya-green);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .travel-types {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .travel-type-card {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .travel-type-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .travel-type-card.selected {
+        border-color: var(--kenya-green);
+        background: rgba(0, 102, 0, 0.05);
+    }
+    
+    .travel-type-card .check-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 24px;
+        height: 24px;
+        background: var(--kenya-green);
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+    }
+    
+    .travel-type-card.selected .check-icon {
+        display: flex;
+    }
+    
+    .travel-type-icon {
+        font-size: 40px;
+        color: var(--kenya-green);
+        margin-bottom: 10px;
+    }
+    
+    .travel-type-label {
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .travel-type-description {
+        font-size: 13px;
+        color: #666;
+    }
+    
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+    
+    .btn-back {
+        padding: 12px 30px;
+        background: white;
+        border: 2px solid var(--kenya-green);
+        color: var(--kenya-green);
+    }
+    
+    .btn-back:hover {
+        background: var(--kenya-green);
+        color: white;
+    }
+    
+    .btn-next {
+        padding: 12px 40px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
+    .btn-next:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .error-alert {
+        margin-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+        .travel-types {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .counter-row {
+            flex-direction: column;
+            gap: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wizard-container">
+    <!-- Progress Bar -->
+    <div class="progress-bar-custom">
+        <div class="progress-fill" style="width: {{ progress_percentage }}%;"></div>
+    </div>
+    
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+        <h2>Step {{ step }} of {{ total_steps }}</h2>
+        <p class="lead">Who's traveling?</p>
+        <p class="text-muted">Tell us about your travel group</p>
+    </div>
+    
+    <!-- Error Message -->
+    {% if error_message %}
+    <div class="alert alert-danger error-alert alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> {{ error_message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+    
+    <!-- Trip Summary -->
+    <div class="trip-summary text-center">
+        <span class="summary-item">
+            <i class="bi bi-geo-alt-fill"></i>
+            <strong>{{ destinations|length }}</strong> Destinations
+        </span>
+        <span class="summary-item">
+            <i class="bi bi-calendar-check"></i>
+            <strong>{{ duration_days }}</strong> Days
+        </span>
+    </div>
+    
+    <form method="post" id="wizardForm">
+        {% csrf_token %}
+        
+        <!-- Counter Section -->
+        <div class="counter-section">
+            <h5><i class="bi bi-people-fill"></i> Group Size</h5>
+            
+            <!-- Adults Counter -->
+            <div class="counter-row">
+                <div class="counter-label">
+                    <i class="bi bi-person-fill"></i>
+                    <div class="counter-label-text">
+                        <h6>Adults</h6>
+                        <p>Age 18+</p>
+                    </div>
+                </div>
+                <div class="counter-controls">
+                    <button type="button" class="counter-btn" id="adultsDecrement">
+                        <i class="bi bi-dash"></i>
+                    </button>
+                    <span class="counter-value" id="adultsValue">{{ adults_count }}</span>
+                    <button type="button" class="counter-btn" id="adultsIncrement">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+                <input type="hidden" name="adults_count" id="adultsInput" value="{{ adults_count }}">
+            </div>
+            
+            <!-- Children Counter -->
+            <div class="counter-row">
+                <div class="counter-label">
+                    <i class="bi bi-person"></i>
+                    <div class="counter-label-text">
+                        <h6>Children</h6>
+                        <p>Age 0-17</p>
+                    </div>
+                </div>
+                <div class="counter-controls">
+                    <button type="button" class="counter-btn" id="childrenDecrement">
+                        <i class="bi bi-dash"></i>
+                    </button>
+                    <span class="counter-value" id="childrenValue">{{ children_count }}</span>
+                    <button type="button" class="counter-btn" id="childrenIncrement">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+                <input type="hidden" name="children_count" id="childrenInput" value="{{ children_count }}">
+            </div>
+        </div>
+        
+        <!-- Travel Type Section -->
+        <div class="travel-type-section">
+            <h5><i class="bi bi-heart-fill"></i> Travel Type</h5>
+            <div class="travel-types">
+                {% for type in travel_types %}
+                <div class="travel-type-card {% if selected_type == type.value %}selected{% endif %}" 
+                     data-type="{{ type.value }}">
+                    <div class="check-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <div class="travel-type-icon">
+                        <i class="bi bi-{{ type.icon }}"></i>
+                    </div>
+                    <div class="travel-type-label">{{ type.label }}</div>
+                    <div class="travel-type-description">{{ type.description }}</div>
+                    <input type="radio" 
+                           name="travel_type" 
+                           value="{{ type.value }}" 
+                           {% if selected_type == type.value %}checked{% endif %}
+                           style="display: none;">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <a href="{% url 'core:duration_selection' %}" class="btn btn-back">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+            <button type="submit" class="btn btn-primary btn-next" id="btnNext" disabled>
+                Next Step <i class="bi bi-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Counter elements
+    const adultsValue = document.getElementById('adultsValue');
+    const adultsInput = document.getElementById('adultsInput');
+    const adultsDecrement = document.getElementById('adultsDecrement');
+    const adultsIncrement = document.getElementById('adultsIncrement');
+    
+    const childrenValue = document.getElementById('childrenValue');
+    const childrenInput = document.getElementById('childrenInput');
+    const childrenDecrement = document.getElementById('childrenDecrement');
+    const childrenIncrement = document.getElementById('childrenIncrement');
+    
+    // Travel type elements
+    const travelTypeCards = document.querySelectorAll('.travel-type-card');
+    const btnNext = document.getElementById('btnNext');
+    
+    // Counter limits
+    const MIN_ADULTS = 1;
+    const MAX_ADULTS = 20;
+    const MIN_CHILDREN = 0;
+    const MAX_CHILDREN = 20;
+    const MAX_TOTAL = 30;
+    
+    // Initialize
+    updateCounterButtons();
+    updateNextButton();
+    
+    // Adults counter handlers
+    adultsDecrement.addEventListener('click', function() {
+        let count = parseInt(adultsValue.textContent);
+        if (count > MIN_ADULTS) {
+            count--;
+            adultsValue.textContent = count;
+            adultsInput.value = count;
+            updateCounterButtons();
+        }
+    });
+    
+    adultsIncrement.addEventListener('click', function() {
+        let count = parseInt(adultsValue.textContent);
+        let childrenCount = parseInt(childrenValue.textContent);
+        if (count < MAX_ADULTS && (count + childrenCount) < MAX_TOTAL) {
+            count++;
+            adultsValue.textContent = count;
+            adultsInput.value = count;
+            updateCounterButtons();
+        }
+    });
+    
+    // Children counter handlers
+    childrenDecrement.addEventListener('click', function() {
+        let count = parseInt(childrenValue.textContent);
+        if (count > MIN_CHILDREN) {
+            count--;
+            childrenValue.textContent = count;
+            childrenInput.value = count;
+            updateCounterButtons();
+        }
+    });
+    
+    childrenIncrement.addEventListener('click', function() {
+        let count = parseInt(childrenValue.textContent);
+        let adultsCount = parseInt(adultsValue.textContent);
+        if (count < MAX_CHILDREN && (count + adultsCount) < MAX_TOTAL) {
+            count++;
+            childrenValue.textContent = count;
+            childrenInput.value = count;
+            updateCounterButtons();
+        }
+    });
+    
+    // Travel type card click handler
+    travelTypeCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            travelTypeCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            this.classList.add('selected');
+            
+            // Check the radio button
+            const radio = this.querySelector('input[type="radio"]');
+            radio.checked = true;
+            
+            // Update button state
+            updateNextButton();
+        });
+    });
+    
+    // Update counter button states
+    function updateCounterButtons() {
+        const adultsCount = parseInt(adultsValue.textContent);
+        const childrenCount = parseInt(childrenValue.textContent);
+        const total = adultsCount + childrenCount;
+        
+        // Adults buttons
+        adultsDecrement.disabled = (adultsCount <= MIN_ADULTS);
+        adultsIncrement.disabled = (adultsCount >= MAX_ADULTS || total >= MAX_TOTAL);
+        
+        // Children buttons
+        childrenDecrement.disabled = (childrenCount <= MIN_CHILDREN);
+        childrenIncrement.disabled = (childrenCount >= MAX_CHILDREN || total >= MAX_TOTAL);
+    }
+    
+    // Update next button state
+    function updateNextButton() {
+        const selectedType = document.querySelector('input[name="travel_type"]:checked');
+        btnNext.disabled = !selectedType;
+    }
+});
+</script>
+{% endblock %}

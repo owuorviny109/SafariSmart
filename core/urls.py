@@ -10,7 +10,7 @@ urlpatterns = [
     # Wizard flow - descriptive names
     path('wizard/destinations/', views.DestinationSelectionView.as_view(), name='destination_selection'),
     path('wizard/duration/', views.DurationSelectionView.as_view(), name='duration_selection'),
-    path('wizard/travel-group/', views.wizard_step_3, name='travel_group_selection'),
+    path('wizard/travel-group/', views.TravelGroupSelectionView.as_view(), name='travel_group_selection'),
     path('wizard/budget/', views.wizard_step_4, name='budget_selection'),
     path('wizard/interests/', views.wizard_step_5, name='interests_selection'),
     path('wizard/generating/', views.wizard_generating, name='itinerary_generation'),

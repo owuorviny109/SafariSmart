@@ -359,3 +359,96 @@ class WizardService:
                 f"Date range ({actual_duration} days) does not match "
                 f"selected duration ({duration_days} days)"
             )
+            
+    def save_travel_group(
+        self,
+        adults_count: int,
+        children_count: int,
+        travel_type: str
+    ) -> None:
+        """
+        Save travel group information for step 3.
+        
+        Validates group size and travel type before saving.
+        
+        Args:
+            adults_count (int): Number of adults (minimum 1)
+            children_count (int): Number of children (0 or more)
+            travel_type (str): Type of travel (solo, family, couple, friends)
+            
+        Raises:
+            ValueError: If group data is invalid
+        """
+        self._validate_travel_group(adults_count, children_count, travel_type)
+        
+        step_data = {
+            'adults_count': adults_count,
+            'children_count': children_count,
+            'travel_type': travel_type,
+            'total_travelers': adults_count + children_count
+        }
+        
+        self.session_manager.save_step_data(3, step_data)
+        
+    def get_travel_group_data(self) -> Dict[str, Any]:
+        """
+        Retrieve travel group data.
+        
+        Returns:
+            Dict[str, Any]: Travel group data or empty dict
+        """
+        return self.session_manager.get_step_data(3)
+        
+    def _validate_travel_group(
+        self,
+        adults_count: int,
+        children_count: int,
+        travel_type: str
+    ) -> None:
+        """
+        Validate travel group parameters.
+        
+        Args:
+            adults_count (int): Number of adults
+            children_count (int): Number of children
+            travel_type (str): Type of travel
+            
+        Raises:
+            ValueError: If any parameter is invalid
+            TypeError: If types are incorrect
+        """
+        # Validate types
+        if not isinstance(adults_count, int):
+            raise TypeError("Adults count must be an integer")
+            
+        if not isinstance(children_count, int):
+            raise TypeError("Children count must be an integer")
+            
+        if not isinstance(travel_type, str):
+            raise TypeError("Travel type must be a string")
+            
+        # Validate adults count
+        if adults_count < 1:
+            raise ValueError("At least 1 adult is required")
+            
+        if adults_count > 20:
+            raise ValueError("Maximum 20 adults allowed")
+            
+        # Validate children count
+        if children_count < 0:
+            raise ValueError("Children count cannot be negative")
+            
+        if children_count > 20:
+            raise ValueError("Maximum 20 children allowed")
+            
+        # Validate total group size
+        total = adults_count + children_count
+        if total > 30:
+            raise ValueError("Total group size cannot exceed 30 people")
+            
+        # Validate travel type
+        valid_types = ['solo', 'family', 'couple', 'friends']
+        if travel_type not in valid_types:
+            raise ValueError(
+                f"Invalid travel type. Must be one of: {', '.join(valid_types)}"
+            )

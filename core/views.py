@@ -347,9 +347,174 @@ class DurationSelectionView(View):
         return render(request, self.template_name, context)
 
 
-def wizard_step_3(request):
-    """Step 3: Travel group"""
-    return render(request, 'core/wizard_step_3.html', {'step': 3})
+class TravelGroupSelectionView(View):
+    """
+    Handles travel group composition selection for wizard.
+    
+    This view manages the selection of group size (adults/children)
+    and travel type (solo, family, couple, friends). Implements
+    counter controls and validation.
+    
+    Attributes:
+        template_name (str): Path to template file
+        TRAVEL_TYPES (list): Available travel type options
+        
+    Methods:
+        get: Display travel group selection interface
+        post: Process and validate group composition
+        
+    Example:
+        URL: /wizard/travel-group/
+        GET: Renders counters and travel type buttons
+        POST: Validates inputs and advances to budget step
+    """
+    
+    template_name = 'core/travel_group_selection.html'
+    
+    # Travel type options
+    TRAVEL_TYPES = [
+        {
+            'value': 'solo',
+            'label': 'Solo Traveler',
+            'icon': 'person',
+            'description': 'Traveling alone'
+        },
+        {
+            'value': 'couple',
+            'label': 'Couple',
+            'icon': 'heart',
+            'description': 'Romantic getaway'
+        },
+        {
+            'value': 'family',
+            'label': 'Family',
+            'icon': 'people',
+            'description': 'Family vacation'
+        },
+        {
+            'value': 'friends',
+            'label': 'Friends',
+            'icon': 'emoji-smile',
+            'description': 'Group of friends'
+        },
+    ]
+    
+    def get(self, request: HttpRequest) -> HttpResponse:
+        """
+        Display travel group selection page.
+        
+        Shows counters for adults/children and travel type buttons.
+        Pre-fills if user is returning to this step.
+        
+        Args:
+            request (HttpRequest): HTTP request object
+            
+        Returns:
+            HttpResponse: Rendered template with group options
+        """
+        wizard_service = WizardService(request.session)
+        
+        # Get previously selected data if any
+        group_data = wizard_service.get_travel_group_data()
+        adults_count = group_data.get('adults_count', 2)
+        children_count = group_data.get('children_count', 0)
+        selected_type = group_data.get('travel_type')
+        
+        # Get previous step data for context
+        destinations = wizard_service.get_selected_destinations()
+        duration_data = wizard_service.get_duration_data()
+        
+        context = {
+            'travel_types': self.TRAVEL_TYPES,
+            'adults_count': adults_count,
+            'children_count': children_count,
+            'selected_type': selected_type,
+            'destinations': destinations,
+            'duration_days': duration_data.get('duration_days'),
+            'step': 3,
+            'total_steps': 5,
+            'progress_percentage': 60,
+        }
+        
+        return render(request, self.template_name, context)
+        
+    def post(self, request: HttpRequest) -> HttpResponse:
+        """
+        Process travel group selection.
+        
+        Validates group composition, saves to session, and redirects to step 4.
+        
+        Args:
+            request (HttpRequest): HTTP request object with POST data
+            
+        Returns:
+            HttpResponse: Redirect to step 4 or error response
+        """
+        wizard_service = WizardService(request.session)
+        
+        # Get data from POST
+        adults_str = request.POST.get('adults_count', '2')
+        children_str = request.POST.get('children_count', '0')
+        travel_type = request.POST.get('travel_type', '')
+        
+        # Convert to integers
+        try:
+            adults_count = int(adults_str)
+            children_count = int(children_str)
+        except (ValueError, TypeError):
+            return self._render_error(
+                request,
+                wizard_service,
+                "Invalid number of travelers"
+            )
+            
+        # Validate and save using service
+        try:
+            wizard_service.save_travel_group(
+                adults_count,
+                children_count,
+                travel_type
+            )
+        except ValueError as e:
+            return self._render_error(request, wizard_service, str(e))
+            
+        # Redirect to budget selection
+        return redirect('core:budget_selection')
+        
+    def _render_error(
+        self,
+        request: HttpRequest,
+        wizard_service: WizardService,
+        error_message: str
+    ) -> HttpResponse:
+        """
+        Render page with error message.
+        
+        Args:
+            request (HttpRequest): HTTP request object
+            wizard_service (WizardService): Wizard service instance
+            error_message (str): Error message to display
+            
+        Returns:
+            HttpResponse: Rendered template with error
+        """
+        destinations = wizard_service.get_selected_destinations()
+        duration_data = wizard_service.get_duration_data()
+        
+        context = {
+            'travel_types': self.TRAVEL_TYPES,
+            'adults_count': 2,
+            'children_count': 0,
+            'selected_type': None,
+            'destinations': destinations,
+            'duration_days': duration_data.get('duration_days'),
+            'step': 3,
+            'total_steps': 5,
+            'progress_percentage': 60,
+            'error_message': error_message,
+        }
+        
+        return render(request, self.template_name, context)
 
 
 def wizard_step_4(request):
