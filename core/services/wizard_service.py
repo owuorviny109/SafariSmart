@@ -256,3 +256,106 @@ class WizardService:
         
         if existing_count != len(destination_ids):
             raise ValueError("One or more destination IDs are invalid")
+            
+    def save_duration(
+        self,
+        duration_days: int,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None
+    ) -> None:
+        """
+        Save trip duration and dates for step 2.
+        
+        Validates duration is within acceptable range and dates are valid.
+        
+        Args:
+            duration_days (int): Trip duration in days
+            start_date (str, optional): Start date in YYYY-MM-DD format
+            end_date (str, optional): End date in YYYY-MM-DD format
+            
+        Raises:
+            ValueError: If duration or dates are invalid
+        """
+        self._validate_duration(duration_days)
+        
+        if start_date and end_date:
+            self._validate_dates(start_date, end_date, duration_days)
+        
+        step_data = {
+            'duration_days': duration_days,
+            'start_date': start_date,
+            'end_date': end_date
+        }
+        
+        self.session_manager.save_step_data(2, step_data)
+        
+    def get_duration_data(self) -> Dict[str, Any]:
+        """
+        Retrieve duration and date data.
+        
+        Returns:
+            Dict[str, Any]: Duration data or empty dict
+        """
+        return self.session_manager.get_step_data(2)
+        
+    def _validate_duration(self, duration_days: int) -> None:
+        """
+        Validate trip duration is within acceptable range.
+        
+        Args:
+            duration_days (int): Duration in days
+            
+        Raises:
+            ValueError: If duration is invalid
+            TypeError: If duration is not an integer
+        """
+        if not isinstance(duration_days, int):
+            raise TypeError("Duration must be an integer")
+            
+        if duration_days < 1:
+            raise ValueError("Duration must be at least 1 day")
+            
+        if duration_days > 30:
+            raise ValueError("Duration cannot exceed 30 days")
+            
+    def _validate_dates(
+        self,
+        start_date: str,
+        end_date: str,
+        duration_days: int
+    ) -> None:
+        """
+        Validate start and end dates are logical.
+        
+        Args:
+            start_date (str): Start date in YYYY-MM-DD format
+            end_date (str): End date in YYYY-MM-DD format
+            duration_days (int): Expected duration
+            
+        Raises:
+            ValueError: If dates are invalid or illogical
+        """
+        from datetime import datetime, timedelta
+        
+        try:
+            start = datetime.strptime(start_date, '%Y-%m-%d')
+            end = datetime.strptime(end_date, '%Y-%m-%d')
+        except ValueError:
+            raise ValueError("Invalid date format. Use YYYY-MM-DD")
+            
+        # Check start date is not in the past
+        today = datetime.now().date()
+        if start.date() < today:
+            raise ValueError("Start date cannot be in the past")
+            
+        # Check end date is after start date
+        if end <= start:
+            raise ValueError("End date must be after start date")
+            
+        # Check duration matches date range
+        actual_duration = (end - start).days + 1
+        if actual_duration != duration_days:
+            raise ValueError(
+                f"Date range ({actual_duration} days) does not match "
+                f"selected duration ({duration_days} days)"
+            )

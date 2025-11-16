@@ -43,27 +43,28 @@ def landing_page(request: HttpRequest) -> HttpResponse:
     })
 
 
-class WizardStep1View(View):
+class DestinationSelectionView(View):
     """
-    Wizard Step 1: Destination Selection.
+    Handles destination selection for trip planning wizard.
     
-    This view handles displaying destinations and processing user selections.
-    Uses WizardService for business logic and session management.
+    This view manages the first step of the wizard where users select
+    destinations they want to visit. Implements multi-select functionality
+    with filtering and validation.
     
     Attributes:
-        template_name (str): Template for rendering
+        template_name (str): Path to template file
         
     Methods:
-        get: Display destination selection page
-        post: Process selected destinations
+        get: Display destination selection interface
+        post: Process and validate selected destinations
         
     Example:
-        URL: /wizard/step-1/
-        GET: Shows destination grid
-        POST: Saves selections and redirects to step 2
+        URL: /wizard/destinations/
+        GET: Renders destination grid with filters
+        POST: Validates selections and advances to duration step
     """
     
-    template_name = 'core/wizard_step_1.html'
+    template_name = 'core/destination_selection.html'
     
     def get(self, request: HttpRequest) -> HttpResponse:
         """
@@ -134,8 +135,8 @@ class WizardStep1View(View):
         except ValueError as e:
             return self._render_error(request, str(e))
             
-        # Redirect to step 2
-        return redirect('core:wizard_step_2')
+        # Redirect to duration selection
+        return redirect('core:duration_selection')
         
     def _group_destinations_by_type(
         self,
@@ -198,9 +199,152 @@ class WizardStep1View(View):
         return render(request, self.template_name, context)
 
 
-def wizard_step_2(request):
-    """Step 2: Duration and dates"""
-    return render(request, 'core/wizard_step_2.html', {'step': 2})
+class DurationSelectionView(View):
+    """
+    Handles trip duration and date selection for wizard.
+    
+    This view manages duration selection with predefined options
+    and optional date range specification. Validates date logic
+    and duration constraints.
+    
+    Attributes:
+        template_name (str): Path to template file
+        DURATION_OPTIONS (list): Available duration choices
+        
+    Methods:
+        get: Display duration selection interface
+        post: Process and validate duration and dates
+        
+    Example:
+        URL: /wizard/duration/
+        GET: Renders duration options and date picker
+        POST: Validates inputs and advances to travel group step
+    """
+    
+    template_name = 'core/duration_selection.html'
+    
+    # Duration options (in days)
+    DURATION_OPTIONS = [
+        {'value': 1, 'label': '1 Day', 'description': 'Quick day trip'},
+        {'value': 3, 'label': '2-3 Days', 'description': 'Weekend getaway'},
+        {'value': 5, 'label': '4-5 Days', 'description': 'Short vacation'},
+        {'value': 7, 'label': '1 Week', 'description': 'Full week adventure'},
+        {'value': 14, 'label': '2 Weeks', 'description': 'Extended safari'},
+    ]
+    
+    def get(self, request: HttpRequest) -> HttpResponse:
+        """
+        Display duration selection page.
+        
+        Shows duration options and date picker. Pre-fills if user
+        is returning to this step.
+        
+        Args:
+            request (HttpRequest): HTTP request object
+            
+        Returns:
+            HttpResponse: Rendered template with duration options
+        """
+        wizard_service = WizardService(request.session)
+        
+        # Get previously selected duration if any
+        duration_data = wizard_service.get_duration_data()
+        selected_duration = duration_data.get('duration_days')
+        start_date = duration_data.get('start_date', '')
+        end_date = duration_data.get('end_date', '')
+        
+        # Get selected destinations for context
+        destinations = wizard_service.get_selected_destinations()
+        
+        context = {
+            'duration_options': self.DURATION_OPTIONS,
+            'selected_duration': selected_duration,
+            'start_date': start_date,
+            'end_date': end_date,
+            'destinations': destinations,
+            'destination_count': len(destinations),
+            'step': 2,
+            'total_steps': 5,
+            'progress_percentage': 40,
+        }
+        
+        return render(request, self.template_name, context)
+        
+    def post(self, request: HttpRequest) -> HttpResponse:
+        """
+        Process duration and dates.
+        
+        Validates inputs, saves to session, and redirects to step 3.
+        
+        Args:
+            request (HttpRequest): HTTP request object with POST data
+            
+        Returns:
+            HttpResponse: Redirect to step 3 or error response
+        """
+        wizard_service = WizardService(request.session)
+        
+        # Get duration from POST data
+        duration_str = request.POST.get('duration')
+        start_date = request.POST.get('start_date', '').strip()
+        end_date = request.POST.get('end_date', '').strip()
+        
+        # Convert duration to integer
+        try:
+            duration_days = int(duration_str)
+        except (ValueError, TypeError):
+            return self._render_error(
+                request,
+                wizard_service,
+                "Please select a valid duration"
+            )
+            
+        # Validate and save using service
+        try:
+            wizard_service.save_duration(
+                duration_days,
+                start_date if start_date else None,
+                end_date if end_date else None
+            )
+        except ValueError as e:
+            return self._render_error(request, wizard_service, str(e))
+            
+        # Redirect to travel group selection
+        return redirect('core:travel_group_selection')
+        
+    def _render_error(
+        self,
+        request: HttpRequest,
+        wizard_service: WizardService,
+        error_message: str
+    ) -> HttpResponse:
+        """
+        Render page with error message.
+        
+        Args:
+            request (HttpRequest): HTTP request object
+            wizard_service (WizardService): Wizard service instance
+            error_message (str): Error message to display
+            
+        Returns:
+            HttpResponse: Rendered template with error
+        """
+        destinations = wizard_service.get_selected_destinations()
+        
+        context = {
+            'duration_options': self.DURATION_OPTIONS,
+            'selected_duration': None,
+            'start_date': '',
+            'end_date': '',
+            'destinations': destinations,
+            'destination_count': len(destinations),
+            'step': 2,
+            'total_steps': 5,
+            'progress_percentage': 40,
+            'error_message': error_message,
+        }
+        
+        return render(request, self.template_name, context)
 
 
 def wizard_step_3(request):

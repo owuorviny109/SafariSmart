@@ -7,13 +7,13 @@ urlpatterns = [
     # Landing page
     path('', views.landing_page, name='landing'),
     
-    # Wizard flow
-    path('wizard/step-1/', views.WizardStep1View.as_view(), name='wizard_step_1'),
-    path('wizard/step-2/', views.wizard_step_2, name='wizard_step_2'),
-    path('wizard/step-3/', views.wizard_step_3, name='wizard_step_3'),
-    path('wizard/step-4/', views.wizard_step_4, name='wizard_step_4'),
-    path('wizard/step-5/', views.wizard_step_5, name='wizard_step_5'),
-    path('wizard/generating/', views.wizard_generating, name='wizard_generating'),
+    # Wizard flow - descriptive names
+    path('wizard/destinations/', views.DestinationSelectionView.as_view(), name='destination_selection'),
+    path('wizard/duration/', views.DurationSelectionView.as_view(), name='duration_selection'),
+    path('wizard/travel-group/', views.wizard_step_3, name='travel_group_selection'),
+    path('wizard/budget/', views.wizard_step_4, name='budget_selection'),
+    path('wizard/interests/', views.wizard_step_5, name='interests_selection'),
+    path('wizard/generating/', views.wizard_generating, name='itinerary_generation'),
     
     # Itinerary
     path('itinerary/<uuid:share_code>/', views.itinerary_detail, name='itinerary_detail'),

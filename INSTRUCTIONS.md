@@ -1018,7 +1018,142 @@ class GeminiService:
 
 ---
 
-## 10. SUMMARY
+## 10. NAMING CONVENTIONS
+
+### Python Code
+
+#### Classes
+**Convention:** `PascalCase` (CapitalizedWords)
+
+**Examples:**
+```python
+✅ DestinationSelectionView
+✅ DurationSelectionView
+✅ WizardService
+✅ WizardSessionManager
+
+❌ WizardStep1View  # Don't use numbers
+❌ wizard_service   # Not snake_case for classes
+```
+
+#### Functions and Methods
+**Convention:** `snake_case` (lowercase_with_underscores)
+
+**Examples:**
+```python
+✅ save_destinations()
+✅ get_selected_destinations()
+✅ validate_duration()
+
+❌ saveDestinations()     # Not camelCase
+❌ save_step_1_data()     # Avoid numbers
+```
+
+#### Variables
+**Convention:** `snake_case`
+
+#### Constants
+**Convention:** `UPPER_SNAKE_CASE`
+
+### Files and Directories
+
+#### Python Files
+**Convention:** `snake_case.py`
+
+**Examples:**
+```
+✅ wizard_service.py
+✅ destination_selection.py
+
+❌ WizardService.py        # Not PascalCase
+❌ wizardStep1.py          # Not camelCase
+```
+
+#### Template Files
+**Convention:** `snake_case.html` or `descriptive_name.html`
+
+**Examples:**
+```
+✅ destination_selection.html
+✅ duration_selection.html
+
+❌ wizard_step_1.html      # Don't use numbers
+❌ WizardStep1.html        # Not PascalCase
+```
+
+### URLs
+
+#### URL Patterns
+**Convention:** `kebab-case` (lowercase-with-hyphens)
+
+**Examples:**
+```python
+✅ path('wizard/destinations/', ...)
+✅ path('wizard/travel-group/', ...)
+
+❌ path('wizard/step_1/', ...)        # Not snake_case
+❌ path('wizard/travelGroup/', ...)   # Not camelCase
+```
+
+#### URL Names
+**Convention:** `snake_case`
+
+**Examples:**
+```python
+✅ name='destination_selection'
+✅ name='travel_group_selection'
+
+❌ name='wizard_step_1'        # Don't use numbers
+❌ name='destinationSelection' # Not camelCase
+```
+
+### View Names
+
+#### Class-Based Views
+**Convention:** `DescriptiveNameView`
+
+**Pattern:** `[Purpose][Action]View`
+
+**Examples:**
+```python
+✅ DestinationSelectionView
+✅ DurationSelectionView
+✅ ItineraryDetailView
+
+❌ WizardStep1View         # Don't use numbers
+❌ Step1View               # Not descriptive enough
+```
+
+### Service Layer
+
+**Convention:** `PurposeService` or `PurposeManager`
+
+**Examples:**
+```python
+✅ WizardService
+✅ WizardSessionManager
+✅ GeminiService
+
+❌ WizardServiceClass      # Don't add "Class"
+❌ wizard_service          # Not snake_case for classes
+```
+
+### Summary Table
+
+| Element | Convention | Example |
+|---------|-----------|---------|
+| Classes | PascalCase | `DestinationSelectionView` |
+| Functions | snake_case | `save_destinations()` |
+| Variables | snake_case | `destination_ids` |
+| Constants | UPPER_SNAKE_CASE | `MAX_DURATION_DAYS` |
+| Files | snake_case.py | `wizard_service.py` |
+| Templates | snake_case.html | `destination_selection.html` |
+| URLs | kebab-case | `/wizard/travel-group/` |
+| URL Names | snake_case | `travel_group_selection` |
+
+---
+
+## 11. SUMMARY
 
 All code in SafariSmart Kenya must:
 1. Follow OOP principles strictly
@@ -1030,6 +1165,7 @@ All code in SafariSmart Kenya must:
 7. Handle errors properly
 8. Include unit tests
 9. Follow Django best practices
-10. Pass code review checklist
+10. Follow naming conventions strictly
+11. Pass code review checklist
 
 No exceptions to these standards will be accepted.

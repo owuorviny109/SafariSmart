@@ -1,0 +1,80 @@
+Refactor: Apply Proper Naming Conventions
+
+SUMMARY
+-------
+Refactored all code to follow proper Python and Django naming conventions.
+Removed numbers from names and used descriptive, meaningful identifiers.
+
+NAMING CHANGES
+--------------
+Views:
+- WizardStep1View → DestinationSelectionView
+- WizardStep2View → DurationSelectionView
+
+Templates:
+- wizard_step_1.html → destination_selection.html
+- wizard_step_2.html → duration_selection.html
+
+URLs:
+- /wizard/step-1/ → /wizard/destinations/
+- /wizard/step-2/ → /wizard/duration/
+- wizard_step_1 → destination_selection (URL name)
+- wizard_step_2 → duration_selection (URL name)
+
+CONVENTIONS APPLIED
+-------------------
+Classes: PascalCase
+- DestinationSelectionView
+- DurationSelectionView
+- WizardService
+
+Functions: snake_case
+- save_destinations()
+- get_selected_destinations()
+- validate_duration()
+
+Files: snake_case.py
+- wizard_service.py
+- destination_selection.html
+
+URLs: kebab-case
+- /wizard/destinations/
+- /wizard/travel-group/
+
+URL Names: snake_case
+- destination_selection
+- duration_selection
+
+DOCUMENTATION
+-------------
+- Added naming conventions section to INSTRUCTIONS.md
+- Includes examples of correct and incorrect naming
+- Summary table for quick reference
+- Enforcement guidelines
+
+BENEFITS
+--------
+1. Code is more readable and maintainable
+2. Follows Python PEP 8 standards
+3. Follows Django best practices
+4. Easier for new developers to understand
+5. Consistent across entire codebase
+
+FILES CHANGED
+-------------
+Modified:
+- core/views.py (renamed classes)
+- core/urls.py (updated URL patterns and names)
+- templates/core/landing.html (updated links)
+- templates/base.html (updated navigation)
+- templates/core/duration_selection.html (updated back link)
+- INSTRUCTIONS.md (added naming conventions)
+
+Renamed:
+- wizard_step_1.html → destination_selection.html
+- wizard_step_2.html → duration_selection.html
+
+NEXT STEPS
+----------
+All future code must follow these naming conventions.
+Code reviews will enforce these standards.

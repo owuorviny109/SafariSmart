@@ -1,0 +1,403 @@
+{% extends 'base.html' %}
+
+{% block title %}Step 2: Duration & Dates - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wizard-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 15px;
+    }
+    
+    .progress-bar-custom {
+        height: 8px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--kenya-green) 0%, #008800 100%);
+        transition: width 0.3s ease;
+    }
+    
+    .step-indicator {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .step-indicator h2 {
+        color: var(--kenya-green);
+        margin-bottom: 10px;
+    }
+    
+    .destination-summary {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .destination-summary h5 {
+        color: var(--kenya-green);
+        margin-bottom: 10px;
+    }
+    
+    .destination-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .destination-tag {
+        background: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: 1px solid #dee2e6;
+        font-size: 14px;
+    }
+    
+    .duration-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-bottom: 40px;
+    }
+    
+    .duration-card {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .duration-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .duration-card.selected {
+        border-color: var(--kenya-green);
+        background: rgba(0, 102, 0, 0.05);
+    }
+    
+    .duration-card .check-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 24px;
+        height: 24px;
+        background: var(--kenya-green);
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+    }
+    
+    .duration-card.selected .check-icon {
+        display: flex;
+    }
+    
+    .duration-label {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .duration-description {
+        font-size: 13px;
+        color: #666;
+    }
+    
+    .date-section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+    
+    .date-section h5 {
+        color: var(--kenya-green);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .date-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .form-group label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .form-control {
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+    
+    .form-control:focus {
+        border-color: var(--kenya-green);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 102, 0, 0.1);
+    }
+    
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+    
+    .btn-back {
+        padding: 12px 30px;
+        background: white;
+        border: 2px solid var(--kenya-green);
+        color: var(--kenya-green);
+    }
+    
+    .btn-back:hover {
+        background: var(--kenya-green);
+        color: white;
+    }
+    
+    .btn-next {
+        padding: 12px 40px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
+    .btn-next:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .error-alert {
+        margin-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+        .duration-options {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .date-inputs {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wizard-container">
+    <!-- Progress Bar -->
+    <div class="progress-bar-custom">
+        <div class="progress-fill" style="width: {{ progress_percentage }}%;"></div>
+    </div>
+    
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+        <h2>Step {{ step }} of {{ total_steps }}</h2>
+        <p class="lead">How long is your trip?</p>
+        <p class="text-muted">Choose your trip duration and travel dates</p>
+    </div>
+    
+    <!-- Error Message -->
+    {% if error_message %}
+    <div class="alert alert-danger error-alert alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> {{ error_message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+    
+    <!-- Destination Summary -->
+    <div class="destination-summary">
+        <h5><i class="bi bi-check-circle-fill text-success"></i> {{ destination_count }} Destination(s) Selected</h5>
+        <div class="destination-tags">
+            {% for destination in destinations %}
+            <span class="destination-tag">{{ destination.name }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <form method="post" id="wizardForm">
+        {% csrf_token %}
+        
+        <!-- Duration Options -->
+        <div class="duration-options">
+            {% for option in duration_options %}
+            <div class="duration-card {% if selected_duration == option.value %}selected{% endif %}" 
+                 data-duration="{{ option.value }}">
+                <div class="check-icon">
+                    <i class="bi bi-check-lg"></i>
+                </div>
+                <div class="duration-label">{{ option.label }}</div>
+                <div class="duration-description">{{ option.description }}</div>
+                <input type="radio" 
+                       name="duration" 
+                       value="{{ option.value }}" 
+                       {% if selected_duration == option.value %}checked{% endif %}
+                       style="display: none;">
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Date Selection (Optional) -->
+        <div class="date-section">
+            <h5><i class="bi bi-calendar-event"></i> When are you traveling? (Optional)</h5>
+            <p class="text-center text-muted mb-4">Specify your travel dates for weather forecasts and availability</p>
+            
+            <div class="date-inputs">
+                <div class="form-group">
+                    <label for="start_date">
+                        <i class="bi bi-calendar-check"></i> Start Date
+                    </label>
+                    <input type="date" 
+                           class="form-control" 
+                           id="start_date" 
+                           name="start_date"
+                           value="{{ start_date }}"
+                           min="{{ today }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="end_date">
+                        <i class="bi bi-calendar-x"></i> End Date
+                    </label>
+                    <input type="date" 
+                           class="form-control" 
+                           id="end_date" 
+                           name="end_date"
+                           value="{{ end_date }}"
+                           min="{{ today }}">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <a href="{% url 'core:destination_selection' %}" class="btn btn-back">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+            <button type="submit" class="btn btn-primary btn-next" id="btnNext" disabled>
+                Next Step <i class="bi bi-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const durationCards = document.querySelectorAll('.duration-card');
+    const btnNext = document.getElementById('btnNext');
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    startDateInput.min = today;
+    endDateInput.min = today;
+    
+    // Initialize button state
+    updateButtonState();
+    
+    // Duration card click handler
+    durationCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            durationCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            this.classList.add('selected');
+            
+            // Check the radio button
+            const radio = this.querySelector('input[type="radio"]');
+            radio.checked = true;
+            
+            // Update button state
+            updateButtonState();
+            
+            // Auto-calculate end date if start date is set
+            if (startDateInput.value) {
+                calculateEndDate();
+            }
+        });
+    });
+    
+    // Start date change handler
+    startDateInput.addEventListener('change', function() {
+        // Update end date minimum
+        endDateInput.min = this.value;
+        
+        // Auto-calculate end date
+        calculateEndDate();
+    });
+    
+    // Calculate end date based on duration
+    function calculateEndDate() {
+        const startDate = startDateInput.value;
+        const selectedDuration = document.querySelector('input[name="duration"]:checked');
+        
+        if (startDate && selectedDuration) {
+            const duration = parseInt(selectedDuration.value);
+            const start = new Date(startDate);
+            const end = new Date(start);
+            end.setDate(end.getDate() + duration - 1);
+            
+            // Format date as YYYY-MM-DD
+            const endDateStr = end.toISOString().split('T')[0];
+            endDateInput.value = endDateStr;
+        }
+    }
+    
+    // Update button state
+    function updateButtonState() {
+        const selectedDuration = document.querySelector('input[name="duration"]:checked');
+        
+        if (selectedDuration) {
+            btnNext.disabled = false;
+        } else {
+            btnNext.disabled = true;
+        }
+    }
+    
+    // Form validation before submit
+    document.getElementById('wizardForm').addEventListener('submit', function(e) {
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+        
+        // If one date is filled, both must be filled
+        if ((startDate && !endDate) || (!startDate && endDate)) {
+            e.preventDefault();
+            alert('Please fill both start and end dates, or leave both empty');
+            return false;
+        }
+        
+        // Validate end date is after start date
+        if (startDate && endDate && endDate <= startDate) {
+            e.preventDefault();
+            alert('End date must be after start date');
+            return false;
+        }
+    });
+});
+</script>
+{% endblock %}
