@@ -11,6 +11,7 @@ Classes:
     
 Author: SafariSmart Kenya Team
 Date: 2025-11-16
+Updated: 2025-11-17 - Integrated ConfigurationService and custom exceptions
 """
 
 from typing import Dict, List, Optional, Any
@@ -19,6 +20,8 @@ from django.contrib.auth.models import User
 
 from core.models import WizardSession
 from destinations.models import Destination
+from core.services.configuration_service import ConfigurationService
+from core.exceptions import WizardValidationError
 
 
 class WizardSessionManager:
@@ -196,6 +199,7 @@ class WizardService:
             session (SessionBase): Django session object
         """
         self.session_manager = WizardSessionManager(session)
+        self.config = ConfigurationService.get_instance()
         
     def save_destinations(
         self, 
@@ -483,11 +487,13 @@ class WizardService:
         if total > 30:
             raise ValueError("Total group size cannot exceed 30 people")
             
-        # Validate travel type
-        valid_types = ['solo', 'family', 'couple', 'friends']
-        if travel_type not in valid_types:
-            raise ValueError(
-                f"Invalid travel type. Must be one of: {', '.join(valid_types)}"
+        # Validate travel type using configuration service
+        if not self.config.is_valid_travel_type(travel_type):
+            valid_types = self.config.get_travel_type_codes()
+            raise WizardValidationError(
+                f"Invalid travel type. Must be one of: {', '.join(valid_types)}",
+                field="travel_type",
+                value=travel_type
             )
 
     def save_budget(
@@ -565,11 +571,13 @@ class WizardService:
         if budget_amount > MAX_BUDGET:
             raise ValueError(f"Budget cannot exceed KSh {MAX_BUDGET:,}")
 
-        # Validate budget category
-        valid_categories = ['budget', 'mid-range', 'luxury']
-        if budget_category not in valid_categories:
-            raise ValueError(
-                f"Invalid budget category. Must be one of: {', '.join(valid_categories)}"
+        # Validate budget category using configuration service
+        if not self.config.is_valid_budget_category(budget_category):
+            valid_categories = self.config.get_budget_category_codes()
+            raise WizardValidationError(
+                f"Invalid budget category. Must be one of: {', '.join(valid_categories)}",
+                field="budget_category",
+                value=budget_category
             )
 
     def save_interests(self, interests: List[str]) -> None:
@@ -622,30 +630,26 @@ class WizardService:
         if not interests:
             raise ValueError("At least one interest must be selected")
 
-        # Validate maximum
-        if len(interests) > 10:
-            raise ValueError("Maximum 10 interests allowed")
+        # Validate maximum using configuration
+        max_interests = self.config.get_system_config().max_interests
+        if len(interests) > max_interests:
+            raise WizardValidationError(
+                f"Maximum {max_interests} interests allowed",
+                field="interests",
+                value=len(interests)
+            )
 
-        # Validate each interest
-        valid_interests = [
-            'wildlife',
-            'culture',
-            'food',
-            'adventure',
-            'relaxation',
-            'photography',
-            'history',
-            'nature',
-            'beach',
-            'nightlife'
-        ]
+        # Validate each interest using configuration service
+        valid_interests = self.config.get_interest_codes()
 
         for interest in interests:
             if not isinstance(interest, str):
                 raise TypeError("Each interest must be a string")
 
-            if interest not in valid_interests:
-                raise ValueError(
+            if not self.config.is_valid_interest(interest):
+                raise WizardValidationError(
                     f"Invalid interest: {interest}. "
-                    f"Must be one of: {', '.join(valid_interests)}"
+                    f"Must be one of: {', '.join(valid_interests)}",
+                    field="interests",
+                    value=interest
                 )
