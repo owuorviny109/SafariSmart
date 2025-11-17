@@ -1,0 +1,43 @@
+[
+  {
+    "model": "core.securitysettings",
+    "pk": 1,
+    "fields": {
+      "singleton_id": 1,
+      "brute_force_enabled": true,
+      "max_login_attempts": 5,
+      "lockout_duration_minutes": 30,
+      "global_rate_limit_enabled": true,
+      "global_rate_limit_per_minute": 100,
+      "api_rate_limit_per_minute": 60,
+      "api_rate_limit_per_hour": 1000,
+      "api_rate_limit_per_day": 10000,
+      "session_timeout_minutes": 60,
+      "session_expire_on_close": false,
+      "require_https_cookies": true,
+      "validate_session_ip": true,
+      "validate_session_user_agent": true,
+      "min_password_length": 12,
+      "require_uppercase": true,
+      "require_lowercase": true,
+      "require_numbers": true,
+      "require_special_chars": true,
+      "password_expiry_days": 0,
+      "admin_ip_whitelist_enabled": false,
+      "admin_allowed_ips": "",
+      "admin_session_timeout_minutes": 15,
+      "enable_hsts": true,
+      "hsts_max_age_seconds": 31536000,
+      "enable_csp": true,
+      "enable_xss_protection": true,
+      "enable_clickjacking_protection": true,
+      "enable_security_logging": true,
+      "enable_failed_login_alerts": true,
+      "failed_login_alert_threshold": 3,
+      "enable_suspicious_activity_alerts": true,
+      "alert_email": "",
+      "updated_at": "2025-11-17T12:00:00Z",
+      "updated_by": "system"
+    }
+  }
+]

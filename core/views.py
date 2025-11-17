@@ -120,8 +120,8 @@ class DestinationSelectionView(View):
         # Initialize wizard service
         wizard_service = WizardService(request.session)
         
-        # Get only featured destinations (top 6) ordered by type
-        destinations = Destination.objects.filter(is_featured=True).order_by('destination_type', 'name')
+        # Get all destinations ordered by type
+        destinations = Destination.objects.all().order_by('destination_type', 'name')
         
         # Get previously selected destinations if any
         selected_destinations = wizard_service.get_selected_destinations()

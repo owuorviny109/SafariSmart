@@ -97,6 +97,12 @@ from .models_api_tracking import (
     APIUsageStats
 )
 
+# Import security models
+from .models_security import (
+    SecuritySettings,
+    SecurityEvent
+)
+
 __all__ = [
     'WizardSession',
     'Itinerary',
@@ -107,4 +113,6 @@ __all__ = [
     'SystemConfiguration',
     'APIUsageLog',
     'APIUsageStats',
+    'SecuritySettings',
+    'SecurityEvent',
 ]
