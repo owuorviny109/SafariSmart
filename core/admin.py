@@ -17,3 +17,15 @@ class ItineraryAdmin(admin.ModelAdmin):
     search_fields = ['title', 'user__email', 'share_code']
     readonly_fields = ['share_code', 'view_count', 'created_at', 'updated_at']
     filter_horizontal = ['destinations']
+
+
+# Import and register configuration admin interfaces
+from .admin_config import (
+    TravelTypeAdmin,
+    BudgetCategoryAdmin,
+    InterestCategoryAdmin,
+    BudgetEstimateAdmin,
+    SystemConfigurationAdmin
+)
+
+# Admin interfaces are already registered via @admin.register decorators in admin_config.py

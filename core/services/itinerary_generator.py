@@ -12,6 +12,7 @@ Classes:
     
 Author: SafariSmart Kenya Team
 Date: 2025-11-16
+Updated: 2025-11-17 - Integrated BaseItineraryGenerator and ConfigurationService
 """
 
 import logging
@@ -20,20 +21,27 @@ from django.conf import settings
 import google.generativeai as genai
 
 from destinations.models import Destination
+from core.services.base_generator import BaseItineraryGenerator
+from core.services.configuration_service import ConfigurationService
+from core.services.rate_limiter import RateLimiter
+from core.exceptions import AIServiceError, ItineraryGenerationError
 
 
 logger = logging.getLogger(__name__)
 
 
-class GeminiItineraryGenerator:
+class GeminiItineraryGenerator(BaseItineraryGenerator):
     """
     AI-powered itinerary generator using Google Gemini.
     
     This class generates personalized travel itineraries using
     Google's Gemini AI model based on user preferences.
     
+    Inherits from BaseItineraryGenerator to ensure interface consistency.
+    
     Attributes:
         model: Gemini generative model instance
+        config: Configuration service instance
         
     Example:
         >>> generator = GeminiItineraryGenerator()
@@ -41,22 +49,26 @@ class GeminiItineraryGenerator:
     """
     
     def __init__(self):
-        """Initialize Gemini AI model."""
+        """Initialize Gemini AI model, configuration service, and rate limiter."""
         api_key = settings.GEMINI_API_KEY
         
         if not api_key:
-            raise ValueError(
-                "GEMINI_API_KEY not configured. "
-                "Add it to your .env file."
+            raise AIServiceError(
+                "GEMINI_API_KEY not configured. Add it to your .env file.",
+                service_name="gemini"
             )
             
         genai.configure(api_key=api_key)
         # Use gemini-2.5-flash (latest free tier model)
         self.model = genai.GenerativeModel('gemini-2.5-flash')
+        self.config = ConfigurationService.get_instance()
+        self.rate_limiter = RateLimiter.get_instance()
         
     def generate(self, preferences: Dict[str, Any]) -> Dict[str, Any]:
         """
         Generate AI-powered itinerary based on user preferences.
+        
+        Validates preferences using base class before generation.
         
         Args:
             preferences (Dict[str, Any]): User preferences including:
@@ -72,13 +84,23 @@ class GeminiItineraryGenerator:
             Dict[str, Any]: Generated itinerary with daily activities
             
         Raises:
-            Exception: If AI generation fails
+            ItineraryGenerationError: If AI generation fails
+            WizardValidationError: If preferences are invalid
         """
+        # Validate preferences using base class
+        self.validate_preferences(preferences)
+        
         try:
             prompt = self._build_prompt(preferences)
             
-            logger.info("Generating itinerary with Gemini AI")
-            response = self.model.generate_content(prompt)
+            logger.info("Generating itinerary with Gemini AI (rate-limited)")
+            
+            # Execute with rate limiting
+            response = self.rate_limiter.execute(
+                'gemini',
+                self.model.generate_content,
+                prompt
+            )
             
             itinerary = self._parse_response(response.text, preferences)
             
@@ -87,7 +109,11 @@ class GeminiItineraryGenerator:
             
         except Exception as e:
             logger.error(f"Gemini AI generation failed: {str(e)}")
-            raise
+            raise ItineraryGenerationError(
+                "Failed to generate itinerary with AI",
+                generator_type="ai",
+                original_error=e
+            )
             
     def _build_prompt(self, preferences: Dict[str, Any]) -> str:
         """
@@ -232,17 +258,26 @@ Generate a realistic, exciting, and practical itinerary."""
         return f"{duration}-Day {dest_names} Safari"
 
 
-class TemplateItineraryGenerator:
+class TemplateItineraryGenerator(BaseItineraryGenerator):
     """
     Template-based itinerary generator as fallback.
     
     This class generates basic itineraries using predefined templates
     when AI generation fails or is unavailable.
     
+    Inherits from BaseItineraryGenerator to ensure interface consistency.
+    
+    Attributes:
+        config: Configuration service instance
+    
     Example:
         >>> generator = TemplateItineraryGenerator()
         >>> itinerary = generator.generate(preferences)
     """
+    
+    def __init__(self):
+        """Initialize configuration service."""
+        self.config = ConfigurationService.get_instance()
     
     def generate(self, preferences: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -429,35 +464,28 @@ Accommodation: {accommodation}
         )
         
     def _generate_budget_template(self, budget_category: str) -> str:
-        """Generate budget breakdown template."""
-        budget_estimates = {
-            'budget': {
-                'accommodation': '5,000 - 8,000',
-                'activities': '3,000 - 5,000',
-                'meals': '2,000 - 3,000',
-                'transport': '2,000 - 4,000'
-            },
-            'mid-range': {
-                'accommodation': '10,000 - 15,000',
-                'activities': '5,000 - 8,000',
-                'meals': '3,000 - 5,000',
-                'transport': '4,000 - 6,000'
-            },
-            'luxury': {
-                'accommodation': '20,000 - 40,000',
-                'activities': '10,000 - 15,000',
-                'meals': '5,000 - 8,000',
-                'transport': '6,000 - 10,000'
-            }
-        }
+        """
+        Generate budget breakdown template using configuration service.
         
-        estimates = budget_estimates.get(budget_category, budget_estimates['mid-range'])
+        Retrieves budget estimates from database instead of hardcoded values.
+        
+        Args:
+            budget_category (str): Budget category code
+            
+        Returns:
+            str: Formatted budget breakdown
+        """
+        # Get budget breakdown from configuration service
+        breakdown = self.config.get_budget_breakdown(budget_category)
+        
+        if not breakdown:
+            return "Budget estimates not available for this category.\n\n"
         
         return f"""ESTIMATED BUDGET BREAKDOWN (Per Day):
-- Accommodation: KSh {estimates['accommodation']}
-- Activities: KSh {estimates['activities']}
-- Meals: KSh {estimates['meals']}
-- Transport: KSh {estimates['transport']}
+- Accommodation: KSh {breakdown['accommodation'][0]:,} - {breakdown['accommodation'][1]:,}
+- Activities: KSh {breakdown['activities'][0]:,} - {breakdown['activities'][1]:,}
+- Meals: KSh {breakdown['meals'][0]:,} - {breakdown['meals'][1]:,}
+- Transport: KSh {breakdown['transport'][0]:,} - {breakdown['transport'][1]:,}
 
 Note: Actual costs may vary based on season and availability.
 

@@ -80,3 +80,31 @@ class Itinerary(models.Model):
     def increment_view_count(self):
         self.view_count += 1
         self.save(update_fields=['view_count'])
+
+
+# Import configuration models
+from .models_config import (
+    TravelType,
+    BudgetCategory,
+    InterestCategory,
+    BudgetEstimate,
+    SystemConfiguration
+)
+
+# Import API tracking models
+from .models_api_tracking import (
+    APIUsageLog,
+    APIUsageStats
+)
+
+__all__ = [
+    'WizardSession',
+    'Itinerary',
+    'TravelType',
+    'BudgetCategory',
+    'InterestCategory',
+    'BudgetEstimate',
+    'SystemConfiguration',
+    'APIUsageLog',
+    'APIUsageStats',
+]

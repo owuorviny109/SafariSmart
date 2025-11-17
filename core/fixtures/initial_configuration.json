@@ -1,0 +1,282 @@
+[
+  {
+    "model": "core.traveltype",
+    "pk": 1,
+    "fields": {
+      "code": "solo",
+      "name": "Solo Traveler",
+      "description": "Traveling alone for personal adventure and discovery",
+      "icon": "👤",
+      "is_active": true,
+      "sort_order": 1
+    }
+  },
+  {
+    "model": "core.traveltype",
+    "pk": 2,
+    "fields": {
+      "code": "couple",
+      "name": "Couple",
+      "description": "Romantic getaway for two",
+      "icon": "💑",
+      "is_active": true,
+      "sort_order": 2
+    }
+  },
+  {
+    "model": "core.traveltype",
+    "pk": 3,
+    "fields": {
+      "code": "family",
+      "name": "Family Trip",
+      "description": "Family vacation with children",
+      "icon": "👨‍👩‍👧‍👦",
+      "is_active": true,
+      "sort_order": 3
+    }
+  },
+  {
+    "model": "core.traveltype",
+    "pk": 4,
+    "fields": {
+      "code": "friends",
+      "name": "Friends Group",
+      "description": "Adventure with friends",
+      "icon": "👥",
+      "is_active": true,
+      "sort_order": 4
+    }
+  },
+  {
+    "model": "core.budgetcategory",
+    "pk": 1,
+    "fields": {
+      "code": "budget",
+      "name": "Budget-Friendly",
+      "description": "Affordable options for budget-conscious travelers",
+      "min_budget_per_day": 5000,
+      "max_budget_per_day": 10000,
+      "icon": "💰",
+      "is_active": true,
+      "sort_order": 1
+    }
+  },
+  {
+    "model": "core.budgetcategory",
+    "pk": 2,
+    "fields": {
+      "code": "mid-range",
+      "name": "Mid-Range",
+      "description": "Comfortable accommodations and quality experiences",
+      "min_budget_per_day": 10000,
+      "max_budget_per_day": 25000,
+      "icon": "💵",
+      "is_active": true,
+      "sort_order": 2
+    }
+  },
+  {
+    "model": "core.budgetcategory",
+    "pk": 3,
+    "fields": {
+      "code": "luxury",
+      "name": "Luxury",
+      "description": "Premium accommodations and exclusive experiences",
+      "min_budget_per_day": 25000,
+      "max_budget_per_day": 100000,
+      "icon": "💎",
+      "is_active": true,
+      "sort_order": 3
+    }
+  },
+  {
+    "model": "core.budgetestimate",
+    "pk": 1,
+    "fields": {
+      "budget_category": 1,
+      "accommodation_min": 5000,
+      "accommodation_max": 8000,
+      "activities_min": 3000,
+      "activities_max": 5000,
+      "meals_min": 2000,
+      "meals_max": 3000,
+      "transport_min": 2000,
+      "transport_max": 4000,
+      "notes": "Budget-friendly options with basic accommodations and essential activities"
+    }
+  },
+  {
+    "model": "core.budgetestimate",
+    "pk": 2,
+    "fields": {
+      "budget_category": 2,
+      "accommodation_min": 10000,
+      "accommodation_max": 15000,
+      "activities_min": 5000,
+      "activities_max": 8000,
+      "meals_min": 3000,
+      "meals_max": 5000,
+      "transport_min": 4000,
+      "transport_max": 6000,
+      "notes": "Mid-range options with comfortable lodges and quality activities"
+    }
+  },
+  {
+    "model": "core.budgetestimate",
+    "pk": 3,
+    "fields": {
+      "budget_category": 3,
+      "accommodation_min": 20000,
+      "accommodation_max": 40000,
+      "activities_min": 10000,
+      "activities_max": 15000,
+      "meals_min": 5000,
+      "meals_max": 8000,
+      "transport_min": 6000,
+      "transport_max": 10000,
+      "notes": "Luxury options with premium resorts and exclusive experiences"
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 1,
+    "fields": {
+      "code": "wildlife",
+      "name": "Wildlife & Safari",
+      "description": "Game drives, animal viewing, and safari experiences",
+      "icon": "🦁",
+      "is_active": true,
+      "sort_order": 1
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 2,
+    "fields": {
+      "code": "culture",
+      "name": "Culture & Heritage",
+      "description": "Local traditions, villages, and cultural experiences",
+      "icon": "🏛️",
+      "is_active": true,
+      "sort_order": 2
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 3,
+    "fields": {
+      "code": "food",
+      "name": "Food & Cuisine",
+      "description": "Local dishes, cooking classes, and culinary experiences",
+      "icon": "🍽️",
+      "is_active": true,
+      "sort_order": 3
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 4,
+    "fields": {
+      "code": "adventure",
+      "name": "Adventure & Sports",
+      "description": "Hiking, climbing, water sports, and adrenaline activities",
+      "icon": "🏔️",
+      "is_active": true,
+      "sort_order": 4
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 5,
+    "fields": {
+      "code": "relaxation",
+      "name": "Relaxation & Wellness",
+      "description": "Spa treatments, yoga, and peaceful retreats",
+      "icon": "🧘",
+      "is_active": true,
+      "sort_order": 5
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 6,
+    "fields": {
+      "code": "photography",
+      "name": "Photography",
+      "description": "Scenic viewpoints, wildlife photography, and photo tours",
+      "icon": "📸",
+      "is_active": true,
+      "sort_order": 6
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 7,
+    "fields": {
+      "code": "history",
+      "name": "History & Museums",
+      "description": "Historical sites, museums, and archaeological locations",
+      "icon": "📚",
+      "is_active": true,
+      "sort_order": 7
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 8,
+    "fields": {
+      "code": "nature",
+      "name": "Nature & Hiking",
+      "description": "Nature walks, bird watching, and eco-tourism",
+      "icon": "🌿",
+      "is_active": true,
+      "sort_order": 8
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 9,
+    "fields": {
+      "code": "beach",
+      "name": "Beach & Water",
+      "description": "Beach activities, snorkeling, diving, and water sports",
+      "icon": "🏖️",
+      "is_active": true,
+      "sort_order": 9
+    }
+  },
+  {
+    "model": "core.interestcategory",
+    "pk": 10,
+    "fields": {
+      "code": "nightlife",
+      "name": "Nightlife & Entertainment",
+      "description": "Evening entertainment, bars, and local nightlife",
+      "icon": "🎭",
+      "is_active": true,
+      "sort_order": 10
+    }
+  },
+  {
+    "model": "core.systemconfiguration",
+    "pk": 1,
+    "fields": {
+      "min_trip_duration": 1,
+      "max_trip_duration": 30,
+      "min_budget": 10000,
+      "max_budget": 500000,
+      "min_adults": 1,
+      "max_adults": 20,
+      "max_children": 20,
+      "max_total_travelers": 30,
+      "max_destinations": 10,
+      "max_interests": 10,
+      "enable_ai_generation": true,
+      "enable_weather_forecasts": true,
+      "enable_custom_destinations": true,
+      "support_email": "info@safarismart.co.ke",
+      "support_phone": "",
+      "updated_by": "system"
+    }
+  }
+]
