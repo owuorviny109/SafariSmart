@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block title %}SafariSmart Kenya - AI Safari Trip Planner | Plan Your Perfect Kenya Adventure{% endblock %}
+{% block meta_description %}Plan your perfect Kenya safari, beach vacation & adventure with AI. Explore Maasai Mara, Diani Beach, Amboseli & 20+ destinations. Get personalized itineraries, weather forecasts & interactive maps. Start planning today!{% endblock %}
+
+{% block structured_data %}
+{% include 'structured_data/faq.html' %}
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section class="hero-section text-center">
@@ -116,6 +123,139 @@
         <a href="{% url 'core:destination_selection' %}" class="btn btn-light btn-lg px-5">
             <i class="bi bi-rocket-takeoff"></i> Start Your Journey
         </a>
+    </div>
+</section>
+
+<!-- SEO Content Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h2 class="text-center mb-4">Plan Your Kenya Safari & Beach Vacation with AI</h2>
+                <p class="text-muted">
+                    SafariSmart Kenya is your ultimate AI-powered trip planning platform for exploring the best of Kenya. 
+                    Whether you're dreaming of a <strong>Maasai Mara safari</strong>, relaxing on <strong>Diani Beach</strong>, 
+                    or exploring <strong>Amboseli National Park</strong>, our intelligent system creates personalized 
+                    day-by-day itineraries tailored to your budget, interests, and travel style.
+                </p>
+                <p class="text-muted">
+                    Discover <strong>20+ amazing Kenya destinations</strong> including wildlife safaris, pristine beaches, 
+                    mountain adventures, and cultural experiences. Get real-time weather forecasts, interactive route maps, 
+                    and expert recommendations for accommodations, activities, and local cuisine. Start planning your 
+                    perfect Kenya adventure today!
+                </p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h3 class="h6 fw-bold">Popular Safari Destinations:</h3>
+                        <ul class="small text-muted">
+                            <li>Maasai Mara National Reserve</li>
+                            <li>Amboseli National Park</li>
+                            <li>Tsavo National Park</li>
+                            <li>Samburu National Reserve</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="h6 fw-bold">Beach & Coastal Destinations:</h3>
+                        <ul class="small text-muted">
+                            <li>Diani Beach</li>
+                            <li>Watamu</li>
+                            <li>Malindi</li>
+                            <li>Lamu Island</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section (Rich Snippets) -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                How much does a Kenya safari cost?
+                            </button>
+                        </h3>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                A Kenya safari typically costs between KSh 10,000 to 500,000 depending on duration, destinations, and accommodation level. Budget safaris start at KSh 15,000/day, mid-range at KSh 30,000/day, and luxury safaris from KSh 80,000/day. Our AI planner helps you create the perfect itinerary within your budget.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                What is the best time to visit Kenya for safari?
+                            </button>
+                        </h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                The best time for Kenya safari is during the dry seasons: July to October (Great Migration in Maasai Mara) and January to February. These months offer excellent wildlife viewing, clear weather, and easier game drives. Our platform provides real-time weather forecasts for all destinations.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                How many days do I need for a Kenya safari?
+                            </button>
+                        </h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We recommend 5-7 days for a comprehensive Kenya safari experience. This allows you to visit 2-3 major parks like Maasai Mara and Amboseli. For beach combinations, plan 7-10 days. Our AI planner optimizes your itinerary based on your available time and interests.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                Can I combine safari and beach in one Kenya trip?
+                            </button>
+                        </h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Absolutely! Kenya offers the perfect safari-beach combination. Spend 4-5 days on safari in Maasai Mara or Amboseli, then relax 3-4 days on Diani Beach or Watamu. Our AI planner creates seamless itineraries combining wildlife adventures with coastal relaxation, including optimal routes and timing.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                Is Kenya safe for tourists?
+                            </button>
+                        </h3>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, Kenya is generally safe for tourists, especially in major tourist areas like Maasai Mara, Amboseli, Diani Beach, and Nairobi's tourist zones. Follow standard travel precautions, use reputable tour operators, and stay in recommended accommodations. Our platform provides safety tips and trusted recommendations for each destination.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                Do I need a visa to visit Kenya?
+                            </button>
+                        </h3>
+                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Most visitors need an eVisa for Kenya, which costs $50 USD and can be obtained online at evisa.go.ke. Citizens of some African countries can enter visa-free. The eVisa is valid for 90 days. Apply at least 7 days before travel. Check current requirements based on your nationality.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

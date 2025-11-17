@@ -1,0 +1,53 @@
+<!-- TouristDestination Schema for {{ destination.name }} -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TouristDestination",
+    "name": "{{ destination.name }}",
+    "description": "{{ destination.description|truncatewords:30|escapejs }}",
+    "url": "https://safarismart.co.ke/destinations/{{ destination.slug }}/",
+    "image": "{% if destination.image %}{{ destination.image.url }}{% elif destination.image_url %}{{ destination.image_url }}{% else %}https://safarismart.co.ke/static/images/destinations/{{ destination.slug }}.jpg{% endif %}",
+    {% if destination.latitude and destination.longitude %}
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "{{ destination.latitude }}",
+        "longitude": "{{ destination.longitude }}"
+    },
+    {% endif %}
+    "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "{{ destination.county }}",
+        "addressCountry": "KE"
+    },
+    "touristType": "{{ destination.get_destination_type_display }}",
+    "availableLanguage": ["English", "Swahili"],
+    "isAccessibleForFree": false,
+    "publicAccess": true
+}
+</script>
+
+<!-- Place Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "name": "{{ destination.name }}",
+    "description": "{{ destination.description|escapejs }}",
+    {% if destination.latitude and destination.longitude %}
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "{{ destination.latitude }}",
+        "longitude": "{{ destination.longitude }}"
+    },
+    {% endif %}
+    "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "{{ destination.county }}",
+        "addressCountry": "Kenya"
+    },
+    "containedInPlace": {
+        "@type": "Country",
+        "name": "Kenya"
+    }
+}
+</script>

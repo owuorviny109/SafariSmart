@@ -47,6 +47,40 @@ def landing_page(request: HttpRequest) -> HttpResponse:
     })
 
 
+def sitemap(request: HttpRequest) -> HttpResponse:
+    """
+    Generate XML sitemap for search engines.
+    
+    Args:
+        request (HttpRequest): HTTP request object
+        
+    Returns:
+        HttpResponse: XML sitemap
+    """
+    from datetime import datetime
+    
+    destinations = Destination.objects.all()
+    context = {
+        'destinations': destinations,
+        'current_date': datetime.now()
+    }
+    
+    return render(request, 'sitemap.xml', context, content_type='application/xml')
+
+
+def robots_txt(request: HttpRequest) -> HttpResponse:
+    """
+    Generate robots.txt for search engine crawlers.
+    
+    Args:
+        request (HttpRequest): HTTP request object
+        
+    Returns:
+        HttpResponse: robots.txt file
+    """
+    return render(request, 'robots.txt', {}, content_type='text/plain')
+
+
 class DestinationSelectionView(View):
     """
     Handles destination selection for trip planning wizard.

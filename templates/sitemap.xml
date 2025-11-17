@@ -1,0 +1,56 @@
+{% load static %}<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+    <!-- Homepage -->
+    <url>
+        <loc>https://safarismart.co.ke/</loc>
+        <lastmod>{{ current_date|date:"Y-m-d" }}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Destinations List -->
+    <url>
+        <loc>https://safarismart.co.ke/destinations/</loc>
+        <lastmod>{{ current_date|date:"Y-m-d" }}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Individual Destinations -->
+    {% for destination in destinations %}
+    <url>
+        <loc>https://safarismart.co.ke/destinations/{{ destination.slug }}/</loc>
+        <lastmod>{{ destination.updated_at|date:"Y-m-d" }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    {% endfor %}
+    
+    <!-- Wizard Steps -->
+    <url>
+        <loc>https://safarismart.co.ke/wizard/destinations/</loc>
+        <lastmod>{{ current_date|date:"Y-m-d" }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Authentication Pages -->
+    <url>
+        <loc>https://safarismart.co.ke/accounts/login/</loc>
+        <lastmod>{{ current_date|date:"Y-m-d" }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://safarismart.co.ke/accounts/register/</loc>
+        <lastmod>{{ current_date|date:"Y-m-d" }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+</urlset>

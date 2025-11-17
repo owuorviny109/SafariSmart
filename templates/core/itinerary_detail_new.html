@@ -2,7 +2,39 @@
 {% load static %}
 {% load dict_filters %}
 
-{% block title %}{{ itinerary.title }} - SafariSmart Kenya{% endblock %}
+{% block title %}{{ itinerary.title }} - {{ itinerary.duration_days }} Day Kenya Itinerary | SafariSmart{% endblock %}
+
+{% block meta_title %}{{ itinerary.title }} - Personalized {{ itinerary.duration_days }}-Day Kenya Trip Plan{% endblock %}
+{% block meta_description %}Explore this {{ itinerary.duration_days }}-day Kenya itinerary covering {% for dest in itinerary.destinations.all %}{{ dest.name }}{% if not forloop.last %}, {% endif %}{% endfor %}. Budget: KSh {{ itinerary.total_budget }}. Get day-by-day plans, activities, and costs.{% endblock %}
+
+{% block canonical %}https://safarismart.co.ke/itinerary/{{ itinerary.share_code }}/{% endblock %}
+
+{% block breadcrumb_schema %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://safarismart.co.ke/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Itinerary",
+            "item": "https://safarismart.co.ke/itinerary/{{ itinerary.share_code }}/"
+        }
+    ]
+}
+</script>
+{% endblock %}
+
+{% block structured_data %}
+{% include 'structured_data/itinerary.html' %}
+{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/itinerary_detail.css' %}">
