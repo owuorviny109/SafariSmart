@@ -1,0 +1,222 @@
+/* 
+ * SafariSmart Kenya - Hero Background System
+ * Optimized for stunning Kenya imagery
+ */
+
+/* ============================================
+   HERO BACKGROUND VARIANTS
+   Replace URLs with your actual images
+   ============================================ */
+
+/* Main Hero - Maasai Mara Landscape */
+.hero-maasai-mara {
+    background-image: 
+        linear-gradient(135deg, rgba(0, 68, 0, 0.85) 0%, rgba(0, 102, 0, 0.75) 50%, rgba(0, 136, 0, 0.65) 100%),
+        url('/static/images/heroes/maasai-mara-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Parallax effect */
+}
+
+/* Diani Beach Hero */
+.hero-diani-beach {
+    background-image: 
+        linear-gradient(135deg, rgba(25, 118, 210, 0.7) 0%, rgba(0, 102, 0, 0.6) 100%),
+        url('/static/images/heroes/diani-beach-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Amboseli Elephants */
+.hero-amboseli {
+    background-image: 
+        linear-gradient(135deg, rgba(140, 90, 50, 0.7) 0%, rgba(0, 102, 0, 0.6) 100%),
+        url('/static/images/heroes/amboseli-elephants-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Mount Kenya */
+.hero-mount-kenya {
+    background-image: 
+        linear-gradient(135deg, rgba(0, 68, 0, 0.75) 0%, rgba(140, 90, 50, 0.65) 100%),
+        url('/static/images/heroes/mount-kenya-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Sunset Safari */
+.hero-sunset-safari {
+    background-image: 
+        linear-gradient(135deg, rgba(255, 122, 0, 0.6) 0%, rgba(210, 161, 0, 0.5) 100%),
+        url('/static/images/heroes/sunset-safari-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Lake Nakuru */
+.hero-lake-nakuru {
+    background-image: 
+        linear-gradient(135deg, rgba(255, 122, 0, 0.6) 0%, rgba(210, 161, 0, 0.5) 100%),
+        url('/static/images/heroes/lake-nakuru-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* ============================================
+   OPTIMIZED IMAGE LOADING
+   ============================================ */
+
+/* Lazy load optimization */
+.hero-image-lazy {
+    background-color: var(--kenya-green);
+    transition: opacity 0.5s ease-in;
+}
+
+.hero-image-lazy.loaded {
+    opacity: 1;
+}
+
+/* Image overlay patterns */
+.hero-overlay-dots {
+    position: relative;
+}
+
+.hero-overlay-dots::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.3;
+}
+
+/* Gradient overlays for better text readability */
+.hero-gradient-overlay {
+    position: relative;
+}
+
+.hero-gradient-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    pointer-events: none;
+}
+
+/* ============================================
+   SECTION BACKGROUNDS
+   ============================================ */
+
+/* Subtle pattern backgrounds */
+.bg-savanna-pattern {
+    background-color: #FFF7E6;
+    background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(140, 90, 50, 0.03) 35px, rgba(140, 90, 50, 0.03) 70px);
+}
+
+.bg-acacia-pattern {
+    background-color: #F9FAFB;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(0, 102, 0, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 122, 0, 0.03) 0%, transparent 50%);
+}
+
+/* Image cards with overlay */
+.image-card-overlay {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+}
+
+.image-card-overlay img {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-card-overlay:hover img {
+    transform: scale(1.1);
+}
+
+.image-card-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    transition: height 0.3s ease;
+}
+
+.image-card-overlay:hover::after {
+    height: 100%;
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* WebP support with fallback */
+@supports (background-image: url('image.webp')) {
+    .hero-maasai-mara {
+        background-image: 
+            linear-gradient(135deg, rgba(0, 68, 0, 0.85) 0%, rgba(0, 102, 0, 0.75) 50%, rgba(0, 136, 0, 0.65) 100%),
+            url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1920&q=80&fm=webp');
+    }
+}
+
+/* Responsive images */
+@media (max-width: 768px) {
+    .hero-maasai-mara,
+    .hero-diani-beach,
+    .hero-amboseli,
+    .hero-mount-kenya,
+    .hero-sunset-safari {
+        background-attachment: scroll; /* Better mobile performance */
+        background-size: cover;
+    }
+}
+
+/* Preload critical images */
+.preload-hero {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+/* ============================================
+   DESTINATION-SPECIFIC BACKGROUNDS
+   ============================================ */
+
+/* Safari destinations */
+.bg-safari {
+    background: linear-gradient(135deg, rgba(140, 90, 50, 0.05) 0%, rgba(0, 102, 0, 0.05) 100%);
+}
+
+/* Beach destinations */
+.bg-beach {
+    background: linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(0, 188, 212, 0.05) 100%);
+}
+
+/* Mountain destinations */
+.bg-mountain {
+    background: linear-gradient(135deg, rgba(96, 125, 139, 0.05) 0%, rgba(0, 102, 0, 0.05) 100%);
+}
+
+/* Cultural destinations */
+.bg-cultural {
+    background: linear-gradient(135deg, rgba(255, 122, 0, 0.05) 0%, rgba(210, 161, 0, 0.05) 100%);
+}

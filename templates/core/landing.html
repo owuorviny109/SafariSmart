@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}SafariSmart Kenya - AI Safari Trip Planner | Plan Your Perfect Kenya Adventure{% endblock %}
 {% block meta_description %}Plan your perfect Kenya safari, beach vacation & adventure with AI. Explore Maasai Mara, Diani Beach, Amboseli & 20+ destinations. Get personalized itineraries, weather forecasts & interactive maps. Start planning today!{% endblock %}
@@ -7,12 +8,423 @@
 {% include 'structured_data/faq.html' %}
 {% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/hero-backgrounds.css' %}">
+<style>
+    /* Hero Parallax Background */
+    .hero-immersive {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
+    
+    .hero-immersive::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(255, 122, 0, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(210, 161, 0, 0.1) 0%, transparent 50%);
+        animation: pulse 8s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+    
+    .hero-immersive::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: linear-gradient(to top, rgba(255, 255, 255, 1), transparent);
+    }
+    
+    .hero-constellation {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: var(--space-3xl) var(--space-lg);
+    }
+    
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        padding: var(--space-sm) var(--space-lg);
+        border-radius: var(--radius-full);
+        color: white;
+        font-weight: 600;
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-xl);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .hero-badge i {
+        color: var(--sunset-orange);
+    }
+    
+    .hero-proclamation {
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        color: white;
+        margin-bottom: var(--space-xl);
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    
+    .hero-proclamation .gradient-shimmer {
+        background: linear-gradient(135deg, #FFD700, #FF7A00, #FFD700);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 3s linear infinite;
+    }
+    
+    @keyframes shimmer {
+        to { background-position: 200% center; }
+    }
+    
+    .hero-manifesto {
+        font-size: clamp(1.125rem, 2vw, 1.5rem);
+        color: rgba(255, 255, 255, 0.95);
+        margin-bottom: var(--space-3xl);
+        line-height: 1.6;
+        animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+    
+    /* Quick Trip Orchestrator */
+    .trip-orchestrator {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-2xl);
+        box-shadow: var(--shadow-2xl);
+        border: 1px solid rgba(0, 102, 0, 0.1);
+        animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+    
+    .orchestrator-header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        margin-bottom: var(--space-xl);
+    }
+    
+    .orchestrator-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--kenya-green), var(--sunset-orange));
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+    }
+    
+    .orchestrator-title {
+        font-size: var(--text-xl);
+        font-weight: 700;
+        color: var(--gray-900);
+        margin: 0;
+    }
+    
+    .orchestrator-subtitle {
+        font-size: var(--text-sm);
+        color: var(--gray-600);
+        margin: 0;
+    }
+    
+    .input-constellation {
+        position: relative;
+    }
+    
+    .input-constellation input {
+        width: 100%;
+        padding: var(--space-lg) var(--space-xl);
+        padding-left: 60px;
+        border: 2px solid var(--gray-300);
+        border-radius: var(--radius-xl);
+        font-size: var(--text-base);
+        transition: all var(--transition-base);
+        background: white;
+    }
+    
+    .input-constellation input:focus {
+        outline: none;
+        border-color: var(--kenya-green);
+        box-shadow: 0 0 0 4px rgba(0, 102, 0, 0.1);
+    }
+    
+    .input-icon {
+        position: absolute;
+        left: var(--space-lg);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--kenya-green);
+        font-size: 24px;
+    }
+    
+    .input-hint {
+        margin-top: var(--space-md);
+        font-size: var(--text-sm);
+        color: var(--gray-600);
+    }
+    
+    .hint-examples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        margin-top: var(--space-sm);
+    }
+    
+    .hint-chip {
+        background: var(--gray-100);
+        padding: var(--space-xs) var(--space-md);
+        border-radius: var(--radius-full);
+        font-size: var(--text-xs);
+        color: var(--gray-700);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
+    }
+    
+    .hint-chip i {
+        color: var(--success);
+    }
+    
+    /* Value Constellation */
+    .value-constellation {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--space-xl);
+        margin-top: var(--space-3xl);
+    }
+    
+    .value-orb {
+        background: white;
+        border-radius: var(--radius-2xl);
+        padding: var(--space-2xl);
+        box-shadow: var(--shadow-lg);
+        transition: all var(--transition-base);
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .value-orb::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--kenya-green), var(--sunset-orange));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--transition-base);
+    }
+    
+    .value-orb:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-2xl);
+        border-color: var(--kenya-green);
+    }
+    
+    .value-orb:hover::before {
+        transform: scaleX(1);
+    }
+    
+    .value-icon-wrapper {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--kenya-green), var(--kenya-green-light));
+        border-radius: var(--radius-xl);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: var(--space-lg);
+        position: relative;
+    }
+    
+    .value-icon-wrapper::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        background: linear-gradient(135deg, var(--kenya-green), var(--sunset-orange));
+        border-radius: var(--radius-xl);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity var(--transition-base);
+    }
+    
+    .value-orb:hover .value-icon-wrapper::after {
+        opacity: 0.3;
+    }
+    
+    .value-icon-wrapper i {
+        font-size: 32px;
+        color: white;
+    }
+    
+    .value-title {
+        font-size: var(--text-xl);
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: var(--space-sm);
+    }
+    
+    .value-description {
+        color: var(--gray-600);
+        line-height: 1.6;
+        margin: 0;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section text-center">
+<!-- Hero Immersive with Stunning Kenya Background -->
+<section class="hero-immersive hero-maasai-mara">
     <div class="container">
-        <h1 class="display-3 fw-bold mb-4">🇰🇪 Plan Your Perfect Kenya Adventure</h1>
-        <p class="lead mb-4">AI-powered trip planning for the ultimate Kenyan experience</p>
+        <div class="hero-constellation text-center">
+            <!-- Hero Badge -->
+            <div class="hero-badge">
+                <i class="bi bi-stars"></i>
+                <span>Powered by Advanced AI Technology</span>
+            </div>
+            
+            <!-- Hero Proclamation -->
+            <h1 class="hero-proclamation">
+                Discover Your Perfect<br>
+                <span class="gradient-shimmer">Kenya Adventure</span>
+            </h1>
+            
+            <!-- Hero Manifesto -->
+            <p class="hero-manifesto">
+                From the golden savannas of Maasai Mara to the pristine shores of Diani Beach,
+                let AI craft your personalized journey through Kenya's wonders.
+            </p>
+            
+            <!-- Trip Orchestrator -->
+            <div class="trip-orchestrator">
+                <div class="orchestrator-header">
+                    <div class="orchestrator-icon">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <div class="text-start">
+                        <h2 class="orchestrator-title">Quick Trip Orchestrator</h2>
+                        <p class="orchestrator-subtitle">Describe your dream trip in one sentence</p>
+                    </div>
+                </div>
+                
+                <form method="post" action="{% url 'core:quick_trip' %}" id="quickTripForm">
+                    {% csrf_token %}
+                    <div class="input-constellation">
+                        <i class="bi bi-chat-dots-fill input-icon"></i>
+                        <input 
+                            type="text" 
+                            name="trip_description"
+                            id="quickTripInput"
+                            placeholder="e.g., 5 days safari in Maasai Mara with 80000 budget"
+                            minlength="15"
+                            maxlength="200"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="input-hint">
+                        <strong>Include:</strong> Duration + Destination + Budget
+                        <div class="hint-examples">
+                            <span class="hint-chip">
+                                <i class="bi bi-check-circle-fill"></i>
+                                "3 days Diani Beach 50000"
+                            </span>
+                            <span class="hint-chip">
+                                <i class="bi bi-check-circle-fill"></i>
+                                "Week safari Amboseli 120000"
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-modern btn-primary-modern w-100 mt-4">
+                        <i class="bi bi-magic"></i>
+                        <span>Generate My Itinerary</span>
+                    </button>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <p class="text-muted mb-2">Or use our guided wizard</p>
+                    <a href="{% url 'core:destination_selection' %}" class="btn-modern btn-secondary-modern">
+                        <i class="bi bi-compass"></i>
+                        <span>Start Step-by-Step Planner</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Value Constellation -->
+<section class="section-modern bg-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Why Choose SafariSmart</h2>
+            <p class="section-subtitle">
+                Experience the future of travel planning with our AI-powered platform
+            </p>
+        </div>
+        
+        <div class="value-constellation">
+            <div class="value-orb" data-aos="fade-up" data-aos-delay="100">
+                <div class="value-icon-wrapper">
+                    <i class="bi bi-cpu-fill"></i>
+                </div>
+                <h3 class="value-title">AI-Powered Intelligence</h3>
+                <p class="value-description">
+                    Advanced algorithms analyze thousands of data points to create your perfect itinerary,
+                    optimized for your preferences, budget, and travel style.
+                </p>
+            </div>
+            
+            <div class="value-orb" data-aos="fade-up" data-aos-delay="200">
+                <div class="value-icon-wrapper">
+                    <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <h3 class="value-title">20+ Curated Destinations</h3>
+                <p class="value-description">
+                    From iconic Maasai Mara to hidden gems like Kakamega Forest,
+                    explore Kenya's diverse landscapes with expert local insights.
+                </p>
+            </div>
+            
+            <div class="value-orb" data-aos="fade-up" data-aos-delay="300">
+                <div class="value-icon-wrapper">
+                    <i class="bi bi-piggy-bank-fill"></i>
+                </div>
+                <h3 class="value-title">Smart Budget Optimization</h3>
+                <p class="value-description">
+                    Get the most value from every shilling with intelligent cost breakdowns,
+                    accommodation suggestions, and activity recommendations.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
         
         <!-- Quick Trip Input -->
         <div class="card mx-auto mb-4" style="max-width: 700px; background: rgba(255,255,255,0.95);">
@@ -82,47 +494,143 @@
     </div>
 </section>
 
-<!-- Featured Destinations -->
+<!-- Destination Gallery - Cinematic Showcase -->
 {% if featured_destinations %}
-<section class="py-5 bg-light">
+<section class="section-modern" style="background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);">
     <div class="container">
-        <h2 class="text-center mb-5">Featured Destinations</h2>
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Explore Kenya's Wonders</h2>
+            <p class="section-subtitle">
+                From majestic wildlife to pristine beaches, discover destinations that will take your breath away
+            </p>
+        </div>
+        
         <div class="row g-4">
             {% for destination in featured_destinations %}
-            <div class="col-md-4">
-                <div class="card destination-card h-100">
-                    {% if destination.image %}
-                    <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" style="height: 200px; object-fit: cover;">
-                    {% else %}
-                    <div class="card-img-top bg-success text-white d-flex align-items-center justify-content-center" style="height: 200px;">
-                        <i class="bi bi-image display-1"></i>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'00' }}">
+                <a href="{% url 'destinations:detail' destination.slug %}" class="text-decoration-none">
+                    <div class="card-modern destination-card">
+                        <div class="card-modern-image">
+                            {% if destination.image %}
+                            <img src="{{ destination.image.url }}" alt="{{ destination.name }}">
+                            {% elif destination.image_url %}
+                            <img src="{{ destination.image_url }}" alt="{{ destination.name }}">
+                            {% else %}
+                            <!-- Fallback to static images -->
+                            <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
+                                 alt="{{ destination.name }}"
+                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-100 h-100 d-flex align-items-center justify-content-center\' style=\'background: linear-gradient(135deg, var(--kenya-green), var(--sunset-orange));\'><i class=\'bi bi-image display-1 text-white opacity-50\'></i></div>';">
+                            {% endif %}
+                            
+                            <!-- Destination Badge -->
+                            <div class="destination-badge">
+                                <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% elif destination.destination_type == 'mountain' %}mountain{% else %}geo-alt{% endif %}"></i>
+                                {{ destination.get_destination_type_display }}
+                            </div>
+                            
+                            <!-- Overlay Info -->
+                            <div class="card-modern-overlay">
+                                <h3 class="h4 fw-bold mb-2">{{ destination.name }}</h3>
+                                <p class="mb-0 small">{{ destination.county }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card-modern-body">
+                            <p class="card-modern-text">
+                                {{ destination.description|truncatewords:20 }}
+                            </p>
+                            
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-cash-coin text-success"></i>
+                                    <span class="fw-semibold">KSh {{ destination.average_cost_per_day|floatformat:0 }}/day</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1 text-warning">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-half"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-modern-footer">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-sm text-muted">
+                                    <i class="bi bi-calendar-check"></i>
+                                    {{ destination.best_time_to_visit }}
+                                </span>
+                                <span class="text-success fw-semibold">
+                                    Explore <i class="bi bi-arrow-right"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ destination.name }}</h5>
-                        <p class="card-text text-muted small">{{ destination.description|truncatewords:15 }}</p>
-                        <span class="badge bg-success">{{ destination.get_destination_type_display }}</span>
-                        <span class="badge bg-secondary">KSh {{ destination.average_cost_per_day }}/day</span>
-                    </div>
-                </div>
+                </a>
             </div>
             {% endfor %}
         </div>
-        <div class="text-center mt-4">
-            <a href="{% url 'destinations:list' %}" class="btn btn-outline-success">View All Destinations</a>
+        
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'destinations:list' %}" class="btn-modern btn-primary-modern">
+                <i class="bi bi-grid-3x3-gap"></i>
+                <span>View All 20+ Destinations</span>
+            </a>
         </div>
     </div>
 </section>
 {% endif %}
 
-<!-- CTA Section -->
-<section class="py-5 bg-success text-white text-center">
-    <div class="container">
-        <h2 class="mb-4">Ready to Explore Kenya?</h2>
-        <p class="lead mb-4">Let AI create your perfect itinerary in minutes</p>
-        <a href="{% url 'core:destination_selection' %}" class="btn btn-light btn-lg px-5">
-            <i class="bi bi-rocket-takeoff"></i> Start Your Journey
-        </a>
+<!-- CTA Immersive -->
+<section class="position-relative overflow-hidden" style="background: linear-gradient(135deg, var(--kenya-green) 0%, var(--kenya-green-dark) 100%); padding: 100px 0;">
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="opacity: 0.1;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,101.3C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+    
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center text-white" data-aos="zoom-in">
+                <div class="mb-4">
+                    <span class="badge" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.875rem;">
+                        <i class="bi bi-rocket-takeoff"></i> Start Your Adventure
+                    </span>
+                </div>
+                <h2 class="display-4 fw-bold mb-4">Ready to Explore Kenya?</h2>
+                <p class="lead mb-5" style="font-size: 1.25rem; opacity: 0.95;">
+                    Join thousands of travelers who've discovered their perfect Kenya adventure with SafariSmart.
+                    Let AI create your personalized itinerary in minutes.
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="{% url 'core:destination_selection' %}" class="btn-modern btn-secondary-modern btn-lg">
+                        <i class="bi bi-compass"></i>
+                        <span>Start Planning Now</span>
+                    </a>
+                    <a href="{% url 'destinations:list' %}" class="btn-modern btn-outline-modern btn-lg">
+                        <i class="bi bi-map"></i>
+                        <span>Browse Destinations</span>
+                    </a>
+                </div>
+                
+                <!-- Trust Indicators -->
+                <div class="mt-5 d-flex justify-content-center gap-5 flex-wrap" style="opacity: 0.9;">
+                    <div class="text-center">
+                        <div class="h2 fw-bold mb-0">1,000+</div>
+                        <div class="small">Itineraries Created</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="h2 fw-bold mb-0">20+</div>
+                        <div class="small">Destinations</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="h2 fw-bold mb-0">4.8★</div>
+                        <div class="small">User Rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ destination.name }} - Kenya Travel Guide | SafariSmart{% endblock %}
 
@@ -48,10 +49,18 @@
          class="w-100 h-100" 
          style="object-fit: cover;"
          alt="{{ destination.name }}">
+    {% elif destination.image_url %}
+    <img src="{{ destination.image_url }}" 
+         class="w-100 h-100" 
+         style="object-fit: cover;"
+         alt="{{ destination.name }}">
     {% else %}
-    <div class="w-100 h-100 bg-success d-flex align-items-center justify-content-center">
-        <i class="bi bi-image display-1 text-white opacity-50"></i>
-    </div>
+    <!-- Fallback to static images -->
+    <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
+         class="w-100 h-100" 
+         style="object-fit: cover;"
+         alt="{{ destination.name }}"
+         onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-100 h-100 bg-success d-flex align-items-center justify-content-center\'><i class=\'bi bi-image display-1 text-white opacity-50\'></i></div>';">
     {% endif %}
     <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-end">
         <div class="container pb-5">
