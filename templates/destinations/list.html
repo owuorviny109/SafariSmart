@@ -3,12 +3,56 @@
 
 {% block title %}Explore Destinations - SafariSmart Kenya{% endblock %}
 
+{% block extra_css %}
+<style>
+    .destination-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .destination-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .destination-card img {
+        transition: transform 0.3s ease;
+    }
+    
+    .destination-card:hover img {
+        transform: scale(1.1);
+    }
+    
+    .destination-card .card-body {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .btn-outline-success:hover {
+        transform: scale(1.05);
+        transition: all 0.3s ease;
+    }
+    
+    .filter-btn-group .btn {
+        transition: all 0.3s ease;
+        border-radius: 25px;
+    }
+    
+    .filter-btn-group .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 102, 0, 0.3);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Header Section -->
 <section class="bg-success text-white py-5">
     <div class="container">
         <h1 class="display-4 fw-bold mb-3">
-            <i class="bi bi-compass"></i> Explore Kenya Destinations
+            Explore Kenya Destinations
         </h1>
         <p class="lead">Discover amazing places across Kenya - from wildlife safaris to pristine beaches</p>
     </div>
@@ -17,7 +61,7 @@
 <!-- Filter Section -->
 <section class="py-4 bg-light">
     <div class="container">
-        <div class="d-flex flex-wrap gap-2 justify-content-center">
+        <div class="d-flex flex-wrap gap-2 justify-content-center filter-btn-group">
             <a href="{% url 'destinations:list' %}" 
                class="btn {% if not selected_type %}btn-success{% else %}btn-outline-success{% endif %}">
                 All Destinations
