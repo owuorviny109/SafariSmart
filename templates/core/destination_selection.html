@@ -315,6 +315,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedCountEl = document.getElementById('selectedCount');
     const btnNext = document.getElementById('btnNext');
     
+    // Custom destinations handling (declare first)
+    const customDestinations = [];
+    
+    // Update selected count and button state
+    function updateSelectedCount() {
+        const selectedCount = document.querySelectorAll('input[name="destinations"]:checked').length;
+        const customCount = customDestinations.length;
+        const totalCount = selectedCount + customCount;
+        
+        selectedCountEl.textContent = totalCount;
+        
+        // Enable/disable next button
+        if (totalCount > 0) {
+            btnNext.disabled = false;
+        } else {
+            btnNext.disabled = true;
+        }
+    }
+    
     // Initialize selected count
     updateSelectedCount();
     
@@ -348,31 +367,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Update selected count and button state
-    function updateSelectedCount() {
-        const selectedCount = document.querySelectorAll('input[name="destinations"]:checked').length;
-        const customCount = customDestinations.length;
-        const totalCount = selectedCount + customCount;
-        
-        selectedCountEl.textContent = totalCount;
-        
-        // Enable/disable next button
-        if (totalCount > 0) {
-            btnNext.disabled = false;
-        } else {
-            btnNext.disabled = true;
-        }
-    }
-    
-    // Custom destinations handling
-    const customDestinations = [];
+    // Get DOM elements for custom destinations
     const customInput = document.getElementById('customDestinationInput');
     const addCustomBtn = document.getElementById('addCustomDestination');
     const customList = document.getElementById('customDestinationsList');
     const customDataInput = document.getElementById('customDestinationsData');
     
+    // Check if elements exist
+    if (!addCustomBtn) {
+        console.error('Add Custom button not found!');
+        return;
+    }
+    
     // Add custom destination
-    addCustomBtn.addEventListener('click', function() {
+    addCustomBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Add Custom button clicked!');
         const destinationName = customInput.value.trim();
         
         if (!destinationName) {
