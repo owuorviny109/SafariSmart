@@ -1,0 +1,62 @@
+# SafariSmart Kenya - Robots.txt
+# AI-powered Kenya safari and travel planning platform
+
+# Global rules for all crawlers
+User-agent: *
+Allow: /
+Allow: /destinations/
+Allow: /itinerary/
+Allow: /trip/
+Allow: /wizard/
+Disallow: /admin/
+Disallow: /api/generate-itinerary/
+Disallow: /dashboard/
+Disallow: /accounts/password-reset/
+Disallow: /accounts/logout/
+Disallow: /wizard/generating/
+Disallow: /static/admin/
+
+# Sitemap location
+Sitemap: https://safarismart.co.ke/sitemap.xml
+
+# Crawl delay (1 second between requests)
+Crawl-delay: 1
+
+# Google-specific rules (prioritize important pages)
+User-agent: Googlebot
+Allow: /
+Allow: /destinations/
+Allow: /itinerary/
+Allow: /trip/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+
+# Bing-specific rules
+User-agent: Bingbot
+Allow: /
+Allow: /destinations/
+Allow: /itinerary/
+Disallow: /admin/
+Disallow: /dashboard/
+Crawl-delay: 2
+
+# Yahoo-specific rules
+User-agent: Slurp
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Crawl-delay: 2
+
+# Block bad bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

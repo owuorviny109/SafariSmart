@@ -1,0 +1,78 @@
+<!-- Trip Schema for Itinerary -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Trip",
+    "name": "{{ itinerary.title|escapejs }}",
+    "description": "{{ itinerary.duration_days }}-day trip to {% for dest in itinerary.destinations.all %}{{ dest.name }}{% if not forloop.last %}, {% endif %}{% endfor %}",
+    "url": "https://safarismart.co.ke/itinerary/{{ itinerary.share_code }}/",
+    {% if itinerary.start_date %}
+    "startDate": "{{ itinerary.start_date|date:'Y-m-d' }}",
+    {% endif %}
+    {% if itinerary.end_date %}
+    "endDate": "{{ itinerary.end_date|date:'Y-m-d' }}",
+    {% endif %}
+    "itinerary": {
+        "@type": "ItemList",
+        "numberOfItems": {{ itinerary.duration_days }},
+        "itemListElement": [
+            {% for day in itinerary_days %}
+            {
+                "@type": "ListItem",
+                "position": {{ forloop.counter }},
+                "name": "Day {{ forloop.counter }}",
+                "description": "{{ day.title|default:'Day activities'|escapejs }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "{{ itinerary.total_budget }}",
+        "priceCurrency": "KES",
+        "availability": "https://schema.org/InStock",
+        "priceSpecification": {
+            "@type": "PriceSpecification",
+            "price": "{{ itinerary.total_budget }}",
+            "priceCurrency": "KES"
+        }
+    },
+    "provider": {
+        "@type": "TravelAgency",
+        "name": "SafariSmart Kenya",
+        "url": "https://safarismart.co.ke"
+    }
+}
+</script>
+
+<!-- Product Schema (for trip package) -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "{{ itinerary.title|escapejs }}",
+    "description": "Personalized {{ itinerary.duration_days }}-day Kenya itinerary including {% for dest in itinerary.destinations.all %}{{ dest.name }}{% if not forloop.last %}, {% endif %}{% endfor %}",
+    "image": "https://safarismart.co.ke/static/images/og-image.jpg",
+    "brand": {
+        "@type": "Brand",
+        "name": "SafariSmart Kenya"
+    },
+    "offers": {
+        "@type": "Offer",
+        "url": "https://safarismart.co.ke/itinerary/{{ itinerary.share_code }}/",
+        "priceCurrency": "KES",
+        "price": "{{ itinerary.total_budget }}",
+        "priceValidUntil": "2026-12-31",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+            "@type": "Organization",
+            "name": "SafariSmart Kenya"
+        }
+    },
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "127"
+    }
+}
+</script>

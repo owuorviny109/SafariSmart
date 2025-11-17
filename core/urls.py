@@ -7,6 +7,10 @@ urlpatterns = [
     # Landing page
     path('', views.landing_page, name='landing'),
     
+    # SEO
+    path('sitemap.xml', views.sitemap, name='sitemap'),
+    path('robots.txt', views.robots_txt, name='robots'),
+    
     # Quick trip planner
     path('quick-trip/', views.quick_trip, name='quick_trip'),
     

@@ -1,0 +1,57 @@
+/* 
+ * SafariSmart Kenya - Safari Design System
+ * Inspired by 40 years of Figma mastery
+ * A revolutionary, Kenya-inspired design language
+ */
+
+/* ============================================
+   DESIGN PHILOSOPHY
+   - Savanna Breathing Space: Generous whitespace like open plains
+   - Sunset Transitions: Smooth, warm animations
+   - Wildlife Precision: Pixel-perfect alignment
+   - Acacia Hierarchy: Clear visual structure
+   - Maasai Boldness: Confident typography
+   ============================================ */
+
+
+/* ============================================
+   SAFARI ELEVATION SYSTEM
+   Inspired by Kenya's layered landscapes
+   ============================================ */
+.elevation-savanna { box-shadow: 0 1px 3px rgba(140, 90, 50, 0.08); }
+.elevation-acacia { box-shadow: 0 4px 12px rgba(140, 90, 50, 0.12); }
+.elevation-kilimanjaro { box-shadow: 0 12px 32px rgba(140, 90, 50, 0.16); }
+.elevation-sky { box-shadow: 0 24px 64px rgba(140, 90, 50, 0.20); }
+
+/* ============================================
+   SAFARI SPACING RHYTHM
+   Based on the golden ratio (1.618)
+   ============================================ */
+.space-whisper { padding: 0.382rem; }  /* 6px */
+.space-breath { padding: 0.618rem; }   /* 10px */
+.space-stride { padding: 1rem; }       /* 16px */
+.space-leap { padding: 1.618rem; }     /* 26px */
+.space-horizon { padding: 2.618rem; }  /* 42px */
+.space-savanna { padding: 4.236rem; }  /* 68px */
+
+/* ============================================
+   SAFARI TYPOGRAPHY SCALE
+   Maasai-inspired bold hierarchy
+   ============================================ */
+.text-whisper { font-size: 0.75rem; line-height: 1.2rem; }
+.text-murmur { font-size: 0.875rem; line-height: 1.4rem; }
+.text-speak { font-size: 1rem; line-height: 1.6rem; }
+.text-call { font-size: 1.25rem; line-height: 2rem; }
+.text-shout { font-size: 1.5rem; line-height: 2.4rem; }
+.text-roar { font-size: 2rem; line-height: 3.2rem; }
+.text-thunder { font-size: 3rem; line-height: 4.8rem; }
+.text-kilimanjaro { font-size: 4rem; line-height: 6.4rem; }
+
+/* ============================================
+   SAFARI MOTION LANGUAGE
+   Smooth as a cheetah, graceful as a giraffe
+   ============================================ */
+.motion-cheetah { transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+.motion-gazelle { transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); }
+.motion-elephant { transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1); }
+.motion-sunrise { transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1); }
