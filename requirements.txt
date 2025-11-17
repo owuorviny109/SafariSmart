@@ -1,10 +1,21 @@
 # Core Django
 Django==5.0.1
 python-decouple==3.8
-Pillow==10.2.0
+Pillow>=10.0.0                  # Use latest compatible version
 
 # AI Integration
 google-generativeai==0.3.2
+
+# Security
+django-axes==6.1.1              # Brute force protection
+django-csp==3.8                 # Content Security Policy
+argon2-cffi==23.1.0             # Argon2 password hashing
+django-ratelimit==4.1.0         # Additional rate limiting
+bleach==6.1.0                   # HTML sanitization
+django-cors-headers==4.3.1      # CORS protection
+
+# Database (Production)
+psycopg2-binary==2.9.9          # PostgreSQL adapter
 
 # Development
 django-debug-toolbar==4.2.0

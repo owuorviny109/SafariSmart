@@ -28,4 +28,10 @@ from .admin_config import (
     SystemConfigurationAdmin
 )
 
-# Admin interfaces are already registered via @admin.register decorators in admin_config.py
+# Import and register security admin interfaces
+from .admin_security import (
+    SecuritySettingsAdmin,
+    SecurityEventAdmin
+)
+
+# Admin interfaces are already registered via @admin.register decorators
