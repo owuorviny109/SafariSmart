@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - SafariSmart Kenya{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <h2 class="text-success">
+                            <i class="bi bi-person-plus"></i> Create Account
+                        </h2>
+                        <p class="text-muted">Join SafariSmart Kenya and start planning your adventure</p>
+                    </div>
+                    
+                    <!-- Registration Form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Username Field -->
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">
+                                <i class="bi bi-person"></i> Username
+                            </label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.username.errors }}
+                                </div>
+                            {% else %}
+                                <small class="form-text text-muted">
+                                    150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                                </small>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Email Field -->
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                <i class="bi bi-envelope"></i> Email
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.email.errors }}
+                                </div>
+                            {% else %}
+                                <small class="form-text text-muted">
+                                    Required. Enter a valid email address.
+                                </small>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Password Field -->
+                        <div class="mb-3">
+                            <label for="{{ form.password1.id_for_label }}" class="form-label">
+                                <i class="bi bi-lock"></i> Password
+                            </label>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.password1.errors }}
+                                </div>
+                            {% else %}
+                                <small class="form-text text-muted">
+                                    Your password must contain at least 8 characters.
+                                </small>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Confirm Password Field -->
+                        <div class="mb-4">
+                            <label for="{{ form.password2.id_for_label }}" class="form-label">
+                                <i class="bi bi-lock-fill"></i> Confirm Password
+                            </label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.password2.errors }}
+                                </div>
+                            {% else %}
+                                <small class="form-text text-muted">
+                                    Enter the same password as before, for verification.
+                                </small>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-success w-100 py-2 mb-3">
+                            <i class="bi bi-check-circle"></i> Create Account
+                        </button>
+                        
+                        <!-- Non-field Errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                    </form>
+                    
+                    <!-- Login Link -->
+                    <div class="text-center mt-4 pt-3 border-top">
+                        <p class="text-muted mb-0">
+                            Already have an account?
+                            <a href="{% url 'accounts:login' %}" class="text-success text-decoration-none fw-bold">
+                                Login
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Back to Home -->
+            <div class="text-center mt-3">
+                <a href="{% url 'core:landing' %}" class="text-muted text-decoration-none">
+                    <i class="bi bi-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+    }
+    
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+    }
+    
+    .btn-success {
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    
+    .form-text {
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}
