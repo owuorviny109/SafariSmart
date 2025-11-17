@@ -8,7 +8,7 @@
     <!-- Primary Meta Tags -->
     <title>{% block title %}SafariSmart Kenya - AI-Powered Safari & Beach Trip Planner{% endblock %}</title>
     <meta name="title" content="{% block meta_title %}SafariSmart Kenya - AI Safari Trip Planner | Plan Your Perfect Kenya Adventure{% endblock %}">
-    <meta name="description" content="{% block meta_description %}Plan your perfect Kenya safari, beach vacation, or adventure with AI-powered itinerary generation. Explore Maasai Mara, Diani Beach, Amboseli & 20+ destinations. Get personalized day-by-day plans, weather forecasts, and interactive maps. Start planning your dream Kenya trip today!{% endblock %}">
+    <meta name="description" content="{% block meta_description %}Plan your perfect Kenya safari, beach vacation, or adventure with AI-powered itinerary generation. Explore Maasai Mara, Diani Beach, Amboseli & more top destinations. Get personalized day-by-day plans, weather forecasts, and interactive maps. Start planning your dream Kenya trip today!{% endblock %}">
     <meta name="keywords" content="Kenya safari, Kenya trip planner, Maasai Mara safari, Diani Beach, Kenya vacation, AI trip planner, Kenya itinerary, safari planning, beach vacation Kenya, Amboseli National Park, Kenya tourism, safari packages, Kenya travel guide">
     <meta name="author" content="SafariSmart Kenya">
     <meta name="robots" content="index, follow">
@@ -27,7 +27,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://safarismart.co.ke/">
     <meta property="twitter:title" content="{% block twitter_title %}SafariSmart Kenya - AI Safari Trip Planner{% endblock %}">
-    <meta property="twitter:description" content="{% block twitter_description %}Plan your perfect Kenya safari with AI. Explore 20+ destinations including Maasai Mara, Diani Beach, and Amboseli.{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Plan your perfect Kenya safari with AI. Explore top destinations including Maasai Mara, Diani Beach, and Amboseli.{% endblock %}">
     <meta property="twitter:image" content="{% block twitter_image %}https://safarismart.co.ke/static/images/twitter-image.jpg{% endblock %}">
     
     <!-- Geo Tags -->
@@ -157,13 +157,270 @@
     <!-- Main Content -->
     {% block content %}{% endblock %}
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white mt-5 py-4">
-        <div class="container text-center">
-            <p class="mb-0">&copy; 2025 SafariSmart Kenya. Powered by Gemini AI.</p>
-            <p class="small text-muted">Plan your perfect Kenya adventure with AI</p>
+    <!-- Why Choose SafariSmart Section (Before Footer) -->
+    <section class="bg-light py-4 border-top">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-md-3 col-6">
+                    <div class="p-3">
+                        <i class="bi bi-stars text-success fs-1 mb-2"></i>
+                        <h6 class="fw-bold mb-1">AI-Powered</h6>
+                        <p class="small text-muted mb-0">Smart itineraries in seconds</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="p-3">
+                        <i class="bi bi-geo-alt text-success fs-1 mb-2"></i>
+                        <h6 class="fw-bold mb-1">Top Destinations</h6>
+                        <p class="small text-muted mb-0">Kenya's best locations</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="p-3">
+                        <i class="bi bi-cloud-sun text-success fs-1 mb-2"></i>
+                        <h6 class="fw-bold mb-1">Weather Forecasts</h6>
+                        <p class="small text-muted mb-0">Plan with confidence</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="p-3">
+                        <i class="bi bi-currency-exchange text-success fs-1 mb-2"></i>
+                        <h6 class="fw-bold mb-1">100% Free</h6>
+                        <p class="small text-muted mb-0">No hidden costs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Footer -->
+    <footer class="bg-dark text-white mt-0">
+        <div class="container">
+            <!-- Main Footer Content -->
+            <div class="row py-5">
+                <!-- Brand Column -->
+                <div class="col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="h4 fw-bold mb-3">
+                        <i class="bi bi-globe-africa text-success"></i> SafariSmart Kenya
+                    </h3>
+                    <p class="text-white-50 mb-4">
+                        AI-powered trip planning for the ultimate Kenyan experience. 
+                        Discover Kenya's top destinations from Maasai Mara to Diani Beach.
+                    </p>
+                    <div class="d-flex gap-3 mb-4">
+                        <a href="#" class="text-white-50 hover-success" title="Facebook" aria-label="Facebook">
+                            <i class="bi bi-facebook fs-4"></i>
+                        </a>
+                        <a href="#" class="text-white-50 hover-success" title="Twitter" aria-label="Twitter">
+                            <i class="bi bi-twitter fs-4"></i>
+                        </a>
+                        <a href="#" class="text-white-50 hover-success" title="Instagram" aria-label="Instagram">
+                            <i class="bi bi-instagram fs-4"></i>
+                        </a>
+                        <a href="#" class="text-white-50 hover-success" title="YouTube" aria-label="YouTube">
+                            <i class="bi bi-youtube fs-4"></i>
+                        </a>
+                    </div>
+                    <p class="text-white-50 small mb-1">
+                        <i class="bi bi-envelope"></i> info@safarismart.co.ke
+                    </p>
+                    <p class="text-white-50 small">
+                        <i class="bi bi-geo-alt"></i> Nairobi, Kenya
+                    </p>
+                </div>
+                
+                <!-- Plan Your Trip -->
+                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                    <h4 class="h6 fw-bold mb-3 text-success">Plan Your Trip</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="{% url 'core:destination_selection' %}" class="text-white-50 text-decoration-none hover-success">
+                                <i class="bi bi-stars"></i> Start Planning
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'core:quick_trip' %}" class="text-white-50 text-decoration-none hover-success">
+                                <i class="bi bi-lightning"></i> Quick Planner
+                            </a>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="mb-2">
+                            <a href="{% url 'core:dashboard' %}" class="text-white-50 text-decoration-none hover-success">
+                                <i class="bi bi-map"></i> My Itineraries
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="mb-2">
+                            <a href="{% url 'accounts:register' %}" class="text-white-50 text-decoration-none hover-success">
+                                <i class="bi bi-person-plus"></i> Create Account
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'accounts:login' %}" class="text-white-50 text-decoration-none hover-success">
+                                <i class="bi bi-box-arrow-in-right"></i> Sign In
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <!-- Explore Destinations -->
+                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                    <h4 class="h6 fw-bold mb-3 text-success">Explore</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:list' %}" class="text-white-50 text-decoration-none hover-success">
+                                All Destinations
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:list' %}?type=safari" class="text-white-50 text-decoration-none hover-success">
+                                Safari Parks
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:list' %}?type=beach" class="text-white-50 text-decoration-none hover-success">
+                                Beach Destinations
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:list' %}?type=mountain" class="text-white-50 text-decoration-none hover-success">
+                                Mountains & Hiking
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:list' %}?type=city" class="text-white-50 text-decoration-none hover-success">
+                                Cities & Culture
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Top Destinations -->
+                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                    <h4 class="h6 fw-bold mb-3 text-success">Top Destinations</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:detail' 'maasai-mara-national-reserve' %}" class="text-white-50 text-decoration-none hover-success">
+                                🦁 Maasai Mara
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:detail' 'amboseli-national-park' %}" class="text-white-50 text-decoration-none hover-success">
+                                🐘 Amboseli
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:detail' 'diani-beach' %}" class="text-white-50 text-decoration-none hover-success">
+                                🏖️ Diani Beach
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:detail' 'mount-kenya' %}" class="text-white-50 text-decoration-none hover-success">
+                                ⛰️ Mount Kenya
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'destinations:detail' 'lamu-island' %}" class="text-white-50 text-decoration-none hover-success">
+                                🏝️ Lamu Island
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Resources & Company -->
+                <div class="col-lg-3 col-md-4 mb-4 mb-lg-0">
+                    <h4 class="h6 fw-bold mb-3 text-success">Resources</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="#about" class="text-white-50 text-decoration-none hover-success">
+                                About SafariSmart
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#how-it-works" class="text-white-50 text-decoration-none hover-success">
+                                How It Works
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#travel-guide" class="text-white-50 text-decoration-none hover-success">
+                                Kenya Travel Guide
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#best-time" class="text-white-50 text-decoration-none hover-success">
+                                Best Time to Visit
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#visa-info" class="text-white-50 text-decoration-none hover-success">
+                                Visa Information
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#blog" class="text-white-50 text-decoration-none hover-success">
+                                Travel Blog
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#faq" class="text-white-50 text-decoration-none hover-success">
+                                FAQ
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#contact" class="text-white-50 text-decoration-none hover-success">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#privacy" class="text-white-50 text-decoration-none hover-success">
+                                Privacy Policy
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#terms" class="text-white-50 text-decoration-none hover-success">
+                                Terms of Service
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-top border-secondary py-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <p class="mb-0 text-white-50">
+                            &copy; 2025 SafariSmart Kenya. All rights reserved.
+                        </p>
+                        <p class="mb-0 small text-white-50">
+                            <i class="bi bi-stars text-warning"></i> Powered by Gemini AI
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <span class="text-white-50 small">
+                            Made with <i class="bi bi-heart-fill text-danger"></i> in Kenya
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
+    
+    <style>
+        /* Footer Hover Effects */
+        .hover-success {
+            transition: all 0.3s ease;
+        }
+        .hover-success:hover {
+            color: var(--kenya-green) !important;
+            transform: translateX(5px);
+        }
+        
+        footer a {
+            display: inline-block;
+        }
+    </style>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -120,8 +120,8 @@ class DestinationSelectionView(View):
         # Initialize wizard service
         wizard_service = WizardService(request.session)
         
-        # Get all destinations ordered by type
-        destinations = Destination.objects.all().order_by('destination_type', 'name')
+        # Get only featured destinations (top 6) ordered by type
+        destinations = Destination.objects.filter(is_featured=True).order_by('destination_type', 'name')
         
         # Get previously selected destinations if any
         selected_destinations = wizard_service.get_selected_destinations()
@@ -236,7 +236,7 @@ class DestinationSelectionView(View):
         Returns:
             HttpResponse: Rendered template with error
         """
-        destinations = Destination.objects.all().order_by('destination_type', 'name')
+        destinations = Destination.objects.filter(is_featured=True).order_by('destination_type', 'name')
         destinations_by_type = self._group_destinations_by_type(destinations)
         
         context = {
