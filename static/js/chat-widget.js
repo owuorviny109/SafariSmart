@@ -265,11 +265,19 @@ class TripPlannerChat {
      * Handle conversation completion
      */
     handleCompletion() {
-        // Fill wizard form with extracted data
-        if (this.extractedData.custom_destinations) {
-            const customInput = document.getElementById('customDestinationsData');
-            if (customInput) {
-                customInput.value = JSON.stringify(this.extractedData.custom_destinations);
+        // Add custom destinations to the wizard
+        if (this.extractedData.custom_destinations && this.extractedData.custom_destinations.length > 0) {
+            // Use the global function to add destinations
+            if (typeof window.addCustomDestinationFromChat === 'function') {
+                this.extractedData.custom_destinations.forEach(dest => {
+                    window.addCustomDestinationFromChat(dest);
+                });
+            } else {
+                // Fallback: directly update hidden input
+                const customInput = document.getElementById('customDestinationsData');
+                if (customInput) {
+                    customInput.value = JSON.stringify(this.extractedData.custom_destinations);
+                }
             }
         }
         
@@ -279,10 +287,6 @@ class TripPlannerChat {
         // Close chat after delay
         setTimeout(() => {
             this.closeChat();
-            // Trigger form update if needed
-            if (typeof updateSelectedCount === 'function') {
-                updateSelectedCount();
-            }
         }, 2000);
     }
     
