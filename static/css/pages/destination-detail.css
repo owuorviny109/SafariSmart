@@ -1,0 +1,644 @@
+/**
+ * Destination Detail Page Styles
+ * Professional styling for individual destination pages
+ */
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.destination-hero {
+    position: relative;
+    height: 60vh;
+    min-height: 500px;
+    overflow: hidden;
+    display: flex;
+    align-items: end;
+}
+
+.destination-hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.destination-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.5) 50%,
+        rgba(0, 0, 0, 0.8) 100%
+    );
+    z-index: 2;
+}
+
+.destination-hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 3rem 0;
+    width: 100%;
+}
+
+.destination-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    line-height: 1.1;
+}
+
+.destination-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.destination-badge {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: #1a1a1a;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.destination-badge.type {
+    background: linear-gradient(135deg, #E07A2B, #F09850);
+    color: white;
+}
+
+.destination-badge.cost {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+}
+
+.destination-location {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.25rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ============================================
+   MAIN CONTENT LAYOUT
+   ============================================ */
+
+.destination-content-wrapper {
+    padding: 4rem 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+}
+
+.destination-main-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* ============================================
+   CONTENT GRID LAYOUT
+   ============================================ */
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.grid-item {
+    animation: slideInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+}
+
+.grid-item:nth-child(1) { animation-delay: 0.1s; }
+.grid-item:nth-child(2) { animation-delay: 0.2s; }
+.grid-item:nth-child(3) { animation-delay: 0.3s; }
+.grid-item:nth-child(4) { animation-delay: 0.4s; }
+.grid-item:nth-child(5) { animation-delay: 0.5s; }
+.grid-item:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes slideInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateY(-5px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .grid-item {
+        animation: fadeIn 0.5s ease-out forwards;
+        transform: none;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .content-card:hover {
+        transform: none;
+    }
+}
+
+/* ============================================
+   CONTENT CARDS
+   ============================================ */
+
+.content-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f1f5f9;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.content-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+    border-color: rgba(224, 122, 43, 0.2);
+}
+
+.content-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E07A2B, #F09850);
+}
+
+.content-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.content-card-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #E07A2B, #F09850);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.content-card-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.content-card:hover .content-card-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.4);
+}
+
+.content-card:hover .content-card-icon::before {
+    left: 100%;
+}
+
+.content-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.content-card-body {
+    color: #374151;
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+.content-card-body p {
+    margin-bottom: 1rem;
+}
+
+.content-card-body p:last-child {
+    margin-bottom: 0;
+}
+
+.content-card-body ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.content-card-body ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.content-card-body ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #E07A2B;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* ============================================
+   SIDEBAR
+   ============================================ */
+
+.destination-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sidebar-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f1f5f9;
+}
+
+.sidebar-card-header {
+    background: linear-gradient(135deg, #E07A2B, #F09850);
+    color: white;
+    padding: 1.25rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sidebar-card-body {
+    padding: 1.5rem;
+}
+
+/* ============================================
+   WEATHER CARD
+   ============================================ */
+
+.weather-current {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.weather-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 0.5rem;
+}
+
+.weather-temp {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.weather-feels-like {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.weather-description {
+    color: #374151;
+    font-weight: 500;
+    text-transform: capitalize;
+    margin-bottom: 1rem;
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    text-align: left;
+}
+
+.weather-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.weather-detail i {
+    color: #E07A2B;
+}
+
+/* ============================================
+   FORECAST CARD
+   ============================================ */
+
+.forecast-day {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.forecast-day:last-child {
+    border-bottom: none;
+}
+
+.forecast-date {
+    flex: 1;
+}
+
+.forecast-day-name {
+    font-weight: 600;
+    color: #1a1a1a;
+    font-size: 0.95rem;
+}
+
+.forecast-date-text {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.forecast-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 1rem;
+}
+
+.forecast-temps {
+    text-align: right;
+    flex: 1;
+}
+
+.forecast-temp-avg {
+    font-weight: 600;
+    color: #1a1a1a;
+    font-size: 1rem;
+}
+
+.forecast-temp-range {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+/* ============================================
+   QUICK FACTS CARD
+   ============================================ */
+
+.quick-facts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.quick-fact {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.quick-fact:last-child {
+    border-bottom: none;
+}
+
+.quick-fact-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E07A2B;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.quick-fact-content {
+    flex: 1;
+}
+
+.quick-fact-label {
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.quick-fact-value {
+    color: #6b7280;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* ============================================
+   CTA CARD
+   ============================================ */
+
+.cta-card {
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(224, 122, 43, 0.3);
+}
+
+.cta-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.cta-card-text {
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.cta-button {
+    background: rgba(255, 255, 255, 0.95);
+    color: #E07A2B;
+    border: none;
+    padding: 0.875rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.cta-button:hover {
+    background: white;
+    color: #C66820;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+
+.destination-navigation {
+    background: #f8fafc;
+    padding: 2rem 0;
+    border-top: 1px solid #e5e7eb;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    color: #E07A2B;
+    border: 2px solid #E07A2B;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: #E07A2B;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .destination-main-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .destination-sidebar {
+        order: -1;
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .destination-hero {
+        height: 50vh;
+        min-height: 400px;
+    }
+    
+    .destination-title {
+        font-size: 2.5rem;
+    }
+    
+    .destination-badges {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .destination-badge {
+        font-size: 0.9rem;
+        padding: 0.625rem 1.25rem;
+    }
+    
+    .content-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .sidebar-card-body {
+        padding: 1.25rem;
+    }
+    
+    .weather-temp {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .destination-hero-content {
+        padding: 2rem 0;
+    }
+    
+    .destination-title {
+        font-size: 2rem;
+    }
+    
+    .content-card {
+        padding: 1.5rem 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .content-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .content-card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .content-card-title {
+        font-size: 1.25rem;
+    }
+}

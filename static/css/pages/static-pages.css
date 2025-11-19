@@ -1,0 +1,505 @@
+/**
+ * Static Pages Styles
+ * For About Us, Contact, Privacy Policy, Terms of Service, etc.
+ */
+
+/* ============================================
+   PAGE LAYOUT
+   ============================================ */
+
+.static-page-wrapper {
+    background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+    min-height: 100vh;
+    padding: 80px 0 60px;
+}
+
+.static-page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+
+.static-page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.static-page-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.static-page-subtitle {
+    color: #6b7280;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.static-page-meta {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+
+.static-page-content {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.static-page-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E07A2B, #F09850);
+}
+
+.content-area {
+    color: #374151;
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+.content-area h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #E07A2B;
+}
+
+.content-area h1:first-child {
+    margin-top: 0;
+}
+
+.content-area h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.content-area h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 4px;
+    height: 1.5rem;
+    background: linear-gradient(135deg, #E07A2B, #F09850);
+    border-radius: 2px;
+}
+
+.content-area h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.content-area h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.content-area p {
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+.content-area p:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   LISTS
+   ============================================ */
+
+.content-area ul,
+.content-area ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.content-area ul {
+    list-style: none;
+}
+
+.content-area ul li {
+    position: relative;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+}
+
+.content-area ul li::before {
+    content: '•';
+    color: #E07A2B;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    font-size: 1.2rem;
+}
+
+.content-area ol li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.content-area ol li::marker {
+    color: #E07A2B;
+    font-weight: 600;
+}
+
+/* ============================================
+   LINKS AND EMPHASIS
+   ============================================ */
+
+.content-area a {
+    color: #E07A2B;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.content-area a:hover {
+    color: #C66820;
+    border-bottom-color: #C66820;
+    text-decoration: none;
+}
+
+.content-area strong {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.content-area em {
+    font-style: italic;
+    color: #6b7280;
+}
+
+/* ============================================
+   SPECIAL ELEMENTS
+   ============================================ */
+
+.content-area blockquote {
+    background: #f8fafc;
+    border-left: 4px solid #E07A2B;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #6b7280;
+}
+
+.content-area code {
+    background: #f1f5f9;
+    color: #e11d48;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-family: 'Courier New', monospace;
+}
+
+.content-area pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.content-area hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #E07A2B, transparent);
+    margin: 2rem 0;
+}
+
+/* ============================================
+   CONTACT FORM STYLES
+   ============================================ */
+
+.contact-form {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    padding: 2.5rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E07A2B, #F09850);
+}
+
+.contact-form h3 {
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact-form h3 i {
+    color: #E07A2B;
+}
+
+.contact-form > p {
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.875rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #E07A2B;
+    box-shadow: 0 0 0 4px rgba(224, 122, 43, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.btn-contact {
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
+}
+
+.btn-contact:hover {
+    background: linear-gradient(135deg, #F09850, #E07A2B);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(224, 122, 43, 0.4);
+}
+
+/* ============================================
+   CONTACT INFO CARDS
+   ============================================ */
+
+.contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.contact-info-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.contact-info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #E07A2B;
+}
+
+.contact-info-card i {
+    font-size: 2rem;
+    color: #E07A2B;
+    margin-bottom: 1rem;
+}
+
+.contact-info-card h4 {
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.contact-info-card p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+
+.static-page-nav {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #E07A2B;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #E07A2B;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background: #E07A2B;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .static-page-wrapper {
+        padding: 60px 0 40px;
+    }
+    
+    .static-page-title {
+        font-size: 2rem;
+    }
+    
+    .static-page-content {
+        padding: 2rem 1.5rem;
+        border-radius: 12px;
+    }
+    
+    .content-area {
+        font-size: 0.95rem;
+    }
+    
+    .content-area h1 {
+        font-size: 1.75rem;
+    }
+    
+    .content-area h2 {
+        font-size: 1.5rem;
+    }
+    
+    .content-area h3 {
+        font-size: 1.125rem;
+    }
+    
+    .contact-form {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .static-page-content {
+        padding: 1.5rem 1rem;
+    }
+    
+    .static-page-title {
+        font-size: 1.75rem;
+    }
+    
+    .content-area p {
+        text-align: left;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .static-page-wrapper {
+        background: white;
+        padding: 0;
+    }
+    
+    .static-page-content {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    .back-link {
+        display: none;
+    }
+    
+    .content-area a {
+        color: #000;
+        text-decoration: underline;
+    }
+}

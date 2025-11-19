@@ -8,6 +8,10 @@
 
 {% block canonical %}https://safarismart.co.ke/destinations/{{ destination.slug }}/{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/destination-detail.css' %}">
+{% endblock %}
+
 {% block breadcrumb_schema %}
 <script type="application/ld+json">
 {
@@ -42,194 +46,259 @@
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section with Image -->
-<section class="position-relative" style="height: 400px; overflow: hidden;">
+<!-- Hero Section -->
+<section class="destination-hero">
     {% if destination.image %}
     <img src="{{ destination.image.url }}" 
-         class="w-100 h-100" 
-         style="object-fit: cover;"
+         class="destination-hero-image"
          alt="{{ destination.name }}">
     {% elif destination.image_url %}
     <img src="{{ destination.image_url }}" 
-         class="w-100 h-100" 
-         style="object-fit: cover;"
+         class="destination-hero-image"
          alt="{{ destination.name }}">
     {% else %}
-    <!-- Fallback to static images -->
     <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
-         class="w-100 h-100" 
-         style="object-fit: cover;"
+         class="destination-hero-image"
          alt="{{ destination.name }}"
-         onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-100 h-100 bg-success d-flex align-items-center justify-content-center\'><i class=\'bi bi-image display-1 text-white opacity-50\'></i></div>';">
+         onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'destination-hero-image\' style=\'background: linear-gradient(135deg, #E07A2B, #C66820); display: flex; align-items: center; justify-content: center;\'><i class=\'bi bi-image\' style=\'font-size: 4rem; color: rgba(255,255,255,0.5);\'></i></div>';">
     {% endif %}
-    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-end">
-        <div class="container pb-5">
-            <h1 class="display-3 fw-bold text-white mb-2">{{ destination.name }}</h1>
-            <p class="lead text-white">
-                <span class="badge bg-success me-2">
-                    <i class="bi bi-tag"></i> {{ destination.get_destination_type_display }}
-                </span>
-                <span class="badge bg-light text-dark">
-                    <i class="bi bi-cash"></i> KSh {{ destination.average_cost_per_day }}/day
-                </span>
-            </p>
+    <div class="destination-hero-overlay"></div>
+    <div class="destination-hero-content">
+        <div class="container">
+            <h1 class="destination-title">{{ destination.name }}</h1>
+            <div class="destination-location">
+                <i class="bi bi-geo-alt"></i>
+                {{ destination.county }}, Kenya
+            </div>
+            <div class="destination-badges">
+                <div class="destination-badge type">
+                    <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% elif destination.destination_type == 'mountain' %}mountain{% else %}geo-alt{% endif %}"></i>
+                    {{ destination.get_destination_type_display }}
+                </div>
+                <div class="destination-badge cost">
+                    <i class="bi bi-cash-coin"></i>
+                    KSh {{ destination.average_cost_per_day|floatformat:0 }}/day
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Main Content -->
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <!-- Main Info -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h2 class="h4 mb-3">
-                            <i class="bi bi-info-circle text-success"></i> About
-                        </h2>
-                        <p class="lead">{{ destination.description }}</p>
+<section class="destination-content-wrapper">
+    <div class="destination-main-content">
+        <!-- Main Content Area -->
+        <div class="destination-content">
+            <!-- About Section -->
+            <div class="content-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="content-card-header">
+                    <div class="content-card-icon">
+                        <i class="bi bi-info-circle"></i>
                     </div>
+                    <h2 class="content-card-title">About {{ destination.name }}</h2>
                 </div>
-
-                {% if destination.activities %}
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h2 class="h4 mb-3">
-                            <i class="bi bi-list-check text-success"></i> Activities
-                        </h2>
-                        <p>{{ destination.activities }}</p>
-                    </div>
+                <div class="content-card-body">
+                    <p>{{ destination.description }}</p>
                 </div>
-                {% endif %}
-
-                {% if destination.accommodation_options %}
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h2 class="h4 mb-3">
-                            <i class="bi bi-house text-success"></i> Accommodation
-                        </h2>
-                        <p>{{ destination.accommodation_options }}</p>
-                    </div>
-                </div>
-                {% endif %}
             </div>
 
-            <!-- Sidebar -->
-            <div class="col-lg-4">
-                <!-- Weather Card -->
-                {% if weather_data %}
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">
-                            <i class="bi bi-cloud-sun"></i> Current Weather
-                        </h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png" 
-                             alt="{{ weather_data.description }}"
-                             style="width: 80px; height: 80px;">
-                        <h2 class="mb-0">{{ weather_data.temperature }}°C</h2>
-                        <p class="text-muted mb-2">Feels like {{ weather_data.feels_like }}°C</p>
-                        <p class="text-capitalize mb-3">{{ weather_data.description }}</p>
-                        <div class="row text-start">
-                            <div class="col-6">
-                                <small><i class="bi bi-droplet text-info"></i> {{ weather_data.humidity }}%</small>
-                            </div>
-                            <div class="col-6">
-                                <small><i class="bi bi-wind text-info"></i> {{ weather_data.wind_speed }} m/s</small>
-                            </div>
+            <!-- Content Grid - Two Column Layout -->
+            <div class="content-grid">
+                <!-- Activities Section -->
+                {% if destination.activities %}
+                <div class="content-card grid-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="content-card-header">
+                        <div class="content-card-icon">
+                            <i class="bi bi-list-check"></i>
                         </div>
+                        <h2 class="content-card-title">Things to Do</h2>
+                    </div>
+                    <div class="content-card-body">
+                        {{ destination.activities|linebreaks }}
                     </div>
                 </div>
                 {% endif %}
 
-                <!-- 3-Day Forecast -->
-                {% if forecast_data %}
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">
-                            <i class="bi bi-calendar3"></i> 3-Day Forecast
-                        </h5>
-                    </div>
-                    <div class="card-body p-2">
-                        {% for day in forecast_data %}
-                        <div class="d-flex align-items-center justify-content-between p-2 {% if not forloop.last %}border-bottom{% endif %}">
-                            <div>
-                                <strong class="small">{{ day.day_name }}</strong>
-                                <br>
-                                <small class="text-muted">{{ day.date }}</small>
-                            </div>
-                            <div class="text-center">
-                                <img src="https://openweathermap.org/img/wn/{{ day.icon }}@2x.png" 
-                                     alt="{{ day.description }}"
-                                     style="width: 40px; height: 40px;">
-                            </div>
-                            <div class="text-end">
-                                <strong>{{ day.temp_avg }}°C</strong>
-                                <br>
-                                <small class="text-muted">{{ day.temp_min }}° - {{ day.temp_max }}°</small>
-                            </div>
+                <!-- Accommodation Section -->
+                {% if destination.accommodation_options %}
+                <div class="content-card grid-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="content-card-header">
+                        <div class="content-card-icon">
+                            <i class="bi bi-house"></i>
                         </div>
-                        {% endfor %}
+                        <h2 class="content-card-title">Where to Stay</h2>
+                    </div>
+                    <div class="content-card-body">
+                        {{ destination.accommodation_options|linebreaks }}
                     </div>
                 </div>
                 {% endif %}
 
-                <!-- Quick Facts -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">
-                            <i class="bi bi-bookmark"></i> Quick Facts
-                        </h5>
+                <!-- Additional Info Cards -->
+                {% if destination.best_time_to_visit %}
+                <div class="content-card grid-item" data-aos="fade-up" data-aos-delay="400">
+                    <div class="content-card-header">
+                        <div class="content-card-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <h2 class="content-card-title">Best Time to Visit</h2>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-3">
-                                <strong><i class="bi bi-cash text-success"></i> Average Cost:</strong><br>
-                                KSh {{ destination.average_cost_per_day }} per day
-                            </li>
-                            {% if destination.best_time_to_visit %}
-                            <li class="mb-3">
-                                <strong><i class="bi bi-calendar-check text-success"></i> Best Time:</strong><br>
-                                {{ destination.best_time_to_visit }}
-                            </li>
-                            {% endif %}
-                            {% if destination.recommended_duration %}
-                            <li class="mb-3">
-                                <strong><i class="bi bi-clock text-success"></i> Recommended Stay:</strong><br>
-                                {{ destination.recommended_duration }} days
-                            </li>
-                            {% endif %}
-                            <li class="mb-0">
-                                <strong><i class="bi bi-tag text-success"></i> Type:</strong><br>
-                                {{ destination.get_destination_type_display }}
-                            </li>
+                    <div class="content-card-body">
+                        <p>{{ destination.best_time_to_visit }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Travel Tips Card -->
+                <div class="content-card grid-item" data-aos="fade-up" data-aos-delay="500">
+                    <div class="content-card-header">
+                        <div class="content-card-icon">
+                            <i class="bi bi-lightbulb"></i>
+                        </div>
+                        <h2 class="content-card-title">Travel Tips</h2>
+                    </div>
+                    <div class="content-card-body">
+                        <ul>
+                            <li>Book accommodations in advance during peak season</li>
+                            <li>Pack appropriate clothing for the climate</li>
+                            <li>Carry sufficient cash as some areas have limited ATM access</li>
+                            <li>Respect local customs and wildlife conservation rules</li>
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- CTA Card -->
-                <div class="card shadow-sm bg-success text-white">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Include in Your Trip?</h5>
-                        <p class="card-text small">Start planning your Kenya adventure</p>
-                        <a href="{% url 'core:destination_selection' %}" 
-                           class="btn btn-light w-100">
-                            <i class="bi bi-magic"></i> Plan Your Trip
-                        </a>
+        <!-- Sidebar -->
+        <div class="destination-sidebar">
+            <!-- Weather Card -->
+            {% if weather_data %}
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">
+                    <i class="bi bi-cloud-sun"></i>
+                    Current Weather
+                </div>
+                <div class="sidebar-card-body">
+                    <div class="weather-current">
+                        <img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png" 
+                             alt="{{ weather_data.description }}"
+                             class="weather-icon">
+                        <div class="weather-temp">{{ weather_data.temperature }}°C</div>
+                        <div class="weather-feels-like">Feels like {{ weather_data.feels_like }}°C</div>
+                        <div class="weather-description">{{ weather_data.description }}</div>
+                        <div class="weather-details">
+                            <div class="weather-detail">
+                                <i class="bi bi-droplet"></i>
+                                {{ weather_data.humidity }}%
+                            </div>
+                            <div class="weather-detail">
+                                <i class="bi bi-wind"></i>
+                                {{ weather_data.wind_speed }} m/s
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            {% endif %}
+
+            <!-- 3-Day Forecast -->
+            {% if forecast_data %}
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">
+                    <i class="bi bi-calendar3"></i>
+                    3-Day Forecast
+                </div>
+                <div class="sidebar-card-body">
+                    {% for day in forecast_data %}
+                    <div class="forecast-day">
+                        <div class="forecast-date">
+                            <div class="forecast-day-name">{{ day.day_name }}</div>
+                            <div class="forecast-date-text">{{ day.date }}</div>
+                        </div>
+                        <img src="https://openweathermap.org/img/wn/{{ day.icon }}@2x.png" 
+                             alt="{{ day.description }}"
+                             class="forecast-icon">
+                        <div class="forecast-temps">
+                            <div class="forecast-temp-avg">{{ day.temp_avg }}°C</div>
+                            <div class="forecast-temp-range">{{ day.temp_min }}° - {{ day.temp_max }}°</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Quick Facts -->
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">
+                    <i class="bi bi-bookmark"></i>
+                    Quick Facts
+                </div>
+                <div class="sidebar-card-body">
+                    <ul class="quick-facts-list">
+                        <li class="quick-fact">
+                            <div class="quick-fact-icon">
+                                <i class="bi bi-cash-coin"></i>
+                            </div>
+                            <div class="quick-fact-content">
+                                <div class="quick-fact-label">Average Cost</div>
+                                <div class="quick-fact-value">KSh {{ destination.average_cost_per_day|floatformat:0 }} per day</div>
+                            </div>
+                        </li>
+                        {% if destination.best_time_to_visit %}
+                        <li class="quick-fact">
+                            <div class="quick-fact-icon">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                            <div class="quick-fact-content">
+                                <div class="quick-fact-label">Best Time to Visit</div>
+                                <div class="quick-fact-value">{{ destination.best_time_to_visit }}</div>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% if destination.recommended_duration %}
+                        <li class="quick-fact">
+                            <div class="quick-fact-icon">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div class="quick-fact-content">
+                                <div class="quick-fact-label">Recommended Stay</div>
+                                <div class="quick-fact-value">{{ destination.recommended_duration }} days</div>
+                            </div>
+                        </li>
+                        {% endif %}
+                        <li class="quick-fact">
+                            <div class="quick-fact-icon">
+                                <i class="bi bi-tag"></i>
+                            </div>
+                            <div class="quick-fact-content">
+                                <div class="quick-fact-label">Destination Type</div>
+                                <div class="quick-fact-value">{{ destination.get_destination_type_display }}</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CTA Card -->
+            <div class="cta-card">
+                <div class="cta-card-title">Include in Your Trip?</div>
+                <div class="cta-card-text">Start planning your Kenya adventure with AI-powered itinerary generation</div>
+                <a href="{% url 'core:destination_selection' %}" class="cta-button">
+                    <i class="bi bi-magic"></i>
+                    Plan Your Trip
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Back Button -->
-<section class="py-4 bg-light">
+<!-- Navigation -->
+<section class="destination-navigation">
     <div class="container">
-        <a href="{% url 'destinations:list' %}" class="btn btn-outline-success">
-            <i class="bi bi-arrow-left"></i> Back to All Destinations
+        <a href="{% url 'destinations:list' %}" class="back-button">
+            <i class="bi bi-arrow-left"></i>
+            Back to All Destinations
         </a>
     </div>
 </section>
