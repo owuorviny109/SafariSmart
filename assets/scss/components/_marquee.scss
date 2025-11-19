@@ -1,0 +1,222 @@
+// Modern Marquee/Carousel Component
+// Variables for Modern Palette
+$primary-green: #10B981;
+$dark-green: #064E3B;
+$text-dark: #1F2937;
+$text-light: #6B7280;
+$bg-color: #F3F4F6;
+$white: #ffffff;
+$shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+$shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
+
+// --- 1. The Swaying Animation Logic ---
+.marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 2rem 0;
+    
+    // Add fade masks on sides for sleek look
+    &::before, &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 150px;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+    }
+    &::before {
+        left: 0;
+        background: linear-gradient(to right, $bg-color, transparent);
+    }
+    &::after {
+        right: 0;
+        background: linear-gradient(to left, $bg-color, transparent);
+    }
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: scrollLeft 30s linear infinite;
+    
+    // Pause animation when user hovers to read
+    &:hover {
+        animation-play-state: paused;
+    }
+}
+
+.card-group {
+    display: flex;
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+@keyframes scrollLeft {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+// --- 2. Modern Card Styling ---
+.feature-card {
+    background: $white;
+    width: 320px;
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    box-shadow: $shadow-sm;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.02);
+    flex-shrink: 0;
+    
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $shadow-lg;
+    }
+    
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, rgba($primary-green, 0.1), rgba($primary-green, 0.3));
+        color: $dark-green;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    h3 {
+        color: $text-dark;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        font-size: 1.25rem;
+    }
+    
+    p {
+        color: $text-light;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0;
+    }
+    
+    // Special styling for the "Featured" card
+    &.featured {
+        border: 2px solid rgba($primary-green, 0.5);
+        position: relative;
+        
+        // Optional: Add a "Popular" badge
+        &::after {
+            content: "★ Popular";
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: $dark-green;
+            color: white;
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+    }
+}
+
+// --- 3. Input Field Styling ---
+.planner-container {
+    width: 100%;
+    max-width: 800px;
+    padding: 0 1rem;
+    margin: 0 auto;
+}
+
+.input-wrapper {
+    background: $white;
+    padding: 0.5rem;
+    border-radius: 50px;
+    box-shadow: $shadow-lg;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e5e7eb;
+    
+    .input-icon {
+        padding-left: 1.5rem;
+        font-size: 1.2rem;
+    }
+    
+    input {
+        border: none;
+        flex-grow: 1;
+        padding: 1rem;
+        font-size: 1rem;
+        outline: none;
+        font-family: 'Poppins', sans-serif;
+        color: $text-dark;
+        
+        &::placeholder {
+            color: #9CA3AF;
+        }
+    }
+    
+    .btn-generate {
+        background: linear-gradient(135deg, $primary-green, $dark-green);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 40px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+        font-family: 'Poppins', sans-serif;
+        
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba($primary-green, 0.4);
+        }
+        
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+}
+
+.helper-text {
+    margin-top: 1rem;
+    text-align: center;
+    color: $text-light;
+    font-size: 0.85rem;
+    
+    span {
+        background: rgba($white, 0.5);
+        padding: 4px 10px;
+        border-radius: 10px;
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .feature-card {
+        width: 280px;
+        padding: 2rem 1.5rem;
+    }
+    
+    .input-wrapper {
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 1rem;
+        
+        .input-icon {
+            padding-left: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        input {
+            padding: 0.75rem;
+            text-align: center;
+        }
+        
+        .btn-generate {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+    }
+}

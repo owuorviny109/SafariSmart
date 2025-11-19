@@ -11,6 +11,11 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/hero-backgrounds.css' %}">
 <style>
+    /* Apply Poppins font globally for modern look */
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+    
     /* Full Background Hero with Text Overlay */
     .hero-immersive {
         position: relative;
@@ -300,49 +305,70 @@
     </div>
 </section>
 
-<!-- Value Constellation -->
-<section class="section-modern bg-white">
+<!-- Why Choose SafariSmart - Modern Marquee Section -->
+<section class="section-modern" style="background: #F3F4F6; padding: 4rem 0;">
     <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
+        <div class="text-center mb-4" data-aos="fade-up">
             <h2 class="section-title">Why Choose SafariSmart</h2>
             <p class="section-subtitle">
                 Experience the future of travel planning with our intelligent platform
             </p>
         </div>
-        
-        <div class="value-constellation">
-            <div class="value-orb" data-aos="fade-up" data-aos-delay="100">
-                <div class="value-icon-wrapper">
-                    <i class="bi bi-cpu-fill"></i>
+    </div>
+    
+    <!-- The Scrolling Container -->
+    <div class="marquee-wrapper">
+        <!-- The Track that moves -->
+        <div class="marquee-track">
+            
+            <!-- CONTENT GROUP 1 (Original) -->
+            <div class="card-group">
+                <!-- Card 1 -->
+                <div class="feature-card">
+                    <div class="icon-box"><i class="bi bi-cpu-fill"></i></div>
+                    <h3>Smart Planning</h3>
+                    <p>Intelligent algorithms create your perfect itinerary, optimized for your preferences, budget, and travel style.</p>
                 </div>
-                <h3 class="value-title">Smart Planning</h3>
-                <p class="value-description">
-                    Intelligent algorithms create your perfect itinerary,
-                    optimized for your preferences, budget, and travel style.
-                </p>
+                
+                <!-- Card 2 (Featured) -->
+                <div class="feature-card featured">
+                    <div class="icon-box"><i class="bi bi-geo-alt-fill"></i></div>
+                    <h3>Top Kenya Destinations</h3>
+                    <p>From iconic Maasai Mara to pristine Diani Beach, explore Kenya's diverse landscapes with expert local insights.</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="feature-card">
+                    <div class="icon-box"><i class="bi bi-piggy-bank-fill"></i></div>
+                    <h3>Budget Optimization</h3>
+                    <p>Get the most value from every shilling with intelligent cost breakdowns and activity recommendations.</p>
+                </div>
             </div>
             
-            <div class="value-orb" data-aos="fade-up" data-aos-delay="200">
-                <div class="value-icon-wrapper">
-                    <i class="bi bi-geo-alt-fill"></i>
+            <!-- CONTENT GROUP 2 (Duplicate for seamless loop) -->
+            <div class="card-group">
+                <!-- Copy of Card 1 -->
+                <div class="feature-card">
+                    <div class="icon-box"><i class="bi bi-cpu-fill"></i></div>
+                    <h3>Smart Planning</h3>
+                    <p>Intelligent algorithms create your perfect itinerary, optimized for your preferences, budget, and travel style.</p>
                 </div>
-                <h3 class="value-title">Top Kenya Destinations</h3>
-                <p class="value-description">
-                    From iconic Maasai Mara to pristine Diani Beach,
-                    explore Kenya's diverse landscapes with expert local insights.
-                </p>
+                
+                <!-- Copy of Card 2 -->
+                <div class="feature-card featured">
+                    <div class="icon-box"><i class="bi bi-geo-alt-fill"></i></div>
+                    <h3>Top Kenya Destinations</h3>
+                    <p>From iconic Maasai Mara to pristine Diani Beach, explore Kenya's diverse landscapes with expert local insights.</p>
+                </div>
+                
+                <!-- Copy of Card 3 -->
+                <div class="feature-card">
+                    <div class="icon-box"><i class="bi bi-piggy-bank-fill"></i></div>
+                    <h3>Budget Optimization</h3>
+                    <p>Get the most value from every shilling with intelligent cost breakdowns and activity recommendations.</p>
+                </div>
             </div>
             
-            <div class="value-orb" data-aos="fade-up" data-aos-delay="300">
-                <div class="value-icon-wrapper">
-                    <i class="bi bi-piggy-bank-fill"></i>
-                </div>
-                <h3 class="value-title">Smart Budget Optimization</h3>
-                <p class="value-description">
-                    Get the most value from every shilling with intelligent cost breakdowns,
-                    accommodation suggestions, and activity recommendations.
-                </p>
-            </div>
         </div>
     </div>
 </section>
