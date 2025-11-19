@@ -15,7 +15,7 @@ bleach==6.1.0                   # HTML sanitization
 django-cors-headers==4.3.1      # CORS protection
 
 # Database (Production)
-psycopg[binary]==3.1.18         # PostgreSQL adapter (Python 3.13 compatible)
+psycopg[binary]==3.2.3          # PostgreSQL adapter (Python 3.13 compatible)
 
 # Development
 django-debug-toolbar==4.2.0
