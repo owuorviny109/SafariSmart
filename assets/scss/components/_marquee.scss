@@ -1,4 +1,4 @@
-// Modern Marquee/Carousel Component
+// Modern Swaying Cards Component
 // Variables for Modern Palette
 $primary-green: #10B981;
 $dark-green: #064E3B;
@@ -9,69 +9,59 @@ $white: #ffffff;
 $shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 $shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
 
-// --- 1. The Swaying Animation Logic ---
-.marquee-wrapper {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    padding: 2rem 0;
-    
-    // Add fade masks on sides for sleek look
-    &::before, &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 150px;
-        height: 100%;
-        z-index: 2;
-        pointer-events: none;
-    }
-    &::before {
-        left: 0;
-        background: linear-gradient(to right, $bg-color, transparent);
-    }
-    &::after {
-        right: 0;
-        background: linear-gradient(to left, $bg-color, transparent);
-    }
-}
-
-.marquee-track {
-    display: flex;
-    width: max-content;
-    animation: scrollLeft 30s linear infinite;
-    
-    // Pause animation when user hovers to read
-    &:hover {
-        animation-play-state: paused;
-    }
-}
-
-.card-group {
-    display: flex;
+// --- 1. Container for 3 Swaying Cards ---
+.swaying-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 0 1rem;
 }
 
-@keyframes scrollLeft {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+// --- 2. Swaying Animations (each card has different timing) ---
+@keyframes swayGentle {
+    0%, 100% { 
+        transform: translateX(0) translateY(0);
+    }
+    25% { 
+        transform: translateX(10px) translateY(-5px);
+    }
+    50% { 
+        transform: translateX(0) translateY(0);
+    }
+    75% { 
+        transform: translateX(-10px) translateY(5px);
+    }
 }
 
-// --- 2. Modern Card Styling ---
+.sway-1 {
+    animation: swayGentle 8s ease-in-out infinite;
+}
+
+.sway-2 {
+    animation: swayGentle 10s ease-in-out infinite;
+    animation-delay: -2s;
+}
+
+.sway-3 {
+    animation: swayGentle 9s ease-in-out infinite;
+    animation-delay: -4s;
+}
+
+// --- 3. Modern Card Styling ---
 .feature-card {
     background: $white;
-    width: 320px;
     padding: 2.5rem 2rem;
     border-radius: 24px;
     box-shadow: $shadow-sm;
     transition: all 0.3s ease;
     border: 1px solid rgba(0,0,0,0.02);
-    flex-shrink: 0;
     
     &:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px) !important;
         box-shadow: $shadow-lg;
+        animation-play-state: paused;
     }
     
     .icon-box {
@@ -194,8 +184,12 @@ $shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0,
 
 // Responsive adjustments
 @media (max-width: 768px) {
+    .swaying-cards-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
     .feature-card {
-        width: 280px;
         padding: 2rem 1.5rem;
     }
     
