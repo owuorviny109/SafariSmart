@@ -315,40 +315,47 @@ class AIChatHandler:
         """Build prompt for AI to extract trip data."""
         
         # Check what's missing
-        missing = []
-        if not context.extracted_data.get('custom_destinations'):
-            missing.append('destination')
-        if context.extracted_data.get('duration_days') is None:
-            missing.append('duration')
-        if not context.extracted_data.get('budget_category'):
-            missing.append('budget')
-        if not context.extracted_data.get('interests'):
-            missing.append('interests')
+        has_dest = bool(context.extracted_data.get('custom_destinations'))
+        has_duration = context.extracted_data.get('duration_days') is not None
+        has_budget = bool(context.extracted_data.get('budget_category'))
+        has_interests = bool(context.extracted_data.get('interests'))
         
-        prompt = f"""You are a friendly Kenyan safari planning assistant. Have a natural conversation to help plan a custom trip.
+        prompt = f"""You are a Kenyan safari assistant. Extract trip info and respond naturally.
 
-User said: "{user_input}"
+User: "{user_input}"
 
-What we know so far:
-- Destination: {context.extracted_data.get('custom_destinations', ['Not specified yet'])[0] if context.extracted_data.get('custom_destinations') else 'Not specified yet'}
-- Duration: {context.extracted_data.get('duration_days', 'Not specified yet')} days
-- Budget: {context.extracted_data.get('budget_category', 'Not specified yet')}
-- Interests: {', '.join(context.extracted_data.get('interests', [])) or 'Not specified yet'}
+Current data:
+Destinations: {context.extracted_data.get('custom_destinations', [])}
+Duration: {context.extracted_data.get('duration_days', 'none')}
+Budget: {context.extracted_data.get('budget_category', 'none')}
+Interests: {context.extracted_data.get('interests', [])}
 
-Still need: {', '.join(missing) if missing else 'All info collected!'}
+CRITICAL: You MUST extract data from the user's message and output it in the format below.
 
-Instructions:
-1. Be warm, friendly, and conversational (like a real person, not a robot)
-2. If user greets you, greet back warmly
-3. Extract any trip info from their message
-4. Ask for ONE missing piece of info at a time
-5. Be enthusiastic about Kenya!
+Rules:
+1. Extract ANY Kenya location names mentioned → add to DESTINATIONS
+2. Extract ANY numbers that could be days → set as DURATION
+3. If user mentions "budget", "cheap", "affordable" → BUDGET: budget
+4. If user mentions "luxury", "premium", "expensive" → BUDGET: luxury  
+5. If user mentions "mid-range", "moderate" → BUDGET: mid-range
+6. Extract interests: wildlife, culture, food, adventure, beach, nature, etc.
 
-Respond naturally in 1-2 sentences. Then on new lines add:
-DESTINATIONS: [any Kenya places mentioned, or "none"]
-DURATION: [number only, or "none"]
+Response format (REQUIRED):
+[Your friendly 1-2 sentence response]
+
+DESTINATIONS: [comma-separated Kenya places, or "none"]
+DURATION: [just the number, or "none"]
 BUDGET: [budget/mid-range/luxury, or "none"]
-INTERESTS: [comma-separated, or "none"]"""
+INTERESTS: [comma-separated, or "none"]
+
+Example:
+User: "I want to visit Rongo for 3 days"
+Great! Rongo is a wonderful choice. What's your budget level?
+
+DESTINATIONS: Rongo
+DURATION: 3
+BUDGET: none
+INTERESTS: none"""
         
         return prompt
         

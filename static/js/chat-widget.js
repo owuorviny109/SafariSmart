@@ -62,6 +62,14 @@ class TripPlannerChat {
                     <!-- Messages Container -->
                     <div id="chatMessages" class="chat-messages">
                         <!-- Messages will be added here -->
+                        <!-- Loading Indicator (inside messages) -->
+                        <div id="chatLoading" class="chat-loading" style="display: none;">
+                            <div class="typing-indicator">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Input Area -->
@@ -76,15 +84,6 @@ class TripPlannerChat {
                         <button id="chatSend" class="chat-send-btn">
                             <i class="bi bi-send-fill"></i>
                         </button>
-                    </div>
-                    
-                    <!-- Loading Indicator -->
-                    <div id="chatLoading" class="chat-loading" style="display: none;">
-                        <div class="typing-indicator">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -258,7 +257,23 @@ class TripPlannerChat {
      */
     showLoading(show) {
         const loading = document.getElementById('chatLoading');
-        loading.style.display = show ? 'flex' : 'none';
+        
+        if (show) {
+            // Add avatar if not present
+            if (!loading.querySelector('.message-avatar')) {
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.innerHTML = '<i class="bi bi-robot"></i>';
+                loading.insertBefore(avatar, loading.firstChild);
+            }
+            loading.style.display = 'flex';
+            
+            // Scroll to show loading
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        } else {
+            loading.style.display = 'none';
+        }
     }
     
     /**
