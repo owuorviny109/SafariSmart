@@ -112,7 +112,6 @@ Your support helps keep this project running and improving!
 - GitHub: [@owuorviny109](https://github.com/owuorviny109)
 - Email: owuorvincent069@gmail.com
 - Portfolio: [owuorvincent.vercel.app](https://owuorvincent.vercel.app/)
-- M-Pesa: 0796915745
 
 ---
 
