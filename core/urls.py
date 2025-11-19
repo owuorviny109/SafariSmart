@@ -31,4 +31,6 @@ urlpatterns = [
     
     # API endpoints
     path('api/generate-itinerary/', views.generate_itinerary_api, name='generate_itinerary_api'),
+    path('api/chat/start/', views.chat_start_api, name='chat_start'),
+    path('api/chat/message/', views.chat_message_api, name='chat_message'),
 ]

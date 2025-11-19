@@ -26,6 +26,7 @@ from django.conf import settings
 
 from .models import WizardSession, Itinerary
 from .services import WizardService, ItineraryGeneratorFactory
+from .services.chat_service import TripPlannerChatService, ChatContext
 from destinations.models import Destination
 
 logger = logging.getLogger(__name__)
@@ -1342,4 +1343,129 @@ def generate_itinerary_api(request: HttpRequest) -> JsonResponse:
             'status': 'error',
             'message': f'Failed to generate itinerary: {str(e)}',
             'debug': error_details if settings.DEBUG else None
+        }, status=500)
+
+
+
+# ============================================
+# CHAT API VIEWS
+# ============================================
+
+def chat_start_api(request: HttpRequest) -> JsonResponse:
+    """
+    API endpoint to start a new chat conversation.
+    
+    Initializes chat service and returns welcome message.
+    
+    Args:
+        request (HttpRequest): HTTP request object
+        
+    Returns:
+        JsonResponse: Welcome message and session info
+        
+    Example:
+        POST /api/chat/start/
+        Returns: {
+            'status': 'success',
+            'message': 'Hi! I'm your Safari planning assistant...',
+            'session_id': 'abc123'
+        }
+    """
+    if request.method != 'POST':
+        return JsonResponse({
+            'status': 'error',
+            'message': 'POST method required'
+        }, status=405)
+        
+    try:
+        chat_service = TripPlannerChatService()
+        response = chat_service.start_conversation()
+        
+        # Store context in session
+        if not hasattr(request.session, 'chat_context'):
+            request.session['chat_context'] = {}
+            
+        session_id = request.session.session_key or request.session.create()
+        
+        return JsonResponse({
+            'status': 'success',
+            'message': response['message'],
+            'session_id': session_id,
+            'type': response['type']
+        })
+        
+    except Exception as e:
+        logger.error(f"Chat start failed: {e}")
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Failed to start chat'
+        }, status=500)
+
+
+def chat_message_api(request: HttpRequest) -> JsonResponse:
+    """
+    API endpoint to process chat messages.
+    
+    Handles user messages and returns bot responses with
+    extracted trip data.
+    
+    Args:
+        request (HttpRequest): HTTP request object with message
+        
+    Returns:
+        JsonResponse: Bot response and extracted data
+        
+    Example:
+        POST /api/chat/message/
+        Body: {'message': 'I want to visit Rongo for 3 days'}
+        Returns: {
+            'status': 'success',
+            'message': 'Great! What's your budget level?',
+            'completed': false,
+            'extracted_data': {...}
+        }
+    """
+    if request.method != 'POST':
+        return JsonResponse({
+            'status': 'error',
+            'message': 'POST method required'
+        }, status=405)
+        
+    try:
+        import json
+        data = json.loads(request.body)
+        user_message = data.get('message', '').strip()
+        
+        if not user_message:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Message is required'
+            }, status=400)
+            
+        # Get or create chat context
+        # In production, use proper session management
+        context = ChatContext()
+        
+        # Process message
+        chat_service = TripPlannerChatService()
+        response = chat_service.process_message(user_message, context)
+        
+        return JsonResponse({
+            'status': 'success',
+            'message': response['message'],
+            'type': response['type'],
+            'completed': response['completed'],
+            'extracted_data': response.get('extracted_data', {})
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Invalid JSON'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Chat message processing failed: {e}")
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Failed to process message'
         }, status=500)
