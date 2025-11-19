@@ -8,7 +8,9 @@
       "description": "Traveling alone for personal adventure and discovery",
       "icon": "👤",
       "is_active": true,
-      "sort_order": 1
+      "sort_order": 1,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -20,7 +22,9 @@
       "description": "Romantic getaway for two",
       "icon": "💑",
       "is_active": true,
-      "sort_order": 2
+      "sort_order": 2,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -32,7 +36,9 @@
       "description": "Family vacation with children",
       "icon": "👨‍👩‍👧‍👦",
       "is_active": true,
-      "sort_order": 3
+      "sort_order": 3,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -44,7 +50,9 @@
       "description": "Adventure with friends",
       "icon": "👥",
       "is_active": true,
-      "sort_order": 4
+      "sort_order": 4,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -58,7 +66,9 @@
       "max_budget_per_day": 10000,
       "icon": "💰",
       "is_active": true,
-      "sort_order": 1
+      "sort_order": 1,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -72,7 +82,9 @@
       "max_budget_per_day": 25000,
       "icon": "💵",
       "is_active": true,
-      "sort_order": 2
+      "sort_order": 2,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -86,7 +98,9 @@
       "max_budget_per_day": 100000,
       "icon": "💎",
       "is_active": true,
-      "sort_order": 3
+      "sort_order": 3,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -102,7 +116,9 @@
       "meals_max": 3000,
       "transport_min": 2000,
       "transport_max": 4000,
-      "notes": "Budget-friendly options with basic accommodations and essential activities"
+      "notes": "Budget-friendly options with basic accommodations and essential activities",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -118,7 +134,9 @@
       "meals_max": 5000,
       "transport_min": 4000,
       "transport_max": 6000,
-      "notes": "Mid-range options with comfortable lodges and quality activities"
+      "notes": "Mid-range options with comfortable lodges and quality activities",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -134,7 +152,9 @@
       "meals_max": 8000,
       "transport_min": 6000,
       "transport_max": 10000,
-      "notes": "Luxury options with premium resorts and exclusive experiences"
+      "notes": "Luxury options with premium resorts and exclusive experiences",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -146,7 +166,9 @@
       "description": "Game drives, animal viewing, and safari experiences",
       "icon": "🦁",
       "is_active": true,
-      "sort_order": 1
+      "sort_order": 1,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -158,7 +180,9 @@
       "description": "Local traditions, villages, and cultural experiences",
       "icon": "🏛️",
       "is_active": true,
-      "sort_order": 2
+      "sort_order": 2,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -170,7 +194,9 @@
       "description": "Local dishes, cooking classes, and culinary experiences",
       "icon": "🍽️",
       "is_active": true,
-      "sort_order": 3
+      "sort_order": 3,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -182,7 +208,9 @@
       "description": "Hiking, climbing, water sports, and adrenaline activities",
       "icon": "🏔️",
       "is_active": true,
-      "sort_order": 4
+      "sort_order": 4,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -194,7 +222,9 @@
       "description": "Spa treatments, yoga, and peaceful retreats",
       "icon": "🧘",
       "is_active": true,
-      "sort_order": 5
+      "sort_order": 5,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -206,7 +236,9 @@
       "description": "Scenic viewpoints, wildlife photography, and photo tours",
       "icon": "📸",
       "is_active": true,
-      "sort_order": 6
+      "sort_order": 6,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -218,7 +250,9 @@
       "description": "Historical sites, museums, and archaeological locations",
       "icon": "📚",
       "is_active": true,
-      "sort_order": 7
+      "sort_order": 7,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -230,7 +264,9 @@
       "description": "Nature walks, bird watching, and eco-tourism",
       "icon": "🌿",
       "is_active": true,
-      "sort_order": 8
+      "sort_order": 8,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -242,7 +278,9 @@
       "description": "Beach activities, snorkeling, diving, and water sports",
       "icon": "🏖️",
       "is_active": true,
-      "sort_order": 9
+      "sort_order": 9,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -254,7 +292,9 @@
       "description": "Evening entertainment, bars, and local nightlife",
       "icon": "🎭",
       "is_active": true,
-      "sort_order": 10
+      "sort_order": 10,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   },
   {
@@ -276,7 +316,9 @@
       "enable_custom_destinations": true,
       "support_email": "info@safarismart.co.ke",
       "support_phone": "",
-      "updated_by": "system"
+      "updated_by": "system",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
     }
   }
 ]
