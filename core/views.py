@@ -19,6 +19,7 @@ import logging
 from typing import Dict, Any
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.views import View
 from django.views.generic import TemplateView
@@ -1351,6 +1352,7 @@ def generate_itinerary_api(request: HttpRequest) -> JsonResponse:
 # CHAT API VIEWS
 # ============================================
 
+@csrf_exempt
 def chat_start_api(request: HttpRequest) -> JsonResponse:
     """
     API endpoint to start a new chat conversation.
@@ -1402,6 +1404,7 @@ def chat_start_api(request: HttpRequest) -> JsonResponse:
         }, status=500)
 
 
+@csrf_exempt
 def chat_message_api(request: HttpRequest) -> JsonResponse:
     """
     API endpoint to process chat messages.

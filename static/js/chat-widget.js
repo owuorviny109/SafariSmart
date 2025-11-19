@@ -265,39 +265,98 @@ class TripPlannerChat {
     }
     
     /**
-     * Handle conversation completion
+     * Handle conversation completion - Generate itinerary directly
      */
-    handleCompletion() {
-        // Add custom destinations to the wizard
-        if (this.extractedData.custom_destinations && this.extractedData.custom_destinations.length > 0) {
-            // Use the global function to add destinations
-            if (typeof window.addCustomDestinationFromChat === 'function') {
-                this.extractedData.custom_destinations.forEach(dest => {
-                    window.addCustomDestinationFromChat(dest);
-                });
+    async handleCompletion() {
+        // Show generating message
+        this.addMessage('bot', '✨ Perfect! Generating your personalized itinerary...');
+        this.showLoading(true);
+        
+        try {
+            // Call the quick trip API to generate itinerary
+            const tripDescription = this.buildTripDescription();
+            
+            const formData = new FormData();
+            formData.append('trip_description', tripDescription);
+            formData.append('csrfmiddlewaretoken', this.getCSRFToken());
+            
+            const response = await fetch('/quick-trip/', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.redirected) {
+                // Success! Redirect to the itinerary
+                window.location.href = response.url;
             } else {
-                // Fallback: directly update hidden input
-                const customInput = document.getElementById('customDestinationsData');
-                if (customInput) {
-                    customInput.value = JSON.stringify(this.extractedData.custom_destinations);
-                }
+                // Handle error
+                this.showLoading(false);
+                this.addMessage('bot', 'Sorry, something went wrong. Please try the step-by-step planner.');
+                setTimeout(() => {
+                    window.location.href = '/wizard/destinations/';
+                }, 2000);
             }
+        } catch (error) {
+            console.error('Failed to generate itinerary:', error);
+            this.showLoading(false);
+            this.addMessage('bot', 'Sorry, something went wrong. Please try the step-by-step planner.');
+            setTimeout(() => {
+                window.location.href = '/wizard/destinations/';
+            }, 2000);
         }
-        
-        // Show success message
-        this.addMessage('bot', 'Perfect! Your custom trip has been added. Click "Next" to continue! ✨');
-        
-        // Close chat after delay
-        setTimeout(() => {
-            this.closeChat();
-        }, 2000);
     }
     
     /**
-     * Get CSRF token
+     * Build trip description from extracted data for quick trip API
+     */
+    buildTripDescription() {
+        const parts = [];
+        
+        // Duration
+        if (this.extractedData.duration_days) {
+            parts.push(`${this.extractedData.duration_days} days`);
+        }
+        
+        // Destination
+        if (this.extractedData.custom_destinations && this.extractedData.custom_destinations.length > 0) {
+            parts.push(`to ${this.extractedData.custom_destinations.join(' and ')}`);
+        }
+        
+        // Budget
+        if (this.extractedData.budget_category) {
+            const budgetMap = {
+                'budget': '30000',
+                'mid-range': '100000',
+                'luxury': '200000'
+            };
+            parts.push(`with ${budgetMap[this.extractedData.budget_category]} budget`);
+        }
+        
+        // Interests
+        if (this.extractedData.interests && this.extractedData.interests.length > 0) {
+            parts.push(`interested in ${this.extractedData.interests.join(', ')}`);
+        }
+        
+        return parts.join(' ');
+    }
+    
+    /**
+     * Get CSRF token from page or cookie
      */
     getCSRFToken() {
-        return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+        // Try to get from form input
+        const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (tokenInput) {
+            return tokenInput.value;
+        }
+        
+        // Try to get from cookie
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+        
+        return cookieValue || '';
     }
     
     /**

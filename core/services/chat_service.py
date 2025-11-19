@@ -284,12 +284,12 @@ class AIChatHandler:
             
         genai.configure(api_key=api_key)
         
-        # Use fast model with optimized settings
+        # Use intelligent, conversational settings
         generation_config = {
-            'temperature': 0.7,
-            'top_p': 0.8,
+            'temperature': 0.9,  # Higher for more creative, intelligent responses
+            'top_p': 0.95,
             'top_k': 40,
-            'max_output_tokens': 500,  # Short responses for chat
+            'max_output_tokens': 800,  # Allow longer, more helpful responses
         }
         
         self.model = genai.GenerativeModel(
@@ -312,7 +312,10 @@ class AIChatHandler:
         
         try:
             response = self.model.generate_content(prompt)
-            return self._parse_ai_response(response.text, context)
+            logger.info(f"AI Response: {response.text[:200]}...")  # Log first 200 chars
+            bot_message, extracted = self._parse_ai_response(response.text, context)
+            logger.info(f"Extracted data: {extracted}")
+            return bot_message, extracted
             
         except Exception as e:
             logger.error(f"AI chat processing failed: {e}")
@@ -320,60 +323,82 @@ class AIChatHandler:
             return self.config.error_message, {}
             
     def _build_extraction_prompt(self, user_input: str, context: ChatContext) -> str:
-        """Build prompt for AI to extract trip data."""
+        """Build prompt for AI to extract trip data intelligently."""
         
-        # Check what's missing
-        has_dest = bool(context.extracted_data.get('custom_destinations'))
-        has_duration = context.extracted_data.get('duration_days') is not None
-        has_budget = bool(context.extracted_data.get('budget_category'))
-        has_interests = bool(context.extracted_data.get('interests'))
+        # Check what we still need
+        needs_dest = not context.extracted_data.get('custom_destinations')
+        needs_duration = context.extracted_data.get('duration_days') is None
+        needs_budget = not context.extracted_data.get('budget_category')
+        needs_interests = not context.extracted_data.get('interests')
         
-        prompt = f"""You are a Kenyan safari assistant. Extract trip info and respond naturally.
+        prompt = f"""You are an intelligent Kenyan safari planning assistant. Use your full understanding to help plan trips.
 
+CONVERSATION SO FAR:
 User: "{user_input}"
 
-Current data:
-Destinations: {context.extracted_data.get('custom_destinations', [])}
-Duration: {context.extracted_data.get('duration_days', 'none')}
-Budget: {context.extracted_data.get('budget_category', 'none')}
-Interests: {context.extracted_data.get('interests', [])}
+TRIP DATA COLLECTED:
+- Destinations: {context.extracted_data.get('custom_destinations', 'Not yet specified')}
+- Duration: {context.extracted_data.get('duration_days', 'Not yet specified')} days
+- Budget: {context.extracted_data.get('budget_category', 'Not yet specified')}
+- Interests: {context.extracted_data.get('interests', 'Not yet specified')}
 
-CRITICAL: You MUST extract data from the user's message and output it in the format below.
+YOUR TASK:
+1. Understand what the user is saying using your intelligence
+2. Extract ANY trip information from their message (destinations, duration, budget amounts, interests/activities)
+3. Respond naturally and helpfully
+4. If they've given you trip details, acknowledge them and ask for what's still missing
+5. Be conversational and intelligent - don't just repeat questions
 
-Rules:
-1. Extract ANY Kenya location names mentioned → add to DESTINATIONS
-2. Extract ANY numbers that could be days → set as DURATION
-3. If user mentions "budget", "cheap", "affordable" → BUDGET: budget
-4. If user mentions "luxury", "premium", "expensive" → BUDGET: luxury  
-5. If user mentions "mid-range", "moderate" → BUDGET: mid-range
-6. Extract interests: wildlife, culture, food, adventure, beach, nature, etc.
+EXTRACTION INTELLIGENCE:
+- Destinations: ANY Kenya location (Kakamega, Nairobi, Masai Mara, Mombasa, Rongo, etc.)
+- Duration: Numbers indicating days (1 day, 3 days, "one day" = 1, "a week" = 7, "weekend" = 2)
+- Budget: 
+  * Under 50,000 KSh OR "budget/cheap/affordable" → budget
+  * 50,000-150,000 KSh OR "mid-range/moderate" → mid-range  
+  * Over 150,000 KSh OR "luxury/premium/expensive" → luxury
+- Interests: wildlife, safari, culture, food, adventure, beach, nature, photography, relaxation, hiking, etc.
 
-Response format (REQUIRED):
-[Your friendly 1-2 sentence response]
+RESPOND IN THIS FORMAT:
 
-DESTINATIONS: [comma-separated Kenya places, or "none"]
-DURATION: [just the number, or "none"]
+[Your intelligent, natural response - be helpful and conversational]
+
+---EXTRACTION---
+DESTINATIONS: [Kenya places, or "none"]
+DURATION: [number, or "none"]
 BUDGET: [budget/mid-range/luxury, or "none"]
 INTERESTS: [comma-separated, or "none"]
 
-Example:
-User: "I want to visit Rongo for 3 days"
-Great! Rongo is a wonderful choice. What's your budget level?
+EXAMPLE:
+User: "i want to have a one day trip to kakamega with a budget of 10000"
 
-DESTINATIONS: Rongo
-DURATION: 3
-BUDGET: none
-INTERESTS: none"""
+Perfect! A day trip to Kakamega Forest with 10,000 KSh is totally doable. The forest is amazing for nature walks and birdwatching. What kind of activities interest you most?
+
+---EXTRACTION---
+DESTINATIONS: Kakamega
+DURATION: 1
+BUDGET: budget
+INTERESTS: none
+
+NOW RESPOND TO THE USER'S MESSAGE ABOVE."""
         
         return prompt
         
     def _parse_ai_response(self, ai_text: str, context: ChatContext) -> Tuple[str, Dict[str, Any]]:
-        """Parse AI response and extract structured data."""
+        """Parse AI response and extract structured data intelligently."""
         extracted = {}
         
-        # Split response and data
-        lines = ai_text.split('\n')
-        response_lines = []
+        # Split by extraction marker
+        if '---EXTRACTION---' in ai_text:
+            parts = ai_text.split('---EXTRACTION---')
+            bot_response = parts[0].strip()
+            extraction_section = parts[1] if len(parts) > 1 else ''
+        else:
+            # Fallback: try to find data fields anywhere
+            bot_response = ai_text
+            extraction_section = ai_text
+        
+        # Parse extraction section
+        lines = extraction_section.split('\n')
         
         for line in lines:
             line = line.strip()
@@ -381,7 +406,6 @@ INTERESTS: none"""
             if line.startswith('DESTINATIONS:'):
                 dest_text = line.replace('DESTINATIONS:', '').strip()
                 if dest_text.lower() != 'none' and dest_text:
-                    # Extract destination names
                     destinations = [d.strip() for d in dest_text.split(',') if d.strip()]
                     if destinations:
                         extracted['custom_destinations'] = destinations
@@ -389,7 +413,6 @@ INTERESTS: none"""
             elif line.startswith('DURATION:'):
                 duration_text = line.replace('DURATION:', '').strip()
                 if duration_text.lower() != 'none':
-                    # Extract number
                     import re
                     numbers = re.findall(r'\d+', duration_text)
                     if numbers:
@@ -406,13 +429,19 @@ INTERESTS: none"""
                     interests = [i.strip().lower() for i in interests_text.split(',') if i.strip()]
                     if interests:
                         extracted['interests'] = interests
-            else:
-                # This is part of the response
-                if line and not any(line.startswith(prefix) for prefix in ['DESTINATIONS:', 'DURATION:', 'BUDGET:', 'INTERESTS:']):
-                    response_lines.append(line)
         
-        # Join response lines
+        # Clean up bot response - remove any extraction markers that leaked through
+        bot_response = bot_response.replace('---EXTRACTION---', '').strip()
+        
+        # Remove any data field lines from response
+        response_lines = []
+        for line in bot_response.split('\n'):
+            line = line.strip()
+            if line and not any(line.startswith(prefix) for prefix in ['DESTINATIONS:', 'DURATION:', 'BUDGET:', 'INTERESTS:']):
+                response_lines.append(line)
+        
         bot_response = ' '.join(response_lines).strip()
+        
         if not bot_response:
             bot_response = self.config.error_message
             
@@ -504,7 +533,7 @@ class TripPlannerChatService:
         """
         Determine if query requires AI processing.
         
-        Use simple chat for reliability. AI can be unpredictable.
+        Use AI for natural language queries, simple chat for structured input.
         
         Args:
             message (str): User's message
@@ -512,9 +541,17 @@ class TripPlannerChatService:
         Returns:
             bool: True if complex (use AI), False if simple
         """
-        # Use simple chat by default for reliability
-        # AI is too unpredictable and doesn't follow format well
-        return False
+        # Use AI for natural conversational queries
+        # Simple greetings don't need AI
+        message_lower = message.lower().strip()
+        
+        # Don't use AI for simple greetings
+        simple_greetings = ['hello', 'hi', 'hey', 'jambo', 'hola', 'greetings']
+        if message_lower in simple_greetings:
+            return False
+        
+        # Use AI for everything else - it's better at understanding natural language
+        return True
         
     def _handle_with_simple(
         self,
@@ -524,17 +561,15 @@ class TripPlannerChatService:
         """Handle message with simple rule-based chat."""
         user_lower = user_input.lower().strip()
         
-        # Handle greetings
+        # Handle greetings - just acknowledge, don't ask question again
         greetings = ['hello', 'hi', 'hey', 'jambo', 'hola', 'greetings']
         if user_lower in greetings:
-            # Get the first question
-            bot_message = self.simple_chat.get_next_question(context)
-            if not bot_message:
-                bot_message = self.config.welcome_message
+            # Simple acknowledgment
+            bot_message = "Hello! 👋"
             context.add_message('bot', bot_message)
             return {
                 'message': bot_message,
-                'type': 'simple',
+                'type': 'greeting',
                 'completed': False,
                 'extracted_data': context.extracted_data
             }
