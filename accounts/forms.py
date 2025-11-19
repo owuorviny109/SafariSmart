@@ -37,8 +37,12 @@ class StyledAuthenticationForm(AuthenticationForm):
         
         # Add Bootstrap classes to all fields
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-            field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['class'] = 'auth-form-control'
+            # Don't add placeholder since we're handling it in templates
+            if field_name == 'username':
+                field.widget.attrs['placeholder'] = 'Enter username or email'
+            elif field_name == 'password':
+                field.widget.attrs['placeholder'] = 'Enter your password'
 
 
 class StyledUserCreationForm(UserCreationForm):
@@ -77,9 +81,16 @@ class StyledUserCreationForm(UserCreationForm):
         
         # Add Bootstrap classes to all fields
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-            if field_name != 'email':  # Email already has placeholder
-                field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['class'] = 'auth-form-control'
+            # Set specific placeholders
+            if field_name == 'username':
+                field.widget.attrs['placeholder'] = 'Choose a username'
+            elif field_name == 'email':
+                field.widget.attrs['placeholder'] = 'Enter your email address'
+            elif field_name == 'password1':
+                field.widget.attrs['placeholder'] = 'Create a strong password'
+            elif field_name == 'password2':
+                field.widget.attrs['placeholder'] = 'Confirm your password'
     
     def save(self, commit=True):
         """
