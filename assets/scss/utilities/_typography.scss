@@ -1,0 +1,74 @@
+/**
+ * Typography Utilities
+ * Text styling helpers
+ */
+
+// Font sizes
+.tk-text-xs { font-size: $tk-text-xs; }
+.tk-text-sm { font-size: $tk-text-sm; }
+.tk-text-base { font-size: $tk-text-base; }
+.tk-text-lg { font-size: $tk-text-lg; }
+.tk-text-xl { font-size: $tk-text-xl; }
+.tk-text-2xl { font-size: $tk-text-2xl; }
+.tk-text-3xl { font-size: $tk-text-3xl; }
+.tk-text-4xl { font-size: $tk-text-4xl; }
+.tk-text-5xl { font-size: $tk-text-5xl; }
+.tk-text-6xl { font-size: $tk-text-6xl; }
+
+// Font weights
+.tk-font-normal { font-weight: $tk-weight-normal; }
+.tk-font-medium { font-weight: $tk-weight-medium; }
+.tk-font-semibold { font-weight: $tk-weight-semibold; }
+.tk-font-bold { font-weight: $tk-weight-bold; }
+.tk-font-black { font-weight: $tk-weight-black; }
+
+// Font families
+.tk-font-sans { font-family: $tk-font-sans; }
+.tk-font-display { font-family: $tk-font-display; }
+.tk-font-mono { font-family: $tk-font-mono; }
+
+// Text colors
+.tk-text-primary { color: $tk-text-primary; }
+.tk-text-secondary { color: $tk-text-secondary; }
+.tk-text-tertiary { color: $tk-text-tertiary; }
+.tk-text-inverse { color: $tk-text-inverse; }
+.tk-text-accent { color: $tk-accent; }
+.tk-text-success { color: $tk-success; }
+.tk-text-warning { color: $tk-warning; }
+.tk-text-error { color: $tk-error; }
+
+// Text alignment
+.tk-text-left { text-align: left; }
+.tk-text-center { text-align: center; }
+.tk-text-right { text-align: right; }
+.tk-text-justify { text-align: justify; }
+
+// Text transform
+.tk-uppercase { text-transform: uppercase; }
+.tk-lowercase { text-transform: lowercase; }
+.tk-capitalize { text-transform: capitalize; }
+
+// Line height
+.tk-leading-tight { line-height: $tk-leading-tight; }
+.tk-leading-snug { line-height: $tk-leading-snug; }
+.tk-leading-normal { line-height: $tk-leading-normal; }
+.tk-leading-relaxed { line-height: $tk-leading-relaxed; }
+.tk-leading-loose { line-height: $tk-leading-loose; }
+
+// Text decoration
+.tk-underline { text-decoration: underline; }
+.tk-line-through { text-decoration: line-through; }
+.tk-no-underline { text-decoration: none; }
+
+// Truncate
+.tk-truncate {
+  @include tk-truncate(1);
+}
+
+.tk-truncate-2 {
+  @include tk-truncate(2);
+}
+
+.tk-truncate-3 {
+  @include tk-truncate(3);
+}

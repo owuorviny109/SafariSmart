@@ -1,0 +1,78 @@
+/**
+ * Spacing Utilities
+ * Margin & Padding helpers
+ */
+
+$spacing-values: (
+  '0': 0,
+  'xs': $tk-space-xs,
+  'sm': $tk-space-sm,
+  'md': $tk-space-md,
+  'lg': $tk-space-lg,
+  'xl': $tk-space-xl,
+  '2xl': $tk-space-2xl,
+  '3xl': $tk-space-3xl,
+  '4xl': $tk-space-4xl,
+  'auto': auto
+);
+
+$spacing-sides: (
+  '': '',
+  't': '-top',
+  'r': '-right',
+  'b': '-bottom',
+  'l': '-left',
+  'x': '-inline',
+  'y': '-block'
+);
+
+// Generate margin utilities
+@each $name, $value in $spacing-values {
+  @each $side-key, $side-value in $spacing-sides {
+    @if $side-key == 'x' {
+      .tk-m#{$side-key}-#{$name} {
+        margin-left: $value;
+        margin-right: $value;
+      }
+    } @else if $side-key == 'y' {
+      .tk-m#{$side-key}-#{$name} {
+        margin-top: $value;
+        margin-bottom: $value;
+      }
+    } @else {
+      .tk-m#{$side-key}-#{$name} {
+        margin#{$side-value}: $value;
+      }
+    }
+  }
+}
+
+// Generate padding utilities
+@each $name, $value in $spacing-values {
+  @each $side-key, $side-value in $spacing-sides {
+    @if $side-key == 'x' {
+      .tk-p#{$side-key}-#{$name} {
+        padding-left: $value;
+        padding-right: $value;
+      }
+    } @else if $side-key == 'y' {
+      .tk-p#{$side-key}-#{$name} {
+        padding-top: $value;
+        padding-bottom: $value;
+      }
+    } @else if $value != auto {
+      .tk-p#{$side-key}-#{$name} {
+        padding#{$side-value}: $value;
+      }
+    }
+  }
+}
+
+// Gap utilities (for flexbox/grid)
+@each $name, $value in $spacing-values {
+  @if $value != auto {
+    .tk-gap-#{$name} {
+      gap: $value;
+    }
+  }
+}

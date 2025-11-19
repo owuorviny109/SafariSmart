@@ -1,0 +1,260 @@
+/**
+ * Card Component
+ * BEM: tk-card
+ * Flexible, accessible, animated
+ */
+
+.tk-card {
+  // Base styles
+  display: flex;
+  flex-direction: column;
+  background: $tk-surface;
+  border-radius: $tk-radius-lg;
+  overflow: hidden;
+  @include tk-elevation('sm', true);
+  
+  // ============================================
+  // ELEMENTS
+  // ============================================
+  
+  // Media container (image/video)
+  &__media {
+    position: relative;
+    width: 100%;
+    @include tk-aspect-ratio(16, 9);
+    background: $tk-gray-100;
+    overflow: hidden;
+    
+    img, video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform $tk-duration-slow $tk-ease-standard;
+    }
+    
+    // Badge overlay
+    &-badge {
+      position: absolute;
+      top: $tk-space-md;
+      right: $tk-space-md;
+      z-index: 1;
+    }
+  }
+  
+  // Content container
+  &__body {
+    padding: $tk-space-lg;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  // Header section
+  &__header {
+    margin-bottom: $tk-space-md;
+  }
+  
+  // Title
+  &__title {
+    @include tk-heading('sm');
+    margin-bottom: $tk-space-xs;
+    @include tk-truncate(2);
+  }
+  
+  // Subtitle
+  &__subtitle {
+    @include tk-body('sm');
+    color: $tk-text-tertiary;
+    @include tk-truncate(1);
+  }
+  
+  // Description
+  &__desc {
+    @include tk-body('base');
+    margin-bottom: $tk-space-md;
+    flex: 1;
+    @include tk-truncate(3);
+  }
+  
+  // Meta information (price, rating, etc.)
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $tk-space-sm;
+    margin-top: auto;
+    padding-top: $tk-space-md;
+    border-top: 1px solid $tk-gray-200;
+  }
+  
+  // Footer section
+  &__footer {
+    padding: $tk-space-md $tk-space-lg;
+    background: $tk-gray-50;
+    border-top: 1px solid $tk-gray-200;
+  }
+  
+  // ============================================
+  // MODIFIERS
+  // ============================================
+  
+  // Horizontal layout
+  &--horizontal {
+    flex-direction: row;
+    
+    .tk-card__media {
+      width: 40%;
+      flex-shrink: 0;
+      
+      &::before {
+        padding-top: 0;
+      }
+      
+      > * {
+        position: static;
+      }
+    }
+    
+    @include tk-respond-below($tk-breakpoint-md) {
+      flex-direction: column;
+      
+      .tk-card__media {
+        width: 100%;
+      }
+    }
+  }
+  
+  // Featured card (highlighted)
+  &--featured {
+    border: 2px solid $tk-primary-subtle;
+    
+    .tk-card__title {
+      color: $tk-primary;
+    }
+  }
+  
+  // Interactive card (clickable)
+  &--interactive {
+    cursor: pointer;
+    transition: all $tk-duration-medium $tk-ease-standard;
+    
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: $tk-shadow-xl;
+      
+      .tk-card__media img {
+        transform: scale(1.05);
+      }
+    }
+    
+    &:active {
+      transform: translateY(-2px);
+    }
+    
+    @include tk-focus-ring;
+  }
+  
+  // Compact card (less padding)
+  &--compact {
+    .tk-card__body {
+      padding: $tk-space-md;
+    }
+    
+    .tk-card__footer {
+      padding: $tk-space-sm $tk-space-md;
+    }
+  }
+  
+  // Bordered card
+  &--bordered {
+    border: 1px solid $tk-gray-200;
+    box-shadow: none;
+    
+    &:hover {
+      border-color: $tk-primary-light;
+    }
+  }
+  
+  // Glass effect card
+  &--glass {
+    @include tk-glass(0.9);
+    box-shadow: $tk-shadow-lg;
+  }
+}
+
+// ============================================
+// CARD GRID
+// ============================================
+.tk-card-grid {
+  display: grid;
+  gap: $tk-space-lg;
+  
+  // Responsive columns
+  &--1 {
+    grid-template-columns: 1fr;
+  }
+  
+  &--2 {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+  
+  &--3 {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  &--4 {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  // Masonry layout (optional)
+  &--masonry {
+    column-count: 1;
+    column-gap: $tk-space-lg;
+    
+    @include tk-respond-above($tk-breakpoint-md) {
+      column-count: 2;
+    }
+    
+    @include tk-respond-above($tk-breakpoint-lg) {
+      column-count: 3;
+    }
+    
+    .tk-card {
+      break-inside: avoid;
+      margin-bottom: $tk-space-lg;
+    }
+  }
+}
+
+// ============================================
+// LOADING SKELETON
+// ============================================
+.tk-card--skeleton {
+  .tk-card__media,
+  .tk-card__title,
+  .tk-card__desc {
+    background: linear-gradient(
+      90deg,
+      $tk-gray-200 0%,
+      $tk-gray-100 50%,
+      $tk-gray-200 100%
+    );
+    background-size: 200% 100%;
+    animation: tk-shimmer 1.5s infinite;
+    color: transparent;
+    
+    * {
+      visibility: hidden;
+    }
+  }
+  
+  .tk-card__title {
+    height: 24px;
+    border-radius: $tk-radius-sm;
+  }
+  
+  .tk-card__desc {
+    height: 60px;
+    border-radius: $tk-radius-sm;
+  }
+}

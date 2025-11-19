@@ -1,0 +1,263 @@
+/**
+ * Button Component
+ * BEM: tk-btn
+ * Accessible, animated, professional
+ */
+
+.tk-btn {
+  // Base styles
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $tk-space-sm;
+  padding: $tk-space-sm $tk-space-lg;
+  border-radius: $tk-radius-md;
+  font-family: $tk-font-sans;
+  font-size: $tk-text-base;
+  font-weight: $tk-weight-semibold;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all $tk-duration-fast $tk-ease-standard;
+  position: relative;
+  overflow: hidden;
+  
+  // Accessibility
+  @include tk-focus-ring;
+  
+  // Disabled state
+  &:disabled,
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  // Loading state
+  &--loading {
+    color: transparent;
+    pointer-events: none;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: tk-spin $tk-duration-slow linear infinite;
+    }
+  }
+  
+  // ============================================
+  // VARIANTS
+  // ============================================
+  
+  // Primary: Main CTAs (Sunset Orange)
+  &--primary {
+    background: $tk-accent;
+    color: $tk-text-inverse;
+    box-shadow: $tk-shadow-sm;
+    
+    &:hover:not(:disabled) {
+      background: $tk-accent-light;
+      transform: translateY(-2px);
+      box-shadow: $tk-shadow-md;
+    }
+    
+    &:active:not(:disabled) {
+      background: $tk-accent-dark;
+      transform: translateY(0);
+    }
+  }
+  
+  // Secondary: Less important actions (Lake Teal)
+  &--secondary {
+    background: $tk-primary;
+    color: $tk-text-inverse;
+    box-shadow: $tk-shadow-sm;
+    
+    &:hover:not(:disabled) {
+      background: $tk-primary-light;
+      transform: translateY(-2px);
+      box-shadow: $tk-shadow-md;
+    }
+    
+    &:active:not(:disabled) {
+      background: $tk-primary-dark;
+      transform: translateY(0);
+    }
+  }
+  
+  // Outline: Tertiary actions
+  &--outline {
+    background: transparent;
+    color: $tk-primary;
+    border: 2px solid $tk-primary;
+    
+    &:hover:not(:disabled) {
+      background: $tk-primary;
+      color: $tk-text-inverse;
+      transform: translateY(-2px);
+    }
+    
+    &:active:not(:disabled) {
+      background: $tk-primary-dark;
+      border-color: $tk-primary-dark;
+    }
+  }
+  
+  // Ghost: Minimal actions
+  &--ghost {
+    background: transparent;
+    color: $tk-text-primary;
+    
+    &:hover:not(:disabled) {
+      background: rgba($tk-dark, 0.05);
+    }
+    
+    &:active:not(:disabled) {
+      background: rgba($tk-dark, 0.1);
+    }
+  }
+  
+  // Success: Confirmation actions
+  &--success {
+    background: $tk-forest;
+    color: $tk-text-inverse;
+    
+    &:hover:not(:disabled) {
+      background: $tk-forest-light;
+      transform: translateY(-2px);
+      box-shadow: $tk-shadow-md;
+    }
+  }
+  
+  // Danger: Destructive actions
+  &--danger {
+    background: $tk-error;
+    color: $tk-text-inverse;
+    
+    &:hover:not(:disabled) {
+      background: darken($tk-error, 5%);
+      transform: translateY(-2px);
+      box-shadow: $tk-shadow-md;
+    }
+  }
+  
+  // ============================================
+  // SIZES
+  // ============================================
+  
+  &--sm {
+    padding: $tk-space-xs $tk-space-md;
+    font-size: $tk-text-sm;
+  }
+  
+  &--md {
+    padding: $tk-space-sm $tk-space-lg;
+    font-size: $tk-text-base;
+  }
+  
+  &--lg {
+    padding: $tk-space-md $tk-space-xl;
+    font-size: $tk-text-lg;
+  }
+  
+  &--xl {
+    padding: $tk-space-lg $tk-space-2xl;
+    font-size: $tk-text-xl;
+  }
+  
+  // ============================================
+  // MODIFIERS
+  // ============================================
+  
+  // Full width
+  &--block {
+    width: 100%;
+  }
+  
+  // Icon only (square)
+  &--icon {
+    padding: $tk-space-sm;
+    aspect-ratio: 1;
+  }
+  
+  // With icon
+  &__icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  
+  // Ripple effect (optional enhancement)
+  &--ripple {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: translate(-50%, -50%);
+      transition: width $tk-duration-medium $tk-ease-standard,
+                  height $tk-duration-medium $tk-ease-standard;
+    }
+    
+    &:active::before {
+      width: 300px;
+      height: 300px;
+    }
+  }
+}
+
+// ============================================
+// BUTTON GROUP
+// ============================================
+.tk-btn-group {
+  display: inline-flex;
+  gap: $tk-space-sm;
+  
+  &--attached {
+    gap: 0;
+    
+    .tk-btn {
+      border-radius: 0;
+      
+      &:first-child {
+        border-top-left-radius: $tk-radius-md;
+        border-bottom-left-radius: $tk-radius-md;
+      }
+      
+      &:last-child {
+        border-top-right-radius: $tk-radius-md;
+        border-bottom-right-radius: $tk-radius-md;
+      }
+    }
+  }
+  
+  &--vertical {
+    flex-direction: column;
+    
+    &.tk-btn-group--attached {
+      .tk-btn {
+        &:first-child {
+          border-top-left-radius: $tk-radius-md;
+          border-top-right-radius: $tk-radius-md;
+          border-bottom-left-radius: 0;
+        }
+        
+        &:last-child {
+          border-bottom-left-radius: $tk-radius-md;
+          border-bottom-right-radius: $tk-radius-md;
+          border-top-right-radius: 0;
+        }
+      }
+    }
+  }
+}

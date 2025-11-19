@@ -1,0 +1,196 @@
+/**
+ * SafariSmart Kenya Design Tokens
+ * Namespace: tk- (travel-kenya)
+ * WCAG 2.2 AA Compliant
+ * Unique Kenyan-inspired palette (NO generic AI colors)
+ */
+
+// ============================================
+// COLOR PALETTE - Kenyan Landscape Inspired
+// ============================================
+
+// Primary: Lake Turkana Teal (deep, mysterious, unique)
+$tk-primary: #0B5A5A;        // Main brand color - Lake Turkana's deep waters
+$tk-primary-light: #0E7373;  // Hover/active states
+$tk-primary-dark: #084545;   // Pressed states
+$tk-primary-subtle: #E8F4F4; // Backgrounds, badges
+
+// Accent: Sunset Over Savanna (warm, inviting)
+$tk-accent: #E07A2B;         // CTAs, highlights
+$tk-accent-light: #F09850;   // Hover states
+$tk-accent-dark: #C66820;    // Pressed states
+$tk-accent-subtle: #FFF3E8;  // Light backgrounds
+
+// Warm: Savannah Gold (earthy, premium)
+$tk-warm: #D9B24C;           // Secondary actions, badges
+$tk-warm-light: #E5C670;     // Hover
+$tk-warm-dark: #C29F3A;      // Pressed
+$tk-warm-subtle: #FBF7EC;    // Backgrounds
+
+// Forest: Acacia Green (natural, trustworthy)
+$tk-forest: #2F5D3A;         // Success states, nature elements
+$tk-forest-light: #3D7A4A;   // Hover
+$tk-forest-dark: #234429;    // Pressed
+$tk-forest-subtle: #EBF3ED;  // Backgrounds
+
+// Neutral: Basalt & Stone (professional, clean)
+$tk-dark: #101318;           // Primary text, headers
+$tk-gray-900: #1F2937;       // Secondary text
+$tk-gray-700: #374151;       // Tertiary text
+$tk-gray-500: #6B7280;       // Muted text
+$tk-gray-300: #D1D5DB;       // Borders
+$tk-gray-100: #F3F4F6;       // Light backgrounds
+$tk-gray-50: #F9FAFB;        // Subtle backgrounds
+$tk-surface: #FFFFFF;        // Cards, modals
+
+// Semantic Colors
+$tk-success: $tk-forest;
+$tk-warning: #F59E0B;
+$tk-error: #DC2626;
+$tk-info: $tk-primary;
+
+// Text Colors (WCAG AA compliant)
+$tk-text-primary: $tk-dark;      // 4.5:1 on white
+$tk-text-secondary: $tk-gray-700; // 4.5:1 on white
+$tk-text-tertiary: $tk-gray-500;  // 4.5:1 on white
+$tk-text-inverse: $tk-surface;    // On dark backgrounds
+
+// ============================================
+// SPACING SYSTEM (8px base)
+// ============================================
+$tk-space-xs: 4px;
+$tk-space-sm: 8px;
+$tk-space-md: 16px;
+$tk-space-lg: 24px;
+$tk-space-xl: 32px;
+$tk-space-2xl: 40px;
+$tk-space-3xl: 48px;
+$tk-space-4xl: 64px;
+$tk-space-5xl: 80px;
+
+// ============================================
+// TYPOGRAPHY
+// ============================================
+
+// Font Families
+$tk-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$tk-font-display: "Merriweather", Georgia, "Times New Roman", serif;
+$tk-font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+// Font Sizes (modular scale 1.25)
+$tk-text-xs: 0.75rem;    // 12px
+$tk-text-sm: 0.875rem;   // 14px
+$tk-text-base: 1rem;     // 16px
+$tk-text-lg: 1.125rem;   // 18px
+$tk-text-xl: 1.25rem;    // 20px
+$tk-text-2xl: 1.5rem;    // 24px
+$tk-text-3xl: 1.875rem;  // 30px
+$tk-text-4xl: 2.25rem;   // 36px
+$tk-text-5xl: 3rem;      // 48px
+$tk-text-6xl: 3.75rem;   // 60px
+
+// Font Weights
+$tk-weight-normal: 400;
+$tk-weight-medium: 500;
+$tk-weight-semibold: 600;
+$tk-weight-bold: 700;
+$tk-weight-black: 900;
+
+// Line Heights
+$tk-leading-tight: 1.25;
+$tk-leading-snug: 1.375;
+$tk-leading-normal: 1.5;
+$tk-leading-relaxed: 1.625;
+$tk-leading-loose: 2;
+
+// ============================================
+// BORDER RADIUS
+// ============================================
+$tk-radius-sm: 6px;
+$tk-radius-md: 12px;
+$tk-radius-lg: 16px;
+$tk-radius-xl: 20px;
+$tk-radius-2xl: 24px;
+$tk-radius-full: 9999px;
+
+// ============================================
+// ELEVATION (Shadows)
+// ============================================
+$tk-shadow-xs: 0 1px 2px 0 rgba(16, 19, 24, 0.05);
+$tk-shadow-sm: 0 2px 8px rgba(16, 19, 24, 0.06);
+$tk-shadow-md: 0 4px 16px rgba(16, 19, 24, 0.08);
+$tk-shadow-lg: 0 8px 24px rgba(16, 19, 24, 0.10);
+$tk-shadow-xl: 0 14px 28px rgba(16, 19, 24, 0.12);
+$tk-shadow-2xl: 0 24px 48px rgba(16, 19, 24, 0.16);
+
+// ============================================
+// ANIMATION DURATIONS
+// ============================================
+$tk-duration-instant: 100ms;
+$tk-duration-fast: 180ms;
+$tk-duration-medium: 360ms;
+$tk-duration-slow: 600ms;
+$tk-duration-slower: 900ms;
+
+// ============================================
+// EASING CURVES (Professional, deliberate)
+// ============================================
+$tk-ease-standard: cubic-bezier(0.2, 0.9, 0.2, 1);
+$tk-ease-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+$tk-ease-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+$tk-ease-sharp: cubic-bezier(0.4, 0.0, 0.6, 1);
+
+// ============================================
+// BREAKPOINTS
+// ============================================
+$tk-breakpoint-xs: 320px;
+$tk-breakpoint-sm: 480px;
+$tk-breakpoint-md: 768px;
+$tk-breakpoint-lg: 1024px;
+$tk-breakpoint-xl: 1280px;
+$tk-breakpoint-2xl: 1536px;
+
+// ============================================
+// Z-INDEX LAYERS
+// ============================================
+$tk-z-base: 0;
+$tk-z-dropdown: 1000;
+$tk-z-sticky: 1020;
+$tk-z-fixed: 1030;
+$tk-z-modal-backdrop: 1040;
+$tk-z-modal: 1050;
+$tk-z-popover: 1060;
+$tk-z-tooltip: 1070;
+
+// ============================================
+// CSS CUSTOM PROPERTIES (for runtime theming)
+// ============================================
+:root {
+  // Spacing
+  --tk-space-xs: #{$tk-space-xs};
+  --tk-space-sm: #{$tk-space-sm};
+  --tk-space-md: #{$tk-space-md};
+  --tk-space-lg: #{$tk-space-lg};
+  --tk-space-xl: #{$tk-space-xl};
+  --tk-space-2xl: #{$tk-space-2xl};
+  --tk-space-3xl: #{$tk-space-3xl};
+  --tk-space-4xl: #{$tk-space-4xl};
+  
+  // Border Radius
+  --tk-radius-sm: #{$tk-radius-sm};
+  --tk-radius-md: #{$tk-radius-md};
+  --tk-radius-lg: #{$tk-radius-lg};
+  --tk-radius-xl: #{$tk-radius-xl};
+  --tk-radius-2xl: #{$tk-radius-2xl};
+  --tk-radius-full: #{$tk-radius-full};
+  
+  // Typography
+  --tk-font-sans: #{$tk-font-sans};
+  --tk-font-display: #{$tk-font-display};
+  
+  // Animation
+  --tk-duration-fast: #{$tk-duration-fast};
+  --tk-duration-medium: #{$tk-duration-medium};
+  --tk-duration-slow: #{$tk-duration-slow};
+  --tk-ease-standard: #{$tk-ease-standard};
+}

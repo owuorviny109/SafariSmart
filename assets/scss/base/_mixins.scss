@@ -1,0 +1,219 @@
+/**
+ * SCSS Mixins - Reusable patterns
+ * DRY, maintainable, scalable
+ */
+
+// ============================================
+// RESPONSIVE BREAKPOINTS
+// ============================================
+@mixin tk-respond-above($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin tk-respond-below($breakpoint) {
+  @media (max-width: $breakpoint - 1px) {
+    @content;
+  }
+}
+
+@mixin tk-respond-between($min, $max) {
+  @media (min-width: $min) and (max-width: $max - 1px) {
+    @content;
+  }
+}
+
+// ============================================
+// ELEVATION (Shadows with hover)
+// ============================================
+@mixin tk-elevation($level: 'md', $hover: false) {
+  @if $level == 'xs' {
+    box-shadow: $tk-shadow-xs;
+  } @else if $level == 'sm' {
+    box-shadow: $tk-shadow-sm;
+  } @else if $level == 'md' {
+    box-shadow: $tk-shadow-md;
+  } @else if $level == 'lg' {
+    box-shadow: $tk-shadow-lg;
+  } @else if $level == 'xl' {
+    box-shadow: $tk-shadow-xl;
+  } @else if $level == '2xl' {
+    box-shadow: $tk-shadow-2xl;
+  }
+  
+  @if $hover {
+    transition: box-shadow $tk-duration-medium $tk-ease-standard,
+                transform $tk-duration-medium $tk-ease-standard;
+    
+    &:hover {
+      @if $level == 'xs' {
+        box-shadow: $tk-shadow-sm;
+      } @else if $level == 'sm' {
+        box-shadow: $tk-shadow-md;
+      } @else if $level == 'md' {
+        box-shadow: $tk-shadow-lg;
+      } @else if $level == 'lg' {
+        box-shadow: $tk-shadow-xl;
+      } @else if $level == 'xl' {
+        box-shadow: $tk-shadow-2xl;
+      }
+      transform: translateY(-4px);
+    }
+  }
+}
+
+// ============================================
+// ANIMATIONS
+// ============================================
+@mixin tk-animate($property, $duration: $tk-duration-medium, $easing: $tk-ease-standard) {
+  transition: $property $duration $easing;
+  
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+@mixin tk-fade-in($duration: $tk-duration-medium) {
+  animation: tk-fade-in $duration $tk-ease-standard;
+  
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+@mixin tk-slide-up($duration: $tk-duration-medium) {
+  animation: tk-slide-up $duration $tk-ease-standard;
+  
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// TYPOGRAPHY
+// ============================================
+@mixin tk-heading($size: 'xl') {
+  font-family: $tk-font-display;
+  font-weight: $tk-weight-bold;
+  line-height: $tk-leading-tight;
+  color: $tk-text-primary;
+  
+  @if $size == 'xs' {
+    font-size: $tk-text-lg;
+  } @else if $size == 'sm' {
+    font-size: $tk-text-xl;
+  } @else if $size == 'md' {
+    font-size: $tk-text-2xl;
+  } @else if $size == 'lg' {
+    font-size: $tk-text-3xl;
+  } @else if $size == 'xl' {
+    font-size: $tk-text-4xl;
+  } @else if $size == '2xl' {
+    font-size: $tk-text-5xl;
+  } @else if $size == '3xl' {
+    font-size: $tk-text-6xl;
+  }
+}
+
+@mixin tk-body($size: 'base') {
+  font-family: $tk-font-sans;
+  font-weight: $tk-weight-normal;
+  line-height: $tk-leading-relaxed;
+  color: $tk-text-secondary;
+  
+  @if $size == 'sm' {
+    font-size: $tk-text-sm;
+  } @else if $size == 'base' {
+    font-size: $tk-text-base;
+  } @else if $size == 'lg' {
+    font-size: $tk-text-lg;
+  }
+}
+
+// ============================================
+// CONTAINER
+// ============================================
+@mixin tk-container($max-width: $tk-breakpoint-xl) {
+  width: 100%;
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $tk-space-md;
+  padding-right: $tk-space-md;
+  
+  @include tk-respond-above($tk-breakpoint-md) {
+    padding-left: $tk-space-lg;
+    padding-right: $tk-space-lg;
+  }
+  
+  @include tk-respond-above($tk-breakpoint-lg) {
+    padding-left: $tk-space-xl;
+    padding-right: $tk-space-xl;
+  }
+}
+
+// ============================================
+// ASPECT RATIO
+// ============================================
+@mixin tk-aspect-ratio($width, $height) {
+  position: relative;
+  
+  &::before {
+    content: '';
+    display: block;
+    padding-top: ($height / $width) * 100%;
+  }
+  
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// ============================================
+// TRUNCATE TEXT
+// ============================================
+@mixin tk-truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// ============================================
+// FOCUS RING (Accessible)
+// ============================================
+@mixin tk-focus-ring($color: $tk-primary, $offset: 2px) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: $offset;
+    border-radius: $tk-radius-sm;
+  }
+  
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+// ============================================
+// GLASS MORPHISM (Subtle, modern)
+// ============================================
+@mixin tk-glass($opacity: 0.8) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}

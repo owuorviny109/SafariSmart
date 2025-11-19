@@ -11,6 +11,9 @@ urlpatterns = [
     path('sitemap.xml', views.sitemap, name='sitemap'),
     path('robots.txt', views.robots_txt, name='robots'),
     
+    # Static pages (About, Privacy, Terms, etc.)
+    path('page/<slug:slug>/', views.static_page, name='static_page'),
+    
     # Quick trip planner
     path('quick-trip/', views.quick_trip, name='quick_trip'),
     

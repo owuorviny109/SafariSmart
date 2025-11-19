@@ -1,0 +1,465 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}SafariSmart Kenya - AI Safari Trip Planner | Plan Your Perfect Kenya Adventure{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Hero Section - Professional & Clean */
+.tk-hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #0B5A5A 0%, #084545 100%);
+    overflow: hidden;
+}
+
+.tk-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1920') center/cover;
+    opacity: 0.15;
+    animation: tk-subtle-zoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes tk-subtle-zoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+.tk-hero__content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    max-width: 700px;
+}
+
+.tk-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tk-hero__title {
+    font-family: var(--tk-font-display);
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 24px;
+}
+
+.tk-hero__highlight {
+    background: linear-gradient(135deg, #E07A2B, #F09850);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.tk-hero__desc {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    opacity: 0.95;
+    margin-bottom: 32px;
+}
+
+.tk-hero__actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* Feature Cards */
+.tk-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-top: 48px;
+}
+
+.tk-feature {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 16px rgba(16, 19, 24, 0.08);
+    transition: all 360ms cubic-bezier(0.2, 0.9, 0.2, 1);
+    border-top: 4px solid transparent;
+}
+
+.tk-feature:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 14px 28px rgba(16, 19, 24, 0.12);
+    border-top-color: #E07A2B;
+}
+
+.tk-feature__icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #0B5A5A, #0E7373);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.tk-feature__icon i {
+    font-size: 32px;
+    color: white;
+}
+
+.tk-feature__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #101318;
+}
+
+.tk-feature__desc {
+    color: #6B7280;
+    line-height: 1.6;
+}
+
+/* Destination Cards */
+.tk-dest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.tk-dest-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(16, 19, 24, 0.08);
+    transition: all 360ms cubic-bezier(0.2, 0.9, 0.2, 1);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.tk-dest-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(16, 19, 24, 0.12);
+}
+
+.tk-dest-card__image {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+}
+
+.tk-dest-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.tk-dest-card:hover .tk-dest-card__image img {
+    transform: scale(1.05);
+}
+
+.tk-dest-card__badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0B5A5A;
+}
+
+.tk-dest-card__body {
+    padding: 24px;
+}
+
+.tk-dest-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #101318;
+}
+
+.tk-dest-card__location {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 12px;
+}
+
+.tk-dest-card__desc {
+    color: #6B7280;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.tk-dest-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid #E5E7EB;
+}
+
+.tk-dest-card__price {
+    font-weight: 600;
+    color: #0B5A5A;
+}
+
+/* CTA Section */
+.tk-cta {
+    background: linear-gradient(135deg, #0B5A5A 0%, #084545 100%);
+    padding: 80px 0;
+    color: white;
+    text-align: center;
+}
+
+.tk-cta__title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.tk-cta__desc {
+    font-size: 1.25rem;
+    opacity: 0.95;
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tk-cta__stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+}
+
+.tk-cta__stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: block;
+}
+
+.tk-cta__stat-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tk-hero__actions {
+        flex-direction: column;
+    }
+    
+    .tk-btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="tk-hero">
+    <div class="tk-container">
+        <div class="tk-hero__content">
+            <div class="tk-hero__badge">
+                <i class="bi bi-stars"></i>
+                <span>Powered by AI Technology</span>
+            </div>
+            
+            <h1 class="tk-hero__title">
+                Discover Your Next <span class="tk-hero__highlight">Dream Destination</span> in Kenya
+            </h1>
+            
+            <p class="tk-hero__desc">
+                From the golden savannas of Maasai Mara to the pristine shores of Diani Beach,
+                let AI craft your personalized journey through Kenya's wonders.
+            </p>
+            
+            <div class="tk-hero__actions">
+                <a href="{% url 'core:destination_selection' %}" class="tk-btn tk-btn--primary tk-btn--lg">
+                    <i class="bi bi-compass"></i>
+                    Plan Your Trip
+                </a>
+                
+                <a href="{% url 'destinations:list' %}" class="tk-btn tk-btn--outline tk-btn--lg" style="border-color: white; color: white;">
+                    <i class="bi bi-map"></i>
+                    Explore Destinations
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="tk-py-5xl tk-bg-surface">
+    <div class="tk-container">
+        <div class="tk-text-center tk-mb-4xl">
+            <h2 class="tk-text-4xl tk-font-bold tk-mb-md">Why Choose SafariSmart</h2>
+            <p class="tk-text-lg tk-text-secondary">
+                Experience the future of travel planning with our AI-powered platform
+            </p>
+        </div>
+        
+        <div class="tk-feature-grid">
+            <div class="tk-feature">
+                <div class="tk-feature__icon">
+                    <i class="bi bi-cpu-fill"></i>
+                </div>
+                <h3 class="tk-feature__title">AI-Powered Intelligence</h3>
+                <p class="tk-feature__desc">
+                    Advanced algorithms analyze thousands of data points to create your perfect itinerary,
+                    optimized for your preferences, budget, and travel style.
+                </p>
+            </div>
+            
+            <div class="tk-feature">
+                <div class="tk-feature__icon">
+                    <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <h3 class="tk-feature__title">Top Kenya Destinations</h3>
+                <p class="tk-feature__desc">
+                    From iconic Maasai Mara to pristine Diani Beach,
+                    explore Kenya's diverse landscapes with expert local insights.
+                </p>
+            </div>
+            
+            <div class="tk-feature">
+                <div class="tk-feature__icon">
+                    <i class="bi bi-piggy-bank-fill"></i>
+                </div>
+                <h3 class="tk-feature__title">Smart Budget Optimization</h3>
+                <p class="tk-feature__desc">
+                    Get the most value from every shilling with intelligent cost breakdowns,
+                    accommodation suggestions, and activity recommendations.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Destinations Section -->
+{% if featured_destinations %}
+<section class="tk-py-5xl" style="background: linear-gradient(180deg, #ffffff 0%, #F9FAFB 100%);">
+    <div class="tk-container">
+        <div class="tk-text-center tk-mb-4xl">
+            <h2 class="tk-text-4xl tk-font-bold tk-mb-md">Explore Kenya's Wonders</h2>
+            <p class="tk-text-lg tk-text-secondary">
+                From majestic wildlife to pristine beaches, discover destinations that will take your breath away
+            </p>
+        </div>
+        
+        <div class="tk-dest-grid">
+            {% for destination in featured_destinations %}
+            <a href="{% url 'destinations:detail' destination.slug %}" class="tk-dest-card">
+                <div class="tk-dest-card__image">
+                    {% if destination.image %}
+                    <img src="{{ destination.image.url }}" alt="{{ destination.name }}">
+                    {% elif destination.image_url %}
+                    <img src="{{ destination.image_url }}" alt="{{ destination.name }}">
+                    {% else %}
+                    <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
+                         alt="{{ destination.name }}"
+                         onerror="this.src='https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800';">
+                    {% endif %}
+                    
+                    <div class="tk-dest-card__badge">
+                        <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% else %}geo-alt{% endif %}"></i>
+                        {{ destination.get_destination_type_display }}
+                    </div>
+                </div>
+                
+                <div class="tk-dest-card__body">
+                    <h3 class="tk-dest-card__title">{{ destination.name }}</h3>
+                    <p class="tk-dest-card__location">
+                        <i class="bi bi-geo-alt"></i> {{ destination.county }}
+                    </p>
+                    <p class="tk-dest-card__desc">
+                        {{ destination.description|truncatewords:20 }}
+                    </p>
+                    
+                    <div class="tk-dest-card__meta">
+                        <span class="tk-dest-card__price">
+                            <i class="bi bi-cash-coin"></i>
+                            KSh {{ destination.average_cost_per_day|floatformat:0 }}/day
+                        </span>
+                        <span style="color: #E07A2B; font-weight: 600;">
+                            Explore <i class="bi bi-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        
+        <div class="tk-text-center tk-mt-4xl">
+            <a href="{% url 'destinations:list' %}" class="tk-btn tk-btn--primary tk-btn--lg">
+                <i class="bi bi-grid-3x3-gap"></i>
+                View All Destinations
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="tk-cta">
+    <div class="tk-container">
+        <div class="tk-cta__badge tk-mb-lg" style="display: inline-block; background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 999px;">
+            <i class="bi bi-rocket-takeoff"></i> Start Your Adventure
+        </div>
+        
+        <h2 class="tk-cta__title">Ready to Explore Kenya?</h2>
+        <p class="tk-cta__desc">
+            Join thousands of travelers who've discovered their perfect Kenya adventure with SafariSmart.
+            Let AI create your personalized itinerary in minutes.
+        </p>
+        
+        <div class="tk-flex tk-justify-center tk-gap-md tk-flex-wrap">
+            <a href="{% url 'core:destination_selection' %}" class="tk-btn tk-btn--primary tk-btn--lg">
+                <i class="bi bi-compass"></i>
+                Start Planning Now
+            </a>
+            <a href="{% url 'destinations:list' %}" class="tk-btn tk-btn--outline tk-btn--lg" style="border-color: white; color: white;">
+                <i class="bi bi-map"></i>
+                Browse Destinations
+            </a>
+        </div>
+        
+        <div class="tk-cta__stats">
+            <div>
+                <span class="tk-cta__stat-value">1,000+</span>
+                <span class="tk-cta__stat-label">Itineraries Created</span>
+            </div>
+            <div>
+                <span class="tk-cta__stat-value">6</span>
+                <span class="tk-cta__stat-label">Top Destinations</span>
+            </div>
+            <div>
+                <span class="tk-cta__stat-value">4.8★</span>
+                <span class="tk-cta__stat-label">User Rating</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

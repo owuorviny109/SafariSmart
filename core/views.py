@@ -26,6 +26,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 
 from .models import WizardSession, Itinerary
+from .models_pages import StaticPage
 from .services import WizardService, ItineraryGeneratorFactory
 from .services.chat_service import TripPlannerChatService, ChatContext
 from destinations.models import Destination
@@ -81,6 +82,24 @@ def robots_txt(request: HttpRequest) -> HttpResponse:
         HttpResponse: robots.txt file
     """
     return render(request, 'robots.txt', {}, content_type='text/plain')
+
+
+def static_page(request: HttpRequest, slug: str) -> HttpResponse:
+    """
+    Display a static content page (About, Privacy, Terms, etc.).
+    
+    Args:
+        request (HttpRequest): HTTP request object
+        slug (str): Page slug
+        
+    Returns:
+        HttpResponse: Rendered static page
+    """
+    page = get_object_or_404(StaticPage, slug=slug, is_published=True)
+    
+    return render(request, 'core/static_page.html', {
+        'page': page
+    })
 
 
 class DestinationSelectionView(View):

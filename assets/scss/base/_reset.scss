@@ -1,0 +1,156 @@
+/**
+ * Modern CSS Reset + Base Styles
+ * Accessibility-first, performance-optimized
+ */
+
+// ============================================
+// RESET
+// ============================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+// Respect user's motion preferences
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  font-family: $tk-font-sans;
+  font-size: $tk-text-base;
+  line-height: $tk-leading-normal;
+  color: $tk-text-primary;
+  background-color: $tk-surface;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+// ============================================
+// TYPOGRAPHY RESET
+// ============================================
+h1, h2, h3, h4, h5, h6 {
+  font-family: $tk-font-display;
+  font-weight: $tk-weight-bold;
+  line-height: $tk-leading-tight;
+  color: $tk-text-primary;
+}
+
+p {
+  margin-bottom: $tk-space-md;
+  color: $tk-text-secondary;
+  line-height: $tk-leading-relaxed;
+}
+
+a {
+  color: $tk-primary;
+  text-decoration: none;
+  transition: color $tk-duration-fast $tk-ease-standard;
+  
+  &:hover {
+    color: $tk-primary-light;
+  }
+  
+  &:focus-visible {
+    outline: 2px solid $tk-primary;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+// ============================================
+// FORM ELEMENTS
+// ============================================
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  
+  &:focus-visible {
+    outline: 2px solid $tk-primary;
+    outline-offset: 2px;
+  }
+}
+
+// ============================================
+// MEDIA
+// ============================================
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+// ============================================
+// ACCESSIBILITY
+// ============================================
+
+// Screen reader only content
+.tk-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Skip to main content link
+.tk-skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: $tk-primary;
+  color: $tk-text-inverse;
+  padding: $tk-space-sm $tk-space-md;
+  text-decoration: none;
+  z-index: $tk-z-tooltip;
+  
+  &:focus {
+    top: 0;
+  }
+}
+
+// Focus visible styles (keyboard navigation)
+:focus-visible {
+  outline: 2px solid $tk-primary;
+  outline-offset: 2px;
+}
+
+// Remove focus for mouse users
+:focus:not(:focus-visible) {
+  outline: none;
+}

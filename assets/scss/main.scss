@@ -1,0 +1,54 @@
+/**
+ * SafariSmart Kenya - Main SCSS Entry Point
+ * Namespace: tk- (travel-kenya)
+ * 
+ * Architecture: ITCSS (Inverted Triangle CSS)
+ * - Settings: Variables, tokens
+ * - Tools: Mixins, functions
+ * - Generic: Resets, normalize
+ * - Elements: Base HTML elements
+ * - Objects: Layout patterns
+ * - Components: UI components
+ * - Utilities: Helper classes
+ */
+
+// ============================================
+// SETTINGS - Variables & Tokens
+// ============================================
+@import 'tokens';
+
+// ============================================
+// TOOLS - Mixins & Functions
+// ============================================
+@import 'base/mixins';
+
+// ============================================
+// GENERIC - Resets & Base
+// ============================================
+@import 'base/reset';
+
+// ============================================
+// ANIMATIONS
+// ============================================
+@import 'animations/keyframes';
+
+// ============================================
+// COMPONENTS
+// ============================================
+@import 'components/buttons';
+@import 'components/card';
+
+// More components will be added here:
+// @import 'components/hero';
+// @import 'components/navbar';
+// @import 'components/form';
+// @import 'components/badge';
+// @import 'components/modal';
+// @import 'components/chat';
+
+// ============================================
+// UTILITIES - Helper Classes
+// ============================================
+@import 'utilities/spacing';
+@import 'utilities/typography';
+@import 'utilities/display';

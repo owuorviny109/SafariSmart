@@ -1,0 +1,80 @@
+/**
+ * Display & Layout Utilities
+ */
+
+// Display
+.tk-block { display: block; }
+.tk-inline-block { display: inline-block; }
+.tk-inline { display: inline; }
+.tk-flex { display: flex; }
+.tk-inline-flex { display: inline-flex; }
+.tk-grid { display: grid; }
+.tk-hidden { display: none; }
+
+// Flexbox
+.tk-flex-row { flex-direction: row; }
+.tk-flex-col { flex-direction: column; }
+.tk-flex-wrap { flex-wrap: wrap; }
+.tk-flex-nowrap { flex-wrap: nowrap; }
+
+.tk-items-start { align-items: flex-start; }
+.tk-items-center { align-items: center; }
+.tk-items-end { align-items: flex-end; }
+.tk-items-stretch { align-items: stretch; }
+
+.tk-justify-start { justify-content: flex-start; }
+.tk-justify-center { justify-content: center; }
+.tk-justify-end { justify-content: flex-end; }
+.tk-justify-between { justify-content: space-between; }
+.tk-justify-around { justify-content: space-around; }
+
+// Container
+.tk-container {
+  @include tk-container;
+}
+
+// Width
+.tk-w-full { width: 100%; }
+.tk-w-auto { width: auto; }
+.tk-w-screen { width: 100vw; }
+
+// Height
+.tk-h-full { height: 100%; }
+.tk-h-auto { height: auto; }
+.tk-h-screen { height: 100vh; }
+
+// Position
+.tk-relative { position: relative; }
+.tk-absolute { position: absolute; }
+.tk-fixed { position: fixed; }
+.tk-sticky { position: sticky; }
+
+// Overflow
+.tk-overflow-auto { overflow: auto; }
+.tk-overflow-hidden { overflow: hidden; }
+.tk-overflow-visible { overflow: visible; }
+.tk-overflow-scroll { overflow: scroll; }
+
+// Border radius
+.tk-rounded-sm { border-radius: $tk-radius-sm; }
+.tk-rounded-md { border-radius: $tk-radius-md; }
+.tk-rounded-lg { border-radius: $tk-radius-lg; }
+.tk-rounded-xl { border-radius: $tk-radius-xl; }
+.tk-rounded-2xl { border-radius: $tk-radius-2xl; }
+.tk-rounded-full { border-radius: $tk-radius-full; }
+
+// Shadows
+.tk-shadow-xs { box-shadow: $tk-shadow-xs; }
+.tk-shadow-sm { box-shadow: $tk-shadow-sm; }
+.tk-shadow-md { box-shadow: $tk-shadow-md; }
+.tk-shadow-lg { box-shadow: $tk-shadow-lg; }
+.tk-shadow-xl { box-shadow: $tk-shadow-xl; }
+.tk-shadow-2xl { box-shadow: $tk-shadow-2xl; }
+.tk-shadow-none { box-shadow: none; }
+
+// Background colors
+.tk-bg-primary { background-color: $tk-primary; }
+.tk-bg-accent { background-color: $tk-accent; }
+.tk-bg-surface { background-color: $tk-surface; }
+.tk-bg-gray-50 { background-color: $tk-gray-50; }
+.tk-bg-gray-100 { background-color: $tk-gray-100; }

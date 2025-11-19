@@ -1,0 +1,122 @@
+/**
+ * Animation Keyframes
+ * Subtle, professional, purposeful
+ * All respect prefers-reduced-motion
+ */
+
+// ============================================
+// FADE IN
+// ============================================
+@keyframes tk-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ============================================
+// SLIDE UP
+// ============================================
+@keyframes tk-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// SLIDE DOWN
+// ============================================
+@keyframes tk-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// SCALE IN
+// ============================================
+@keyframes tk-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ============================================
+// SHIMMER (Loading skeleton)
+// ============================================
+@keyframes tk-shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+// ============================================
+// PULSE (Subtle attention)
+// ============================================
+@keyframes tk-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// ============================================
+// SPIN (Loading indicators)
+// ============================================
+@keyframes tk-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ============================================
+// BOUNCE (Subtle, for CTAs)
+// ============================================
+@keyframes tk-bounce-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+// ============================================
+// WAVE (Hero background)
+// ============================================
+@keyframes tk-wave {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-25px) translateY(-10px);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}

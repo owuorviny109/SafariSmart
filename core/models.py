@@ -103,6 +103,9 @@ from .models_security import (
     SecurityEvent
 )
 
+# Import static pages models
+from .models_pages import StaticPage, ContactInfo
+
 __all__ = [
     'WizardSession',
     'Itinerary',

@@ -1,4 +1,5 @@
 {% load static %}
+{% load static_pages_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -193,216 +194,172 @@
         </div>
     </section>
 
-    <!-- Modern Footer -->
-    <footer class="bg-dark text-white mt-0">
+    <!-- Modern Clean Footer -->
+    <footer style="background: #1a1a1a; color: #e5e7eb; padding: 60px 0 30px;">
         <div class="container">
-            <!-- Main Footer Content -->
-            <div class="row py-5">
-                <!-- Brand Column -->
-                <div class="col-lg-3 mb-4 mb-lg-0">
-                    <h3 class="h4 fw-bold mb-3">
-                        <i class="bi bi-globe-africa text-success"></i> SafariSmart Kenya
+            <div class="row">
+                <!-- Brand -->
+                {% get_contact_info as contact %}
+                <div class="col-lg-4 mb-4">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: white;">
+                        SafariSmart Kenya
                     </h3>
-                    <p class="text-white-50 mb-4">
-                        AI-powered trip planning for the ultimate Kenyan experience. 
-                        Discover Kenya's top destinations from Maasai Mara to Diani Beach.
+                    <p style="color: #9ca3af; line-height: 1.7; margin-bottom: 24px;">
+                        {{ contact.about_text }}
                     </p>
-                    <div class="d-flex gap-3 mb-4">
-                        <a href="#" class="text-white-50 hover-success" title="Facebook" aria-label="Facebook">
-                            <i class="bi bi-facebook fs-4"></i>
+                    <div style="margin-bottom: 16px;">
+                        <p style="color: #9ca3af; font-size: 14px; margin-bottom: 8px;">
+                            <strong style="color: #d1d5db;">Want to meet the person behind this platform?</strong>
+                        </p>
+                        <a href="mailto:{{ contact.email }}" style="color: #3D9A63; text-decoration: none; font-size: 14px; display: block; margin-bottom: 8px;">
+                            {{ contact.email }}
                         </a>
-                        <a href="#" class="text-white-50 hover-success" title="Twitter" aria-label="Twitter">
-                            <i class="bi bi-twitter fs-4"></i>
+                        {% if contact.phone %}
+                        <a href="tel:{{ contact.phone|cut:' ' }}" style="color: #9ca3af; text-decoration: none; font-size: 13px; display: block; margin-bottom: 8px;">
+                            {{ contact.phone }}
                         </a>
-                        <a href="#" class="text-white-50 hover-success" title="Instagram" aria-label="Instagram">
-                            <i class="bi bi-instagram fs-4"></i>
-                        </a>
-                        <a href="#" class="text-white-50 hover-success" title="YouTube" aria-label="YouTube">
-                            <i class="bi bi-youtube fs-4"></i>
-                        </a>
+                        {% endif %}
+                        <p style="color: #9ca3af; font-size: 13px; margin: 0;">
+                            Built by {{ contact.creator_name }}{% if contact.portfolio_url %} • 
+                            <a href="{{ contact.portfolio_url }}" target="_blank" rel="noopener" style="color: #3D9A63; text-decoration: none;">
+                                {{ contact.portfolio_text }} →
+                            </a>
+                            {% endif %}
+                        </p>
                     </div>
-                    <p class="text-white-50 small mb-1">
-                        <i class="bi bi-envelope"></i> info@safarismart.co.ke
-                    </p>
-                    <p class="text-white-50 small">
-                        <i class="bi bi-geo-alt"></i> Nairobi, Kenya
-                    </p>
                 </div>
                 
-                <!-- Plan Your Trip -->
-                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                    <h4 class="h6 fw-bold mb-3 text-success">Plan Your Trip</h4>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a href="{% url 'core:destination_selection' %}" class="text-white-50 text-decoration-none hover-success">
-                                <i class="bi bi-stars"></i> Start Planning
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Quick Links
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'core:destination_selection' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px; transition: color 0.2s;">
+                                Plan Trip
                             </a>
                         </li>
-                        <li class="mb-2">
-                            <a href="{% url 'core:quick_trip' %}" class="text-white-50 text-decoration-none hover-success">
-                                <i class="bi bi-lightning"></i> Quick Planner
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'destinations:list' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                Destinations
                             </a>
                         </li>
                         {% if user.is_authenticated %}
-                        <li class="mb-2">
-                            <a href="{% url 'core:dashboard' %}" class="text-white-50 text-decoration-none hover-success">
-                                <i class="bi bi-map"></i> My Itineraries
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'core:dashboard' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                My Itineraries
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'accounts:logout' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                Logout
                             </a>
                         </li>
                         {% else %}
-                        <li class="mb-2">
-                            <a href="{% url 'accounts:register' %}" class="text-white-50 text-decoration-none hover-success">
-                                <i class="bi bi-person-plus"></i> Create Account
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'accounts:login' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                Login
                             </a>
                         </li>
-                        <li class="mb-2">
-                            <a href="{% url 'accounts:login' %}" class="text-white-50 text-decoration-none hover-success">
-                                <i class="bi bi-box-arrow-in-right"></i> Sign In
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'accounts:register' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                Register
                             </a>
                         </li>
                         {% endif %}
                     </ul>
                 </div>
                 
-                <!-- Explore Destinations -->
-                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                    <h4 class="h6 fw-bold mb-3 text-success">Explore</h4>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:list' %}" class="text-white-50 text-decoration-none hover-success">
-                                All Destinations
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:list' %}?type=safari" class="text-white-50 text-decoration-none hover-success">
+                <!-- Destinations -->
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Explore
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'destinations:list' %}?type=safari" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
                                 Safari Parks
                             </a>
                         </li>
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:list' %}?type=beach" class="text-white-50 text-decoration-none hover-success">
-                                Beach Destinations
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'destinations:list' %}?type=beach" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                Beaches
                             </a>
                         </li>
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:list' %}?type=mountain" class="text-white-50 text-decoration-none hover-success">
-                                Mountains & Hiking
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'destinations:list' %}?type=mountain" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                Mountains
                             </a>
                         </li>
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:list' %}?type=city" class="text-white-50 text-decoration-none hover-success">
-                                Cities & Culture
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Top Destinations -->
-                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                    <h4 class="h6 fw-bold mb-3 text-success">Top Destinations</h4>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:detail' 'maasai-mara-national-reserve' %}" class="text-white-50 text-decoration-none hover-success">
-                                🦁 Maasai Mara
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:detail' 'amboseli-national-park' %}" class="text-white-50 text-decoration-none hover-success">
-                                🐘 Amboseli
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:detail' 'diani-beach' %}" class="text-white-50 text-decoration-none hover-success">
-                                🏖️ Diani Beach
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:detail' 'mount-kenya' %}" class="text-white-50 text-decoration-none hover-success">
-                                ⛰️ Mount Kenya
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{% url 'destinations:detail' 'lamu-island' %}" class="text-white-50 text-decoration-none hover-success">
-                                🏝️ Lamu Island
+                        <li style="margin-bottom: 12px;">
+                            <a href="{% url 'destinations:list' %}?type=city" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                Cities
                             </a>
                         </li>
                     </ul>
                 </div>
                 
-                <!-- Resources & Company -->
-                <div class="col-lg-3 col-md-4 mb-4 mb-lg-0">
-                    <h4 class="h6 fw-bold mb-3 text-success">Resources</h4>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a href="#about" class="text-white-50 text-decoration-none hover-success">
-                                About SafariSmart
+                <!-- Company -->
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Company
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        {% load static_pages_tags %}
+                        {% get_footer_pages as footer_pages %}
+                        {% for page in footer_pages %}
+                        <li style="margin-bottom: 12px;">
+                            <a href="{{ page.get_absolute_url }}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
+                                {{ page.title }}
                             </a>
                         </li>
-                        <li class="mb-2">
-                            <a href="#how-it-works" class="text-white-50 text-decoration-none hover-success">
-                                How It Works
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#travel-guide" class="text-white-50 text-decoration-none hover-success">
-                                Kenya Travel Guide
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#best-time" class="text-white-50 text-decoration-none hover-success">
-                                Best Time to Visit
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#visa-info" class="text-white-50 text-decoration-none hover-success">
-                                Visa Information
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#blog" class="text-white-50 text-decoration-none hover-success">
-                                Travel Blog
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#faq" class="text-white-50 text-decoration-none hover-success">
-                                FAQ
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="#contact" class="text-white-50 text-decoration-none hover-success">
+                        {% empty %}
+                        <li style="margin-bottom: 12px;">
+                            <a href="mailto:owuorvincent069@gmail.com" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
                                 Contact Us
                             </a>
                         </li>
-                        <li class="mb-2">
-                            <a href="#privacy" class="text-white-50 text-decoration-none hover-success">
-                                Privacy Policy
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <!-- Connect -->
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Connect
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        {% if contact.github_url %}
+                        <li style="margin-bottom: 12px;">
+                            <a href="{{ contact.github_url }}" target="_blank" rel="noopener" style="color: #9ca3af; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                <i class="bi bi-github"></i> GitHub
                             </a>
                         </li>
-                        <li class="mb-2">
-                            <a href="#terms" class="text-white-50 text-decoration-none hover-success">
-                                Terms of Service
+                        {% endif %}
+                        {% if contact.linkedin_url %}
+                        <li style="margin-bottom: 12px;">
+                            <a href="{{ contact.linkedin_url }}" target="_blank" rel="noopener" style="color: #9ca3af; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                <i class="bi bi-linkedin"></i> LinkedIn
                             </a>
                         </li>
+                        {% endif %}
+                        {% if contact.twitter_url %}
+                        <li style="margin-bottom: 12px;">
+                            <a href="{{ contact.twitter_url }}" target="_blank" rel="noopener" style="color: #9ca3af; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                                <i class="bi bi-twitter"></i> Twitter
+                            </a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
             
-            <!-- Bottom Bar -->
-            <div class="border-top border-secondary py-4">
-                <div class="row align-items-center">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        <p class="mb-0 text-white-50">
-                            &copy; 2025 SafariSmart Kenya. All rights reserved.
-                        </p>
-                        <p class="mb-0 small text-white-50">
-                            <i class="bi bi-stars text-warning"></i> Powered by Gemini AI
-                        </p>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <span class="text-white-50 small">
-                            Made with <i class="bi bi-heart-fill text-danger"></i> in Kenya
-                        </span>
-                    </div>
-                </div>
+            <!-- Bottom -->
+            <div style="border-top: 1px solid #374151; margin-top: 48px; padding-top: 24px; text-align: center;">
+                <p style="color: #6b7280; font-size: 14px; margin: 0;">
+                    © 2025 SafariSmart Kenya. All rights reserved.
+                </p>
             </div>
         </div>
     </footer>

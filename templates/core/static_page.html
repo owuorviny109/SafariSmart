@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page.title }} - SafariSmart Kenya{% endblock %}
+{% block meta_description %}{{ page.meta_description|default:page.title }}{% endblock %}
+
+{% block content %}
+<div style="background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%); padding: 80px 0 60px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Page Header -->
+                <div class="text-center mb-5">
+                    <h1 style="font-size: 2.5rem; font-weight: 700; color: #1a1a1a; margin-bottom: 16px;">
+                        {{ page.title }}
+                    </h1>
+                    <p style="color: #6b7280; font-size: 14px;">
+                        Last updated: {{ page.updated_at|date:"F d, Y" }}
+                    </p>
+                </div>
+                
+                <!-- Page Content -->
+                <div style="background: white; padding: 48px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
+                    <div class="content-area" style="color: #374151; line-height: 1.8; font-size: 16px;">
+                        {{ page.content|safe }}
+                    </div>
+                </div>
+                
+                <!-- Back Link -->
+                <div class="text-center mt-4">
+                    <a href="{% url 'core:landing' %}" style="color: #2D7A4F; text-decoration: none; font-weight: 600;">
+                        ← Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Style the content area */
+.content-area h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.content-area h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.content-area p {
+    margin-bottom: 16px;
+}
+
+.content-area ul, .content-area ol {
+    margin-bottom: 16px;
+    padding-left: 24px;
+}
+
+.content-area li {
+    margin-bottom: 8px;
+}
+
+.content-area a {
+    color: #2D7A4F;
+    text-decoration: underline;
+}
+
+.content-area a:hover {
+    color: #1F5A37;
+}
+
+.content-area strong {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+</style>
+{% endblock %}

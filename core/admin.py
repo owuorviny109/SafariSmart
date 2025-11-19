@@ -34,4 +34,7 @@ from .admin_security import (
     SecurityEventAdmin
 )
 
+# Import and register static pages admin
+from .admin_pages import StaticPageAdmin, ContactInfoAdmin
+
 # Admin interfaces are already registered via @admin.register decorators
