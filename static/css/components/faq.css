@@ -1,0 +1,182 @@
+/**
+ * FAQ Section Component
+ * Independent styling for FAQ sections
+ */
+
+.tk-faq-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.tk-faq-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1920') center/cover;
+    background-attachment: fixed;
+    z-index: 1;
+}
+
+.tk-faq-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.tk-faq-content-section {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(135deg, 
+        rgba(255, 248, 231, 0.98) 0%, 
+        rgba(254, 243, 199, 0.98) 50%,
+        rgba(253, 230, 138, 0.95) 100%
+    );
+    padding: 80px 0;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1);
+}
+
+.tk-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.tk-faq-header {
+    text-align: left;
+    margin-bottom: 60px;
+}
+
+.tk-faq-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.tk-faq-title--highlight {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: #1F2937;
+    display: block;
+}
+
+.tk-faq-title--main {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: #1F2937;
+    display: block;
+}
+
+.tk-faq-title--accent {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    color: #374151;
+    display: block;
+}
+
+.tk-faq-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+}
+
+.tk-faq-list {
+    max-width: 800px;
+}
+
+.tk-faq-item {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.tk-faq-item:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.tk-faq-question {
+    width: 100%;
+    padding: 24px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1F2937;
+    transition: all 0.3s ease;
+}
+
+.tk-faq-question:hover {
+    color: #E07A2B;
+}
+
+.tk-faq-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E07A2B;
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.tk-faq-item[data-expanded="true"] .tk-faq-icon {
+    background: #2F5D3A;
+    transform: rotate(45deg);
+}
+
+.tk-faq-question-text {
+    flex: 1;
+}
+
+.tk-faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.tk-faq-item[data-expanded="true"] .tk-faq-answer {
+    max-height: 500px;
+}
+
+.tk-faq-answer-inner {
+    padding: 0 24px 24px 64px;
+    color: #1F2937;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tk-faq-section {
+        padding: 60px 0;
+    }
+    
+    .tk-faq-header {
+        margin-bottom: 40px;
+    }
+    
+    .tk-faq-question {
+        padding: 20px;
+        font-size: 1rem;
+    }
+    
+    .tk-faq-answer-inner {
+        padding: 0 20px 20px 56px;
+    }
+}

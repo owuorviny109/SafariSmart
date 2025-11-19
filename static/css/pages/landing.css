@@ -1,0 +1,28 @@
+/**
+ * SafariSmart Kenya - Landing Page Styles
+ * Clean, modular CSS architecture
+ * Each component is independent and reusable
+ */
+
+/* Import individual components */
+@import url('../components/hero.css');
+@import url('../components/value-cards.css');
+@import url('../components/how-it-works.css');
+@import url('../components/destination-cards.css');
+@import url('../components/marquee.css');
+@import url('../components/cta-section.css');
+@import url('../components/faq.css');
+
+/* ============================================
+   LANDING PAGE SPECIFIC STYLES
+   ============================================ */
+
+/* Apply Poppins font globally for landing page */
+.landing-page {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Destination gallery wrapper for scoped grid styles */
+.destination-gallery {
+    /* Grid styles are defined in destination-cards.css */
+}

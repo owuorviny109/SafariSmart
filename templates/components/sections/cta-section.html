@@ -1,0 +1,40 @@
+<!-- CTA Section Component -->
+<section class="cta-section">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center text-white" data-aos="zoom-in">
+                <div class="mb-4">
+                    <span class="badge" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.875rem;">
+                        <i class="bi bi-rocket-takeoff"></i> {{ cta.badge_text|default:"Start Your Adventure" }}
+                    </span>
+                </div>
+                <h2 class="display-4 fw-bold mb-4" style="color: #ffffff;">{{ cta.title|default:"Ready to Explore Kenya?" }}</h2>
+                <p class="lead mb-5" style="font-size: 1.25rem; color: #ffffff;">
+                    {{ cta.description|default:"Join thousands of travelers who've discovered their perfect Kenya adventure with SafariSmart. Let AI create your personalized itinerary in minutes." }}
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="{{ cta.primary_url|default:'/destinations/select/' }}" class="btn-modern btn-secondary-modern btn-lg">
+                        <i class="bi bi-compass"></i>
+                        <span>{{ cta.primary_text|default:"Start Planning Now" }}</span>
+                    </a>
+                    <a href="{{ cta.secondary_url|default:'/destinations/' }}" class="btn-modern btn-outline-modern btn-lg">
+                        <i class="bi bi-map"></i>
+                        <span>{{ cta.secondary_text|default:"Browse Destinations" }}</span>
+                    </a>
+                </div>
+                
+                <!-- Trust Indicators -->
+                {% if cta.show_stats %}
+                <div class="mt-5 d-flex justify-content-center gap-5 flex-wrap">
+                    {% for stat in cta.stats %}
+                    <div class="text-center">
+                        <div class="h2 fw-bold mb-0" style="color: #ffffff;">{{ stat.value }}</div>
+                        <div class="small" style="color: #ffffff;">{{ stat.label }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>

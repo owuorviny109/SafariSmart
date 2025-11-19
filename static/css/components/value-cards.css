@@ -1,0 +1,90 @@
+/**
+ * Value Cards Component
+ * Independent styling for value proposition cards
+ */
+
+.value-constellation {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-xl);
+    margin-top: var(--space-3xl);
+}
+
+.value-orb {
+    background: white;
+    border-radius: var(--radius-2xl);
+    padding: var(--space-2xl);
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-base);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.value-orb::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E07A2B, #F09850);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+}
+
+.value-orb:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-2xl);
+    border-color: #E07A2B;
+}
+
+.value-orb:hover::before {
+    transform: scaleX(1);
+}
+
+.value-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-lg);
+    position: relative;
+}
+
+.value-icon-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: linear-gradient(135deg, #E07A2B, #F09850);
+    border-radius: var(--radius-xl);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.value-orb:hover .value-icon-wrapper::after {
+    opacity: 0.3;
+}
+
+.value-icon-wrapper i {
+    font-size: 32px;
+    color: white;
+}
+
+.value-title {
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: var(--space-sm);
+}
+
+.value-description {
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin: 0;
+}

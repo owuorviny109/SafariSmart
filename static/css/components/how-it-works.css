@@ -1,0 +1,240 @@
+/**
+ * How It Works Section Component
+ * Independent styling for the step-by-step process section
+ */
+
+.tk-how-it-works-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.tk-safari-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1920') center/cover;
+    background-attachment: fixed;
+    z-index: 1;
+}
+
+.tk-safari-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.tk-orange-section {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(135deg, 
+        rgba(255, 248, 231, 0.98) 0%, 
+        rgba(254, 243, 199, 0.98) 50%,
+        rgba(253, 230, 138, 0.95) 100%
+    );
+    padding: 80px 0;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1);
+}
+
+.tk-section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #1F2937;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.tk-section-subtitle {
+    font-size: 1.25rem;
+    opacity: 1;
+    margin-bottom: 3rem;
+    color: #1F2937;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.tk-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tk-step-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: tk-sway 6s ease-in-out infinite;
+}
+
+.tk-step-card:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.tk-step-card:nth-child(2) {
+    animation-delay: 2s;
+}
+
+.tk-step-card:nth-child(3) {
+    animation-delay: 4s;
+}
+
+.tk-step-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation-play-state: paused;
+}
+
+/* Swaying Animation */
+@keyframes tk-sway {
+    0%, 100% {
+        transform: translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateX(-8px) rotate(-1deg);
+    }
+    50% {
+        transform: translateX(0) rotate(0deg);
+    }
+    75% {
+        transform: translateX(8px) rotate(1deg);
+    }
+}
+
+.tk-step-number {
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    box-shadow: 0 5px 15px rgba(224, 122, 43, 0.4);
+}
+
+.tk-step-icon {
+    font-size: 3rem;
+    color: #E07A2B;
+    margin-bottom: 1.5rem;
+}
+
+.tk-step-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2F5D3A;
+    margin-bottom: 1rem;
+}
+
+.tk-step-description {
+    color: #374151;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.tk-planner-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.tk-input-wrapper {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50px;
+    padding: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.tk-input-icon {
+    font-size: 1.5rem;
+    padding: 0 1rem;
+}
+
+.tk-planner-form {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tk-planner-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 1rem;
+    font-size: 1rem;
+    background: transparent;
+    color: #374151;
+}
+
+.tk-planner-input::placeholder {
+    color: #9CA3AF;
+}
+
+.tk-btn-generate {
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 40px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.tk-btn-generate:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(230, 122, 43, 0.4);
+}
+
+.tk-helper-text {
+    color: #374151;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    opacity: 1;
+}
+
+.tk-btn-secondary {
+    background: rgba(224, 122, 43, 0.15);
+    color: #E07A2B;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 40px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(224, 122, 43, 0.3);
+}
+
+.tk-btn-secondary:hover {
+    background: #E07A2B;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(224, 122, 43, 0.4);
+}

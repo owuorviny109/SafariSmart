@@ -1,0 +1,231 @@
+/**
+ * Destination Cards Component
+ * Independent styling for destination showcase cards
+ */
+
+.destination-hover-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    height: 320px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.destination-hover-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.destination-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.destination-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.destination-hover-card:hover .destination-image {
+    transform: scale(1.08);
+}
+
+.destination-fallback {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #10B981, #064E3B);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+    opacity: 0.8;
+}
+
+/* Type Badge - Always Visible */
+.destination-type-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #064E3B;
+    z-index: 3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover Overlay - Hidden by Default */
+.destination-hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 248, 231, 0.98) 0%, 
+        rgba(254, 243, 199, 0.98) 50%,
+        rgba(253, 230, 138, 0.95) 100%
+    );
+    color: #2F5D3A;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 2;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1);
+}
+
+.destination-hover-card:hover .destination-hover-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.destination-info {
+    text-align: center;
+    width: 100%;
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.destination-hover-card:hover .destination-info {
+    transform: translateY(0);
+}
+
+.destination-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: #2F5D3A;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.destination-location {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.destination-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    max-height: 3.2em;
+    overflow: hidden;
+    color: #374151;
+}
+
+.destination-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.destination-price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    background: rgba(47, 93, 58, 0.15);
+    color: #2F5D3A;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(47, 93, 58, 0.2);
+}
+
+.destination-rating {
+    color: #E07A2B;
+    font-size: 0.9rem;
+    background: rgba(224, 122, 43, 0.15);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(224, 122, 43, 0.2);
+}
+
+.destination-timing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.destination-cta {
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    backdrop-filter: blur(12px);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(224, 122, 43, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
+}
+
+.destination-cta:hover {
+    background: linear-gradient(135deg, #F09850, #E07A2B);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(224, 122, 43, 0.4);
+}
+
+/* Grid Layout Fixes - Scoped to destination cards only */
+.destination-gallery .row.g-4 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.destination-gallery .row.g-4 > div[class*="col-"] {
+    width: 100%;
+    max-width: none;
+    flex: none;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 992px) {
+    .destination-gallery .row.g-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .destination-gallery .row.g-4 {
+        grid-template-columns: 1fr;
+    }
+}

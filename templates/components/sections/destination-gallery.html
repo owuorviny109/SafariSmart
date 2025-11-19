@@ -1,0 +1,83 @@
+<!-- Destination Gallery Component -->
+{% if destinations %}
+<section class="py-5 destination-gallery" style="background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">{{ gallery.title|default:"Explore Kenya's Wonders" }}</h2>
+            <p class="section-subtitle">
+                {{ gallery.subtitle|default:"From majestic wildlife to pristine beaches, discover destinations that will take your breath away" }}
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            {% for destination in destinations %}
+            <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'00' }}">
+                <a href="{% url 'destinations:detail' destination.slug %}" class="text-decoration-none">
+                    <div class="destination-hover-card">
+                        <div class="destination-image-container">
+                            {% if destination.image %}
+                            <img src="{{ destination.image.url }}" alt="{{ destination.name }}" class="destination-image">
+                            {% elif destination.image_url %}
+                            <img src="{{ destination.image_url }}" alt="{{ destination.name }}" class="destination-image">
+                            {% else %}
+                            <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
+                                 alt="{{ destination.name }}" class="destination-image"
+                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'destination-fallback\'><i class=\'bi bi-image\'></i></div>';">
+                            {% endif %}
+                            
+                            <div class="destination-type-badge">
+                                <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% elif destination.destination_type == 'mountain' %}mountain{% else %}geo-alt{% endif %}"></i>
+                                {{ destination.get_destination_type_display }}
+                            </div>
+                            
+                            <div class="destination-hover-overlay">
+                                <div class="destination-info">
+                                    <h3 class="destination-title">{{ destination.name }}</h3>
+                                    <p class="destination-location">{{ destination.county }}</p>
+                                    <p class="destination-description">{{ destination.description|truncatewords:15 }}</p>
+                                    
+                                    <div class="destination-meta">
+                                        <div class="destination-price">
+                                            <i class="bi bi-cash-coin"></i>
+                                            <span>KSh {{ destination.average_cost_per_day|floatformat:0 }}/day</span>
+                                        </div>
+                                        <div class="destination-rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-half"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if destination.best_time_to_visit %}
+                                    <div class="destination-timing">
+                                        <i class="bi bi-calendar-check"></i>
+                                        <span>Best: {{ destination.best_time_to_visit }}</span>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <div class="destination-cta">
+                                        <span>Explore</span>
+                                        <i class="bi bi-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if show_view_all %}
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'destinations:list' %}" class="btn-modern btn-primary-modern">
+                <i class="bi bi-grid-3x3-gap"></i>
+                <span>{{ gallery.view_all_text|default:"View All Destinations" }}</span>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}

@@ -1,0 +1,99 @@
+/**
+ * Marquee Section Component
+ * Independent styling for sliding marquee cards
+ */
+
+.tk-marquee-section {
+    background: #F3F4F6;
+    padding: 4rem 0;
+    overflow: hidden;
+}
+
+.tk-marquee-wrapper {
+    overflow: hidden;
+    position: relative;
+    margin-top: 3rem;
+}
+
+.tk-marquee-track {
+    display: flex;
+    gap: 2rem;
+    animation: tk-slide-marquee 20s linear infinite;
+    width: calc(200% + 4rem); /* Double width for seamless loop */
+}
+
+.tk-marquee-card {
+    flex: 0 0 350px;
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tk-card-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: white;
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
+}
+
+.tk-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 1rem;
+}
+
+.tk-card-description {
+    color: #6B7280;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Marquee Animation */
+@keyframes tk-slide-marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pause animation on hover */
+.tk-marquee-wrapper:hover .tk-marquee-track {
+    animation-play-state: paused;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tk-marquee-card {
+        flex: 0 0 280px;
+        padding: 2rem 1.5rem;
+    }
+    
+    .tk-card-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .tk-card-title {
+        font-size: 1.25rem;
+    }
+    
+    .tk-card-description {
+        font-size: 0.9rem;
+    }
+}

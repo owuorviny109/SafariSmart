@@ -1,0 +1,65 @@
+<!-- How It Works Section Component -->
+<section class="tk-how-it-works-section">
+  <!-- Safari Background with Overlay -->
+  <div class="tk-safari-background">
+    <div class="tk-safari-overlay"></div>
+  </div>
+  
+  <!-- Orange Section -->
+  <div class="tk-orange-section">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="tk-section-title">{{ section.title|default:"How It Works" }}</h2>
+        <p class="tk-section-subtitle">
+          {{ section.subtitle|default:"Three simple steps to your perfect Kenya adventure" }}
+        </p>
+      </div>
+      
+      <!-- Three Step Cards -->
+      <div class="tk-steps-grid">
+        {% for step in steps %}
+        <div class="tk-step-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'00' }}">
+          <div class="tk-step-number">{{ forloop.counter }}</div>
+          <div class="tk-step-icon">
+            <i class="bi bi-{{ step.icon }}"></i>
+          </div>
+          <h3 class="tk-step-title">{{ step.title }}</h3>
+          <p class="tk-step-description">{{ step.description }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      
+      <!-- Quick Trip Planner Input -->
+      {% if show_planner %}
+      <div class="tk-planner-container" data-aos="fade-up" data-aos-delay="400">
+        <div class="tk-input-wrapper">
+          <div class="tk-input-icon">💬</div>
+          <form method="post" action="{% url 'core:quick_trip' %}" id="quickTripForm" class="tk-planner-form">
+            {% csrf_token %}
+            <input type="text" 
+                   name="trip_description"
+                   id="quickTripInput"
+                   class="tk-planner-input"
+                   placeholder="{{ planner.placeholder|default:'Include: days, destination, budget (e.g., 3 days Diani 50k)' }}"
+                   minlength="15"
+                   maxlength="200"
+                   required>
+            <button class="tk-btn-generate" type="submit" id="quickTripBtn">
+              ✨ {{ planner.button_text|default:"Generate" }}
+            </button>
+          </form>
+        </div>
+        <div class="tk-helper-text">
+          <span><i class="bi bi-info-circle"></i> {{ planner.helper_text|default:"Required: Days + Destination + Budget" }}</span>
+        </div>
+        <div class="text-center mt-3">
+          <a href="{% url 'core:destination_selection' %}" class="tk-btn-secondary">
+            <i class="bi bi-list-check"></i>
+            <span>{{ planner.alt_text|default:"Or Use Step-by-Step Planner" }}</span>
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
