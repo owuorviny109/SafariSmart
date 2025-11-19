@@ -68,7 +68,7 @@ To showcase Kenya's breathtaking destinations and make trip planning effortless 
 
 ## Live Demo
 
-Visit the live application: **https://safarismart-kenya.onrender.com/**
+Visit the live application: **https://safarismart.onrender.com/**
 
 ---
 
