@@ -1,17 +1,7 @@
 /**
  * SafariSmart Kenya - Landing Page Styles
- * Clean, modular CSS architecture
- * Each component is independent and reusable
+ * Clean, modular CSS architecture - All components included directly
  */
-
-/* Import individual components */
-@import url('../components/hero.css');
-@import url('../components/value-cards.css');
-@import url('../components/how-it-works.css');
-@import url('../components/destination-cards.css');
-@import url('../components/marquee.css');
-@import url('../components/cta-section.css');
-@import url('../components/faq.css');
 
 /* ============================================
    LANDING PAGE SPECIFIC STYLES
@@ -22,7 +12,618 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* Destination gallery wrapper for scoped grid styles */
+/* Ensure proper spacing between sections */
+section {
+    margin-bottom: 0 !important;
+    position: relative;
+}
+
+/* Fix any layout issues */
+.container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+}
+
+/* Override Bootstrap if needed */
+.py-5 {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+}
+
+/* Ensure text is visible */
+h1, h2, h3, h4, h5, h6 {
+    color: inherit !important;
+}
+
+p {
+    color: inherit !important;
+    margin-bottom: 1rem !important;
+}
+
+/* ============================================
+   SECTION TITLES
+   ============================================ */
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1F2937;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    color: #6B7280;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+}
+
+/* ============================================
+   MARQUEE SECTION - Why Choose SafariSmart
+   ============================================ */
+
+.tk-marquee-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    overflow: hidden;
+}
+
+.tk-marquee-wrapper {
+    overflow: hidden;
+    position: relative;
+    margin-top: 3rem;
+}
+
+.tk-marquee-track {
+    display: flex;
+    animation: marquee 30s linear infinite;
+    gap: 2rem;
+}
+
+.tk-marquee-card {
+    flex: 0 0 350px;
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.tk-marquee-card:hover {
+    transform: translateY(-8px);
+}
+
+.tk-card-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: white;
+}
+
+.tk-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 1rem;
+}
+
+.tk-card-description {
+    color: #6B7280;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ============================================
+   HOW IT WORKS SECTION
+   ============================================ */
+
+.tk-how-it-works-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.tk-safari-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.tk-safari-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.tk-orange-section {
+    position: relative;
+    z-index: 2;
+    padding: 5rem 0;
+    width: 100%;
+}
+
+.tk-section-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.tk-section-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+}
+
+.tk-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.tk-step-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.tk-step-card:hover {
+    transform: translateY(-8px);
+}
+
+.tk-step-number {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.tk-step-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem auto 1.5rem;
+    font-size: 2rem;
+    color: #E07A2B;
+}
+
+.tk-step-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 1rem;
+}
+
+.tk-step-description {
+    color: #6B7280;
+    line-height: 1.6;
+}
+
+/* ============================================
+   QUICK TRIP PLANNER
+   ============================================ */
+
+.tk-planner-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.tk-input-wrapper {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 60px;
+    padding: 1rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.tk-input-icon {
+    position: absolute;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    z-index: 2;
+}
+
+.tk-planner-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tk-planner-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 1rem 1rem 1rem 4rem;
+    font-size: 1rem;
+    outline: none;
+    color: #1F2937;
+}
+
+.tk-planner-input::placeholder {
+    color: #9CA3AF;
+}
+
+.tk-btn-generate {
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.tk-btn-generate:hover {
+    background: linear-gradient(135deg, #F09850, #E07A2B);
+    transform: scale(1.05);
+}
+
+.tk-helper-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.tk-btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.tk-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   DESTINATION GALLERY
+   ============================================ */
+
 .destination-gallery {
-    /* Grid styles are defined in destination-cards.css */
+    padding: 5rem 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+}
+
+/* ============================================
+   MODERN BUTTONS
+   ============================================ */
+
+.btn-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    font-size: 1rem;
+}
+
+.btn-primary-modern {
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+}
+
+.btn-primary-modern:hover {
+    background: linear-gradient(135deg, #F09850, #E07A2B);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(224, 122, 43, 0.4);
+}
+
+.btn-secondary-modern {
+    background: rgba(255, 255, 255, 0.95);
+    color: #1F2937;
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary-modern:hover {
+    background: white;
+    color: #1F2937;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline-modern {
+    background: transparent;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline-modern:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    border-color: white;
+}
+
+/* ============================================
+   CTA SECTION
+   ============================================ */
+
+.cta-section {
+    position: relative;
+    padding: 6rem 0;
+    background-image: 
+        linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
+        url('https://images.unsplash.com/photo-1549366021-9f761d040a94?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* ============================================
+   FAQ SECTION
+   ============================================ */
+
+.tk-faq-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.tk-faq-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.tk-faq-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.tk-faq-content-section {
+    position: relative;
+    z-index: 2;
+    padding: 5rem 0;
+    width: 100%;
+}
+
+.tk-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.tk-faq-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.tk-faq-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.tk-faq-title--highlight {
+    color: #E07A2B;
+}
+
+.tk-faq-title--main {
+    color: white;
+}
+
+.tk-faq-title--accent {
+    color: #E07A2B;
+}
+
+.tk-faq-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tk-faq-item {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.tk-faq-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.tk-faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 1.5rem 2rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1F2937;
+    transition: all 0.3s ease;
+}
+
+.tk-faq-question:hover {
+    background: rgba(224, 122, 43, 0.05);
+}
+
+.tk-faq-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E07A2B;
+    transition: transform 0.3s ease;
+}
+
+.tk-faq-item[data-expanded="true"] .tk-faq-icon {
+    transform: rotate(45deg);
+}
+
+.tk-faq-question-text {
+    flex: 1;
+}
+
+.tk-faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.tk-faq-item[data-expanded="true"] .tk-faq-answer {
+    max-height: 500px;
+}
+
+.tk-faq-answer-inner {
+    padding: 0 2rem 1.5rem;
+    color: #6B7280;
+    line-height: 1.6;
+}
+
+/* ============================================
+   MISSING ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .tk-section-title {
+        font-size: 2.5rem;
+    }
+    
+    .tk-faq-title {
+        font-size: 2rem;
+    }
+    
+    .tk-steps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tk-marquee-card {
+        flex: 0 0 280px;
+    }
+    
+    .tk-planner-form {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .tk-planner-input {
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .tk-input-icon {
+        display: none;
+    }
+    
+    .tk-safari-background,
+    .tk-faq-background,
+    .cta-section {
+        background-attachment: scroll;
+    }
 }

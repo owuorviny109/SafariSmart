@@ -1,0 +1,224 @@
+<!-- Interactive Value Cards Component -->
+<div class="value-constellation">
+    <!-- AI-Powered Card -->
+    <a href="#how-it-works" 
+       class="value-orb" 
+       data-tooltip="Smart itineraries in seconds using advanced algorithms. Our AI analyzes your preferences, budget, and travel dates to create the perfect Kenya adventure."
+       data-action="ai-powered">
+        <div class="value-icon-wrapper">
+            <i class="bi bi-cpu-fill"></i>
+        </div>
+        <h3 class="value-title">AI-Powered</h3>
+        <p class="value-description">Smart itineraries in seconds using advanced algorithms</p>
+        <div class="value-stats">
+            <small>1000+ itineraries generated</small>
+        </div>
+    </a>
+
+    <!-- Top Destinations Card -->
+    <a href="/destinations/" 
+       class="value-orb" 
+       data-tooltip="Explore Kenya's best locations from safaris to beaches. Curated selection of 20+ top-rated destinations including Maasai Mara, Diani Beach, and Amboseli."
+       data-action="destinations">
+        <div class="value-icon-wrapper">
+            <i class="bi bi-geo-alt-fill"></i>
+        </div>
+        <h3 class="value-title">Top Destinations</h3>
+        <p class="value-description">Kenya's best locations from safaris to beaches</p>
+        <div class="value-stats">
+            <small>20+ curated locations</small>
+        </div>
+    </a>
+
+    <!-- Weather Forecasts Card -->
+    <a href="#weather-info" 
+       class="value-orb" 
+       data-tooltip="Plan with confidence using real-time weather data. Get 7-day accurate forecasts for all destinations to pack right and plan activities perfectly."
+       data-action="weather">
+        <div class="value-icon-wrapper">
+            <i class="bi bi-cloud-sun-fill"></i>
+        </div>
+        <h3 class="value-title">Weather Forecasts</h3>
+        <p class="value-description">Plan with confidence using real-time weather data</p>
+        <div class="value-stats">
+            <small>7-day accurate forecasts</small>
+        </div>
+    </a>
+
+    <!-- 100% Free Card -->
+    <a href="/wizard/destinations/" 
+       class="value-orb" 
+       data-tooltip="No hidden costs, completely free to use forever. Create unlimited itineraries, access all features, and plan your dream Kenya trip at zero cost."
+       data-action="free-trial">
+        <div class="value-icon-wrapper">
+            <i class="bi bi-cash-coin"></i>
+        </div>
+        <h3 class="value-title">100% Free</h3>
+        <p class="value-description">No hidden costs, completely free to use forever</p>
+        <div class="value-stats">
+            <small>Trusted by 500+ travelers</small>
+        </div>
+    </a>
+</div>
+
+<!-- Interactive JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const valueCards = document.querySelectorAll('.value-orb');
+    
+    valueCards.forEach(card => {
+        // Click handler
+        card.addEventListener('click', function(e) {
+            const action = this.getAttribute('data-action');
+            
+            // Add loading state
+            this.classList.add('loading');
+            
+            // Track analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'value_card_click', {
+                    'card_type': action,
+                    'event_category': 'engagement'
+                });
+            }
+            
+            // Handle different actions
+            switch(action) {
+                case 'ai-powered':
+                    // Smooth scroll to how it works section
+                    e.preventDefault();
+                    const howItWorks = document.querySelector('#how-it-works, .tk-how-it-works-section');
+                    if (howItWorks) {
+                        howItWorks.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    break;
+                    
+                case 'weather':
+                    // Show weather modal or scroll to weather section
+                    e.preventDefault();
+                    showWeatherInfo();
+                    break;
+                    
+                case 'free-trial':
+                    // Add success state before navigation
+                    setTimeout(() => {
+                        this.classList.remove('loading');
+                        this.classList.add('success');
+                    }, 500);
+                    break;
+                    
+                default:
+                    // Default behavior - follow link
+                    break;
+            }
+            
+            // Remove loading state after animation
+            setTimeout(() => {
+                this.classList.remove('loading');
+            }, 1000);
+        });
+        
+        // Keyboard support
+        card.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+        
+        // Enhanced hover effects
+        card.addEventListener('mouseenter', function() {
+            // Add subtle animation or sound effect
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+    });
+    
+    // Weather info function
+    function showWeatherInfo() {
+        // Create a simple modal or notification
+        const notification = document.createElement('div');
+        notification.className = 'weather-notification';
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="bi bi-cloud-sun-fill"></i>
+                <h4>Weather Forecasts</h4>
+                <p>Get real-time weather data for all Kenya destinations when you create your itinerary!</p>
+                <button onclick="this.parentElement.parentElement.remove()" class="btn-close">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        `;
+        
+        // Add styles
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 1.5rem;
+            z-index: 1000;
+            max-width: 300px;
+            animation: slideInRight 0.3s ease-out;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
+    }
+});
+
+// Add CSS for notifications
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .weather-notification .notification-content {
+        position: relative;
+        text-align: center;
+    }
+    
+    .weather-notification .btn-close {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: #E07A2B;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+    
+    .value-stats {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #E5E7EB;
+    }
+    
+    .value-stats small {
+        font-size: 0.75rem;
+        color: #6B7280;
+        font-weight: 500;
+    }
+`;
+document.head.appendChild(style);
+</script>

@@ -10,6 +10,9 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/hero-backgrounds.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/hero.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/value-cards.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/destination-cards.css' %}">
 <link rel="stylesheet" href="{% static 'css/pages/landing.css' %}">
 {% endblock %}
 
@@ -17,8 +20,8 @@
 <!-- Hero Section -->
 {% include 'components/sections/hero.html' %}
 
-<!-- Why Choose SafariSmart - Sliding Marquee Section -->
-<section class="tk-marquee-section">
+<!-- Why Choose SafariSmart - Value Cards Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <h2 class="section-title">Why Choose SafariSmart</h2>
@@ -27,67 +30,13 @@
             </p>
         </div>
         
-        <!-- Sliding Marquee Container -->
-        <div class="tk-marquee-wrapper">
-            <div class="tk-marquee-track">
-                <!-- Card 1 -->
-                <div class="tk-marquee-card">
-                    <div class="tk-card-icon">
-                        <i class="bi bi-cpu-fill"></i>
-                    </div>
-                    <h3 class="tk-card-title">Smart Planning</h3>
-                    <p class="tk-card-description">Intelligent algorithms create your perfect itinerary, optimized for your preferences, budget, and travel style.</p>
-                </div>
-                
-                <!-- Card 2 -->
-                <div class="tk-marquee-card">
-                    <div class="tk-card-icon">
-                        <i class="bi bi-geo-alt-fill"></i>
-                    </div>
-                    <h3 class="tk-card-title">Top Kenya Destinations</h3>
-                    <p class="tk-card-description">From iconic Maasai Mara to pristine Diani Beach, explore Kenya's diverse landscapes with expert local insights.</p>
-                </div>
-                
-                <!-- Card 3 -->
-                <div class="tk-marquee-card">
-                    <div class="tk-card-icon">
-                        <i class="bi bi-piggy-bank-fill"></i>
-                    </div>
-                    <h3 class="tk-card-title">Budget Optimization</h3>
-                    <p class="tk-card-description">Get the most value from every shilling with intelligent cost breakdowns and activity recommendations.</p>
-                </div>
-                
-                <!-- Duplicate cards for seamless loop -->
-                <div class="tk-marquee-card">
-                    <div class="tk-card-icon">
-                        <i class="bi bi-cpu-fill"></i>
-                    </div>
-                    <h3 class="tk-card-title">Smart Planning</h3>
-                    <p class="tk-card-description">Intelligent algorithms create your perfect itinerary, optimized for your preferences, budget, and travel style.</p>
-                </div>
-                
-                <div class="tk-marquee-card">
-                    <div class="tk-card-icon">
-                        <i class="bi bi-geo-alt-fill"></i>
-                    </div>
-                    <h3 class="tk-card-title">Top Kenya Destinations</h3>
-                    <p class="tk-card-description">From iconic Maasai Mara to pristine Diani Beach, explore Kenya's diverse landscapes with expert local insights.</p>
-                </div>
-                
-                <div class="tk-marquee-card">
-                    <div class="tk-card-icon">
-                        <i class="bi bi-piggy-bank-fill"></i>
-                    </div>
-                    <h3 class="tk-card-title">Budget Optimization</h3>
-                    <p class="tk-card-description">Get the most value from every shilling with intelligent cost breakdowns and activity recommendations.</p>
-                </div>
-            </div>
-        </div>
+        <!-- Value Cards -->
+        {% include 'components/sections/value-cards.html' %}
     </div>
 </section>
 
 <!-- How It Works - Magical Kenya Style with Safari Background -->
-<section class="tk-how-it-works-section">
+<section class="tk-how-it-works-section" id="how-it-works">
   <!-- Safari Background with Overlay -->
   <div class="tk-safari-background">
     <div class="tk-safari-overlay"></div>

@@ -161,72 +161,163 @@
     <!-- Main Content -->
     {% block content %}{% endblock %}
 
-    <!-- Why Choose SafariSmart Section (Before Footer) - 3D Flip Cards -->
-    <section style="background: #F3F4F6; padding: 3rem 0;">
+    <!-- Interactive Value Cards Section -->
+    <section style="background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); padding: 3rem 0;">
         <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
-                
-                <!-- Card 1: AI-Powered -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <i class="bi bi-stars" style="font-size: 3rem; color: #10B981;"></i>
-                            <h3 style="font-size: 1.1rem; margin-top: 1rem; font-weight: 600;">AI-Powered</h3>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600;">AI-Powered</h3>
-                            <p style="font-size: 0.9rem; margin: 0;">Smart itineraries in seconds using advanced algorithms</p>
-                        </div>
+            <div class="text-center mb-5">
+                <h2 style="font-size: 2rem; font-weight: 700; color: #1F2937; margin-bottom: 1rem;">Why Choose SafariSmart</h2>
+                <p style="font-size: 1.1rem; color: #6B7280; max-width: 600px; margin: 0 auto;">
+                    Experience the future of travel planning with our intelligent platform
+                </p>
+            </div>
+            
+            <!-- Value Cards - Inline to avoid template issues -->
+            <div class="value-constellation">
+                <!-- AI-Powered Card -->
+                <a href="#how-it-works" class="value-orb" data-tooltip="Smart itineraries in seconds using advanced algorithms">
+                    <div class="value-icon-wrapper">
+                        <i class="bi bi-cpu-fill"></i>
                     </div>
-                </div>
-                
-                <!-- Card 2: Top Destinations -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <i class="bi bi-geo-alt-fill" style="font-size: 3rem; color: #10B981;"></i>
-                            <h3 style="font-size: 1.1rem; margin-top: 1rem; font-weight: 600;">Top Destinations</h3>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600;">Top Destinations</h3>
-                            <p style="font-size: 0.9rem; margin: 0;">Kenya's best locations from safaris to beaches</p>
-                        </div>
+                    <h3 class="value-title">AI-Powered</h3>
+                    <p class="value-description">Smart itineraries in seconds using advanced algorithms</p>
+                    <div class="value-stats">
+                        <small>1000+ itineraries generated</small>
                     </div>
-                </div>
-                
-                <!-- Card 3: Weather Forecasts -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <i class="bi bi-cloud-sun-fill" style="font-size: 3rem; color: #10B981;"></i>
-                            <h3 style="font-size: 1.1rem; margin-top: 1rem; font-weight: 600;">Weather Forecasts</h3>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600;">Weather Forecasts</h3>
-                            <p style="font-size: 0.9rem; margin: 0;">Plan with confidence using real-time weather data</p>
-                        </div>
+                </a>
+
+                <!-- Top Destinations Card -->
+                <a href="/destinations/" class="value-orb" data-tooltip="Explore Kenya's best locations from safaris to beaches">
+                    <div class="value-icon-wrapper">
+                        <i class="bi bi-geo-alt-fill"></i>
                     </div>
-                </div>
-                
-                <!-- Card 4: 100% Free -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <i class="bi bi-currency-exchange" style="font-size: 3rem; color: #10B981;"></i>
-                            <h3 style="font-size: 1.1rem; margin-top: 1rem; font-weight: 600;">100% Free</h3>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600;">100% Free</h3>
-                            <p style="font-size: 0.9rem; margin: 0;">No hidden costs, completely free to use forever</p>
-                        </div>
+                    <h3 class="value-title">Top Destinations</h3>
+                    <p class="value-description">Kenya's best locations from safaris to beaches</p>
+                    <div class="value-stats">
+                        <small>20+ curated locations</small>
                     </div>
-                </div>
-                
+                </a>
+
+                <!-- Weather Forecasts Card -->
+                <a href="#weather-info" class="value-orb" data-tooltip="Plan with confidence using real-time weather data">
+                    <div class="value-icon-wrapper">
+                        <i class="bi bi-cloud-sun-fill"></i>
+                    </div>
+                    <h3 class="value-title">Weather Forecasts</h3>
+                    <p class="value-description">Plan with confidence using real-time weather data</p>
+                    <div class="value-stats">
+                        <small>7-day accurate forecasts</small>
+                    </div>
+                </a>
+
+                <!-- 100% Free Card -->
+                <a href="/wizard/destinations/" class="value-orb" data-tooltip="No hidden costs, completely free to use forever">
+                    <div class="value-icon-wrapper">
+                        <i class="bi bi-cash-coin"></i>
+                    </div>
+                    <h3 class="value-title">100% Free</h3>
+                    <p class="value-description">No hidden costs, completely free to use forever</p>
+                    <div class="value-stats">
+                        <small>Trusted by 500+ travelers</small>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
     
     <style>
+        /* Value Cards Styles */
+        .value-constellation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .value-orb {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .value-orb:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #E07A2B;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .value-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #E07A2B, #C66820);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .value-icon-wrapper i {
+            font-size: 32px;
+            color: white;
+        }
+
+        .value-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.75rem;
+        }
+
+        .value-description {
+            color: #6B7280;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .value-stats {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .value-stats small {
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            font-weight: 500;
+        }
+
+        /* Tooltip */
+        .value-orb[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1F2937;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 250px;
+            white-space: normal;
+            text-align: center;
+            line-height: 1.4;
+        }
+
         .flip-card {
             background-color: transparent;
             width: 100%;

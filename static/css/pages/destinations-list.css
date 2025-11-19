@@ -3,6 +3,10 @@
  * Independent styling for the destinations listing page
  */
 
+/* ============================================
+   DESTINATION CARDS
+   ============================================ */
+
 .destination-card {
     position: relative;
     border-radius: 20px;
@@ -24,7 +28,7 @@
 .destination-image-container {
     position: relative;
     width: 100%;
-    height: 60%;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -68,41 +72,205 @@
     z-index: 2;
 }
 
-.destination-content {
-    padding: 20px;
-    height: 40%;
+/* ============================================
+   HOVER OVERLAY
+   ============================================ */
+
+.destination-hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 248, 231, 0.98) 0%, 
+        rgba(254, 243, 199, 0.98) 50%,
+        rgba(253, 230, 138, 0.95) 100%
+    );
+    color: #2F5D3A;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 3;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1);
+}
+
+.destination-card:hover .destination-hover-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.destination-info {
+    text-align: center;
+    width: 100%;
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.destination-card:hover .destination-info {
+    transform: translateY(0);
+}
+
+.destination-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: #2F5D3A;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.destination-location {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.destination-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    max-height: 3.2em;
+    overflow: hidden;
+    color: #374151;
+}
+
+.destination-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.destination-price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    background: rgba(47, 93, 58, 0.15);
+    color: #2F5D3A;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(47, 93, 58, 0.2);
+}
+
+.destination-weather {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    background: rgba(224, 122, 43, 0.15);
+    color: #E07A2B;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(224, 122, 43, 0.2);
+}
+
+.destination-timing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.destination-cta {
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    backdrop-filter: blur(12px);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(224, 122, 43, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
+    text-decoration: none;
+}
+
+.destination-cta:hover {
+    background: linear-gradient(135deg, #F09850, #E07A2B);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(224, 122, 43, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+/* ============================================
+   CARD CONTENT (Non-hover state)
+   ============================================ */
+
+.destination-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+    color: white;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 2;
+}
+
+.destination-card:hover .destination-content {
+    opacity: 0;
+    visibility: hidden;
 }
 
 .destination-header {
     margin-bottom: 12px;
 }
 
-.destination-title {
+.destination-content .destination-title {
     font-size: 1.4rem;
     font-weight: 800;
-    color: #1F2937;
+    color: white;
     margin-bottom: 4px;
     line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-.destination-location {
-    color: #6B7280;
+.destination-content .destination-location {
+    color: rgba(255, 255, 255, 0.9);
     font-size: 0.9rem;
     font-weight: 500;
+    opacity: 1;
+    margin-bottom: 0;
 }
 
-.destination-description {
+.destination-content .destination-description {
     color: #4B5563;
     font-size: 0.85rem;
     line-height: 1.5;
     margin-bottom: 15px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    opacity: 1;
+    max-height: none;
 }
 
 .destination-footer {
@@ -111,10 +279,15 @@
     align-items: center;
 }
 
-.destination-price {
+.destination-footer .destination-price {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #E07A2B;
+    color: #FFF;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
 }
 
 .destination-price .currency {
@@ -122,7 +295,7 @@
     color: #6B7280;
 }
 
-.destination-cta {
+.destination-footer .destination-cta {
     background: linear-gradient(135deg, #E07A2B, #C66820);
     color: white;
     padding: 8px 16px;
@@ -133,16 +306,21 @@
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    border: none;
+    box-shadow: none;
 }
 
-.destination-cta:hover {
+.destination-footer .destination-cta:hover {
     background: linear-gradient(135deg, #F09850, #E07A2B);
     transform: scale(1.05);
     color: white;
     text-decoration: none;
 }
 
-/* Grid Layout */
+/* ============================================
+   GRID LAYOUT
+   ============================================ */
+
 .destinations-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -150,7 +328,10 @@
     margin-top: 2rem;
 }
 
-/* Page Header */
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+
 .page-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -172,7 +353,10 @@
     line-height: 1.6;
 }
 
-/* Filter Section */
+/* ============================================
+   FILTER SECTION
+   ============================================ */
+
 .filter-section {
     background: white;
     padding: 1.5rem;
@@ -213,7 +397,49 @@
     color: white;
 }
 
-/* Loading State */
+.filter-btn-group .btn {
+    transition: all 0.3s ease;
+    border-radius: 50px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    margin: 0.25rem;
+}
+
+.filter-btn-group .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(224, 122, 43, 0.3);
+}
+
+.btn-orange {
+    background: linear-gradient(135deg, #E07A2B, #C66820);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.btn-orange:hover {
+    background: linear-gradient(135deg, #F09850, #E07A2B);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(224, 122, 43, 0.4);
+}
+
+.btn-outline-orange {
+    background: transparent;
+    color: #E07A2B;
+    border: 2px solid #E07A2B;
+}
+
+.btn-outline-orange:hover {
+    background: #E07A2B;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(224, 122, 43, 0.4);
+}
+
+/* ============================================
+   LOADING & EMPTY STATES
+   ============================================ */
+
 .loading-state {
     text-align: center;
     padding: 3rem;
@@ -235,7 +461,6 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Empty State */
 .empty-state {
     text-align: center;
     padding: 3rem;
@@ -248,7 +473,10 @@
     margin-bottom: 1rem;
 }
 
-/* Responsive Design */
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
 @media (max-width: 768px) {
     .destinations-grid {
         grid-template-columns: 1fr;
@@ -263,11 +491,53 @@
         height: 350px;
     }
     
+    .destination-hover-overlay {
+        padding: 1.5rem;
+    }
+    
+    .destination-title {
+        font-size: 1.5rem;
+    }
+    
+    .destination-meta {
+        gap: 1rem;
+        flex-direction: column;
+    }
+    
+    .destination-price,
+    .destination-weather {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
     .filter-section {
         padding: 1rem;
     }
     
     .filter-buttons {
         justify-content: center;
+    }
+    
+    .filter-btn-group {
+        justify-content: center !important;
+    }
+    
+    .filter-btn-group .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .destination-card {
+        height: 320px;
+    }
+    
+    .destination-meta {
+        gap: 0.75rem;
+    }
+    
+    .destination-hover-overlay {
+        padding: 1rem;
     }
 }
