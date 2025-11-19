@@ -140,18 +140,20 @@ class SimpleChatFlow:
         Returns:
             str: Next question to ask, or None if complete
         """
-        # Check what data is missing
+        # Check what data is missing and ask conversationally
         if not context.extracted_data['custom_destinations']:
             return self.config.destination_question
             
         if context.extracted_data['duration_days'] is None:
-            return self.config.duration_question
+            # Acknowledge destination
+            dest = context.extracted_data['custom_destinations'][0]
+            return f"Great choice! {dest} is wonderful. {self.config.duration_question}"
             
         if context.extracted_data['budget_category'] is None:
-            return self.config.budget_question
+            return f"Perfect! {self.config.budget_question} (Budget/Mid-range/Luxury)"
             
         if not context.extracted_data['interests']:
-            return self.config.interests_question
+            return f"Excellent! {self.config.interests_question} (Wildlife/Culture/Food/Beach/etc.)"
             
         return None
         
@@ -167,6 +169,12 @@ class SimpleChatFlow:
             bool: True if data was successfully extracted
         """
         user_input_lower = user_input.lower().strip()
+        
+        # Handle greetings
+        greetings = ['hello', 'hi', 'hey', 'jambo', 'hola', 'greetings']
+        if user_input_lower in greetings:
+            # Don't extract, just acknowledge
+            return False
         
         # Extract destination
         if not context.extracted_data['custom_destinations']:
@@ -496,8 +504,7 @@ class TripPlannerChatService:
         """
         Determine if query requires AI processing.
         
-        For chat, we default to AI for natural conversation.
-        Only use simple chat for very straightforward answers.
+        Use simple chat for reliability. AI can be unpredictable.
         
         Args:
             message (str): User's message
@@ -505,11 +512,8 @@ class TripPlannerChatService:
         Returns:
             bool: True if complex (use AI), False if simple
         """
-        # Always use AI if available for better conversation
-        if self.ai_chat:
-            return True
-            
-        # Fallback to simple chat only if AI not available
+        # Use simple chat by default for reliability
+        # AI is too unpredictable and doesn't follow format well
         return False
         
     def _handle_with_simple(
@@ -518,11 +522,31 @@ class TripPlannerChatService:
         context: ChatContext
     ) -> Dict[str, Any]:
         """Handle message with simple rule-based chat."""
+        user_lower = user_input.lower().strip()
+        
+        # Handle greetings
+        greetings = ['hello', 'hi', 'hey', 'jambo', 'hola', 'greetings']
+        if user_lower in greetings:
+            # Get the first question
+            bot_message = self.simple_chat.get_next_question(context)
+            if not bot_message:
+                bot_message = self.config.welcome_message
+            context.add_message('bot', bot_message)
+            return {
+                'message': bot_message,
+                'type': 'simple',
+                'completed': False,
+                'extracted_data': context.extracted_data
+            }
+        
         # Try to extract data
         extracted = self.simple_chat.extract_data(user_input, context)
         
         if not extracted:
-            bot_message = self.config.error_message
+            # Didn't understand - ask current question again
+            bot_message = self.simple_chat.get_next_question(context)
+            if not bot_message:
+                bot_message = self.config.error_message
         else:
             # Get next question
             next_question = self.simple_chat.get_next_question(context)

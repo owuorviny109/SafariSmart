@@ -62,13 +62,17 @@ class TripPlannerChat {
                     <!-- Messages Container -->
                     <div id="chatMessages" class="chat-messages">
                         <!-- Messages will be added here -->
-                        <!-- Loading Indicator (inside messages) -->
-                        <div id="chatLoading" class="chat-loading" style="display: none;">
-                            <div class="typing-indicator">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
+                    </div>
+                    
+                    <!-- Loading Indicator (below messages, above input) -->
+                    <div id="chatLoading" class="chat-loading" style="display: none;">
+                        <div class="message-avatar">
+                            <i class="bi bi-robot"></i>
+                        </div>
+                        <div class="typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </div>
                     </div>
                     
@@ -257,23 +261,7 @@ class TripPlannerChat {
      */
     showLoading(show) {
         const loading = document.getElementById('chatLoading');
-        
-        if (show) {
-            // Add avatar if not present
-            if (!loading.querySelector('.message-avatar')) {
-                const avatar = document.createElement('div');
-                avatar.className = 'message-avatar';
-                avatar.innerHTML = '<i class="bi bi-robot"></i>';
-                loading.insertBefore(avatar, loading.firstChild);
-            }
-            loading.style.display = 'flex';
-            
-            // Scroll to show loading
-            const messagesContainer = document.getElementById('chatMessages');
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        } else {
-            loading.style.display = 'none';
-        }
+        loading.style.display = show ? 'flex' : 'none';
     }
     
     /**
