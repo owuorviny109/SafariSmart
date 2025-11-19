@@ -636,3 +636,137 @@ class SystemConfiguration(models.Model):
             raise ValidationError(
                 "Maximum adults must be >= minimum adults"
             )
+
+
+
+class ChatConfiguration(models.Model):
+    """
+    Configuration for trip planning chatbot.
+    
+    This model stores admin-configurable chat messages, settings,
+    and behavior for the hybrid chat system (simple + AI).
+    
+    Singleton pattern ensures only one configuration exists.
+    
+    Attributes:
+        is_enabled (bool): Enable/disable chat feature
+        use_ai_for_complex (bool): Use AI for complex queries
+        welcome_message (str): Initial greeting message
+        destination_question (str): Question for destination
+        duration_question (str): Question for trip duration
+        budget_question (str): Question for budget level
+        interests_question (str): Question for interests
+        completion_message (str): Message when generating itinerary
+        error_message (str): Message when bot doesn't understand
+        ai_complexity_threshold (int): Word count to trigger AI
+        
+    Example:
+        >>> config = ChatConfiguration.get_config()
+        >>> print(config.welcome_message)
+        'Hi! I'm your Safari planning assistant...'
+    """
+    
+    # Enable/Disable Features
+    is_enabled = models.BooleanField(
+        default=True,
+        help_text="Enable chat feature for custom trip planning"
+    )
+    use_ai_for_complex = models.BooleanField(
+        default=True,
+        help_text="Use AI (Gemini) for complex user queries"
+    )
+    
+    # Chat Messages
+    welcome_message = models.TextField(
+        default="Hi! I'm your Safari planning assistant. Tell me about your dream trip to Kenya! 🦁",
+        help_text="First message users see when opening chat"
+    )
+    
+    destination_question = models.TextField(
+        default="Where would you like to go in Kenya?",
+        help_text="Question asking for destination"
+    )
+    
+    duration_question = models.TextField(
+        default="How many days do you have for this trip?",
+        help_text="Question asking for trip duration"
+    )
+    
+    budget_question = models.TextField(
+        default="What's your budget level?",
+        help_text="Question asking for budget tier"
+    )
+    
+    interests_question = models.TextField(
+        default="What interests you most?",
+        help_text="Question asking for travel interests"
+    )
+    
+    completion_message = models.TextField(
+        default="Perfect! Let me create your personalized itinerary... ✨",
+        help_text="Message shown when generating itinerary"
+    )
+    
+    error_message = models.TextField(
+        default="Sorry, I didn't quite understand that. Could you rephrase?",
+        help_text="Message when bot doesn't understand input"
+    )
+    
+    # AI Configuration
+    ai_complexity_threshold = models.IntegerField(
+        default=10,
+        validators=[MinValueValidator(5), MaxValueValidator(50)],
+        help_text="Minimum word count to trigger AI (lower = more AI usage, higher = more simple chat)"
+    )
+    
+    max_chat_turns = models.IntegerField(
+        default=10,
+        validators=[MinValueValidator(3), MaxValueValidator(20)],
+        help_text="Maximum conversation turns before forcing completion"
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Chat Configuration"
+        verbose_name_plural = "Chat Configuration"
+        
+    def __str__(self) -> str:
+        return "Chat Configuration"
+        
+    def save(self, *args, **kwargs):
+        """Ensure only one instance exists (Singleton pattern)."""
+        self.pk = 1
+        super().save(*args, **kwargs)
+        
+    def delete(self, *args, **kwargs):
+        """Prevent deletion of configuration."""
+        pass
+        
+    @classmethod
+    def get_config(cls):
+        """
+        Get chat configuration (Singleton).
+        
+        Returns:
+            ChatConfiguration: The configuration instance
+            
+        Time Complexity: O(1)
+        Space Complexity: O(1)
+        """
+        config, created = cls.objects.get_or_create(pk=1)
+        return config
+        
+    def clean(self):
+        """Validate configuration values."""
+        if self.ai_complexity_threshold < 5:
+            raise ValidationError(
+                "AI complexity threshold must be at least 5 words"
+            )
+            
+        if self.max_chat_turns < 3:
+            raise ValidationError(
+                "Maximum chat turns must be at least 3"
+            )

@@ -16,7 +16,8 @@ from .models_config import (
     BudgetCategory,
     InterestCategory,
     BudgetEstimate,
-    SystemConfiguration
+    SystemConfiguration,
+    ChatConfiguration
 )
 
 
@@ -538,3 +539,53 @@ class APIUsageStatsAdmin(admin.ModelAdmin):
             return '-'
         return f"{obj.avg_response_time:.2f}s"
     avg_response_time_display.short_description = 'Avg Response'
+
+
+
+@admin.register(ChatConfiguration)
+class ChatConfigurationAdmin(admin.ModelAdmin):
+    """
+    Admin interface for ChatConfiguration model.
+    
+    Provides organized interface for managing chat messages,
+    AI settings, and feature toggles.
+    """
+    
+    fieldsets = (
+        ('Feature Toggles', {
+            'fields': ('is_enabled', 'use_ai_for_complex'),
+            'description': 'Enable or disable chat features'
+        }),
+        ('Chat Messages', {
+            'fields': (
+                'welcome_message',
+                'destination_question',
+                'duration_question',
+                'budget_question',
+                'interests_question',
+                'completion_message',
+                'error_message'
+            ),
+            'description': 'Customize chat bot messages'
+        }),
+        ('AI Settings', {
+            'fields': ('ai_complexity_threshold', 'max_chat_turns'),
+            'description': 'Configure AI behavior and limits'
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        })
+    )
+    
+    readonly_fields = ('created_at', 'updated_at')
+    
+    list_display = ('__str__', 'is_enabled', 'use_ai_for_complex', 'updated_at')
+    
+    def has_add_permission(self, request):
+        """Only allow one configuration instance."""
+        return not ChatConfiguration.objects.exists()
+    
+    def has_delete_permission(self, request, obj=None):
+        """Prevent deletion of configuration."""
+        return False
