@@ -59,8 +59,20 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
             )
             
         genai.configure(api_key=api_key)
-        # Use gemini-2.5-flash (latest free tier model)
-        self.model = genai.GenerativeModel('gemini-2.5-flash')
+        
+        # Configure generation for faster responses
+        generation_config = {
+            'temperature': 0.7,  # Lower = more focused, faster
+            'top_p': 0.8,
+            'top_k': 40,
+            'max_output_tokens': 2048,  # Limit output length for speed
+        }
+        
+        # Use gemini-2.5-flash (fastest model)
+        self.model = genai.GenerativeModel(
+            'gemini-2.5-flash',
+            generation_config=generation_config
+        )
         self.config = ConfigurationService.get_instance()
         self.rate_limiter = RateLimiter.get_instance()
         
@@ -95,12 +107,25 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
             
             logger.info("Generating itinerary with Gemini AI (rate-limited)")
             
-            # Execute with rate limiting
-            response = self.rate_limiter.execute(
-                'gemini',
-                self.model.generate_content,
-                prompt
-            )
+            # Execute with rate limiting and timeout
+            # Set a 20-second timeout to prevent 502 errors
+            import concurrent.futures
+            
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future = executor.submit(
+                    self.rate_limiter.execute,
+                    'gemini',
+                    self.model.generate_content,
+                    prompt
+                )
+                try:
+                    response = future.result(timeout=20)
+                except concurrent.futures.TimeoutError:
+                    logger.error("Gemini API call timed out after 20 seconds")
+                    raise ItineraryGenerationError(
+                        "AI generation timed out. Please try again.",
+                        generator_type="ai"
+                    )
             
             itinerary = self._parse_response(response.text, preferences)
             
@@ -144,55 +169,31 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
         # Build interests text
         interests_text = ", ".join(interests) if interests else "general tourism"
         
-        prompt = f"""You are a professional Kenyan safari and travel planner. Create a detailed {duration}-day itinerary for a trip to Kenya.
+        prompt = f"""Create a {duration}-day Kenya itinerary.
 
-TRIP DETAILS:
-- Destinations: 
-{destinations_text}
-- Duration: {duration} days
-- Budget: KSh {budget:,} ({budget_category} tier)
-- Travelers: {adults} adult(s), {children} child(ren)
-- Interests: {interests_text}
+DETAILS:
+Destinations: {', '.join([d.name for d in destinations])}
+Budget: KSh {budget:,} ({budget_category})
+Travelers: {adults} adult(s), {children} child(ren)
+Interests: {interests_text}
 
-REQUIREMENTS:
-1. Create a day-by-day itinerary with specific activities
-2. Include realistic timing for each activity
-3. Suggest appropriate accommodations for {budget_category} budget
-4. Include meal recommendations (breakfast, lunch, dinner)
-5. Add estimated costs in KSh for major activities
-6. Consider travel time between destinations
-7. Make it family-friendly if children are present
-8. Align activities with stated interests
-9. Include practical tips and local insights
-10. Keep total costs within budget
-
-FORMAT YOUR RESPONSE AS:
+FORMAT (be concise):
 Day 1: [Location]
-Morning (8:00 AM - 12:00 PM):
-- Activity 1 (Cost: KSh X)
-- Activity 2
+Morning: [Activity] (KSh X)
+Afternoon: [Activity] (KSh X)
+Evening: [Activity]
+Stay: [Hotel] (KSh X/night)
 
-Afternoon (12:00 PM - 6:00 PM):
-- Lunch at [Restaurant]
-- Activity 3 (Cost: KSh X)
+[Repeat for {duration} days]
 
-Evening (6:00 PM - 10:00 PM):
-- Dinner at [Restaurant]
-- Activity 4
-
-Accommodation: [Hotel Name] (KSh X per night)
-
-[Repeat for each day]
-
-BUDGET BREAKDOWN:
-- Accommodation: KSh X
-- Activities: KSh X
-- Meals: KSh X
-- Transport: KSh X
+Budget Summary:
+Accommodation: KSh X
+Activities: KSh X
+Meals: KSh X
+Transport: KSh X
 Total: KSh X
 
-TRAVEL TIPS:
-- [Tip 1]
+Tips: [2-3 key tips]
 - [Tip 2]
 - [Tip 3]
 
@@ -572,8 +573,18 @@ class ItineraryGeneratorFactory:
         Returns:
             Dict[str, Any]: Generated itinerary
         """
+        # Check if AI generation is enabled
+        from django.conf import settings
+        use_ai = getattr(settings, 'ENABLE_AI_GENERATION', True)
+        
+        if not use_ai:
+            logger.info("AI generation disabled, using template generator")
+            generator = TemplateItineraryGenerator()
+            return generator.generate(preferences)
+        
         try:
             # Try AI generation first
+            logger.info("Attempting AI generation with Gemini")
             generator = GeminiItineraryGenerator()
             return generator.generate(preferences)
             

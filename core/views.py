@@ -1287,8 +1287,16 @@ def generate_itinerary_api(request: HttpRequest) -> JsonResponse:
             'interests': wizard_service.get_interests_data().get('interests', []),
         }
         
+        # Log generation start
+        logger.info(f"Starting itinerary generation for {len(preferences['destinations'])} destinations, {preferences['duration_days']} days")
+        
         # Generate itinerary with AI (automatic fallback to template)
-        itinerary_data = ItineraryGeneratorFactory.generate_with_fallback(preferences)
+        try:
+            itinerary_data = ItineraryGeneratorFactory.generate_with_fallback(preferences)
+            logger.info(f"Itinerary generated successfully using {itinerary_data.get('generated_by', 'unknown')}")
+        except Exception as gen_error:
+            logger.error(f"Generation error: {str(gen_error)}")
+            raise
         
         # Save to database
         itinerary = Itinerary.objects.create(

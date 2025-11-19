@@ -10,6 +10,10 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'temporary-secret-key-change-in-production')
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '.onrender.com,localhost').split(',')
 
+# AI Generation Settings
+# Set to False to use template generator (faster, no API calls)
+ENABLE_AI_GENERATION = os.environ.get('ENABLE_AI_GENERATION', 'True') == 'True'
+
 # CSRF Settings for production
 CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
