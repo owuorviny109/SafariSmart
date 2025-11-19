@@ -16,6 +16,85 @@
         font-family: 'Poppins', sans-serif;
     }
     
+    /* How It Works Section with Background */
+    .how-it-works-section {
+        position: relative;
+        padding: 5rem 0;
+        overflow: hidden;
+        background: url('https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1920') center/cover;
+        background-attachment: fixed;
+    }
+    
+    .how-it-works-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+    
+    .how-it-works-section .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .step-card {
+        position: relative;
+        overflow: visible;
+    }
+    
+    .step-number {
+        position: absolute;
+        top: -15px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #10B981, #064E3B);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+    
+    /* CTA Section with Background */
+    .cta-section {
+        position: relative;
+        padding: 6rem 0;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(6, 78, 59, 0.4)),
+                    url('https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=1920') center/cover;
+        background-attachment: fixed;
+    }
+    
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.65);
+        z-index: 1;
+    }
+    
+    .cta-section .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .cta-section h2,
+    .cta-section p,
+    .cta-section .h2 {
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    
     /* Full Background Hero with Text Overlay */
     .hero-immersive {
         position: relative;
@@ -340,70 +419,70 @@
         </div>
     </div>
 </section>
+
+<!-- How It Works - Modern Section with Background -->
+<section class="how-it-works-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title text-white">How It Works</h2>
+            <p class="section-subtitle text-white" style="opacity: 0.95;">
+                Three simple steps to your perfect Kenya adventure
+            </p>
+        </div>
         
-        <!-- Quick Trip Input -->
-        <div class="card mx-auto mb-4" style="max-width: 700px; background: rgba(255,255,255,0.95);">
-            <div class="card-body p-4">
-                <h5 class="text-success mb-3">
-                    <i class="bi bi-lightning-charge-fill"></i> Quick Trip Planner
-                </h5>
-                <form method="post" action="{% url 'core:quick_trip' %}" id="quickTripForm">
+        <!-- Three Swaying Step Cards -->
+        <div class="swaying-cards-container mb-5">
+            <!-- Step 1 -->
+            <div class="feature-card step-card sway-1">
+                <div class="step-number">1</div>
+                <div class="icon-box"><i class="bi bi-geo-alt-fill"></i></div>
+                <h3>Choose Destinations</h3>
+                <p>Select from 20 amazing Kenya locations including safaris, beaches, and cultural sites.</p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="feature-card step-card sway-2">
+                <div class="step-number">2</div>
+                <div class="icon-box"><i class="bi bi-sliders"></i></div>
+                <h3>Set Preferences</h3>
+                <p>Tell us your budget, dates, and interests. We'll tailor everything to your needs.</p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="feature-card step-card sway-3">
+                <div class="step-number">3</div>
+                <div class="icon-box"><i class="bi bi-calendar-check-fill"></i></div>
+                <h3>Get Your Itinerary</h3>
+                <p>AI creates your perfect day-by-day plan with activities, costs, and recommendations.</p>
+            </div>
+        </div>
+        
+        <!-- Quick Trip Planner Input -->
+        <div class="planner-container" data-aos="fade-up">
+            <div class="input-wrapper">
+                <div class="input-icon">💬</div>
+                <form method="post" action="{% url 'core:quick_trip' %}" id="quickTripForm" style="display: flex; flex-grow: 1; align-items: center; gap: 0.5rem;">
                     {% csrf_token %}
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-text bg-white">
-                            <i class="bi bi-chat-dots text-success"></i>
-                        </span>
-                        <input type="text" 
-                               class="form-control" 
-                               name="trip_description"
-                               id="quickTripInput"
-                               placeholder="Include: days, destination, budget (e.g., 3 days to Maasai Mara with 50000)"
-                               minlength="15"
-                               maxlength="200"
-                               required>
-                        <button class="btn btn-success px-4" type="submit" id="quickTripBtn">
-                            <i class="bi bi-magic"></i> Generate
-                        </button>
-                    </div>
-                    <small class="text-muted d-block mt-2">
-                        <i class="bi bi-info-circle"></i> <strong>Required:</strong> Number of days + Destination + Budget amount
-                        <br>
-                        <i class="bi bi-check-circle text-success"></i> Good: "2 days trip to Kakamega with 20000 budget"
-                        <br>
-                        <i class="bi bi-x-circle text-danger"></i> Bad: "I want to travel" (missing details)
-                    </small>
+                    <input type="text" 
+                           name="trip_description"
+                           id="quickTripInput"
+                           placeholder="Include: days, destination, budget (e.g., 3 days Diani 50k)"
+                           minlength="15"
+                           maxlength="200"
+                           required>
+                    <button class="btn-generate" type="submit" id="quickTripBtn">
+                        ✨ Generate
+                    </button>
                 </form>
             </div>
-        </div>
-        
-        <div class="text-center">
-            <p class="text-white mb-2">Or use the detailed wizard</p>
-            <a href="{% url 'core:destination_selection' %}" class="btn btn-outline-light btn-lg px-5">
-                <i class="bi bi-list-check"></i> Step-by-Step Planner
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- How It Works -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center mb-5">How It Works</h2>
-        <div class="row g-4">
-            <div class="col-md-4 text-center">
-                <div class="display-4 text-success mb-3"><i class="bi bi-1-circle"></i></div>
-                <h4>Choose Destinations</h4>
-                <p class="text-muted">Select from 20 amazing Kenya locations</p>
+            <div class="helper-text">
+                <span><i class="bi bi-info-circle"></i> Required: Days + Destination + Budget</span>
             </div>
-            <div class="col-md-4 text-center">
-                <div class="display-4 text-success mb-3"><i class="bi bi-2-circle"></i></div>
-                <h4>Set Preferences</h4>
-                <p class="text-muted">Tell us your budget, dates, and interests</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <div class="display-4 text-success mb-3"><i class="bi bi-3-circle"></i></div>
-                <h4>Get Your Itinerary</h4>
-                <p class="text-muted">AI creates your perfect day-by-day plan</p>
+            <div class="text-center mt-3">
+                <a href="{% url 'core:destination_selection' %}" class="btn-modern btn-secondary-modern">
+                    <i class="bi bi-list-check"></i>
+                    <span>Or Use Step-by-Step Planner</span>
+                </a>
             </div>
         </div>
     </div>
@@ -497,14 +576,8 @@
 </section>
 {% endif %}
 
-<!-- CTA Immersive -->
-<section class="position-relative overflow-hidden" style="background: linear-gradient(135deg, var(--kenya-green) 0%, var(--kenya-green-dark) 100%); padding: 100px 0;">
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="opacity: 0.1;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-            <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,101.3C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
-    </div>
-    
+<!-- CTA Immersive with Background -->
+<section class="cta-section">
     <div class="container position-relative" style="z-index: 2;">
         <div class="row align-items-center">
             <div class="col-lg-8 mx-auto text-center text-white" data-aos="zoom-in">
@@ -513,8 +586,8 @@
                         <i class="bi bi-rocket-takeoff"></i> Start Your Adventure
                     </span>
                 </div>
-                <h2 class="display-4 fw-bold mb-4">Ready to Explore Kenya?</h2>
-                <p class="lead mb-5" style="font-size: 1.25rem; opacity: 0.95;">
+                <h2 class="display-4 fw-bold mb-4" style="color: #ffffff;">Ready to Explore Kenya?</h2>
+                <p class="lead mb-5" style="font-size: 1.25rem; color: #ffffff;">
                     Join thousands of travelers who've discovered their perfect Kenya adventure with SafariSmart.
                     Let AI create your personalized itinerary in minutes.
                 </p>
@@ -530,18 +603,18 @@
                 </div>
                 
                 <!-- Trust Indicators -->
-                <div class="mt-5 d-flex justify-content-center gap-5 flex-wrap" style="opacity: 0.9;">
+                <div class="mt-5 d-flex justify-content-center gap-5 flex-wrap">
                     <div class="text-center">
-                        <div class="h2 fw-bold mb-0">1,000+</div>
-                        <div class="small">Itineraries Created</div>
+                        <div class="h2 fw-bold mb-0" style="color: #ffffff;">1,000+</div>
+                        <div class="small" style="color: #ffffff;">Itineraries Created</div>
                     </div>
                     <div class="text-center">
-                        <div class="h2 fw-bold mb-0">6</div>
-                        <div class="small">Top Destinations</div>
+                        <div class="h2 fw-bold mb-0" style="color: #ffffff;">6</div>
+                        <div class="small" style="color: #ffffff;">Top Destinations</div>
                     </div>
                     <div class="text-center">
-                        <div class="h2 fw-bold mb-0">4.8★</div>
-                        <div class="small">User Rating</div>
+                        <div class="h2 fw-bold mb-0" style="color: #ffffff;">4.8★</div>
+                        <div class="small" style="color: #ffffff;">User Rating</div>
                     </div>
                 </div>
             </div>
