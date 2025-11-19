@@ -503,36 +503,51 @@ class TravelGroupSelectionView(View):
         Returns:
             HttpResponse: Redirect to step 4 or error response
         """
-        wizard_service = WizardService(request.session)
+        logger = logging.getLogger(__name__)
         
-        # Get data from POST
-        adults_str = request.POST.get('adults_count', '2')
-        children_str = request.POST.get('children_count', '0')
-        travel_type = request.POST.get('travel_type', '')
-        
-        # Convert to integers
         try:
-            adults_count = int(adults_str)
-            children_count = int(children_str)
-        except (ValueError, TypeError):
-            return self._render_error(
-                request,
-                wizard_service,
-                "Invalid number of travelers"
-            )
+            wizard_service = WizardService(request.session)
             
-        # Validate and save using service
-        try:
-            wizard_service.save_travel_group(
-                adults_count,
-                children_count,
-                travel_type
-            )
-        except ValueError as e:
-            return self._render_error(request, wizard_service, str(e))
+            # Get data from POST
+            adults_str = request.POST.get('adults_count', '2')
+            children_str = request.POST.get('children_count', '0')
+            travel_type = request.POST.get('travel_type', '')
             
-        # Redirect to budget selection
-        return redirect('core:budget_selection')
+            logger.info(f"Travel group POST: adults={adults_str}, children={children_str}, type={travel_type}")
+            
+            # Convert to integers
+            try:
+                adults_count = int(adults_str)
+                children_count = int(children_str)
+            except (ValueError, TypeError) as e:
+                logger.error(f"Invalid traveler count: {e}")
+                return self._render_error(
+                    request,
+                    wizard_service,
+                    "Invalid number of travelers"
+                )
+                
+            # Validate and save using service
+            try:
+                wizard_service.save_travel_group(
+                    adults_count,
+                    children_count,
+                    travel_type
+                )
+                logger.info("Travel group data saved successfully")
+            except ValueError as e:
+                logger.error(f"Validation error: {e}")
+                return self._render_error(request, wizard_service, str(e))
+                
+            # Redirect to budget selection
+            return redirect('core:budget_selection')
+            
+        except Exception as e:
+            logger.exception(f"Unexpected error in travel group POST: {e}")
+            return JsonResponse({
+                'error': 'An unexpected error occurred. Please try again.',
+                'details': str(e) if settings.DEBUG else None
+            }, status=500)
         
     def _render_error(
         self,
