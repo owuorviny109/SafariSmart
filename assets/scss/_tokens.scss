@@ -56,6 +56,10 @@ $tk-text-secondary: $tk-gray-700; // 4.5:1 on white
 $tk-text-tertiary: $tk-gray-500;  // 4.5:1 on white
 $tk-text-inverse: $tk-surface;    // On dark backgrounds
 
+// RGB Values for rgba() functions
+$tk-primary-rgb: 11, 90, 90;        // #0B5A5A
+$tk-primary-dark-rgb: 8, 69, 69;    // #084545
+
 // ============================================
 // SPACING SYSTEM (8px base)
 // ============================================

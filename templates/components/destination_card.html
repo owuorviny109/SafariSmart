@@ -1,0 +1,91 @@
+{% load static %}
+{# 
+  Destination Card Component
+  
+  Usage:
+    {% include 'components/destination_card.html' with destination=destination %}
+  
+  Required context:
+    - destination: Destination model instance
+  
+  Optional context:
+    - show_weather: Boolean to show weather info (default: False)
+    - truncate_words: Number of words to truncate description (default: 12)
+#}
+
+<a href="{% url 'destinations:detail' destination.slug %}" class="tk-destination-card">
+  <div class="tk-destination-card__image">
+    {% if destination.image %}
+      <img src="{{ destination.image.url }}" alt="{{ destination.name }}">
+    {% elif destination.image_url %}
+      <img src="{{ destination.image_url }}" alt="{{ destination.name }}">
+    {% else %}
+      <!-- Fallback to static images -->
+      <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
+           alt="{{ destination.name }}"
+           onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'tk-destination-card__fallback\'><i class=\'bi bi-image\'></i></div>';">
+    {% endif %}
+    
+    <!-- Type Badge - Always Visible -->
+    <div class="tk-destination-card__badge">
+      <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% elif destination.destination_type == 'mountain' %}mountain{% else %}geo-alt{% endif %}"></i>
+      {{ destination.get_destination_type_display }}
+    </div>
+    
+    <!-- Hover Overlay - Shows on Hover -->
+    <div class="tk-destination-card__overlay">
+      <div class="tk-destination-card__content">
+        <h3 class="tk-destination-card__title">{{ destination.name }}</h3>
+        <p class="tk-destination-card__location">
+          <i class="bi bi-geo-alt"></i> {{ destination.county }}
+        </p>
+        <p class="tk-destination-card__description">
+          {% if truncate_words %}
+            {{ destination.description|truncatewords:truncate_words }}
+          {% else %}
+            {{ destination.description|truncatewords:12 }}
+          {% endif %}
+        </p>
+        
+        <div class="tk-destination-card__meta">
+          <div class="tk-destination-card__price">
+            <i class="bi bi-cash-coin"></i>
+            <span>KSh {{ destination.average_cost_per_day|floatformat:0 }}/day</span>
+          </div>
+          
+          {% if show_weather and weather_data %}
+            {% for dest_name, weather in weather_data.items %}
+              {% if dest_name == destination.name %}
+                <div class="tk-destination-card__weather">
+                  <img src="https://openweathermap.org/img/wn/{{ weather.icon }}.png" 
+                       alt="{{ weather.description }}" style="width: 24px; height: 24px;">
+                  <span>{{ weather.temperature }}°C</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <div class="tk-destination-card__rating">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-half"></i>
+            </div>
+          {% endif %}
+        </div>
+        
+        {% if destination.best_time_to_visit %}
+        <div class="tk-destination-card__timing">
+          <i class="bi bi-calendar-check"></i>
+          <span>Best: {{ destination.best_time_to_visit }}</span>
+        </div>
+        {% endif %}
+        
+        <div class="tk-destination-card__cta">
+          <span>Explore</span>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

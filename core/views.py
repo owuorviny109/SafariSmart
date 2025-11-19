@@ -45,8 +45,38 @@ def landing_page(request: HttpRequest) -> HttpResponse:
         HttpResponse: Rendered landing page
     """
     featured_destinations = Destination.objects.filter(is_featured=True)[:6]
+    
+    # FAQ data - Magical Kenya style
+    faq_list = [
+        {
+            'question': 'How much does a Kenya safari cost?',
+            'answer': 'A Kenya safari typically costs between KSh 10,000 to 500,000 depending on duration, destinations, and accommodation level. Budget safaris start at KSh 15,000/day, mid-range at KSh 30,000/day, and luxury safaris from KSh 80,000/day. Our AI planner helps you create the perfect itinerary within your budget.'
+        },
+        {
+            'question': 'What is the best time to visit Kenya for safari?',
+            'answer': 'The best time for Kenya safari is during the dry seasons: July to October (Great Migration in Maasai Mara) and January to February. These months offer excellent wildlife viewing, clear weather, and easier game drives. Our platform provides real-time weather forecasts for all destinations.'
+        },
+        {
+            'question': 'How many days do I need for a Kenya safari?',
+            'answer': 'We recommend 5-7 days for a comprehensive Kenya safari experience. This allows you to visit 2-3 major parks like Maasai Mara and Amboseli. For beach combinations, plan 7-10 days. Our AI planner optimizes your itinerary based on your available time and interests.'
+        },
+        {
+            'question': 'Can I combine safari and beach in one Kenya trip?',
+            'answer': 'Absolutely! Kenya offers the perfect safari-beach combination. Spend 4-5 days on safari in Maasai Mara or Amboseli, then relax 3-4 days on Diani Beach or Watamu. Our AI planner creates seamless itineraries combining wildlife adventures with coastal relaxation, including optimal routes and timing.'
+        },
+        {
+            'question': 'Is Kenya safe for tourists?',
+            'answer': 'Yes, Kenya is generally safe for tourists, especially in major tourist areas like Maasai Mara, Amboseli, Diani Beach, and Nairobi\'s tourist zones. Follow standard travel precautions, use reputable tour operators, and stay in recommended accommodations. Our platform provides safety tips and trusted recommendations for each destination.'
+        },
+        {
+            'question': 'Do I need a visa to visit Kenya?',
+            'answer': 'Most visitors need an eVisa for Kenya, which costs $50 USD and can be obtained online at evisa.go.ke. Citizens of some African countries can enter visa-free. The eVisa is valid for 90 days. Apply at least 7 days before travel. Check current requirements based on your nationality.'
+        }
+    ]
+    
     return render(request, 'core/landing.html', {
-        'featured_destinations': featured_destinations
+        'featured_destinations': featured_destinations,
+        'faq_list': faq_list
     })
 
 

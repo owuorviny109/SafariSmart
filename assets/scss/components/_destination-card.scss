@@ -1,0 +1,280 @@
+/**
+ * Destination Card Component
+ * BEM: tk-destination-card
+ * Reusable card component for destination listings
+ */
+
+.tk-destination-card {
+  // Base styles
+  position: relative;
+  border-radius: $tk-radius-2xl;
+  overflow: hidden;
+  box-shadow: $tk-shadow-md;
+  transition: all $tk-duration-slow $tk-ease-standard;
+  height: 320px;
+  background: $tk-surface;
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  // Hover state
+  &:hover {
+    transform: translateY(-12px);
+    box-shadow: $tk-shadow-2xl;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  // ============================================
+  // ELEMENTS
+  // ============================================
+
+  // Image container
+  &__image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform $tk-duration-slow $tk-ease-standard;
+    }
+  }
+
+  &:hover &__image img {
+    transform: scale(1.08);
+  }
+
+  // Fallback for missing images
+  &__fallback {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, $tk-primary, $tk-primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+    opacity: 0.8;
+  }
+
+  // Type badge (always visible)
+  &__badge {
+    position: absolute;
+    top: $tk-space-lg;
+    left: $tk-space-lg;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    padding: $tk-space-xs $tk-space-md;
+    border-radius: $tk-radius-full;
+    font-size: $tk-text-xs;
+    font-weight: $tk-weight-bold;
+    color: $tk-primary-dark;
+    z-index: 3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: $tk-shadow-sm;
+  }
+
+  // Hover overlay (hidden by default)
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      rgba(11, 90, 90, 0.92), 
+      rgba(8, 69, 69, 0.95)
+    );
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+    transition: all $tk-duration-slow $tk-ease-standard;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $tk-space-2xl;
+    z-index: 2;
+    backdrop-filter: blur(8px);
+  }
+
+  &:hover &__overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // Overlay content
+  &__content {
+    text-align: center;
+    width: 100%;
+    transform: translateY(20px);
+    transition: transform $tk-duration-slow $tk-ease-standard;
+  }
+
+  &:hover &__content {
+    transform: translateY(0);
+  }
+
+  // Title
+  &__title {
+    font-size: $tk-text-xl;
+    font-weight: $tk-weight-black;
+    margin-bottom: $tk-space-sm;
+    color: white;
+    line-height: 1.2;
+  }
+
+  // Location
+  &__location {
+    font-size: $tk-text-base;
+    opacity: 0.9;
+    margin-bottom: $tk-space-lg;
+    font-weight: $tk-weight-medium;
+  }
+
+  // Description
+  &__description {
+    font-size: $tk-text-sm;
+    line-height: 1.6;
+    margin-bottom: $tk-space-xl;
+    opacity: 0.95;
+    max-height: 3.2em;
+    overflow: hidden;
+  }
+
+  // Meta information
+  &__meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: $tk-space-2xl;
+    margin-bottom: $tk-space-xl;
+    flex-wrap: wrap;
+
+    @include tk-respond-below($tk-breakpoint-sm) {
+      gap: $tk-space-lg;
+    }
+  }
+
+  // Price
+  &__price {
+    display: flex;
+    align-items: center;
+    gap: $tk-space-sm;
+    font-weight: $tk-weight-bold;
+    font-size: $tk-text-base;
+    background: rgba(255, 255, 255, 0.15);
+    padding: $tk-space-sm $tk-space-md;
+    border-radius: $tk-radius-lg;
+    backdrop-filter: blur(10px);
+  }
+
+  // Rating
+  &__rating {
+    color: #FFD700;
+    font-size: $tk-text-sm;
+    background: rgba(255, 255, 255, 0.15);
+    padding: $tk-space-sm $tk-space-md;
+    border-radius: $tk-radius-lg;
+    backdrop-filter: blur(10px);
+  }
+
+  // Timing info
+  &__timing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $tk-space-sm;
+    font-size: $tk-text-sm;
+    opacity: 0.9;
+    margin-bottom: $tk-space-xl;
+    font-weight: $tk-weight-medium;
+  }
+
+  // Call to action button
+  &__cta {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    padding: $tk-space-md $tk-space-2xl;
+    border-radius: $tk-radius-full;
+    font-weight: $tk-weight-bold;
+    display: inline-flex;
+    align-items: center;
+    gap: $tk-space-sm;
+    transition: all $tk-duration-medium $tk-ease-standard;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: $tk-text-xs;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  // ============================================
+  // RESPONSIVE
+  // ============================================
+  
+  @include tk-respond-below($tk-breakpoint-md) {
+    height: 280px;
+    
+    &__overlay {
+      padding: $tk-space-xl;
+    }
+    
+    &__title {
+      font-size: $tk-text-lg;
+    }
+    
+    &__meta {
+      gap: $tk-space-md;
+    }
+    
+    &__price,
+    &__rating {
+      font-size: $tk-text-xs;
+      padding: $tk-space-xs $tk-space-sm;
+    }
+  }
+
+  @include tk-respond-below($tk-breakpoint-sm) {
+    height: 260px;
+    
+    &__meta {
+      flex-direction: column;
+      gap: $tk-space-sm;
+    }
+  }
+}
+
+// ============================================
+// GRID LAYOUT
+// ============================================
+.tk-destination-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $tk-space-lg;
+  
+  // Ensure exactly 3 columns on desktop
+  @include tk-respond-above($tk-breakpoint-lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  // 2 columns on tablet
+  @include tk-respond-between($tk-breakpoint-md, $tk-breakpoint-lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  // 1 column on mobile
+  @include tk-respond-below($tk-breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+}

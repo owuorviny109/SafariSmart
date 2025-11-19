@@ -16,98 +16,241 @@
         font-family: 'Poppins', sans-serif;
     }
     
-    /* How It Works Section with Background */
-    .how-it-works-section {
+    /* How It Works - Magical Kenya Style with Giraffe Background */
+    .tk-how-it-works-section {
         position: relative;
-        padding: 5rem 0;
         overflow: hidden;
-        background: url('https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1920') center/cover;
-        background-attachment: fixed;
     }
     
-    .how-it-works-section::before {
-        content: '';
+    .tk-safari-background {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1920') center/cover;
+        background-attachment: fixed;
         z-index: 1;
     }
     
-    .how-it-works-section .container {
+    .tk-safari-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .tk-orange-section {
         position: relative;
         z-index: 2;
+        background: linear-gradient(135deg, 
+            rgba(255, 248, 231, 0.98) 0%, 
+            rgba(254, 243, 199, 0.98) 50%,
+            rgba(253, 230, 138, 0.95) 100%
+        );
+        padding: 80px 0;
+        backdrop-filter: blur(8px);
+        box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1);
     }
     
-    .step-card {
-        position: relative;
-        overflow: visible;
+    .tk-section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: #1F2937 !important;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }
     
-    /* 3D Flip Cards for Steps */
-    .flip-card-steps {
-        background-color: transparent;
-        width: 100%;
-        height: 280px;
-        perspective: 1000px;
+    .tk-section-subtitle {
+        font-size: 1.25rem;
+        opacity: 1;
+        margin-bottom: 3rem;
+        color: #1F2937 !important;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
     }
     
-    .flip-card-inner-steps {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        transition: transform 0.8s ease-in-out;
-        transform-style: preserve-3d;
+    .tk-steps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
-    .flip-card-steps:hover .flip-card-inner-steps {
-        transform: rotateY(180deg);
-    }
-    
-    .flip-card-front-steps, .flip-card-back-steps {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
+    .tk-step-card {
+        background: rgba(255, 255, 255, 0.95);
         border-radius: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 1.5rem;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        padding: 2.5rem 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        animation: tk-sway 6s ease-in-out infinite;
     }
     
-    .flip-card-front-steps {
-        background: white;
-        color: #1F2937;
+    .tk-step-card:nth-child(1) {
+        animation-delay: 0s;
     }
     
-    .flip-card-back-steps {
-        background: linear-gradient(135deg, #10B981, #064E3B);
-        color: white;
-        transform: rotateY(180deg);
+    .tk-step-card:nth-child(2) {
+        animation-delay: 2s;
     }
     
-    .step-number-flip {
+    .tk-step-card:nth-child(3) {
+        animation-delay: 4s;
+    }
+    
+    .tk-step-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        animation-play-state: paused;
+    }
+    
+    /* Swaying Animation */
+    @keyframes tk-sway {
+        0%, 100% {
+            transform: translateX(0) rotate(0deg);
+        }
+        25% {
+            transform: translateX(-8px) rotate(-1deg);
+        }
+        50% {
+            transform: translateX(0) rotate(0deg);
+        }
+        75% {
+            transform: translateX(8px) rotate(1deg);
+        }
+    }
+    
+    .tk-step-number {
         position: absolute;
-        top: -15px;
+        top: -20px;
         right: 20px;
         width: 50px;
         height: 50px;
-        background: linear-gradient(135deg, #10B981, #064E3B);
+        background: linear-gradient(135deg, #E07A2B, #C66820);
         color: white;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
+        font-weight: 800;
+        box-shadow: 0 5px 15px rgba(224, 122, 43, 0.4);
+    }
+    
+    .tk-step-icon {
+        font-size: 3rem;
+        color: #E07A2B;
+        margin-bottom: 1.5rem;
+    }
+    
+    .tk-step-title {
+        font-size: 1.5rem;
         font-weight: 700;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        color: #2F5D3A !important;
+        margin-bottom: 1rem;
+    }
+    
+    .tk-step-description {
+        color: #374151 !important;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+    
+    .tk-planner-container {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .tk-input-wrapper {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 50px;
+        padding: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .tk-input-icon {
+        font-size: 1.5rem;
+        padding: 0 1rem;
+    }
+    
+    .tk-planner-form {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .tk-planner-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 1rem;
+        font-size: 1rem;
+        background: transparent;
+        color: #374151 !important;
+    }
+    
+    .tk-planner-input::placeholder {
+        color: #9CA3AF !important;
+    }
+    
+    .tk-btn-generate {
+        background: linear-gradient(135deg, #E07A2B, #C66820);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 40px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+    
+    .tk-btn-generate:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(230, 122, 43, 0.4);
+    }
+    
+    .tk-helper-text {
+        color: #374151 !important;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        opacity: 1;
+    }
+    
+    .tk-btn-secondary {
+        background: rgba(224, 122, 43, 0.15);
+        color: #E07A2B !important;
+        text-decoration: none;
+        padding: 1rem 2rem;
+        border-radius: 40px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(224, 122, 43, 0.3);
+    }
+    
+    .tk-btn-secondary:hover {
+        background: #E07A2B;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(224, 122, 43, 0.4);
     }
     
     /* CTA Section with Background */
@@ -140,6 +283,207 @@
     .cta-section p,
     .cta-section .h2 {
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Destination Hover Cards - Clean & Minimal */
+    .destination-hover-card {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        height: 320px;
+        background: #fff;
+        cursor: pointer;
+    }
+    
+    .destination-hover-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    
+    .destination-image-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .destination-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .destination-hover-card:hover .destination-image {
+        transform: scale(1.08);
+    }
+    
+    .destination-fallback {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #10B981, #064E3B);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+        opacity: 0.8;
+    }
+    
+    /* Type Badge - Always Visible */
+    .destination-type-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #064E3B;
+        z-index: 3;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Hover Overlay - Hidden by Default */
+    .destination-hover-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, 
+            rgba(255, 248, 231, 0.98) 0%, 
+            rgba(254, 243, 199, 0.98) 50%,
+            rgba(253, 230, 138, 0.95) 100%
+        );
+        color: #2F5D3A;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        z-index: 2;
+        backdrop-filter: blur(8px);
+        box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1);
+    }
+    
+    .destination-hover-card:hover .destination-hover-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .destination-info {
+        text-align: center;
+        width: 100%;
+        transform: translateY(20px);
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .destination-hover-card:hover .destination-info {
+        transform: translateY(0);
+    }
+    
+    .destination-title {
+        font-size: 1.75rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: #2F5D3A;
+        line-height: 1.2;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+    
+    .destination-location {
+        font-size: 1rem;
+        opacity: 0.8;
+        margin-bottom: 1.25rem;
+        font-weight: 500;
+        color: #374151;
+    }
+    
+    .destination-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+        max-height: 3.2em;
+        overflow: hidden;
+        color: #374151;
+    }
+    
+    .destination-meta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .destination-price {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 700;
+        font-size: 1rem;
+        background: rgba(47, 93, 58, 0.15);
+        color: #2F5D3A;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(47, 93, 58, 0.2);
+    }
+    
+    .destination-rating {
+        color: #E07A2B;
+        font-size: 0.9rem;
+        background: rgba(224, 122, 43, 0.15);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(224, 122, 43, 0.2);
+    }
+    
+    .destination-timing {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        opacity: 0.9;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+    
+    .destination-cta {
+        background: linear-gradient(135deg, #E07A2B, #C66820);
+        color: white;
+        backdrop-filter: blur(12px);
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(224, 122, 43, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.85rem;
+        box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
+    }
+    
+    .destination-cta:hover {
+        background: linear-gradient(135deg, #F09850, #E07A2B);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(224, 122, 43, 0.4);
     }
     
     /* Full Background Hero with Text Overlay */
@@ -301,7 +645,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--kenya-green), var(--sunset-orange));
+        background: linear-gradient(90deg, #E07A2B, #F09850) !important;
         transform: scaleX(0);
         transform-origin: left;
         transition: transform var(--transition-base);
@@ -310,7 +654,7 @@
     .value-orb:hover {
         transform: translateY(-8px);
         box-shadow: var(--shadow-2xl);
-        border-color: var(--kenya-green);
+        border-color: #E07A2B !important;
     }
     
     .value-orb:hover::before {
@@ -320,7 +664,7 @@
     .value-icon-wrapper {
         width: 64px;
         height: 64px;
-        background: linear-gradient(135deg, var(--kenya-green), var(--kenya-green-light));
+        background: linear-gradient(135deg, #E07A2B, #C66820) !important;
         border-radius: var(--radius-xl);
         display: flex;
         align-items: center;
@@ -333,7 +677,7 @@
         content: '';
         position: absolute;
         inset: -4px;
-        background: linear-gradient(135deg, var(--kenya-green), var(--sunset-orange));
+        background: linear-gradient(135deg, #E07A2B, #F09850) !important;
         border-radius: var(--radius-xl);
         z-index: -1;
         opacity: 0;
@@ -381,6 +725,132 @@
             width: 100%;
             max-width: 300px;
         }
+    }
+    
+    /* Why Choose SafariSmart - Sliding Marquee */
+    .tk-marquee-section {
+        background: #F3F4F6;
+        padding: 4rem 0;
+        overflow: hidden;
+    }
+    
+    .tk-marquee-wrapper {
+        overflow: hidden;
+        position: relative;
+        margin-top: 3rem;
+    }
+    
+    .tk-marquee-track {
+        display: flex;
+        gap: 2rem;
+        animation: tk-slide-marquee 20s linear infinite;
+        width: calc(200% + 4rem); /* Double width for seamless loop */
+    }
+    
+    .tk-marquee-card {
+        flex: 0 0 350px;
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+
+    
+    .tk-card-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #E07A2B, #C66820);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        color: white;
+        box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
+    }
+    
+    .tk-card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1F2937;
+        margin-bottom: 1rem;
+    }
+    
+    .tk-card-description {
+        color: #6B7280;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+    
+    /* Marquee Animation */
+    @keyframes tk-slide-marquee {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+    
+    /* Pause animation on hover */
+    .tk-marquee-wrapper:hover .tk-marquee-track {
+        animation-play-state: paused;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .tk-marquee-card {
+            flex: 0 0 280px;
+            padding: 2rem 1.5rem;
+        }
+        
+        .tk-card-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        
+        .tk-card-title {
+            font-size: 1.25rem;
+        }
+        
+        .tk-card-description {
+            font-size: 0.9rem;
+        }
+    }
+    
+    /* Fix destination cards grid layout - 3 columns exactly */
+    .row.g-4 {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.5rem !important;
+    }
+    
+    @media (max-width: 992px) {
+        .row.g-4 {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .row.g-4 {
+            grid-template-columns: 1fr !important;
+        }
+    }
+    
+    /* Remove Bootstrap column behavior for grid */
+    .row.g-4 > div[class*="col-"] {
+        width: 100% !important;
+        max-width: none !important;
+        flex: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 </style>
 {% endblock %}
@@ -431,8 +901,8 @@
     </div>
 </section>
 
-<!-- Why Choose SafariSmart - Swaying Cards Section -->
-<section class="section-modern" style="background: #F3F4F6; padding: 4rem 0;">
+<!-- Why Choose SafariSmart - Sliding Marquee Section -->
+<section class="tk-marquee-section">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <h2 class="section-title">Why Choose SafariSmart</h2>
@@ -441,129 +911,151 @@
             </p>
         </div>
         
-        <!-- Three Swaying Cards -->
-        <div class="swaying-cards-container">
-            <!-- Card 1 -->
-            <div class="feature-card sway-1">
-                <div class="icon-box"><i class="bi bi-cpu-fill"></i></div>
-                <h3>Smart Planning</h3>
-                <p>Intelligent algorithms create your perfect itinerary, optimized for your preferences, budget, and travel style.</p>
-            </div>
-            
-            <!-- Card 2 (Featured) -->
-            <div class="feature-card featured sway-2">
-                <div class="icon-box"><i class="bi bi-geo-alt-fill"></i></div>
-                <h3>Top Kenya Destinations</h3>
-                <p>From iconic Maasai Mara to pristine Diani Beach, explore Kenya's diverse landscapes with expert local insights.</p>
-            </div>
-            
-            <!-- Card 3 -->
-            <div class="feature-card sway-3">
-                <div class="icon-box"><i class="bi bi-piggy-bank-fill"></i></div>
-                <h3>Budget Optimization</h3>
-                <p>Get the most value from every shilling with intelligent cost breakdowns and activity recommendations.</p>
+        <!-- Sliding Marquee Container -->
+        <div class="tk-marquee-wrapper">
+            <div class="tk-marquee-track">
+                <!-- Card 1 -->
+                <div class="tk-marquee-card">
+                    <div class="tk-card-icon">
+                        <i class="bi bi-cpu-fill"></i>
+                    </div>
+                    <h3 class="tk-card-title">Smart Planning</h3>
+                    <p class="tk-card-description">Intelligent algorithms create your perfect itinerary, optimized for your preferences, budget, and travel style.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="tk-marquee-card">
+                    <div class="tk-card-icon">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <h3 class="tk-card-title">Top Kenya Destinations</h3>
+                    <p class="tk-card-description">From iconic Maasai Mara to pristine Diani Beach, explore Kenya's diverse landscapes with expert local insights.</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="tk-marquee-card">
+                    <div class="tk-card-icon">
+                        <i class="bi bi-piggy-bank-fill"></i>
+                    </div>
+                    <h3 class="tk-card-title">Budget Optimization</h3>
+                    <p class="tk-card-description">Get the most value from every shilling with intelligent cost breakdowns and activity recommendations.</p>
+                </div>
+                
+                <!-- Duplicate cards for seamless loop -->
+                <div class="tk-marquee-card">
+                    <div class="tk-card-icon">
+                        <i class="bi bi-cpu-fill"></i>
+                    </div>
+                    <h3 class="tk-card-title">Smart Planning</h3>
+                    <p class="tk-card-description">Intelligent algorithms create your perfect itinerary, optimized for your preferences, budget, and travel style.</p>
+                </div>
+                
+                <div class="tk-marquee-card">
+                    <div class="tk-card-icon">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <h3 class="tk-card-title">Top Kenya Destinations</h3>
+                    <p class="tk-card-description">From iconic Maasai Mara to pristine Diani Beach, explore Kenya's diverse landscapes with expert local insights.</p>
+                </div>
+                
+                <div class="tk-marquee-card">
+                    <div class="tk-card-icon">
+                        <i class="bi bi-piggy-bank-fill"></i>
+                    </div>
+                    <h3 class="tk-card-title">Budget Optimization</h3>
+                    <p class="tk-card-description">Get the most value from every shilling with intelligent cost breakdowns and activity recommendations.</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- How It Works - Modern Section with Background -->
-<section class="how-it-works-section">
+<!-- How It Works - Magical Kenya Style with Safari Background -->
+<section class="tk-how-it-works-section">
+  <!-- Safari Background with Overlay -->
+  <div class="tk-safari-background">
+    <div class="tk-safari-overlay"></div>
+  </div>
+  
+  <!-- Orange Section - Like Magical Kenya -->
+  <div class="tk-orange-section">
     <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="section-title text-white">How It Works</h2>
-            <p class="section-subtitle text-white" style="opacity: 0.95;">
-                Three simple steps to your perfect Kenya adventure
-            </p>
+      <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="tk-section-title">How It Works</h2>
+        <p class="tk-section-subtitle">
+          Three simple steps to your perfect Kenya adventure
+        </p>
+      </div>
+      
+      <!-- Three Step Cards -->
+      <div class="tk-steps-grid">
+        <!-- Step 1 -->
+        <div class="tk-step-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="tk-step-number">1</div>
+          <div class="tk-step-icon">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+          <h3 class="tk-step-title">Choose Destinations</h3>
+          <p class="tk-step-description">Select from 20 amazing Kenya locations including safaris, beaches, and cultural sites.</p>
         </div>
         
-        <!-- Three 3D Flip Step Cards -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto 3rem; padding: 0 1rem;">
-            
-            <!-- Step 1 -->
-            <div class="flip-card-steps">
-                <div class="flip-card-inner-steps">
-                    <div class="flip-card-front-steps">
-                        <div class="step-number-flip">1</div>
-                        <i class="bi bi-geo-alt-fill" style="font-size: 3rem; color: #10B981; margin-bottom: 1rem;"></i>
-                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #1F2937;">Choose Destinations</h3>
-                    </div>
-                    <div class="flip-card-back-steps">
-                        <div class="step-number-flip">1</div>
-                        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600;">Choose Destinations</h3>
-                        <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">Select from 20 amazing Kenya locations including safaris, beaches, and cultural sites.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Step 2 -->
-            <div class="flip-card-steps">
-                <div class="flip-card-inner-steps">
-                    <div class="flip-card-front-steps">
-                        <div class="step-number-flip">2</div>
-                        <i class="bi bi-sliders" style="font-size: 3rem; color: #10B981; margin-bottom: 1rem;"></i>
-                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #1F2937;">Set Preferences</h3>
-                    </div>
-                    <div class="flip-card-back-steps">
-                        <div class="step-number-flip">2</div>
-                        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600;">Set Preferences</h3>
-                        <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">Tell us your budget, dates, and interests. We'll tailor everything to your needs.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Step 3 -->
-            <div class="flip-card-steps">
-                <div class="flip-card-inner-steps">
-                    <div class="flip-card-front-steps">
-                        <div class="step-number-flip">3</div>
-                        <i class="bi bi-calendar-check-fill" style="font-size: 3rem; color: #10B981; margin-bottom: 1rem;"></i>
-                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #1F2937;">Get Your Itinerary</h3>
-                    </div>
-                    <div class="flip-card-back-steps">
-                        <div class="step-number-flip">3</div>
-                        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600;">Get Your Itinerary</h3>
-                        <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">AI creates your perfect day-by-day plan with activities, costs, and recommendations.</p>
-                    </div>
-                </div>
-            </div>
-            
+        <!-- Step 2 -->
+        <div class="tk-step-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="tk-step-number">2</div>
+          <div class="tk-step-icon">
+            <i class="bi bi-sliders"></i>
+          </div>
+          <h3 class="tk-step-title">Set Preferences</h3>
+          <p class="tk-step-description">Tell us your budget, dates, and interests. We'll tailor everything to your needs.</p>
         </div>
         
-        <!-- Quick Trip Planner Input -->
-        <div class="planner-container" data-aos="fade-up">
-            <div class="input-wrapper">
-                <div class="input-icon">💬</div>
-                <form method="post" action="{% url 'core:quick_trip' %}" id="quickTripForm" style="display: flex; flex-grow: 1; align-items: center; gap: 0.5rem;">
-                    {% csrf_token %}
-                    <input type="text" 
-                           name="trip_description"
-                           id="quickTripInput"
-                           placeholder="Include: days, destination, budget (e.g., 3 days Diani 50k)"
-                           minlength="15"
-                           maxlength="200"
-                           required>
-                    <button class="btn-generate" type="submit" id="quickTripBtn">
-                        ✨ Generate
-                    </button>
-                </form>
-            </div>
-            <div class="helper-text">
-                <span><i class="bi bi-info-circle"></i> Required: Days + Destination + Budget</span>
-            </div>
-            <div class="text-center mt-3">
-                <a href="{% url 'core:destination_selection' %}" class="btn-modern btn-secondary-modern">
-                    <i class="bi bi-list-check"></i>
-                    <span>Or Use Step-by-Step Planner</span>
-                </a>
-            </div>
+        <!-- Step 3 -->
+        <div class="tk-step-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="tk-step-number">3</div>
+          <div class="tk-step-icon">
+            <i class="bi bi-calendar-check-fill"></i>
+          </div>
+          <h3 class="tk-step-title">Get Your Itinerary</h3>
+          <p class="tk-step-description">AI creates your perfect day-by-day plan with activities, costs, and recommendations.</p>
         </div>
+      </div>
+      
+      <!-- Quick Trip Planner Input -->
+      <div class="tk-planner-container" data-aos="fade-up" data-aos-delay="400">
+        <div class="tk-input-wrapper">
+          <div class="tk-input-icon">💬</div>
+          <form method="post" action="{% url 'core:quick_trip' %}" id="quickTripForm" class="tk-planner-form">
+            {% csrf_token %}
+            <input type="text" 
+                   name="trip_description"
+                   id="quickTripInput"
+                   class="tk-planner-input"
+                   placeholder="Include: days, destination, budget (e.g., 3 days Diani 50k)"
+                   minlength="15"
+                   maxlength="200"
+                   required>
+            <button class="tk-btn-generate" type="submit" id="quickTripBtn">
+              ✨ Generate
+            </button>
+          </form>
+        </div>
+        <div class="tk-helper-text">
+          <span><i class="bi bi-info-circle"></i> Required: Days + Destination + Budget</span>
+        </div>
+        <div class="text-center mt-3">
+          <a href="{% url 'core:destination_selection' %}" class="tk-btn-secondary">
+            <i class="bi bi-list-check"></i>
+            <span>Or Use Step-by-Step Planner</span>
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Destination Gallery - Cinematic Showcase -->
 {% if featured_destinations %}
-<section class="section-modern" style="background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);">
+<section class="py-5" style="background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <h2 class="section-title">Explore Kenya's Wonders</h2>
@@ -574,63 +1066,57 @@
         
         <div class="row g-4">
             {% for destination in featured_destinations %}
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'00' }}">
+            <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'00' }}">
                 <a href="{% url 'destinations:detail' destination.slug %}" class="text-decoration-none">
-                    <div class="card-modern destination-card">
-                        <div class="card-modern-image">
+                    <div class="destination-hover-card">
+                        <div class="destination-image-container">
                             {% if destination.image %}
-                            <img src="{{ destination.image.url }}" alt="{{ destination.name }}">
+                            <img src="{{ destination.image.url }}" alt="{{ destination.name }}" class="destination-image">
                             {% elif destination.image_url %}
-                            <img src="{{ destination.image_url }}" alt="{{ destination.name }}">
+                            <img src="{{ destination.image_url }}" alt="{{ destination.name }}" class="destination-image">
                             {% else %}
-                            <!-- Fallback to static images -->
                             <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
-                                 alt="{{ destination.name }}"
-                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-100 h-100 d-flex align-items-center justify-content-center\' style=\'background: linear-gradient(135deg, var(--kenya-green), var(--sunset-orange));\'><i class=\'bi bi-image display-1 text-white opacity-50\'></i></div>';">
+                                 alt="{{ destination.name }}" class="destination-image"
+                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'destination-fallback\'><i class=\'bi bi-image\'></i></div>';">
                             {% endif %}
                             
-                            <!-- Destination Badge -->
-                            <div class="destination-badge">
+                            <div class="destination-type-badge">
                                 <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% elif destination.destination_type == 'mountain' %}mountain{% else %}geo-alt{% endif %}"></i>
                                 {{ destination.get_destination_type_display }}
                             </div>
                             
-                            <!-- Overlay Info -->
-                            <div class="card-modern-overlay">
-                                <h3 class="h4 fw-bold mb-2">{{ destination.name }}</h3>
-                                <p class="mb-0 small">{{ destination.county }}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="card-modern-body">
-                            <p class="card-modern-text">
-                                {{ destination.description|truncatewords:20 }}
-                            </p>
-                            
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-cash-coin text-success"></i>
-                                    <span class="fw-semibold">KSh {{ destination.average_cost_per_day|floatformat:0 }}/day</span>
+                            <div class="destination-hover-overlay">
+                                <div class="destination-info">
+                                    <h3 class="destination-title">{{ destination.name }}</h3>
+                                    <p class="destination-location">{{ destination.county }}</p>
+                                    <p class="destination-description">{{ destination.description|truncatewords:15 }}</p>
+                                    
+                                    <div class="destination-meta">
+                                        <div class="destination-price">
+                                            <i class="bi bi-cash-coin"></i>
+                                            <span>KSh {{ destination.average_cost_per_day|floatformat:0 }}/day</span>
+                                        </div>
+                                        <div class="destination-rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-fill"></i>
+                                            <i class="bi bi-star-half"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if destination.best_time_to_visit %}
+                                    <div class="destination-timing">
+                                        <i class="bi bi-calendar-check"></i>
+                                        <span>Best: {{ destination.best_time_to_visit }}</span>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <div class="destination-cta">
+                                        <span>Explore</span>
+                                        <i class="bi bi-arrow-right"></i>
+                                    </div>
                                 </div>
-                                <div class="d-flex align-items-center gap-1 text-warning">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-half"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card-modern-footer">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <span class="text-sm text-muted">
-                                    <i class="bi bi-calendar-check"></i>
-                                    {{ destination.best_time_to_visit }}
-                                </span>
-                                <span class="text-success fw-semibold">
-                                    Explore <i class="bi bi-arrow-right"></i>
-                                </span>
                             </div>
                         </div>
                     </div>
@@ -696,8 +1182,10 @@
 </section>
 
 <!-- About Section -->
-<section class="py-5" style="background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);">
-    <div class="container">
+<section class="py-5" style="position: relative; overflow: hidden;">
+    <!-- Background with same style as FAQ -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255, 248, 231, 0.98) 0%, rgba(254, 243, 199, 0.98) 50%, rgba(253, 230, 138, 0.95) 100%); backdrop-filter: blur(8px); box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1); z-index: 1;"></div>
+    <div class="container" style="position: relative; z-index: 2;">
         <div class="row">
             <div class="col-lg-10 mx-auto">
                 <div class="text-center mb-5">
@@ -719,19 +1207,19 @@
                             </h3>
                             <ul style="list-style: none; padding: 0; margin: 0; color: #6b7280; line-height: 2;">
                                 <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #2D7A4F;">✓</span>
+                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
                                     Maasai Mara National Reserve
                                 </li>
                                 <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #2D7A4F;">✓</span>
+                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
                                     Amboseli National Park
                                 </li>
                                 <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #2D7A4F;">✓</span>
+                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
                                     Tsavo National Park
                                 </li>
                                 <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #2D7A4F;">✓</span>
+                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
                                     Samburu National Reserve
                                 </li>
                             </ul>
@@ -744,19 +1232,19 @@
                             </h3>
                             <ul style="list-style: none; padding: 0; margin: 0; color: #6b7280; line-height: 2;">
                                 <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #2D7A4F;">✓</span>
+                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
                                     Diani Beach
                                 </li>
                                 <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #2D7A4F;">✓</span>
+                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
                                     Watamu
                                 </li>
                                 <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #2D7A4F;">✓</span>
+                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
                                     Malindi
                                 </li>
                                 <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #2D7A4F;">✓</span>
+                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
                                     Lamu Island
                                 </li>
                             </ul>
@@ -768,100 +1256,253 @@
     </div>
 </section>
 
-<!-- FAQ Section (Rich Snippets) -->
-<section class="py-5" style="background: #F3F4F6;">
-    <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <p class="section-subtitle">
-                Everything you need to know about planning your Kenya adventure
-            </p>
-        </div>
-        <div class="row">
-            <div class="col-md-10 mx-auto">
-                <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                How much does a Kenya safari cost?
-                            </button>
-                        </h3>
-                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                A Kenya safari typically costs between KSh 10,000 to 500,000 depending on duration, destinations, and accommodation level. Budget safaris start at KSh 15,000/day, mid-range at KSh 30,000/day, and luxury safaris from KSh 80,000/day. Our AI planner helps you create the perfect itinerary within your budget.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                What is the best time to visit Kenya for safari?
-                            </button>
-                        </h3>
-                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                The best time for Kenya safari is during the dry seasons: July to October (Great Migration in Maasai Mara) and January to February. These months offer excellent wildlife viewing, clear weather, and easier game drives. Our platform provides real-time weather forecasts for all destinations.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                How many days do I need for a Kenya safari?
-                            </button>
-                        </h3>
-                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                We recommend 5-7 days for a comprehensive Kenya safari experience. This allows you to visit 2-3 major parks like Maasai Mara and Amboseli. For beach combinations, plan 7-10 days. Our AI planner optimizes your itinerary based on your available time and interests.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                                Can I combine safari and beach in one Kenya trip?
-                            </button>
-                        </h3>
-                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Absolutely! Kenya offers the perfect safari-beach combination. Spend 4-5 days on safari in Maasai Mara or Amboseli, then relax 3-4 days on Diani Beach or Watamu. Our AI planner creates seamless itineraries combining wildlife adventures with coastal relaxation, including optimal routes and timing.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-                                Is Kenya safe for tourists?
-                            </button>
-                        </h3>
-                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Yes, Kenya is generally safe for tourists, especially in major tourist areas like Maasai Mara, Amboseli, Diani Beach, and Nairobi's tourist zones. Follow standard travel precautions, use reputable tour operators, and stay in recommended accommodations. Our platform provides safety tips and trusted recommendations for each destination.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
-                                Do I need a visa to visit Kenya?
-                            </button>
-                        </h3>
-                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Most visitors need an eVisa for Kenya, which costs $50 USD and can be obtained online at evisa.go.ke. Citizens of some African countries can enter visa-free. The eVisa is valid for 90 days. Apply at least 7 days before travel. Check current requirements based on your nationality.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- FAQ Section - Magical Kenya Style with Giraffe Background -->
+<section class="tk-faq-section">
+  <!-- Giraffe Safari Background -->
+  <div class="tk-faq-background">
+    <div class="tk-faq-overlay"></div>
+  </div>
+  
+  <!-- FAQ Content Section -->
+  <div class="tk-faq-content-section">
+    <div class="tk-container">
+    <div class="tk-faq-header">
+      <h2 class="tk-faq-title">
+        <span class="tk-faq-title--highlight">FREQUENTLY</span><br>
+        <span class="tk-faq-title--main">ASKED QUESTIONS</span><br>
+        <span class="tk-faq-title--accent">ABOUT KENYA</span>
+      </h2>
     </div>
+    
+    <div class="tk-faq-content">
+      <div class="tk-faq-list">
+        {% for faq in faq_list %}
+        <div class="tk-faq-item" data-faq-item>
+          <button class="tk-faq-question" data-faq-trigger aria-expanded="false">
+            <span class="tk-faq-icon">
+              <i class="bi bi-plus-lg"></i>
+            </span>
+            <span class="tk-faq-question-text">{{ faq.question }}</span>
+          </button>
+          <div class="tk-faq-answer" data-faq-content>
+            <div class="tk-faq-answer-inner">
+              {{ faq.answer|safe }}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </section>
+
+<style>
+/* FAQ Section - Magical Kenya Style with Giraffe Background */
+.tk-faq-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.tk-faq-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1920') center/cover;
+  background-attachment: fixed;
+  z-index: 1;
+}
+
+.tk-faq-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.tk-faq-content-section {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, 
+    rgba(255, 248, 231, 0.98) 0%, 
+    rgba(254, 243, 199, 0.98) 50%,
+    rgba(253, 230, 138, 0.95) 100%
+  );
+  padding: 80px 0;
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1);
+}
+
+.tk-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.tk-faq-header {
+  text-align: left;
+  margin-bottom: 60px;
+}
+
+.tk-faq-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.tk-faq-title--highlight {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  color: #1F2937;
+  display: block;
+}
+
+.tk-faq-title--main {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  color: #1F2937;
+  display: block;
+}
+
+.tk-faq-title--accent {
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  color: #374151;
+  display: block;
+}
+
+.tk-faq-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+.tk-faq-list {
+  max-width: 800px;
+}
+
+.tk-faq-item {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.tk-faq-item:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.tk-faq-question {
+  width: 100%;
+  padding: 24px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1F2937;
+  transition: all 0.3s ease;
+}
+
+.tk-faq-question:hover {
+  color: #E07A2B;
+}
+
+.tk-faq-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E07A2B;
+  color: white;
+  border-radius: 50%;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.tk-faq-item[data-expanded="true"] .tk-faq-icon {
+  background: #2F5D3A;
+  transform: rotate(45deg);
+}
+
+.tk-faq-question-text {
+  flex: 1;
+}
+
+.tk-faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.tk-faq-item[data-expanded="true"] .tk-faq-answer {
+  max-height: 500px;
+}
+
+.tk-faq-answer-inner {
+  padding: 0 24px 24px 64px;
+  color: #1F2937;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tk-faq-section {
+    padding: 60px 0;
+  }
+  
+  .tk-faq-header {
+    margin-bottom: 40px;
+  }
+  
+  .tk-faq-question {
+    padding: 20px;
+    font-size: 1rem;
+  }
+  
+  .tk-faq-answer-inner {
+    padding: 0 20px 20px 56px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const faqItems = document.querySelectorAll('[data-faq-item]');
+  
+  faqItems.forEach(item => {
+    const trigger = item.querySelector('[data-faq-trigger]');
+    
+    trigger.addEventListener('click', () => {
+      const isExpanded = item.getAttribute('data-expanded') === 'true';
+      
+      // Close all other items
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.setAttribute('data-expanded', 'false');
+          otherItem.querySelector('[data-faq-trigger]').setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      // Toggle current item
+      const newState = !isExpanded;
+      item.setAttribute('data-expanded', newState);
+      trigger.setAttribute('aria-expanded', newState);
+    });
+  });
+});
+</script>
 {% endblock %}
 
 {% block extra_js %}

@@ -317,27 +317,29 @@ img {
 }
 
 .btn-primary-modern {
-    background: var(--kenya-green);
+    background: linear-gradient(135deg, #E07A2B, #C66820);
     color: white;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.3);
 }
 
 .btn-primary-modern:hover {
-    background: var(--kenya-green-dark);
+    background: linear-gradient(135deg, #F09850, #E07A2B);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 8px 25px rgba(224, 122, 43, 0.4);
 }
 
 .btn-secondary-modern {
     background: white;
-    color: var(--kenya-green);
-    box-shadow: var(--shadow-md);
+    color: #E07A2B;
+    box-shadow: 0 4px 12px rgba(224, 122, 43, 0.2);
+    border: 2px solid #E07A2B;
 }
 
 .btn-secondary-modern:hover {
-    background: var(--gray-100);
+    background: #E07A2B;
+    color: white;
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 8px 25px rgba(224, 122, 43, 0.4);
 }
 
 .btn-outline-modern {
@@ -348,6 +350,7 @@ img {
 
 .btn-outline-modern:hover {
     background: white;
+    color: #E07A2B;
     color: var(--kenya-green);
     transform: translateY(-2px);
 }
