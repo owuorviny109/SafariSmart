@@ -1,6 +1,6 @@
 # SafariSmart Kenya
 
-**AI-Powered Safari & Travel Planning Platform**
+**AI-Powered Safari & Travel Planning Platform** 
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://safarismart-kenya.onrender.com)
 [![Python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org/)
@@ -64,7 +64,7 @@ To showcase Kenya's breathtaking destinations and make trip planning effortless 
 
 ## Live Demo
 
-Visit the live application: **[SafariSmart Kenya](https://safarismart-kenya.onrender.com)**
+Visit the live application: **https://safarismart-kenya.onrender.com/**
 
 ---
 
@@ -81,35 +81,15 @@ Step-by-step wizard that creates personalized travel plans
 
 ---
 
-## Contributing
-
-This project is open source and contributions are welcome! Whether you're:
-- A developer wanting to improve the code
-- A tourism expert with local knowledge
-- A designer with UI/UX ideas
-- Someone who loves Kenya and wants to help
-
-Feel free to:
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
-
----
-
 ## Support This Project
 
-If you love what we're building and want to support:
+If you love what am building and want to buy me a coffee:
 
-**[Buy me a coffee](https://buymeacoffee.com/yourusername)**
+**M-Pesa (Kenya): 0796915745**
 
 Your support helps keep this project running and improving!
 
 ---
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ---
 
 ## Acknowledgments
@@ -117,16 +97,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built with passion for Kenya
 - Powered by Google's Gemini AI
 - Inspired by Kenya's incredible natural beauty
-- Thanks to all contributors and supporters
 
 ---
 
 ## Contact
 
-**Developer**: [Your Name]
+**Developer**: Vincent Owuor
 - GitHub: [@owuorviny109](https://github.com/owuorviny109)
-- Email: your.email@example.com
-- Website: [SafariSmart Kenya](https://safarismart-kenya.onrender.com)
+- Email: owuorvincent069@gmail.com
+- Portfolio: [owuorvincent.vercel.app](https://owuorvincent.vercel.app/)
+- M-Pesa: 0796915745
 
 ---
 
