@@ -46,7 +46,54 @@
         overflow: visible;
     }
     
-    .step-number {
+    /* 3D Flip Cards for Steps */
+    .flip-card-steps {
+        background-color: transparent;
+        width: 100%;
+        height: 280px;
+        perspective: 1000px;
+    }
+    
+    .flip-card-inner-steps {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s ease-in-out;
+        transform-style: preserve-3d;
+    }
+    
+    .flip-card-steps:hover .flip-card-inner-steps {
+        transform: rotateY(180deg);
+    }
+    
+    .flip-card-front-steps, .flip-card-back-steps {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1.5rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+    
+    .flip-card-front-steps {
+        background: white;
+        color: #1F2937;
+    }
+    
+    .flip-card-back-steps {
+        background: linear-gradient(135deg, #10B981, #064E3B);
+        color: white;
+        transform: rotateY(180deg);
+    }
+    
+    .step-number-flip {
         position: absolute;
         top: -15px;
         right: 20px;
@@ -430,31 +477,57 @@
             </p>
         </div>
         
-        <!-- Three Swaying Step Cards -->
-        <div class="swaying-cards-container mb-5">
+        <!-- Three 3D Flip Step Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto 3rem; padding: 0 1rem;">
+            
             <!-- Step 1 -->
-            <div class="feature-card step-card sway-1">
-                <div class="step-number">1</div>
-                <div class="icon-box"><i class="bi bi-geo-alt-fill"></i></div>
-                <h3>Choose Destinations</h3>
-                <p>Select from 20 amazing Kenya locations including safaris, beaches, and cultural sites.</p>
+            <div class="flip-card-steps">
+                <div class="flip-card-inner-steps">
+                    <div class="flip-card-front-steps">
+                        <div class="step-number-flip">1</div>
+                        <i class="bi bi-geo-alt-fill" style="font-size: 3rem; color: #10B981; margin-bottom: 1rem;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #1F2937;">Choose Destinations</h3>
+                    </div>
+                    <div class="flip-card-back-steps">
+                        <div class="step-number-flip">1</div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600;">Choose Destinations</h3>
+                        <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">Select from 20 amazing Kenya locations including safaris, beaches, and cultural sites.</p>
+                    </div>
+                </div>
             </div>
             
             <!-- Step 2 -->
-            <div class="feature-card step-card sway-2">
-                <div class="step-number">2</div>
-                <div class="icon-box"><i class="bi bi-sliders"></i></div>
-                <h3>Set Preferences</h3>
-                <p>Tell us your budget, dates, and interests. We'll tailor everything to your needs.</p>
+            <div class="flip-card-steps">
+                <div class="flip-card-inner-steps">
+                    <div class="flip-card-front-steps">
+                        <div class="step-number-flip">2</div>
+                        <i class="bi bi-sliders" style="font-size: 3rem; color: #10B981; margin-bottom: 1rem;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #1F2937;">Set Preferences</h3>
+                    </div>
+                    <div class="flip-card-back-steps">
+                        <div class="step-number-flip">2</div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600;">Set Preferences</h3>
+                        <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">Tell us your budget, dates, and interests. We'll tailor everything to your needs.</p>
+                    </div>
+                </div>
             </div>
             
             <!-- Step 3 -->
-            <div class="feature-card step-card sway-3">
-                <div class="step-number">3</div>
-                <div class="icon-box"><i class="bi bi-calendar-check-fill"></i></div>
-                <h3>Get Your Itinerary</h3>
-                <p>AI creates your perfect day-by-day plan with activities, costs, and recommendations.</p>
+            <div class="flip-card-steps">
+                <div class="flip-card-inner-steps">
+                    <div class="flip-card-front-steps">
+                        <div class="step-number-flip">3</div>
+                        <i class="bi bi-calendar-check-fill" style="font-size: 3rem; color: #10B981; margin-bottom: 1rem;"></i>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #1F2937;">Get Your Itinerary</h3>
+                    </div>
+                    <div class="flip-card-back-steps">
+                        <div class="step-number-flip">3</div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; font-weight: 600;">Get Your Itinerary</h3>
+                        <p style="font-size: 0.95rem; margin: 0; line-height: 1.6;">AI creates your perfect day-by-day plan with activities, costs, and recommendations.</p>
+                    </div>
+                </div>
             </div>
+            
         </div>
         
         <!-- Quick Trip Planner Input -->
