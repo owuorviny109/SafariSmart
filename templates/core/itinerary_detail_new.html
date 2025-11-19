@@ -127,7 +127,7 @@
     </div>
     
     <!-- Action Buttons -->
-    <div class="action-buttons"></div>
+    <div class="action-buttons">
         <button class="btn btn-success" onclick="window.print()">
             <i class="bi bi-printer"></i> Print
         </button>
@@ -138,6 +138,10 @@
         
         <button class="btn btn-outline-success" onclick="app.handleSave()">
             <i class="bi bi-bookmark"></i> Save
+        </button>
+        
+        <button id="toggleView" class="btn btn-outline-primary" onclick="toggleItineraryView()">
+            <i class="bi bi-table"></i> Table View
         </button>
         
         <a href="{% url 'core:destination_selection' %}" class="btn btn-outline-secondary">
@@ -236,8 +240,13 @@
     {% endif %}
     
     <!-- Itinerary Content -->
-    <div class="itinerary-content">
+    <div class="itinerary-content" id="itinerary-content">
         {{ content|linebreaks }}
+    </div>
+    
+    <!-- Formatted Itinerary Tables (will be populated by JavaScript) -->
+    <div id="formatted-itinerary" class="formatted-itinerary" style="display: none;">
+        <!-- Tables will be inserted here by JavaScript -->
     </div>
     
     <!-- Cost Breakdown -->
@@ -438,6 +447,304 @@
     }
     
     // Initialize map when DOM is ready
-    document.addEventListener('DOMContentLoaded', initializeMap);
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeMap();
+        formatItineraryContent();
+    });
+    
+    // Format itinerary content into tables
+    function formatItineraryContent() {
+        const contentDiv = document.getElementById('itinerary-content');
+        const formattedDiv = document.getElementById('formatted-itinerary');
+        
+        if (!contentDiv || !formattedDiv) return;
+        
+        const content = contentDiv.textContent || contentDiv.innerText;
+        const formattedContent = parseItineraryToTables(content);
+        
+        if (formattedContent) {
+            formattedDiv.innerHTML = formattedContent;
+            formattedDiv.style.display = 'block';
+            contentDiv.style.display = 'none';
+        }
+    }
+    
+    function parseItineraryToTables(content) {
+        const lines = content.split('\n').map(line => line.trim()).filter(line => line);
+        const days = [];
+        let currentDay = null;
+        let summary = '';
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            
+            // Detect day headers (Day 1, Day 2, etc.)
+            const dayMatch = line.match(/^(Day\s+(\d+))[:\-\s]*(.*)/i);
+            if (dayMatch) {
+                if (currentDay) {
+                    days.push(currentDay);
+                }
+                currentDay = {
+                    number: parseInt(dayMatch[2]),
+                    title: dayMatch[0],
+                    description: dayMatch[3] || '',
+                    activities: [],
+                    totalCost: 0
+                };
+                continue;
+            }
+            
+            // If we have a current day, try to parse activities
+            if (currentDay) {
+                const activity = parseActivity(line);
+                if (activity) {
+                    currentDay.activities.push(activity);
+                    currentDay.totalCost += activity.cost;
+                }
+            } else if (!summary && line.length > 20) {
+                // Capture summary/introduction
+                summary = line;
+            }
+        }
+        
+        if (currentDay) {
+            days.push(currentDay);
+        }
+        
+        if (days.length === 0) {
+            return null; // No parseable content
+        }
+        
+        return generateTablesHTML(days, summary);
+    }
+    
+    function parseActivity(line) {
+        // Try to extract time, activity, location, and cost
+        const patterns = [
+            // Pattern: "9:00 AM - Safari drive in Maasai Mara - KSh 5000"
+            /^(\d{1,2}:\d{2}\s*(?:AM|PM)?)\s*[-–]\s*([^-]+?)(?:\s*[-–]\s*(.+?))?(?:\s*[-–]\s*(?:KSh|Ksh|ksh)\s*(\d+(?:,\d{3})*))?$/i,
+            // Pattern: "Morning: Game drive (KSh 3000)"
+            /^(Morning|Afternoon|Evening|Night):\s*([^(]+?)(?:\s*\((?:KSh|Ksh|ksh)\s*(\d+(?:,\d{3})*)\))?$/i,
+            // Pattern: "Breakfast at hotel - KSh 1500"
+            /^([^-]+?)(?:\s*[-–]\s*(?:KSh|Ksh|ksh)\s*(\d+(?:,\d{3})*))?$/i
+        ];
+        
+        for (const pattern of patterns) {
+            const match = line.match(pattern);
+            if (match) {
+                let time = match[1] || '';
+                let activity = match[2] || line;
+                let location = match[3] || '';
+                let cost = 0;
+                
+                // Extract cost from various positions
+                const costMatch = line.match(/(?:KSh|Ksh|ksh)\s*(\d+(?:,\d{3})*)/i);
+                if (costMatch) {
+                    cost = parseInt(costMatch[1].replace(/,/g, ''));
+                }
+                
+                // Clean up activity text
+                activity = activity.replace(/(?:KSh|Ksh|ksh)\s*\d+(?:,\d{3})*/gi, '').trim();
+                activity = activity.replace(/^\s*[-–]\s*|\s*[-–]\s*$/g, '').trim();
+                
+                // Determine activity type
+                const type = determineActivityType(activity);
+                
+                return {
+                    time: time.trim(),
+                    activity: activity.trim(),
+                    location: location.trim(),
+                    cost: cost,
+                    type: type,
+                    duration: estimateDuration(activity, type)
+                };
+            }
+        }
+        
+        return null;
+    }
+    
+    function determineActivityType(activity) {
+        const activityLower = activity.toLowerCase();
+        
+        if (activityLower.includes('safari') || activityLower.includes('game drive') || activityLower.includes('wildlife')) {
+            return 'safari';
+        } else if (activityLower.includes('transport') || activityLower.includes('drive') || activityLower.includes('flight')) {
+            return 'transport';
+        } else if (activityLower.includes('breakfast') || activityLower.includes('lunch') || activityLower.includes('dinner') || activityLower.includes('meal')) {
+            return 'meal';
+        } else if (activityLower.includes('hotel') || activityLower.includes('lodge') || activityLower.includes('accommodation') || activityLower.includes('check')) {
+            return 'accommodation';
+        } else if (activityLower.includes('museum') || activityLower.includes('cultural') || activityLower.includes('village')) {
+            return 'cultural';
+        } else {
+            return 'leisure';
+        }
+    }
+    
+    function estimateDuration(activity, type) {
+        const activityLower = activity.toLowerCase();
+        
+        if (type === 'safari' || activityLower.includes('game drive')) {
+            return '3-4 hours';
+        } else if (type === 'meal') {
+            return '1 hour';
+        } else if (type === 'transport') {
+            return '2-3 hours';
+        } else if (activityLower.includes('full day')) {
+            return '8 hours';
+        } else if (activityLower.includes('half day')) {
+            return '4 hours';
+        } else {
+            return '2 hours';
+        }
+    }
+    
+    function generateTablesHTML(days, summary) {
+        let html = '';
+        
+        // Add summary if available
+        if (summary) {
+            html += `
+                <div class="itinerary-summary-intro">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <h4 class="mb-3"><i class="bi bi-map"></i> Your Safari Adventure</h4>
+                            <p class="lead">${summary}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Generate summary cards
+        const totalDays = days.length;
+        const totalCost = days.reduce((sum, day) => sum + day.totalCost, 0);
+        const totalActivities = days.reduce((sum, day) => sum + day.activities.length, 0);
+        
+        html += `
+            <div class="itinerary-summary">
+                <div class="summary-card">
+                    <div class="icon">📅</div>
+                    <div class="value">${totalDays}</div>
+                    <div class="label">Days</div>
+                </div>
+                <div class="summary-card">
+                    <div class="icon">🎯</div>
+                    <div class="value">${totalActivities}</div>
+                    <div class="label">Activities</div>
+                </div>
+                <div class="summary-card">
+                    <div class="icon">💰</div>
+                    <div class="value">KSh ${totalCost.toLocaleString()}</div>
+                    <div class="label">Total Cost</div>
+                </div>
+                <div class="summary-card">
+                    <div class="icon">💵</div>
+                    <div class="value">KSh ${Math.round(totalCost / totalDays).toLocaleString()}</div>
+                    <div class="label">Per Day</div>
+                </div>
+            </div>
+        `;
+        
+        // Generate day tables
+        days.forEach(day => {
+            html += generateDayTable(day);
+        });
+        
+        return html;
+    }
+    
+    function generateDayTable(day) {
+        let html = `
+            <div class="day-table-container">
+                <div class="day-header">
+                    <h3>
+                        <span class="day-number">${day.number}</span>
+                        Day ${day.number}
+                    </h3>
+                </div>
+        `;
+        
+        if (day.description) {
+            html += `
+                <div class="day-summary">
+                    ${day.description}
+                </div>
+            `;
+        }
+        
+        if (day.activities.length > 0) {
+            html += `
+                <table class="itinerary-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Activity</th>
+                            <th>Location</th>
+                            <th>Duration</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            day.activities.forEach(activity => {
+                html += `
+                    <tr>
+                        <td class="time-cell" data-label="Time">${activity.time || 'Flexible'}</td>
+                        <td class="activity-cell" data-label="Activity">
+                            <div class="activity-type ${activity.type}">${activity.type}</div>
+                            <div class="activity-title">${activity.activity}</div>
+                        </td>
+                        <td class="location-cell" data-label="Location">${activity.location || 'Various'}</td>
+                        <td class="duration-cell" data-label="Duration">${activity.duration}</td>
+                        <td class="cost-cell" data-label="Cost">
+                            ${activity.cost > 0 ? `KSh ${activity.cost.toLocaleString()}` : 'Included'}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            // Add day total row
+            html += `
+                    <tr class="day-total-row">
+                        <td colspan="4" style="text-align: right; font-weight: 600;">Day ${day.number} Total:</td>
+                        <td class="total-cost">KSh ${day.totalCost.toLocaleString()}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        html += `</div>`;
+        
+        return html;
+    }
+    
+    // Toggle between original and formatted view
+    function toggleItineraryView() {
+        const originalDiv = document.getElementById('itinerary-content');
+        const formattedDiv = document.getElementById('formatted-itinerary');
+        const toggleBtn = document.getElementById('toggleView');
+        
+        if (!originalDiv || !formattedDiv || !toggleBtn) return;
+        
+        if (formattedDiv.style.display === 'none') {
+            // Show formatted view
+            originalDiv.style.display = 'none';
+            formattedDiv.style.display = 'block';
+            toggleBtn.innerHTML = '<i class="bi bi-text-paragraph"></i> Text View';
+            toggleBtn.classList.remove('btn-outline-primary');
+            toggleBtn.classList.add('btn-outline-secondary');
+        } else {
+            // Show original view
+            originalDiv.style.display = 'block';
+            formattedDiv.style.display = 'none';
+            toggleBtn.innerHTML = '<i class="bi bi-table"></i> Table View';
+            toggleBtn.classList.remove('btn-outline-secondary');
+            toggleBtn.classList.add('btn-outline-primary');
+        }
+    }
 </script>
 {% endblock %}
