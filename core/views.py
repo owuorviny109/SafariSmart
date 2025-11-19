@@ -37,13 +37,18 @@ logger = logging.getLogger(__name__)
 def landing_page(request: HttpRequest) -> HttpResponse:
     """
     Landing page with hero and featured destinations.
+    Redirects authenticated users to their dashboard.
     
     Args:
         request (HttpRequest): HTTP request object
         
     Returns:
-        HttpResponse: Rendered landing page
+        HttpResponse: Rendered landing page or redirect to dashboard
     """
+    # Redirect authenticated users to dashboard
+    if request.user.is_authenticated:
+        return redirect('core:dashboard')
+    
     featured_destinations = Destination.objects.filter(is_featured=True)[:6]
     
     # FAQ data - Magical Kenya style
@@ -1111,11 +1116,124 @@ def shared_itinerary(request, share_code):
 
 @login_required
 def dashboard(request):
-    """User dashboard with saved itineraries"""
-    itineraries = Itinerary.objects.filter(user=request.user, is_saved=True)
-    return render(request, 'core/dashboard.html', {
-        'itineraries': itineraries
-    })
+    """User dashboard with saved itineraries and travel insights"""
+    from django.db.models import Sum, Count, Avg
+    from datetime import datetime, timedelta
+    
+    user = request.user
+    
+    # Get user's itineraries
+    itineraries = Itinerary.objects.filter(user=user, is_saved=True)
+    recent_itineraries = itineraries[:6]  # Show 6 most recent
+    
+    # Calculate user stats
+    total_trips = itineraries.count()
+    total_budget_spent = itineraries.aggregate(total=Sum('total_budget'))['total'] or 0
+    total_days_traveled = itineraries.aggregate(total=Sum('duration_days'))['total'] or 0
+    avg_budget_per_trip = itineraries.aggregate(avg=Avg('total_budget'))['avg'] or 0
+    
+    # Get favorite destinations (most visited)
+    from collections import Counter
+    all_destinations = []
+    for itinerary in itineraries:
+        all_destinations.extend(itinerary.destinations.all())
+    
+    destination_counts = Counter([dest.name for dest in all_destinations])
+    favorite_destinations = destination_counts.most_common(3)
+    
+    # Get upcoming trips (if start_date is set and in future)
+    today = datetime.now().date()
+    upcoming_trips = itineraries.filter(
+        start_date__gte=today
+    ).order_by('start_date')[:3]
+    
+    # Get recent activity (last 30 days)
+    thirty_days_ago = datetime.now() - timedelta(days=30)
+    recent_activity = itineraries.filter(
+        created_at__gte=thirty_days_ago
+    ).count()
+    
+    context = {
+        'itineraries': recent_itineraries,
+        'total_trips': total_trips,
+        'total_budget_spent': total_budget_spent,
+        'total_days_traveled': total_days_traveled,
+        'avg_budget_per_trip': avg_budget_per_trip,
+        'favorite_destinations': favorite_destinations,
+        'upcoming_trips': upcoming_trips,
+        'recent_activity': recent_activity,
+        'has_more_trips': total_trips > 6,
+    }
+    
+    return render(request, 'core/dashboard.html', context)
+
+
+@login_required
+def save_itinerary(request, share_code):
+    """
+    Save or unsave an itinerary for the current user.
+    
+    Args:
+        request: HTTP request object
+        share_code: Unique identifier for the itinerary
+        
+    Returns:
+        JsonResponse: Success/error status
+    """
+    try:
+        itinerary = get_object_or_404(Itinerary, share_code=share_code)
+        
+        if request.method == 'POST':
+            # Toggle save status
+            if itinerary.user == request.user:
+                # User owns this itinerary, toggle is_saved
+                itinerary.is_saved = not itinerary.is_saved
+                itinerary.save()
+                
+                action = 'saved' if itinerary.is_saved else 'unsaved'
+                return JsonResponse({
+                    'success': True,
+                    'action': action,
+                    'message': f'Itinerary {action} successfully!',
+                    'is_saved': itinerary.is_saved
+                })
+            else:
+                # User doesn't own this itinerary, create a copy and save it
+                new_itinerary = Itinerary.objects.create(
+                    user=request.user,
+                    title=f"{itinerary.title} (Copy)",
+                    duration_days=itinerary.duration_days,
+                    start_date=itinerary.start_date,
+                    end_date=itinerary.end_date,
+                    adults_count=itinerary.adults_count,
+                    children_count=itinerary.children_count,
+                    travel_type=itinerary.travel_type,
+                    total_budget=itinerary.total_budget,
+                    budget_category=itinerary.budget_category,
+                    itinerary_data=itinerary.itinerary_data,
+                    cost_breakdown=itinerary.cost_breakdown,
+                    is_saved=True
+                )
+                
+                # Copy destinations
+                new_itinerary.destinations.set(itinerary.destinations.all())
+                
+                return JsonResponse({
+                    'success': True,
+                    'action': 'saved',
+                    'message': 'Itinerary saved to your account!',
+                    'is_saved': True,
+                    'new_share_code': str(new_itinerary.share_code)
+                })
+        
+        return JsonResponse({'success': False, 'message': 'Invalid request method'})
+        
+    except Exception as e:
+        logger.error(f"Save itinerary error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'message': 'Failed to save itinerary. Please try again.'
+        })
 
 
 def quick_trip(request: HttpRequest) -> HttpResponse:
@@ -1277,6 +1395,11 @@ def quick_trip(request: HttpRequest) -> HttpResponse:
             for dest in trip_data['destinations']:
                 itinerary.destinations.add(dest)
         
+        # Send trip created email if user is authenticated
+        if request.user.is_authenticated:
+            from core.models_email import EmailService
+            EmailService.send_trip_created_email(request.user, itinerary)
+        
         logger.info(f"Quick trip generated: {itinerary.share_code}")
         
         # Redirect to itinerary
@@ -1368,6 +1491,11 @@ def generate_itinerary_api(request: HttpRequest) -> JsonResponse:
         # Add destinations
         for dest in preferences['destinations']:
             itinerary.destinations.add(dest)
+        
+        # Send trip created email if user is authenticated
+        if request.user.is_authenticated:
+            from core.models_email import EmailService
+            EmailService.send_trip_created_email(request.user, itinerary)
             
         logger.info(
             f"Generated itinerary {itinerary.share_code} "

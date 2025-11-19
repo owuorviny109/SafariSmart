@@ -97,6 +97,23 @@ from .models_api_tracking import (
     APIUsageStats
 )
 
+# Import email models
+from .models_email import (
+    EmailTemplate,
+    EmailLog,
+    EmailSettings,
+    EmailService
+)
+
+# Import privacy-compliant analytics models
+from .models_privacy_analytics import (
+    ConsentRecord,
+    AnonymousPageView,
+    BusinessMetrics,
+    PrivacyService,
+    DataRetentionService
+)
+
 # Import security models
 from .models_security import (
     SecuritySettings,

@@ -37,4 +37,14 @@ from .admin_security import (
 # Import and register static pages admin
 from .admin_pages import StaticPageAdmin, ContactInfoAdmin
 
+# Import and register email admin interfaces
+from .admin_email import EmailTemplateAdmin, EmailLogAdmin
+
+# Import and register analytics admin interfaces
+from .admin_analytics import (
+    AnonymousPageViewAdmin,
+    BusinessMetricsAdmin, 
+    ConsentRecordAdmin
+)
+
 # Admin interfaces are already registered via @admin.register decorators

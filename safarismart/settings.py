@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'core.middleware.AnalyticsMiddleware',  # Track page views - temporarily disabled
 ]
 
 ROOT_URLCONF = 'safarismart.urls'
@@ -150,3 +151,24 @@ SESSION_COOKIE_AGE = 86400  # 24 hours
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
+
+# =============================================================================
+# EMAIL CONFIGURATION
+# =============================================================================
+
+# Email Backend
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+
+# SMTP Settings (for production)
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+
+# Default From Email
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='SafariSmart Kenya <noreply@safarismart.co.ke>')
+SERVER_EMAIL = config('SERVER_EMAIL', default='SafariSmart Kenya <server@safarismart.co.ke>')
+
+# Email Timeout
+EMAIL_TIMEOUT = config('EMAIL_TIMEOUT', default=60, cast=int)

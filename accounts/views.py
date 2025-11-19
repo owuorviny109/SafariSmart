@@ -154,6 +154,11 @@ class UserRegisterView(CreateView):
         
         if user is not None:
             login(self.request, user)
+            
+            # Send welcome email
+            from core.models_email import EmailService
+            EmailService.send_welcome_email(user)
+            
             logger.info(f"New user registered and logged in: {username}")
             messages.success(
                 self.request,

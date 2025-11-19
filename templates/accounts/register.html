@@ -3,109 +3,132 @@
 {% block title %}Sign Up - SafariSmart Kenya{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-sm">
-                <div class="card-body p-5">
+<div class="auth-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="auth-card-body">
                     <!-- Header -->
-                    <div class="text-center mb-4">
-                        <h2 class="text-success">
+                    <div class="auth-header">
+                        <h2 class="auth-title">
                             <i class="bi bi-person-plus"></i> Create Account
                         </h2>
-                        <p class="text-muted">Join SafariSmart Kenya and start planning your adventure</p>
+                        <p class="auth-subtitle">Join SafariSmart Kenya and start planning your adventure</p>
                     </div>
                     
                     <!-- Registration Form -->
-                    <form method="post">
+                    <form method="post" class="auth-form">
                         {% csrf_token %}
                         
                         <!-- Username Field -->
-                        <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label">
+                        <div class="auth-form-group">
+                            <label for="{{ form.username.id_for_label }}" class="auth-form-label">
                                 <i class="bi bi-person"></i> Username
                             </label>
-                            {{ form.username }}
+                            <input type="text" 
+                                   name="{{ form.username.name }}" 
+                                   id="{{ form.username.id_for_label }}"
+                                   class="auth-form-control{% if form.username.errors %} is-invalid{% endif %}"
+                                   placeholder="Choose a username"
+                                   value="{{ form.username.value|default:'' }}"
+                                   required>
                             {% if form.username.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.username.errors }}
+                                <div class="auth-invalid-feedback">
+                                    {{ form.username.errors.0 }}
                                 </div>
                             {% else %}
-                                <small class="form-text text-muted">
+                                <small class="auth-form-text">
                                     150 characters or fewer. Letters, digits and @/./+/-/_ only.
                                 </small>
                             {% endif %}
                         </div>
                         
                         <!-- Email Field -->
-                        <div class="mb-3">
-                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                        <div class="auth-form-group">
+                            <label for="{{ form.email.id_for_label }}" class="auth-form-label">
                                 <i class="bi bi-envelope"></i> Email
                             </label>
-                            {{ form.email }}
+                            <input type="email" 
+                                   name="{{ form.email.name }}" 
+                                   id="{{ form.email.id_for_label }}"
+                                   class="auth-form-control{% if form.email.errors %} is-invalid{% endif %}"
+                                   placeholder="Enter your email address"
+                                   value="{{ form.email.value|default:'' }}"
+                                   required>
                             {% if form.email.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.email.errors }}
+                                <div class="auth-invalid-feedback">
+                                    {{ form.email.errors.0 }}
                                 </div>
                             {% else %}
-                                <small class="form-text text-muted">
+                                <small class="auth-form-text">
                                     Required. Enter a valid email address.
                                 </small>
                             {% endif %}
                         </div>
                         
                         <!-- Password Field -->
-                        <div class="mb-3">
-                            <label for="{{ form.password1.id_for_label }}" class="form-label">
+                        <div class="auth-form-group">
+                            <label for="{{ form.password1.id_for_label }}" class="auth-form-label">
                                 <i class="bi bi-lock"></i> Password
                             </label>
-                            {{ form.password1 }}
+                            <input type="password" 
+                                   name="{{ form.password1.name }}" 
+                                   id="{{ form.password1.id_for_label }}"
+                                   class="auth-form-control{% if form.password1.errors %} is-invalid{% endif %}"
+                                   placeholder="Create a strong password"
+                                   required>
                             {% if form.password1.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.password1.errors }}
+                                <div class="auth-invalid-feedback">
+                                    {{ form.password1.errors.0 }}
                                 </div>
                             {% else %}
-                                <small class="form-text text-muted">
+                                <small class="auth-form-text">
                                     Your password must contain at least 8 characters.
                                 </small>
                             {% endif %}
                         </div>
                         
                         <!-- Confirm Password Field -->
-                        <div class="mb-4">
-                            <label for="{{ form.password2.id_for_label }}" class="form-label">
+                        <div class="auth-form-group">
+                            <label for="{{ form.password2.id_for_label }}" class="auth-form-label">
                                 <i class="bi bi-lock-fill"></i> Confirm Password
                             </label>
-                            {{ form.password2 }}
+                            <input type="password" 
+                                   name="{{ form.password2.name }}" 
+                                   id="{{ form.password2.id_for_label }}"
+                                   class="auth-form-control{% if form.password2.errors %} is-invalid{% endif %}"
+                                   placeholder="Confirm your password"
+                                   required>
                             {% if form.password2.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.password2.errors }}
+                                <div class="auth-invalid-feedback">
+                                    {{ form.password2.errors.0 }}
                                 </div>
                             {% else %}
-                                <small class="form-text text-muted">
+                                <small class="auth-form-text">
                                     Enter the same password as before, for verification.
                                 </small>
                             {% endif %}
                         </div>
                         
                         <!-- Submit Button -->
-                        <button type="submit" class="btn btn-success w-100 py-2 mb-3">
+                        <button type="submit" class="auth-btn auth-btn-primary auth-btn-full">
                             <i class="bi bi-check-circle"></i> Create Account
                         </button>
                         
                         <!-- Non-field Errors -->
                         {% if form.non_field_errors %}
-                            <div class="alert alert-danger">
+                            <div class="auth-alert auth-alert-danger">
                                 {{ form.non_field_errors }}
                             </div>
                         {% endif %}
                     </form>
                     
                     <!-- Login Link -->
-                    <div class="text-center mt-4 pt-3 border-top">
+                    <div class="auth-links">
                         <p class="text-muted mb-0">
                             Already have an account?
-                            <a href="{% url 'accounts:login' %}" class="text-success text-decoration-none fw-bold">
+                            <a href="{% url 'accounts:login' %}" class="auth-link">
                                 Login
                             </a>
                         </p>
@@ -115,7 +138,7 @@
             
             <!-- Back to Home -->
             <div class="text-center mt-3">
-                <a href="{% url 'core:landing' %}" class="text-muted text-decoration-none">
+                <a href="{% url 'core:landing' %}" class="auth-back-link">
                     <i class="bi bi-arrow-left"></i> Back to Home
                 </a>
             </div>
@@ -123,23 +146,10 @@
     </div>
 </div>
 
-<style>
-    .card {
-        border-radius: 15px;
-    }
-    
-    .form-control {
-        border-radius: 8px;
-        padding: 12px;
-    }
-    
-    .btn-success {
-        border-radius: 8px;
-        font-weight: 500;
-    }
-    
-    .form-text {
-        font-size: 0.875rem;
-    }
-</style>
+{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">
 {% endblock %}

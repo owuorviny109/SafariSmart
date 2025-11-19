@@ -81,6 +81,11 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">
 <style>
     .card {
         border-radius: 15px;

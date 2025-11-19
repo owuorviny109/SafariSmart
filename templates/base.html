@@ -115,7 +115,7 @@
     <!-- Modern Navbar -->
     <nav class="navbar navbar-expand-lg modern-navbar" id="mainNavbar">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'core:landing' %}">
+            <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'core:dashboard' %}{% else %}{% url 'core:landing' %}{% endif %}">
                 <i class="bi bi-globe-africa"></i> SafariSmart Kenya
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -123,17 +123,39 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                    <!-- Logged-in User Navigation -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:dashboard' %}">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'destinations:browse' %}">
+                            <i class="bi bi-compass"></i> Destinations
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-success text-white ms-2 px-3" href="{% url 'core:destination_selection' %}">
+                            <i class="bi bi-plus-circle"></i> New Trip
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ user.first_name|default:user.username }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <!-- Public User Navigation -->
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'destinations:list' %}">Destinations</a>
                     </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:dashboard' %}">My Trips</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
-                    </li>
-                    {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
                     </li>
@@ -161,6 +183,8 @@
     <!-- Main Content -->
     {% block content %}{% endblock %}
 
+    <!-- Promotional sections only for non-authenticated users -->
+    {% if not user.is_authenticated %}
     <!-- Interactive Value Cards Section -->
     <section style="background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); padding: 3rem 0;">
         <div class="container">
@@ -364,6 +388,7 @@
             transform: rotateY(180deg);
         }
     </style>
+    {% endif %}
 
     <!-- Modern Clean Footer -->
     <footer style="background: #1a1a1a; color: #e5e7eb; padding: 60px 0 30px;">

@@ -27,6 +27,7 @@ urlpatterns = [
     
     # Itinerary
     path('itinerary/<uuid:share_code>/', views.itinerary_detail, name='itinerary_detail'),
+    path('itinerary/<uuid:share_code>/save/', views.save_itinerary, name='save_itinerary'),
     path('trip/<uuid:share_code>/', views.shared_itinerary, name='shared_itinerary'),
     
     # Dashboard

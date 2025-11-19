@@ -138,8 +138,9 @@ class SaveManager {
             return;
         }
         
-        // TODO: Implement actual save functionality
-        this.notificationManager.show('Itinerary saved! ✓', 'success');
+        // Save functionality implemented in template
+        // This method is kept for compatibility but actual save is handled in template
+        this.notificationManager.show('Save functionality moved to template', 'info');
     }
 }
 

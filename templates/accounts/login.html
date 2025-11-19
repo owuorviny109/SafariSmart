@@ -1,105 +1,114 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Login - SafariSmart Kenya{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-sm">
-                <div class="card-body p-5">
-                    <!-- Header -->
-                    <div class="text-center mb-4">
-                        <h2 class="text-success">
-                            <i class="bi bi-globe-africa"></i> Welcome Back
-                        </h2>
-                        <p class="text-muted">Login to your SafariSmart Kenya account</p>
-                    </div>
-                    
-                    <!-- Login Form -->
-                    <form method="post">
-                        {% csrf_token %}
-                        
-                        <!-- Username/Email Field -->
-                        <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label">
-                                <i class="bi bi-person"></i> Username or Email
-                            </label>
-                            {{ form.username }}
-                            {% if form.username.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.username.errors }}
-                                </div>
-                            {% endif %}
+<div class="auth-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="auth-card-body">
+                        <!-- Header -->
+                        <div class="auth-header">
+                            <h2 class="auth-title">
+                                <i class="bi bi-globe-africa"></i> Welcome Back
+                            </h2>
+                            <p class="auth-subtitle">Login to your SafariSmart Kenya account</p>
                         </div>
                         
-                        <!-- Password Field -->
-                        <div class="mb-3">
-                            <label for="{{ form.password.id_for_label }}" class="form-label">
-                                <i class="bi bi-lock"></i> Password
-                            </label>
-                            {{ form.password }}
-                            {% if form.password.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.password.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-                        
-                        <!-- Remember Me & Forgot Password -->
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="rememberMe">
-                                <label class="form-check-label" for="rememberMe">
-                                    Remember me
+                        <!-- Login Form -->
+                        <form method="post" class="auth-form">
+                            {% csrf_token %}
+                            
+                            <!-- Username/Email Field -->
+                            <div class="auth-form-group">
+                                <label for="{{ form.username.id_for_label }}" class="auth-form-label">
+                                    <i class="bi bi-person"></i> Username or Email
                                 </label>
+                                <input type="text" 
+                                       name="{{ form.username.name }}" 
+                                       id="{{ form.username.id_for_label }}"
+                                       class="auth-form-control{% if form.username.errors %} is-invalid{% endif %}"
+                                       placeholder="Enter username or email"
+                                       value="{{ form.username.value|default:'' }}"
+                                       required>
+                                {% if form.username.errors %}
+                                    <div class="auth-invalid-feedback">
+                                        {{ form.username.errors.0 }}
+                                    </div>
+                                {% endif %}
                             </div>
-                            <a href="{% url 'accounts:password_reset' %}" class="text-decoration-none">
-                                Forgot password?
-                            </a>
+                            
+                            <!-- Password Field -->
+                            <div class="auth-form-group">
+                                <label for="{{ form.password.id_for_label }}" class="auth-form-label">
+                                    <i class="bi bi-lock"></i> Password
+                                </label>
+                                <input type="password" 
+                                       name="{{ form.password.name }}" 
+                                       id="{{ form.password.id_for_label }}"
+                                       class="auth-form-control{% if form.password.errors %} is-invalid{% endif %}"
+                                       placeholder="Enter your password"
+                                       required>
+                                {% if form.password.errors %}
+                                    <div class="auth-invalid-feedback">
+                                        {{ form.password.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Remember Me & Forgot Password -->
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <a href="{% url 'accounts:password_reset' %}" class="auth-link">
+                                    Forgot password?
+                                </a>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" class="auth-btn auth-btn-primary auth-btn-full">
+                                <i class="bi bi-box-arrow-in-right"></i> Login
+                            </button>
+                            
+                            <!-- Non-field Errors -->
+                            {% if form.non_field_errors %}
+                                <div class="auth-alert auth-alert-danger">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
+                        </form>
+                        
+                        <!-- Register Link -->
+                        <div class="auth-links">
+                            <p class="text-muted mb-0">
+                                Don't have an account?
+                                <a href="{% url 'accounts:register' %}" class="auth-link">
+                                    Sign Up
+                                </a>
+                            </p>
                         </div>
-                        
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn btn-success w-100 py-2 mb-3">
-                            <i class="bi bi-box-arrow-in-right"></i> Login
-                        </button>
-                        
-                        <!-- Non-field Errors -->
-                        {% if form.non_field_errors %}
-                            <div class="alert alert-danger">
-                                {{ form.non_field_errors }}
-                            </div>
-                        {% endif %}
-                    </form>
-                    
-                    <!-- Register Link -->
-                    <div class="text-center mt-4 pt-3 border-top">
-                        <p class="text-muted mb-0">
-                            Don't have an account?
-                            <a href="{% url 'accounts:register' %}" class="text-success text-decoration-none fw-bold">
-                                Sign Up
-                            </a>
-                        </p>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Back to Home -->
-            <div class="text-center mt-3">
-                <a href="{% url 'core:landing' %}" class="text-muted text-decoration-none">
-                    <i class="bi bi-arrow-left"></i> Back to Home
-                </a>
+                
+                <!-- Back to Home -->
+                <div class="text-center mt-3">
+                    <a href="{% url 'core:landing' %}" class="auth-back-link">
+                        <i class="bi bi-arrow-left"></i> Back to Home
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">
-    
-    .btn-success {
-        border-radius: 8px;
-        font-weight: 500;
-    }
-</style>
 {% endblock %}
