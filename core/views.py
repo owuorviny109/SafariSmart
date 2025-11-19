@@ -1277,6 +1277,7 @@ def generate_itinerary_api(request: HttpRequest) -> JsonResponse:
         # Gather all wizard data
         preferences = {
             'destinations': wizard_service.get_selected_destinations(),
+            'custom_destinations': wizard_service.get_custom_destinations(),
             'duration_days': wizard_service.get_duration_data().get('duration_days'),
             'start_date': wizard_service.get_duration_data().get('start_date'),
             'budget_amount': wizard_service.get_budget_data().get('budget_amount'),

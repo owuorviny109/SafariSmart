@@ -151,6 +151,7 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
             str: Formatted prompt for AI
         """
         destinations = preferences.get('destinations', [])
+        custom_destinations = preferences.get('custom_destinations', [])
         duration = preferences.get('duration_days', 3)
         budget = preferences.get('budget_amount', 50000)
         budget_category = preferences.get('budget_category', 'mid-range')
@@ -158,13 +159,10 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
         children = preferences.get('children_count', 0)
         interests = preferences.get('interests', [])
         
-        # Build destination details
-        dest_details = []
-        for dest in destinations:
-            dest_details.append(
-                f"- {dest.name}: {dest.description}"
-            )
-        destinations_text = "\n".join(dest_details)
+        # Build combined destination list
+        all_dest_names = [d.name for d in destinations]
+        all_dest_names.extend(custom_destinations)
+        destinations_text = ', '.join(all_dest_names)
         
         # Build interests text
         interests_text = ", ".join(interests) if interests else "general tourism"
@@ -172,10 +170,12 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
         prompt = f"""Create a {duration}-day Kenya itinerary.
 
 DETAILS:
-Destinations: {', '.join([d.name for d in destinations])}
+Destinations: {destinations_text}
 Budget: KSh {budget:,} ({budget_category})
 Travelers: {adults} adult(s), {children} child(ren)
 Interests: {interests_text}
+
+NOTE: Include detailed information for ALL destinations, especially custom ones like {', '.join(custom_destinations) if custom_destinations else 'any lesser-known places'}. Research and provide specific activities, accommodations, and local attractions.
 
 FORMAT (be concise):
 Day 1: [Location]
@@ -293,12 +293,18 @@ class TemplateItineraryGenerator(BaseItineraryGenerator):
         logger.info("Generating template-based itinerary")
         
         destinations = preferences.get('destinations', [])
+        custom_destinations = preferences.get('custom_destinations', [])
         duration = preferences.get('duration_days', 3)
         budget_category = preferences.get('budget_category', 'mid-range')
         interests = preferences.get('interests', [])
         
+        # Combine all destination names
+        all_dest_names = [dest.name for dest in destinations]
+        all_dest_names.extend(custom_destinations)
+        
         content = self._build_template_content(
             destinations,
+            custom_destinations,
             duration,
             budget_category,
             interests
@@ -307,7 +313,7 @@ class TemplateItineraryGenerator(BaseItineraryGenerator):
         return {
             'title': self._generate_title(preferences),
             'duration_days': duration,
-            'destinations': [dest.name for dest in destinations],
+            'destinations': all_dest_names,
             'budget_amount': preferences.get('budget_amount', 0),
             'travelers': {
                 'adults': preferences.get('adults_count', 1),
@@ -321,6 +327,7 @@ class TemplateItineraryGenerator(BaseItineraryGenerator):
     def _build_template_content(
         self,
         destinations: List[Destination],
+        custom_destinations: List[str],
         duration: int,
         budget_category: str,
         interests: List[str]
@@ -329,7 +336,8 @@ class TemplateItineraryGenerator(BaseItineraryGenerator):
         Build template itinerary content.
         
         Args:
-            destinations: List of destinations
+            destinations: List of database destinations
+            custom_destinations: List of custom destination names
             duration: Trip duration in days
             budget_category: Budget tier
             interests: User interests
@@ -339,16 +347,23 @@ class TemplateItineraryGenerator(BaseItineraryGenerator):
         """
         content_parts = []
         
+        # Combine all destinations
+        all_dest_names = [d.name for d in destinations]
+        all_dest_names.extend(custom_destinations)
+        total_destinations = len(all_dest_names)
+        
         # Introduction
-        dest_names = ", ".join([d.name for d in destinations])
+        dest_names = ", ".join(all_dest_names)
         content_parts.append(
             f"Welcome to your {duration}-day adventure in {dest_names}!\n\n"
         )
         
         # Daily itinerary
-        days_per_dest = max(1, duration // len(destinations)) if destinations else duration
+        days_per_dest = max(1, duration // total_destinations) if total_destinations else duration
         
         current_day = 1
+        
+        # Handle database destinations
         for dest in destinations:
             dest_days = min(days_per_dest, duration - current_day + 1)
             
@@ -367,6 +382,26 @@ class TemplateItineraryGenerator(BaseItineraryGenerator):
                     
             if current_day > duration:
                 break
+        
+        # Handle custom destinations
+        for custom_dest_name in custom_destinations:
+            if current_day > duration:
+                break
+                
+            dest_days = min(days_per_dest, duration - current_day + 1)
+            
+            for day_num in range(dest_days):
+                day_content = self._generate_custom_day_template(
+                    current_day,
+                    custom_dest_name,
+                    budget_category,
+                    interests
+                )
+                content_parts.append(day_content)
+                current_day += 1
+                
+                if current_day > duration:
+                    break
         
         # Budget breakdown
         content_parts.append(self._generate_budget_template(budget_category))
@@ -412,6 +447,67 @@ Evening (6:00 PM - 10:00 PM):
 - Evening entertainment
 
 Accommodation: {accommodation}
+
+"""
+    
+    def _generate_custom_day_template(
+        self,
+        day_number: int,
+        destination_name: str,
+        budget_category: str,
+        interests: List[str]
+    ) -> str:
+        """Generate template for a custom destination day."""
+        # Generic activities based on interests
+        activity_suggestions = {
+            'wildlife': 'Wildlife viewing and nature exploration',
+            'culture': 'Cultural experiences and local community visits',
+            'food': 'Local cuisine sampling and food tours',
+            'adventure': 'Outdoor activities and adventure sports',
+            'relaxation': 'Leisure activities and relaxation',
+            'photography': 'Photography opportunities and scenic spots',
+            'history': 'Historical landmarks and heritage sites',
+            'nature': 'Nature walks and eco-tourism',
+            'beach': 'Beach activities and water-based recreation',
+            'nightlife': 'Evening entertainment and local nightlife'
+        }
+        
+        # Select activities based on interests
+        selected_activities = []
+        for interest in interests[:2]:  # Take first 2 interests
+            if interest in activity_suggestions:
+                selected_activities.append(activity_suggestions[interest])
+        
+        if not selected_activities:
+            selected_activities = ['Explore local attractions', 'Visit popular sites']
+        
+        # Budget-based accommodation
+        accommodation_types = {
+            'budget': 'Budget guesthouse or hostel',
+            'mid-range': 'Mid-range hotel or lodge',
+            'luxury': 'Luxury resort or boutique hotel'
+        }
+        accommodation = accommodation_types.get(budget_category, 'Local accommodation')
+        
+        return f"""Day {day_number}: {destination_name}
+
+Morning (8:00 AM - 12:00 PM):
+- Breakfast at your accommodation
+- {selected_activities[0]}
+- Explore the local area and main attractions
+
+Afternoon (12:00 PM - 6:00 PM):
+- Lunch at a recommended local restaurant
+- {selected_activities[1] if len(selected_activities) > 1 else 'Visit nearby points of interest'}
+- Afternoon sightseeing and activities
+
+Evening (6:00 PM - 10:00 PM):
+- Sunset viewing at a scenic spot
+- Dinner featuring local specialties
+- Evening leisure time
+
+Accommodation: {accommodation} in {destination_name}
+Estimated cost: KSh 3,000 - 8,000 per night (depending on season and availability)
 
 """
         
