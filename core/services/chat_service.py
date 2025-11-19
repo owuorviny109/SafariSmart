@@ -313,38 +313,94 @@ class AIChatHandler:
             
     def _build_extraction_prompt(self, user_input: str, context: ChatContext) -> str:
         """Build prompt for AI to extract trip data."""
-        prompt = f"""You are a helpful travel assistant for Kenya trips. Extract trip information from the user's message.
+        
+        # Check what's missing
+        missing = []
+        if not context.extracted_data.get('custom_destinations'):
+            missing.append('destination')
+        if context.extracted_data.get('duration_days') is None:
+            missing.append('duration')
+        if not context.extracted_data.get('budget_category'):
+            missing.append('budget')
+        if not context.extracted_data.get('interests'):
+            missing.append('interests')
+        
+        prompt = f"""You are a friendly Kenyan safari planning assistant. Have a natural conversation to help plan a custom trip.
 
-User message: "{user_input}"
+User said: "{user_input}"
 
-Current context:
-- Destinations: {context.extracted_data.get('custom_destinations', [])}
-- Duration: {context.extracted_data.get('duration_days', 'not set')}
-- Budget: {context.extracted_data.get('budget_category', 'not set')}
-- Interests: {context.extracted_data.get('interests', [])}
+What we know so far:
+- Destination: {context.extracted_data.get('custom_destinations', ['Not specified yet'])[0] if context.extracted_data.get('custom_destinations') else 'Not specified yet'}
+- Duration: {context.extracted_data.get('duration_days', 'Not specified yet')} days
+- Budget: {context.extracted_data.get('budget_category', 'Not specified yet')}
+- Interests: {', '.join(context.extracted_data.get('interests', [])) or 'Not specified yet'}
 
-Extract and respond in this format:
-DESTINATIONS: [list any Kenya destinations mentioned]
-DURATION: [number of days, or "unknown"]
-BUDGET: [budget/mid-range/luxury, or "unknown"]
-INTERESTS: [list interests like wildlife, culture, food, etc.]
-RESPONSE: [Your friendly response to the user, asking for missing info]
+Still need: {', '.join(missing) if missing else 'All info collected!'}
 
-Be conversational and helpful."""
+Instructions:
+1. Be warm, friendly, and conversational (like a real person, not a robot)
+2. If user greets you, greet back warmly
+3. Extract any trip info from their message
+4. Ask for ONE missing piece of info at a time
+5. Be enthusiastic about Kenya!
+
+Respond naturally in 1-2 sentences. Then on new lines add:
+DESTINATIONS: [any Kenya places mentioned, or "none"]
+DURATION: [number only, or "none"]
+BUDGET: [budget/mid-range/luxury, or "none"]
+INTERESTS: [comma-separated, or "none"]"""
         
         return prompt
         
     def _parse_ai_response(self, ai_text: str, context: ChatContext) -> Tuple[str, Dict[str, Any]]:
         """Parse AI response and extract structured data."""
         extracted = {}
-        bot_response = self.config.error_message
         
-        # Simple parsing (can be enhanced)
+        # Split response and data
         lines = ai_text.split('\n')
+        response_lines = []
+        
         for line in lines:
-            if line.startswith('RESPONSE:'):
-                bot_response = line.replace('RESPONSE:', '').strip()
-                
+            line = line.strip()
+            
+            if line.startswith('DESTINATIONS:'):
+                dest_text = line.replace('DESTINATIONS:', '').strip()
+                if dest_text.lower() != 'none' and dest_text:
+                    # Extract destination names
+                    destinations = [d.strip() for d in dest_text.split(',') if d.strip()]
+                    if destinations:
+                        extracted['custom_destinations'] = destinations
+                        
+            elif line.startswith('DURATION:'):
+                duration_text = line.replace('DURATION:', '').strip()
+                if duration_text.lower() != 'none':
+                    # Extract number
+                    import re
+                    numbers = re.findall(r'\d+', duration_text)
+                    if numbers:
+                        extracted['duration_days'] = int(numbers[0])
+                        
+            elif line.startswith('BUDGET:'):
+                budget_text = line.replace('BUDGET:', '').strip().lower()
+                if budget_text in ['budget', 'mid-range', 'luxury']:
+                    extracted['budget_category'] = budget_text
+                    
+            elif line.startswith('INTERESTS:'):
+                interests_text = line.replace('INTERESTS:', '').strip()
+                if interests_text.lower() != 'none' and interests_text:
+                    interests = [i.strip().lower() for i in interests_text.split(',') if i.strip()]
+                    if interests:
+                        extracted['interests'] = interests
+            else:
+                # This is part of the response
+                if line and not any(line.startswith(prefix) for prefix in ['DESTINATIONS:', 'DURATION:', 'BUDGET:', 'INTERESTS:']):
+                    response_lines.append(line)
+        
+        # Join response lines
+        bot_response = ' '.join(response_lines).strip()
+        if not bot_response:
+            bot_response = self.config.error_message
+            
         return bot_response, extracted
 
 
@@ -433,14 +489,21 @@ class TripPlannerChatService:
         """
         Determine if query requires AI processing.
         
+        For chat, we default to AI for natural conversation.
+        Only use simple chat for very straightforward answers.
+        
         Args:
             message (str): User's message
             
         Returns:
-            bool: True if complex, False if simple
+            bool: True if complex (use AI), False if simple
         """
-        word_count = len(message.split())
-        return word_count >= self.config.ai_complexity_threshold
+        # Always use AI if available for better conversation
+        if self.ai_chat:
+            return True
+            
+        # Fallback to simple chat only if AI not available
+        return False
         
     def _handle_with_simple(
         self,
@@ -489,14 +552,33 @@ class TripPlannerChatService:
         
         # Update context with extracted data
         if extracted_data:
-            context.extracted_data.update(extracted_data)
+            for key, value in extracted_data.items():
+                if key == 'custom_destinations' and value:
+                    # Append to existing destinations
+                    existing = context.extracted_data.get('custom_destinations', [])
+                    for dest in value:
+                        if dest not in existing:
+                            existing.append(dest)
+                    context.extracted_data['custom_destinations'] = existing
+                elif key == 'interests' and value:
+                    # Append to existing interests
+                    existing = context.extracted_data.get('interests', [])
+                    for interest in value:
+                        if interest not in existing:
+                            existing.append(interest)
+                    context.extracted_data['interests'] = existing
+                else:
+                    # Replace other fields
+                    context.extracted_data[key] = value
             
         context.add_message('bot', bot_message)
         
         # Check if complete
         if context.is_complete():
+            completion_msg = self.config.completion_message
+            context.add_message('bot', completion_msg)
             return {
-                'message': self.config.completion_message,
+                'message': completion_msg,
                 'type': 'completion',
                 'completed': True,
                 'extracted_data': context.extracted_data
