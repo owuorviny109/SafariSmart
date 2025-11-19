@@ -13,6 +13,10 @@
 
 SafariSmart Kenya is built with **love for Kenya** and a passion for promoting **domestic tourism**. This platform leverages cutting-edge **AI technology** to make safari and travel planning accessible, affordable, and exciting for everyone.
 
+**Academic Project**: This project is being developed as part of the Web Development course at [eMobilis Mobile Technology Institute](https://learn.emobilis-lms.org/), under the guidance of instructor [Joseph Ridge](https://github.com/JosephRidge).
+
+**Learning Journey**: Currently learning Django, Python, Figma, Bootstrap 5, HTML, CSS, and SCSS while building this project incrementally. The first release is now live, with daily improvements being made as I prepare for the December presentation.
+
 ### Mission
 To showcase Kenya's breathtaking destinations and make trip planning effortless through intelligent automation, helping both local and international travelers discover the beauty of Kenya.
 
@@ -97,6 +101,8 @@ Your support helps keep this project running and improving!
 - Built with passion for Kenya
 - Powered by Google's Gemini AI
 - Inspired by Kenya's incredible natural beauty
+- Developed as part of Web Development training at [eMobilis Mobile Technology Institute](https://learn.emobilis-lms.org/)
+- Special thanks to instructor [Joseph Ridge](https://github.com/JosephRidge) for guidance and mentorship
 
 ---
 
