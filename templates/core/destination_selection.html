@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Step 1: Choose Destinations - SafariSmart Kenya{% endblock %}
 
@@ -308,6 +309,10 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- Chat Widget CSS & JS -->
+<link rel="stylesheet" href="{% static 'css/chat-widget.css' %}">
+<script src="{% static 'js/chat-widget.js' %}"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const cards = document.querySelectorAll('.destination-card');

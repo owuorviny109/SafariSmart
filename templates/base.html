@@ -55,6 +55,9 @@
     <!-- Modern Theme CSS -->
     <link rel="stylesheet" href="{% static 'css/modern-theme.css' %}">
     
+    <!-- Chat Widget CSS -->
+    <link rel="stylesheet" href="{% static 'css/chat-widget.css' %}">
+    
     {% block extra_css %}{% endblock %}
     
     <!-- Structured Data (JSON-LD) - Organization -->
@@ -459,6 +462,9 @@
             });
         });
     </script>
+    
+    <!-- Chat Widget JS -->
+    <script src="{% static 'js/chat-widget.js' %}"></script>
     
     {% block extra_js %}{% endblock %}
 </body>
