@@ -38,6 +38,15 @@ def destination_list(request):
     })
 
 
+def destination_browse(request):
+    """Simple browse page for destinations"""
+    destinations = Destination.objects.all().order_by('destination_type', 'name')
+    
+    return render(request, 'destinations/browse.html', {
+        'destinations': destinations
+    })
+
+
 def destination_detail(request, slug):
     """Destination detail page with weather forecast"""
     destination = get_object_or_404(Destination, slug=slug)

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Browse Destinations - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/destinations-browse.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="browse-header">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">
+            Browse Kenya Destinations
+        </h1>
+        <p class="lead">Discover amazing places across Kenya - from wildlife safaris to pristine beaches</p>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="filter-section">
+    <div class="container">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">
+                <i class="bi bi-grid"></i> All Destinations
+            </button>
+            <button class="filter-btn" data-filter="safari">
+                <i class="bi bi-binoculars"></i> Safari
+            </button>
+            <button class="filter-btn" data-filter="beach">
+                <i class="bi bi-umbrella-beach"></i> Beach
+            </button>
+            <button class="filter-btn" data-filter="city">
+                <i class="bi bi-building"></i> City
+            </button>
+            <button class="filter-btn" data-filter="mountain">
+                <i class="bi bi-mountain"></i> Mountain
+            </button>
+            <button class="filter-btn" data-filter="cultural">
+                <i class="bi bi-bank"></i> Cultural
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Destinations Grid -->
+<section class="destinations-section">
+    <div class="container">
+        <div class="destinations-grid" id="destinationsGrid">
+            {% for destination in destinations %}
+            <div class="destination-card" data-type="{{ destination.destination_type }}">
+                <div class="destination-image">
+                    <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% elif destination.destination_type == 'city' %}building{% elif destination.destination_type == 'mountain' %}mountain{% else %}bank{% endif %}"></i>
+                </div>
+                <div class="destination-body">
+                    <h3 class="destination-name">{{ destination.name }}</h3>
+                    <span class="destination-type">{{ destination.get_destination_type_display }}</span>
+                    <p class="destination-description">{{ destination.description|truncatewords:15 }}</p>
+                    <div class="destination-footer">
+                        <div class="destination-cost">KSh {{ destination.average_cost_per_day|floatformat:0 }}/day</div>
+                        <a href="{% url 'destinations:detail' destination.slug %}" class="btn-explore">
+                            Explore <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container text-center">
+        <h2 class="mb-3">Ready to Plan Your Trip?</h2>
+        <p class="lead text-muted mb-4">Let our AI create a personalized itinerary for you</p>
+        <a href="{% url 'core:destination_selection' %}" class="btn btn-primary btn-lg px-5">
+            <i class="bi bi-magic"></i> Start Planning
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const destinationCards = document.querySelectorAll('.destination-card');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Update active state
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            const filter = this.dataset.filter;
+            
+            // Show/hide cards based on filter
+            destinationCards.forEach(card => {
+                if (filter === 'all' || card.dataset.type === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
