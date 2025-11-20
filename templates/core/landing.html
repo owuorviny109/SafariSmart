@@ -17,21 +17,118 @@
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-{% include 'components/sections/hero.html' %}
+<!-- Hero Section - Authentic & High-Impact -->
+<section class="hero-section">
+    <div class="hero-section__background">
+        <img src="{% static 'images/heroes/maasai-mara-hero.jpg' %}" alt="Maasai Mara Safari Experience" loading="eager">
+    </div>
+    
+    <div class="hero-section__content">
+        <div class="container">
+            <h1 class="hero-section__title">
+                Kenya, Engineered for You.<br>
+                <span style="color: #D4A574;">Discover the Smart Way to Safari.</span>
+            </h1>
+            
+            <p class="hero-section__subtitle">
+                From the Masai Mara to Diani Beach, our intelligent planner builds your personalized itinerary in seconds. Stop guessing, start exploring.
+            </p>
+            
+            <div class="hero-section__actions">
+                <a href="{% url 'core:destination_selection' %}" class="hero-cta-primary">
+                    <i class="bi bi-cpu"></i>
+                    <span>Plan My Smart Trip</span>
+                </a>
+                
+                <a href="{% url 'destinations:list' %}" class="hero-cta-secondary">
+                    <i class="bi bi-map"></i>
+                    <span>Explore Destinations</span>
+                </a>
+            </div>
+            
+            <!-- Trust Indicators -->
+            <div class="hero-section__trust">
+                <div class="hero-section__trust-item">
+                    <i class="bi bi-shield-check"></i>
+                    <span>100% Free</span>
+                </div>
+                <div class="hero-section__trust-item">
+                    <i class="bi bi-people"></i>
+                    <span>1,000+ Travelers</span>
+                </div>
+                <div class="hero-section__trust-item">
+                    <i class="bi bi-star-fill"></i>
+                    <span>4.8/5 Rating</span>
+                </div>
+                <div class="hero-section__trust-item">
+                    <i class="bi bi-clock"></i>
+                    <span>Ready in 3 Minutes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- Why Choose SafariSmart - Value Cards Section -->
-<section class="py-5" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+<!-- The SafariSmart Advantage Section -->
+<section class="advantage-section">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="section-title">Why Choose SafariSmart</h2>
+            <h2 class="section-title">The SafariSmart Advantage</h2>
             <p class="section-subtitle">
-                Experience the future of travel planning with our intelligent platform
+                Travel planning reimagined for the modern explorer
             </p>
         </div>
         
-        <!-- Value Cards -->
-        {% include 'components/sections/value-cards.html' %}
+        <!-- Enhanced Value Cards -->
+        <div class="advantage-grid">
+            <!-- Intelligent Itineraries -->
+            <div class="advantage-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="advantage-icon">
+                    <i class="bi bi-diagram-3"></i>
+                </div>
+                <h3 class="advantage-title">Intelligent Itineraries</h3>
+                <p class="advantage-description">Instantly map out your perfect trip. Our AI seamlessly handles the logistics, so you just focus on the adventure.</p>
+                <div class="advantage-stats">
+                    <small>1,000+ itineraries created</small>
+                </div>
+            </div>
+
+            <!-- Expertly Curated Routes -->
+            <div class="advantage-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="advantage-icon">
+                    <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <h3 class="advantage-title">Expertly Curated Routes</h3>
+                <p class="advantage-description">Discover hidden gems and iconic sights across Kenya. Hand-picked destinations, from the Mara to the coast.</p>
+                <div class="advantage-stats">
+                    <small>20+ curated locations</small>
+                </div>
+            </div>
+
+            <!-- Plan with Confidence -->
+            <div class="advantage-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="advantage-icon">
+                    <i class="bi bi-cloud-sun-fill"></i>
+                </div>
+                <h3 class="advantage-title">Plan with Confidence</h3>
+                <p class="advantage-description">Real-time, localized weather insights ensure you're always prepared for the perfect safari light or beach day.</p>
+                <div class="advantage-stats">
+                    <small>7-day accurate forecasts</small>
+                </div>
+            </div>
+
+            <!-- Always Free to Plan -->
+            <div class="advantage-card advantage-card--featured" data-aos="fade-up" data-aos-delay="400">
+                <div class="advantage-icon">
+                    <i class="bi bi-shield-check-fill"></i>
+                </div>
+                <h3 class="advantage-title">Always Free to Plan</h3>
+                <p class="advantage-description">Use our powerful tools without any cost or obligation. We believe in transparent, zero-stress planning.</p>
+                <div class="advantage-stats">
+                    <small>Trusted by 500+ travelers</small>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 

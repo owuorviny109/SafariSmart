@@ -1,0 +1,192 @@
+/**
+ * Hero Section Component
+ * Authentic, high-impact hero with integrated search
+ */
+
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, $tk-primary-dark 0%, $tk-accent-dark 100%);
+
+  // Video/Image Background
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba($tk-primary-dark, 0.7) 0%,
+        rgba($tk-accent-dark, 0.5) 50%,
+        rgba($tk-vibrant-dark, 0.3) 100%
+      );
+      z-index: 2;
+    }
+
+    img, video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  // Content Container
+  &__content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+    color: $tk-surface;
+    padding: $tk-space-4xl 0;
+  }
+
+  // Hero Title
+  &__title {
+    font-family: $tk-font-display;
+    font-size: $tk-hero-title;
+    font-weight: $tk-weight-bold;
+    line-height: $tk-leading-tight;
+    margin-bottom: $tk-space-lg;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    @media (max-width: $tk-breakpoint-md) {
+      font-size: $tk-text-4xl;
+    }
+  }
+
+  // Hero Subtitle
+  &__subtitle {
+    font-size: $tk-text-xl;
+    font-weight: $tk-weight-medium;
+    line-height: $tk-leading-relaxed;
+    margin-bottom: $tk-space-3xl;
+    opacity: 0.95;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media (max-width: $tk-breakpoint-md) {
+      font-size: $tk-text-lg;
+      margin-bottom: $tk-space-2xl;
+    }
+  }
+
+  // Search Widget
+  &__search {
+    background: rgba($tk-surface, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: $tk-radius-2xl;
+    padding: $tk-space-2xl;
+    box-shadow: $tk-shadow-2xl;
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid rgba($tk-surface, 0.2);
+
+    @media (max-width: $tk-breakpoint-md) {
+      margin: 0 $tk-space-md;
+      padding: $tk-space-xl;
+      border-radius: $tk-radius-xl;
+    }
+  }
+
+  // Trust Indicators
+  &__trust {
+    margin-top: $tk-space-2xl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: $tk-space-xl;
+    flex-wrap: wrap;
+    opacity: 0.9;
+
+    @media (max-width: $tk-breakpoint-md) {
+      gap: $tk-space-lg;
+      margin-top: $tk-space-xl;
+    }
+  }
+
+  &__trust-item {
+    display: flex;
+    align-items: center;
+    gap: $tk-space-xs;
+    font-size: $tk-text-sm;
+    font-weight: $tk-weight-medium;
+
+    i {
+      color: $tk-primary-light;
+      font-size: $tk-text-lg;
+    }
+  }
+}
+
+// Hero Action Buttons
+.hero-cta-primary {
+  background: linear-gradient(135deg, $tk-primary 0%, $tk-primary-dark 100%);
+  color: $tk-surface;
+  text-decoration: none;
+  padding: $tk-space-lg $tk-space-2xl;
+  border-radius: $tk-radius-lg;
+  font-size: $tk-text-lg;
+  font-weight: $tk-weight-semibold;
+  display: inline-flex;
+  align-items: center;
+  gap: $tk-space-sm;
+  box-shadow: $tk-shadow-lg;
+  @include smooth-transition(all);
+  @include hover-lift(6px);
+
+  &:hover {
+    background: linear-gradient(135deg, $tk-primary-light 0%, $tk-primary 100%);
+    color: $tk-surface;
+    text-decoration: none;
+    box-shadow: $tk-shadow-xl;
+  }
+
+  @media (max-width: $tk-breakpoint-md) {
+    width: 100%;
+    justify-content: center;
+    padding: $tk-space-xl;
+  }
+}
+
+.hero-cta-secondary {
+  background: rgba($tk-surface, 0.15);
+  color: $tk-surface;
+  text-decoration: none;
+  padding: $tk-space-lg $tk-space-2xl;
+  border-radius: $tk-radius-lg;
+  font-size: $tk-text-lg;
+  font-weight: $tk-weight-medium;
+  display: inline-flex;
+  align-items: center;
+  gap: $tk-space-sm;
+  border: 2px solid rgba($tk-surface, 0.3);
+  backdrop-filter: blur(10px);
+  @include smooth-transition(all);
+
+  &:hover {
+    background: rgba($tk-surface, 0.25);
+    color: $tk-surface;
+    text-decoration: none;
+    border-color: rgba($tk-surface, 0.5);
+  }
+
+  @media (max-width: $tk-breakpoint-md) {
+    width: 100%;
+    justify-content: center;
+    padding: $tk-space-xl;
+  }
+}

@@ -9,17 +9,23 @@
 // COLOR PALETTE - Kenyan Landscape Inspired
 // ============================================
 
-// Primary: Lake Turkana Teal (deep, mysterious, unique)
-$tk-primary: #0B5A5A;        // Main brand color - Lake Turkana's deep waters
-$tk-primary-light: #0E7373;  // Hover/active states
-$tk-primary-dark: #084545;   // Pressed states
-$tk-primary-subtle: #E8F4F4; // Backgrounds, badges
+// Primary: Safari Sunset (warm, adventurous, authentic)
+$tk-primary: #D4A574;        // Savanna Gold - warm, inviting
+$tk-primary-light: #E8C9A8;  // Light backgrounds
+$tk-primary-dark: #B8895E;   // Hover/pressed states
+$tk-primary-subtle: #F5EDE3; // Very light backgrounds
 
-// Accent: Sunset Over Savanna (warm, inviting)
-$tk-accent: #E07A2B;         // CTAs, highlights
-$tk-accent-light: #F09850;   // Hover states
-$tk-accent-dark: #C66820;    // Pressed states
-$tk-accent-subtle: #FFF3E8;  // Light backgrounds
+// Accent: Kenya Green (nature, trust, adventure)
+$tk-accent: #2D5F3F;         // Deep forest green
+$tk-accent-light: #4A8A5F;   // Hover states
+$tk-accent-dark: #1F4229;    // Pressed states
+$tk-accent-subtle: #E8F2EC;  // Light backgrounds
+
+// Vibrant: Ocean Blue (coastal, refreshing)
+$tk-vibrant: #1E88E5;        // Ocean blue for CTAs
+$tk-vibrant-light: #42A5F5;  // Hover states
+$tk-vibrant-dark: #1565C0;   // Pressed states
+$tk-vibrant-subtle: #E3F2FD; // Light backgrounds
 
 // Warm: Savannah Gold (earthy, premium)
 $tk-warm: #D9B24C;           // Secondary actions, badges
@@ -77,10 +83,15 @@ $tk-space-5xl: 80px;
 // TYPOGRAPHY
 // ============================================
 
-// Font Families
+// Font Families - Authentic Travel Brand
 $tk-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-$tk-font-display: "Merriweather", Georgia, "Times New Roman", serif;
+$tk-font-display: "Playfair Display", "Merriweather", Georgia, serif; // Elegant, travel-inspired headlines
 $tk-font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+// Brand Typography Scale
+$tk-hero-title: 3.5rem;      // 56px - Hero headlines
+$tk-section-title: 2.5rem;   // 40px - Section headers
+$tk-card-title: 1.375rem;    // 22px - Card titles
 
 // Font Sizes (modular scale 1.25)
 $tk-text-xs: 0.75rem;    // 12px

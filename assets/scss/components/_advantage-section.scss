@@ -1,0 +1,171 @@
+/**
+ * Advantage Section Component
+ * Enhanced value proposition with sophisticated design
+ */
+
+.advantage-section {
+  background: linear-gradient(135deg, 
+    rgba($tk-primary-subtle, 0.3) 0%, 
+    rgba($tk-accent-subtle, 0.2) 50%, 
+    rgba($tk-vibrant-subtle, 0.1) 100%
+  );
+  padding: $tk-space-5xl 0;
+  position: relative;
+  overflow: hidden;
+
+  // Subtle background pattern
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba($tk-primary, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba($tk-accent, 0.05) 0%, transparent 50%);
+    z-index: 1;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.advantage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $tk-space-2xl;
+  margin-top: $tk-space-3xl;
+
+  @media (max-width: $tk-breakpoint-md) {
+    gap: $tk-space-xl;
+    grid-template-columns: 1fr;
+  }
+}
+
+.advantage-card {
+  background: $tk-surface;
+  border-radius: $tk-radius-2xl;
+  padding: $tk-space-2xl;
+  box-shadow: $tk-shadow-md;
+  border: 1px solid rgba($tk-primary, 0.1);
+  position: relative;
+  overflow: hidden;
+  @include smooth-transition(all);
+  @include hover-lift(8px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, $tk-primary 0%, $tk-accent 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    @include smooth-transition(transform);
+  }
+
+  &:hover {
+    box-shadow: $tk-shadow-xl;
+    border-color: rgba($tk-primary, 0.2);
+
+    &::before {
+      transform: scaleX(1);
+    }
+
+    .advantage-icon {
+      transform: scale(1.1);
+      background: linear-gradient(135deg, $tk-primary 0%, $tk-accent 100%);
+    }
+  }
+
+  // Featured card (Always Free)
+  &--featured {
+    border: 2px solid $tk-accent;
+    background: linear-gradient(135deg, 
+      rgba($tk-accent-subtle, 0.3) 0%, 
+      $tk-surface 100%
+    );
+
+    &::before {
+      background: linear-gradient(90deg, $tk-accent 0%, $tk-accent-dark 100%);
+      transform: scaleX(1);
+    }
+
+    .advantage-icon {
+      background: linear-gradient(135deg, $tk-accent 0%, $tk-accent-dark 100%);
+      color: $tk-surface;
+    }
+  }
+}
+
+.advantage-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, $tk-primary-light 0%, $tk-primary 100%);
+  border-radius: $tk-radius-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $tk-space-lg;
+  color: $tk-surface;
+  @include smooth-transition(all);
+
+  i {
+    font-size: 32px;
+  }
+}
+
+.advantage-title {
+  font-size: $tk-text-xl;
+  font-weight: $tk-weight-bold;
+  color: $tk-text-primary;
+  margin-bottom: $tk-space-sm;
+  line-height: $tk-leading-tight;
+}
+
+.advantage-description {
+  color: $tk-text-secondary;
+  line-height: $tk-leading-relaxed;
+  margin-bottom: $tk-space-lg;
+  font-size: $tk-text-base;
+}
+
+.advantage-stats {
+  padding-top: $tk-space-sm;
+  border-top: 1px solid $tk-gray-200;
+
+  small {
+    font-size: $tk-text-xs;
+    color: $tk-text-tertiary;
+    font-weight: $tk-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Section titles
+.section-title {
+  font-family: $tk-font-display;
+  font-size: $tk-section-title;
+  font-weight: $tk-weight-bold;
+  color: $tk-text-primary;
+  margin-bottom: $tk-space-md;
+  line-height: $tk-leading-tight;
+
+  @media (max-width: $tk-breakpoint-md) {
+    font-size: $tk-text-3xl;
+  }
+}
+
+.section-subtitle {
+  font-size: $tk-text-lg;
+  color: $tk-text-secondary;
+  line-height: $tk-leading-relaxed;
+  max-width: 600px;
+  margin: 0 auto;
+}
