@@ -1,0 +1,121 @@
+/**
+ * Footer Component
+ * Modern clean footer with hover effects
+ */
+
+.site-footer {
+  background: #1a1a1a;
+  color: $tk-gray-200;
+  padding: $tk-space-5xl 0 $tk-space-2xl;
+
+  .footer-brand {
+    h3 {
+      font-size: $tk-text-2xl;
+      font-weight: $tk-weight-bold;
+      margin-bottom: $tk-space-md;
+      color: $tk-surface;
+    }
+
+    p {
+      color: $tk-gray-300;
+      line-height: $tk-leading-relaxed;
+      margin-bottom: $tk-space-lg;
+    }
+
+    .contact-info {
+      margin-bottom: $tk-space-md;
+
+      p {
+        color: $tk-gray-300;
+        font-size: $tk-text-sm;
+        margin-bottom: $tk-space-xs;
+
+        strong {
+          color: $tk-gray-200;
+        }
+      }
+
+      a {
+        color: $tk-forest-light;
+        text-decoration: none;
+        font-size: $tk-text-sm;
+        display: block;
+        margin-bottom: $tk-space-xs;
+        @include smooth-transition(color);
+
+        &:hover {
+          color: $tk-forest;
+        }
+      }
+    }
+  }
+
+  .footer-section {
+    h4 {
+      font-size: $tk-text-sm;
+      font-weight: $tk-weight-semibold;
+      margin-bottom: $tk-space-md;
+      color: $tk-surface;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: $tk-space-sm;
+
+        a {
+          color: $tk-gray-300;
+          text-decoration: none;
+          font-size: $tk-text-sm;
+          display: flex;
+          align-items: center;
+          gap: $tk-space-xs;
+          @include smooth-transition(all);
+
+          &:hover {
+            color: $tk-forest-light;
+            transform: translateX(5px);
+          }
+
+          &:focus {
+            outline: 2px solid $tk-primary;
+            outline-offset: 2px;
+            border-radius: $tk-radius-sm;
+          }
+
+          i {
+            font-size: $tk-text-sm;
+          }
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid #374151;
+    margin-top: $tk-space-4xl;
+    padding-top: $tk-space-lg;
+    text-align: center;
+
+    p {
+      color: $tk-gray-500;
+      font-size: $tk-text-sm;
+      margin: 0;
+    }
+  }
+}
+
+// Legacy hover class support
+.hover-success {
+  @include smooth-transition(all);
+
+  &:hover {
+    color: $tk-forest-light !important;
+    transform: translateX(5px);
+  }
+}

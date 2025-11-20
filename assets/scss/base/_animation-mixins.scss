@@ -1,0 +1,78 @@
+/**
+ * Animation Mixins & Utilities
+ * Centralized animation control with reduced-motion support
+ */
+
+// Animation tokens (extending existing tokens)
+$motion-fast: $tk-duration-fast;
+$motion-default: $tk-duration-medium;
+$motion-slow: $tk-duration-slow;
+$ease-std: $tk-ease-standard;
+
+// Will-change optimization mixin
+@mixin will-change($properties...) {
+  will-change: $properties;
+  
+  @media (prefers-reduced-motion: reduce) {
+    will-change: auto;
+  }
+}
+
+// Fade up animation mixin
+@mixin fade-up($duration: $motion-default, $distance: 18px) {
+  transform: translateY($distance);
+  opacity: 0;
+  transition: transform $duration $ease-std, opacity $duration $ease-std;
+  
+  &.is-inview {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}
+
+// Hover lift effect
+@mixin hover-lift($distance: 8px) {
+  transition: transform $motion-fast $ease-std, box-shadow $motion-fast $ease-std;
+  @include will-change(transform);
+  
+  &:hover {
+    transform: translateY(-$distance);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// Scale on hover
+@mixin hover-scale($scale: 1.05) {
+  transition: transform $motion-fast $ease-std;
+  @include will-change(transform);
+  
+  &:hover {
+    transform: scale($scale);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// Smooth transitions
+@mixin smooth-transition($properties: all, $duration: $motion-fast) {
+  transition: $properties $duration $ease-std;
+  
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}

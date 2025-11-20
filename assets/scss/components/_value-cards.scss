@@ -1,0 +1,107 @@
+/**
+ * Value Cards Component
+ * Interactive cards for showcasing platform benefits
+ */
+
+.value-constellation {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $tk-space-2xl;
+  margin-top: $tk-space-2xl;
+}
+
+.value-orb {
+  background: $tk-surface;
+  border-radius: $tk-radius-xl;
+  padding: $tk-space-2xl;
+  box-shadow: $tk-shadow-md;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  @include smooth-transition(all, $motion-default);
+  @include hover-lift();
+
+  &:hover {
+    box-shadow: $tk-shadow-xl;
+    border-color: $tk-accent;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  &:focus {
+    outline: 2px solid $tk-primary;
+    outline-offset: 2px;
+  }
+}
+
+.value-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, $tk-accent, $tk-accent-dark);
+  border-radius: $tk-radius-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $tk-space-lg;
+  position: relative;
+
+  i {
+    font-size: 32px;
+    color: $tk-surface;
+  }
+}
+
+.value-title {
+  font-size: $tk-text-xl;
+  font-weight: $tk-weight-bold;
+  color: $tk-text-primary;
+  margin-bottom: $tk-space-sm;
+}
+
+.value-description {
+  color: $tk-text-secondary;
+  line-height: $tk-leading-relaxed;
+  margin-bottom: $tk-space-md;
+}
+
+.value-stats {
+  margin-top: $tk-space-sm;
+  padding-top: $tk-space-sm;
+  border-top: 1px solid $tk-gray-200;
+
+  small {
+    font-size: $tk-text-xs;
+    color: $tk-text-tertiary;
+    font-weight: $tk-weight-medium;
+  }
+}
+
+// Tooltip (accessible alternative to data-tooltip)
+.value-orb[data-tooltip] {
+  &:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: $tk-dark;
+    color: $tk-surface;
+    padding: $tk-space-sm $tk-space-md;
+    border-radius: $tk-radius-sm;
+    font-size: $tk-text-sm;
+    white-space: nowrap;
+    z-index: $tk-z-tooltip;
+    box-shadow: $tk-shadow-lg;
+    max-width: 250px;
+    white-space: normal;
+    text-align: center;
+    line-height: $tk-leading-normal;
+    
+    @media (prefers-reduced-motion: reduce) {
+      display: none; // Hide tooltips for reduced motion users
+    }
+  }
+}

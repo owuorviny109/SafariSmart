@@ -132,7 +132,7 @@ def static_page(request: HttpRequest, slug: str) -> HttpResponse:
     """
     page = get_object_or_404(StaticPage, slug=slug, is_published=True)
     
-    return render(request, 'core/static_page.html', {
+    return render(request, 'core/static-page.html', {
         'page': page
     })
 
@@ -158,7 +158,7 @@ class DestinationSelectionView(View):
         POST: Validates selections and advances to duration step
     """
     
-    template_name = 'core/destination_selection.html'
+    template_name = 'core/destination-selection.html'
     
     def get(self, request: HttpRequest) -> HttpResponse:
         """
@@ -330,7 +330,7 @@ class DurationSelectionView(View):
         POST: Validates inputs and advances to travel group step
     """
     
-    template_name = 'core/duration_selection.html'
+    template_name = 'core/duration-selection.html'
     
     # Duration options (in days)
     DURATION_OPTIONS = [
@@ -478,7 +478,7 @@ class TravelGroupSelectionView(View):
         POST: Validates inputs and advances to budget step
     """
     
-    template_name = 'core/travel_group_selection.html'
+    template_name = 'core/travel-group-selection.html'
     
     # Travel type options
     TRAVEL_TYPES = [
@@ -663,7 +663,7 @@ class BudgetSelectionView(View):
         POST: Validates inputs and advances to interests step
     """
 
-    template_name = 'core/budget_selection.html'
+    template_name = 'core/budget-selection.html'
 
     # Budget categories
     BUDGET_CATEGORIES = [
@@ -830,7 +830,7 @@ class InterestsSelectionView(View):
         POST: Validates and redirects to generation
     """
 
-    template_name = 'core/interests_selection.html'
+    template_name = 'core/interests-selection.html'
 
     # Interest options
     INTERESTS = [
@@ -1020,7 +1020,7 @@ class ItineraryGenerationView(View):
         Redirects to itinerary when complete
     """
 
-    template_name = 'core/itinerary_generation.html'
+    template_name = 'core/itinerary-generation.html'
 
     def get(self, request: HttpRequest) -> HttpResponse:
         """
@@ -1106,7 +1106,7 @@ def itinerary_detail(request: HttpRequest, share_code: str) -> HttpResponse:
     
     logger.info(f"Displaying itinerary {itinerary.id} (views: {itinerary.view_count})")
     
-    return render(request, 'core/itinerary_detail_new.html', context)
+    return render(request, 'core/itinerary-detail-new.html', context)
 
 
 def shared_itinerary(request, share_code):
