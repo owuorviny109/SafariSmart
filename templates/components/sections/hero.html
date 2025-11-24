@@ -1,36 +1,63 @@
-<!-- Hero Section Component -->
+{% load static %}
+
 <section class="hero-immersive">
-    <div class="hero-split-container">
-        <div class="hero-content-side">
-            <div class="hero-constellation">
-                <!-- Hero Badge -->
-                <div class="hero-badge">
-                    <i class="bi bi-stars"></i>
-                    <span>{{ hero.badge_text|default:"Smart Trip Planning for Kenya" }}</span>
-                </div>
-                
-                <!-- Hero Proclamation -->
-                <h1 class="hero-proclamation">
-                    {{ hero.title|default:"Discover your next dream destination with our" }}
-                    <span class="gradient-shimmer">{{ hero.highlight|default:"intelligent trip planner" }}</span>
-                </h1>
-                
-                <!-- Hero Manifesto -->
-                <p class="hero-manifesto">
-                    {{ hero.description|default:"From the golden savannas of Maasai Mara to the pristine shores of Diani Beach, let AI craft your personalized journey through Kenya's wonders. Trip planning has never been easier." }}
-                </p>
-            
-                <!-- Action Buttons -->
-                <div class="hero-cta">
-                    <a href="{{ hero.primary_url|default:'/destinations/select/' }}" class="btn-modern btn-primary-modern">
-                        <i class="bi bi-compass"></i>
-                        <span>{{ hero.primary_text|default:"Plan Your Trip" }}</span>
-                    </a>
+    <!-- 1. VIDEO CONTAINER (The Fix) -->
+    <!-- Background color black hides the green flash -->
+    <div class="hero-video-container" style="background-color: #000;">
+        <video 
+            id="hero-video" 
+            autoplay 
+            muted 
+            playsinline 
+            class="hero-video" 
+            poster="{% static 'images/heroes/maasai-mara-hero.jpg' %}"
+            style="transition: opacity 0.5s ease; width: 100%; height: 100%; object-fit: cover;"
+            data-sources='[
+                "{% static "videos/video1.mp4" %}",
+                "{% static "videos/video2.mp4" %}",
+                "{% static "videos/video3.mp4" %}"
+            ]'>
+            <!-- Initial Video Source -->
+            <source src="{% static 'videos/video1.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- 2. OVERLAY CONTENT -->
+    <div class="hero-overlay">
+        <div class="hero-split-container">
+            <div class="hero-content-side">
+                <div class="hero-constellation">
+                    <!-- Badge -->
+                    <div class="hero-badge">
+                        <i class="bi bi-stars"></i>
+                        <span>Curated Kenyan Journeys</span>
+                    </div>
                     
-                    <a href="{{ hero.secondary_url|default:'/destinations/' }}" class="btn-modern btn-secondary-modern">
-                        <i class="bi bi-map"></i>
-                        <span>{{ hero.secondary_text|default:"Explore Destinations" }}</span>
-                    </a>
+                    <!-- Title -->
+                    <h1 class="hero-proclamation">
+                        Witness the majestic beauty of
+                        <br>
+                        <span class="gradient-shimmer">Authentic Kenya</span>
+                    </h1>
+                    
+                    <!-- Manifesto -->
+                    <p class="hero-manifesto">
+                        From the golden sunrises of the Maasai Mara to the crystal waters of Diani Beach. 
+                        Design a safari that moves at your pace, tailored to your style.
+                    </p>
+                
+                    <!-- Action Buttons -->
+                    <div class="hero-cta">
+                        <a href="{% url 'core:destination_selection' %}" class="btn-modern btn-primary-modern">
+                            <i class="bi bi-compass-fill"></i>
+                            <span>Start Your Journey</span>
+                        </a>
+                        
+                        <a href="{% url 'destinations:list' %}" class="btn-modern btn-secondary-modern">
+                            <i class="bi bi-eye"></i>
+                            <span>Discover Places</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

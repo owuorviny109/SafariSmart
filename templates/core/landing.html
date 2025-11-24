@@ -394,70 +394,125 @@ document.addEventListener('DOMContentLoaded', function() {
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // ---------------------------------------------
+    // 1. VIDEO LOOP LOGIC 
+    // ---------------------------------------------
+    const videoElement = document.getElementById('hero-video');
+    if (videoElement) {
+        const overlay = document.querySelector('.hero-immersive');
+        let currentIndex = 0;
+
+        // Mobile Check
+        if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+            videoElement.style.display = 'none';
+            if(overlay) {
+                overlay.style.backgroundImage = `url('${videoElement.getAttribute('poster')}')`;
+                overlay.style.backgroundSize = 'cover';
+                overlay.style.backgroundPosition = 'center';
+            }
+        } else {
+            // Desktop: Parse sources
+            let videoSources = [];
+            try {
+                videoSources = JSON.parse(videoElement.getAttribute('data-sources'));
+            } catch (e) {
+                // If parsing fails, just use the default one
+                videoSources = [videoElement.querySelector('source').src];
+            }
+
+            const playNextVideo = () => {
+                // Fade out to black
+                videoElement.style.opacity = 0;
+                setTimeout(() => {
+                    currentIndex = (currentIndex + 1) % videoSources.length;
+                    videoElement.src = videoSources[currentIndex];
+                    videoElement.load();
+                    
+                    // VITAL: Wait for data to load before showing (Fixes Green Flash)
+                    videoElement.onloadeddata = () => {
+                        videoElement.play().then(() => {
+                            videoElement.style.opacity = 1; // Fade in
+                        }).catch(e => { videoElement.style.opacity = 1; });
+                    };
+                }, 500);
+            };
+
+            videoElement.addEventListener('ended', playNextVideo);
+            videoElement.addEventListener('error', () => {
+                videoElement.style.display = 'none';
+                if(overlay) overlay.style.backgroundImage = `url('${videoElement.getAttribute('poster')}')`;
+            });
+        }
+    }
+
+    // ---------------------------------------------
+    // 2. FORM VALIDATION
+    // ---------------------------------------------
     const form = document.getElementById('quickTripForm');
     const input = document.getElementById('quickTripInput');
     const btn = document.getElementById('quickTripBtn');
     
-    // Real-time validation
-    input.addEventListener('input', function() {
-        const value = this.value.trim();
-        const hasNumber = /\d/.test(value);
-        const hasDestination = value.length > 10;
-        const isValid = hasNumber && hasDestination && value.length >= 15;
+    if (form && input && btn) {
+        input.addEventListener('input', function() {
+            const value = this.value.trim();
+            const hasNumber = /\d/.test(value);
+            const hasDestination = value.length > 10;
+            const isValid = hasNumber && hasDestination && value.length >= 15;
+            
+            if (isValid) {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            } else if (value.length > 0) {
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+            } else {
+                input.classList.remove('is-valid', 'is-invalid');
+            }
+        });
         
-        if (isValid) {
-            input.classList.remove('is-invalid');
-            input.classList.add('is-valid');
-        } else if (value.length > 0) {
-            input.classList.remove('is-valid');
-            input.classList.add('is-invalid');
-        } else {
-            input.classList.remove('is-valid', 'is-invalid');
-        }
-    });
-    
-    // Form submission validation
-    form.addEventListener('submit', function(e) {
-        const value = input.value.trim();
-        
-        // Check minimum requirements
-        if (value.length < 15) {
-            e.preventDefault();
-            alert('Please provide more details. Include: days, destination, and budget.');
-            return false;
-        }
-        
-        // Check for numbers (days or budget)
-        if (!/\d+/.test(value)) {
-            e.preventDefault();
-            alert('Please include number of days and budget amount.');
-            return false;
-        }
-        
-        // Check for excessive length
-        if (value.length > 200) {
-            e.preventDefault();
-            alert('Please keep your description under 200 characters.');
-            return false;
-        }
-        
-        // Check for spam patterns (all caps, excessive punctuation)
-        if (value === value.toUpperCase() && value.length > 20) {
-            e.preventDefault();
-            alert('Please use normal capitalization.');
-            return false;
-        }
-        
-        if ((value.match(/[!?]/g) || []).length > 3) {
-            e.preventDefault();
-            alert('Please use less punctuation.');
-            return false;
-        }
-        
-        // Disable button to prevent double submission
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
-    });
+        form.addEventListener('submit', function(e) {
+            const value = input.value.trim();
+            
+            // Check minimum requirements
+            if (value.length < 15) {
+                e.preventDefault();
+                alert('Please provide more details. Include: days, destination, and budget.');
+                return false;
+            }
+            
+            // Check for numbers (days or budget)
+            if (!/\d+/.test(value)) {
+                e.preventDefault();
+                alert('Please include number of days and budget amount.');
+                return false;
+            }
+            
+            // Check for excessive length
+            if (value.length > 200) {
+                e.preventDefault();
+                alert('Please keep your description under 200 characters.');
+                return false;
+            }
+            
+            // Check for spam patterns (all caps, excessive punctuation)
+            if (value === value.toUpperCase() && value.length > 20) {
+                e.preventDefault();
+                alert('Please use normal capitalization.');
+                return false;
+            }
+            
+            if ((value.match(/[!?]/g) || []).length > 3) {
+                e.preventDefault();
+                alert('Please use less punctuation.');
+                return false;
+            }
+            
+            // Disable button to prevent double submission
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
+        });
+    }
 });
 </script>
 {% endblock %}

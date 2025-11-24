@@ -5,7 +5,6 @@
 
 /* ============================================
    HERO BACKGROUND VARIANTS
-   Replace URLs with your actual images
    ============================================ */
 
 /* Main Hero - Maasai Mara Landscape */
@@ -15,7 +14,7 @@
         url('/static/images/heroes/maasai-mara-hero.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Parallax effect */
+    background-attachment: fixed;
 }
 
 /* Diani Beach Hero */
@@ -71,10 +70,8 @@
 /* ============================================
    OPTIMIZED IMAGE LOADING
    ============================================ */
-
-/* Lazy load optimization */
 .hero-image-lazy {
-    background-color: var(--kenya-green);
+    background-color: var(--kenya-green, #006600);
     transition: opacity 0.5s ease-in;
 }
 
@@ -99,7 +96,7 @@
     opacity: 0.3;
 }
 
-/* Gradient overlays for better text readability */
+/* Gradient overlays */
 .hero-gradient-overlay {
     position: relative;
 }
@@ -118,12 +115,9 @@
 /* ============================================
    SECTION BACKGROUNDS
    ============================================ */
-
-/* Subtle pattern backgrounds */
 .bg-savanna-pattern {
     background-color: #FFF7E6;
-    background-image: 
-        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(140, 90, 50, 0.03) 35px, rgba(140, 90, 50, 0.03) 70px);
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(140, 90, 50, 0.03) 35px, rgba(140, 90, 50, 0.03) 70px);
 }
 
 .bg-acacia-pattern {
@@ -137,7 +131,7 @@
 .image-card-overlay {
     position: relative;
     overflow: hidden;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-xl, 1rem);
 }
 
 .image-card-overlay img {
@@ -164,57 +158,9 @@
 }
 
 /* ============================================
-   PERFORMANCE OPTIMIZATIONS
-   ============================================ */
-
-/* WebP support with fallback */
-.hero-maasai-mara-webp {
-    background-image: 
-        linear-gradient(135deg, rgba(0, 68, 0, 0.85) 0%, rgba(0, 102, 0, 0.75) 50%, rgba(0, 136, 0, 0.65) 100%),
-        url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1920&q=80&fm=webp');
-}
-
-/* Responsive images */
-@media (max-width: 768px) {
-    .hero-maasai-mara,
-    .hero-diani-beach,
-    .hero-amboseli,
-    .hero-mount-kenya,
-    .hero-sunset-safari {
-        background-attachment: scroll; /* Better mobile performance */
-        background-size: cover;
-    }
-}
-
-/* Preload critical images */
-.preload-hero {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-}
-
-/* ============================================
    DESTINATION-SPECIFIC BACKGROUNDS
    ============================================ */
-
-/* Safari destinations */
-.bg-safari {
-    background: linear-gradient(135deg, rgba(140, 90, 50, 0.05) 0%, rgba(0, 102, 0, 0.05) 100%);
-}
-
-/* Beach destinations */
-.bg-beach {
-    background: linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(0, 188, 212, 0.05) 100%);
-}
-
-/* Mountain destinations */
-.bg-mountain {
-    background: linear-gradient(135deg, rgba(96, 125, 139, 0.05) 0%, rgba(0, 102, 0, 0.05) 100%);
-}
-
-/* Cultural destinations */
-.bg-cultural {
-    background: linear-gradient(135deg, rgba(255, 122, 0, 0.05) 0%, rgba(210, 161, 0, 0.05) 100%);
-}
+.bg-safari { background: linear-gradient(135deg, rgba(140, 90, 50, 0.05) 0%, rgba(0, 102, 0, 0.05) 100%); }
+.bg-beach { background: linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(0, 188, 212, 0.05) 100%); }
+.bg-mountain { background: linear-gradient(135deg, rgba(96, 125, 139, 0.05) 0%, rgba(0, 102, 0, 0.05) 100%); }
+.bg-cultural { background: linear-gradient(135deg, rgba(255, 122, 0, 0.05) 0%, rgba(210, 161, 0, 0.05) 100%); }
