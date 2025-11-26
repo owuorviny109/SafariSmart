@@ -4,515 +4,690 @@
 {% block title %}SafariSmart Kenya - AI Safari Trip Planner | Plan Your Perfect Kenya Adventure{% endblock %}
 {% block meta_description %}Plan your perfect Kenya safari, beach vacation & adventure with AI. Explore Maasai Mara, Diani Beach, Amboseli & more top destinations. Get personalized itineraries, weather forecasts & interactive maps. Start planning today!{% endblock %}
 
-{% block structured_data %}
-{% include 'structured_data/faq.html' %}
-{% endblock %}
+{% block hero %}
+<!-- Carousel Start -->
+<div class="carousel-header">
+    <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#carouselId" data-bs-slide-to="1"></li>
+            <li data-bs-target="#carouselId" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+                <img src="{% static 'travela/img/carousel-2.jpg' %}" class="img-fluid" alt="Image">
+                <div class="carousel-caption">
+                    <div class="p-3" style="max-width: 900px;">
+                        <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore Kenya</h4>
+                        <h1 class="display-2 text-capitalize text-white mb-4">Let's Explore The World Together!</h1>
+                        <p class="mb-5 fs-5">Discover the magic of Kenya with SafariSmart. From the Maasai Mara to Diani Beach, we plan your perfect adventure.</p>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="{% url 'core:destination_selection' %}">Discover Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'travela/img/carousel-1.jpg' %}" class="img-fluid" alt="Image">
+                <div class="carousel-caption">
+                    <div class="p-3" style="max-width: 900px;">
+                        <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore Kenya</h4>
+                        <h1 class="display-2 text-capitalize text-white mb-4">Find Your Perfect Tour At SafariSmart</h1>
+                        <p class="mb-5 fs-5">AI-powered itineraries tailored to your preferences. Experience the best of Kenya's wildlife and landscapes.</p>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="{% url 'core:destination_selection' %}">Discover Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'travela/img/carousel-3.jpg' %}" class="img-fluid" alt="Image">
+                <div class="carousel-caption">
+                    <div class="p-3" style="max-width: 900px;">
+                        <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore Kenya</h4>
+                        <h1 class="display-2 text-capitalize text-white mb-4">Where Do You Want To Go?</h1>
+                        <p class="mb-5 fs-5">Start your journey today. Create a custom itinerary in seconds with our smart planner.</p>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="{% url 'core:destination_selection' %}">Discover Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon btn bg-primary" aria-hidden="false"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+            <span class="carousel-control-next-icon btn bg-primary" aria-hidden="false"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<!-- Carousel End -->
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/hero-backgrounds.css' %}">
-<link rel="stylesheet" href="{% static 'css/components/hero.css' %}">
-<link rel="stylesheet" href="{% static 'css/components/value-cards.css' %}">
-<link rel="stylesheet" href="{% static 'css/components/destination-cards.css' %}">
-<link rel="stylesheet" href="{% static 'css/pages/landing.css' %}">
+<!-- Search Bar Start -->
+<div class="container-fluid search-bar position-relative" style="top: -50%; transform: translateY(-50%);">
+    <div class="container">
+        <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(19, 53, 123, 0.8);">
+            <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Maasai Mara">
+            <button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
+        </div>
+    </div>
+</div>
+<!-- Search Bar End -->
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-{% include 'components/sections/hero.html' %}
-
-<!-- Why Choose SafariSmart - Value Cards Section -->
-<section class="py-5" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
-    <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="section-title">Why Choose SafariSmart</h2>
-            <p class="section-subtitle">
-                Experience the future of travel planning with our intelligent platform
-            </p>
+<!-- About Start -->
+<div class="container-fluid about py-5">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-5">
+                <div class="h-100" style="border: 50px solid; border-color: transparent #13357B transparent #13357B;">
+                    <img src="{% static 'travela/img/about-img.jpg' %}" class="img-fluid w-100 h-100" alt="">
+                </div>
+            </div>
+            <div class="col-lg-7" style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url({% static 'travela/img/about-img-1.png' %});">
+                <h5 class="section-about-title pe-3">About Us</h5>
+                <h1 class="mb-4">Welcome to <span class="text-primary">SafariSmart</span></h1>
+                <p class="mb-4">We are revolutionizing how you plan your Kenyan adventure. Our AI-powered platform creates personalized itineraries in seconds, ensuring you get the most out of your trip.</p>
+                <p class="mb-4">Whether you're looking for a thrilling safari, a relaxing beach vacation, or a cultural immersion, SafariSmart has you covered. We partner with top-rated providers to deliver unforgettable experiences.</p>
+                <div class="row gy-2 gx-4 mb-4">
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>AI-Generated Itineraries</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Handpicked Lodges</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>5 Star Accommodations</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Reliable Transport</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Expert Guides</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>24/7 Support</p>
+                    </div>
+                </div>
+                <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="">Read More</a>
+            </div>
         </div>
-        
-        <!-- Value Cards -->
-        {% include 'components/sections/value-cards.html' %}
     </div>
-</section>
+</div>
+<!-- About End -->
 
-<!-- How It Works - Magical Kenya Style with Safari Background -->
-<section class="tk-how-it-works-section" id="how-it-works">
-  <!-- Safari Background with Overlay -->
-  <div class="tk-safari-background">
-    <div class="tk-safari-overlay"></div>
-  </div>
-  
-  <!-- Orange Section - Like Magical Kenya -->
-  <div class="tk-orange-section">
-    <div class="container">
-      <div class="text-center mb-5" data-aos="fade-up">
-        <h2 class="tk-section-title">How It Works</h2>
-        <p class="tk-section-subtitle">
-          Three simple steps to your perfect Kenya adventure
-        </p>
-      </div>
-      
-      <!-- Three Step Cards -->
-      <div class="tk-steps-grid">
-        <!-- Step 1 -->
-        <div class="tk-step-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="tk-step-number">1</div>
-          <div class="tk-step-icon">
-            <i class="bi bi-geo-alt-fill"></i>
-          </div>
-          <h3 class="tk-step-title">Choose Destinations</h3>
-          <p class="tk-step-description">Select from 20 amazing Kenya locations including safaris, beaches, and cultural sites.</p>
+<!-- Services Start -->
+<div class="container-fluid bg-light service py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Services</h5>
+            <h1 class="mb-0">Our Services</h1>
         </div>
-        
-        <!-- Step 2 -->
-        <div class="tk-step-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="tk-step-number">2</div>
-          <div class="tk-step-icon">
-            <i class="bi bi-sliders"></i>
-          </div>
-          <h3 class="tk-step-title">Set Preferences</h3>
-          <p class="tk-step-description">Tell us your budget, dates, and interests. We'll tailor everything to your needs.</p>
-        </div>
-        
-        <!-- Step 3 -->
-        <div class="tk-step-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="tk-step-number">3</div>
-          <div class="tk-step-icon">
-            <i class="bi bi-calendar-check-fill"></i>
-          </div>
-          <h3 class="tk-step-title">Get Your Itinerary</h3>
-          <p class="tk-step-description">AI creates your perfect day-by-day plan with activities, costs, and recommendations.</p>
-        </div>
-      </div>
-      
-      <!-- Quick Trip Planner Input -->
-      <div class="tk-planner-container" data-aos="fade-up" data-aos-delay="400">
-        <div class="tk-input-wrapper">
-          <div class="tk-input-icon">💬</div>
-          <form method="post" action="{% url 'core:quick_trip' %}" id="quickTripForm" class="tk-planner-form">
-            {% csrf_token %}
-            <input type="text" 
-                   name="trip_description"
-                   id="quickTripInput"
-                   class="tk-planner-input"
-                   placeholder="Include: days, destination, budget (e.g., 3 days Diani 50k)"
-                   minlength="15"
-                   maxlength="200"
-                   required>
-            <button class="tk-btn-generate" type="submit" id="quickTripBtn">
-              ✨ Generate
-            </button>
-          </form>
-        </div>
-        <div class="tk-helper-text">
-          <span><i class="bi bi-info-circle"></i> Required: Days + Destination + Budget</span>
-        </div>
-        <div class="text-center mt-3">
-          <a href="{% url 'core:destination_selection' %}" class="tk-btn-secondary">
-            <i class="bi bi-list-check"></i>
-            <span>Or Use Step-by-Step Planner</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Destination Gallery - Cinematic Showcase -->
-{% if featured_destinations %}
-<section class="py-5 destination-gallery" style="background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);">
-    <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="section-title">Explore Kenya's Wonders</h2>
-            <p class="section-subtitle">
-                From majestic wildlife to pristine beaches, discover destinations that will take your breath away
-            </p>
-        </div>
-        
         <div class="row g-4">
-            {% for destination in featured_destinations %}
-            <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'00' }}">
-                <a href="{% url 'destinations:detail' destination.slug %}" class="text-decoration-none">
-                    <div class="destination-hover-card">
-                        <div class="destination-image-container">
-                            {% if destination.image %}
-                            <img src="{{ destination.image.url }}" alt="{{ destination.name }}" class="destination-image">
-                            {% elif destination.image_url %}
-                            <img src="{{ destination.image_url }}" alt="{{ destination.name }}" class="destination-image">
-                            {% else %}
-                            <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
-                                 alt="{{ destination.name }}" class="destination-image"
-                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'destination-fallback\'><i class=\'bi bi-image\'></i></div>';">
-                            {% endif %}
-                            
-                            <div class="destination-type-badge">
-                                <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% elif destination.destination_type == 'mountain' %}mountain{% else %}geo-alt{% endif %}"></i>
-                                {{ destination.get_destination_type_display }}
+            <div class="col-lg-6">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
+                            <div class="service-content text-end">
+                                <h5 class="mb-4">Safari Tours</h5>
+                                <p class="mb-0">Experience the thrill of the wild with our expertly curated safari packages to Maasai Mara, Amboseli, and more.</p>
                             </div>
-                            
-                            <div class="destination-hover-overlay">
-                                <div class="destination-info">
-                                    <h3 class="destination-title">{{ destination.name }}</h3>
-                                    <p class="destination-location">{{ destination.county }}</p>
-                                    <p class="destination-description">{{ destination.description|truncatewords:15 }}</p>
-                                    
-                                    <div class="destination-meta">
-                                        <div class="destination-price">
-                                            <i class="bi bi-cash-coin"></i>
-                                            <span>KSh {{ destination.average_cost_per_day|floatformat:0 }}/day</span>
+                            <div class="service-icon p-4">
+                                <i class="fa fa-globe fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="service-content-inner d-flex align-items-center  bg-white border border-primary rounded p-4 pe-0">
+                            <div class="service-content text-end">
+                                <h5 class="mb-4">Hotel Reservation</h5>
+                                <p class="mb-0">We book the best lodges and hotels for you, ensuring comfort and luxury throughout your stay.</p>
+                            </div>
+                            <div class="service-icon p-4">
+                                <i class="fa fa-hotel fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
+                            <div class="service-content text-end">
+                                <h5 class="mb-4">Travel Guides</h5>
+                                <p class="mb-0">Our experienced guides provide deep insights into the local culture, wildlife, and history.</p>
+                            </div>
+                            <div class="service-icon p-4">
+                                <i class="fa fa-user fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
+                            <div class="service-content text-end">
+                                <h5 class="mb-4">Event Management</h5>
+                                <p class="mb-0">Planning a special event in the wild? We handle logistics for weddings, corporate retreats, and more.</p>
+                            </div>
+                            <div class="service-icon p-4">
+                                <i class="fa fa-cog fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-globe fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Safari Tours</h5>
+                                <p class="mb-0">Experience the thrill of the wild with our expertly curated safari packages to Maasai Mara, Amboseli, and more.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-hotel fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Hotel Reservation</h5>
+                                <p class="mb-0">We book the best lodges and hotels for you, ensuring comfort and luxury throughout your stay.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-user fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Travel Guides</h5>
+                                <p class="mb-0">Our experienced guides provide deep insights into the local culture, wildlife, and history.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
+                            <div class="service-icon p-4">
+                                <i class="fa fa-cog fa-4x text-primary"></i>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="mb-4">Event Management</h5>
+                                <p class="mb-0">Planning a special event in the wild? We handle logistics for weddings, corporate retreats, and more.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="text-center">
+                    <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="">Service More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Services End -->
+
+<!-- Destination Start -->
+<div class="container-fluid destination py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Destination</h5>
+            <h1 class="mb-0">Popular Destinations</h1>
+        </div>
+        <div class="tab-class text-center">
+            <ul class="nav nav-pills d-inline-flex justify-content-center mb-5">
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
+                        <span class="text-dark" style="width: 150px;">All</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex py-2 mx-3 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
+                        <span class="text-dark" style="width: 150px;">Safari</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex mx-3 py-2 border border-primary bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
+                        <span class="text-dark" style="width: 150px;">Beach</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        <div class="col-xl-8">
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-1.jpg' %}" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Maasai Mara</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
                                         </div>
-                                        <div class="destination-rating">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i>
+                                        <div class="search-icon">
+                                            <a href="{% static 'travela/img/destination-1.jpg' %}" data-lightbox="destination-1"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
                                         </div>
                                     </div>
-                                    
-                                    {% if destination.best_time_to_visit %}
-                                    <div class="destination-timing">
-                                        <i class="bi bi-calendar-check"></i>
-                                        <span>Best: {{ destination.best_time_to_visit }}</span>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-2.jpg' %}" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Amboseli</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="{% static 'travela/img/destination-2.jpg' %}" data-lightbox="destination-2"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
                                     </div>
-                                    {% endif %}
-                                    
-                                    <div class="destination-cta">
-                                        <span>Explore</span>
-                                        <i class="bi bi-arrow-right"></i>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-7.jpg' %}" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Diani Beach</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="{% static 'travela/img/destination-7.jpg' %}" data-lightbox="destination-7"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="destination-img">
+                                        <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-8.jpg' %}" alt="">
+                                        <div class="destination-overlay p-4">
+                                            <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                            <h4 class="text-white mb-2 mt-3">Tsavo East</h4>
+                                            <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                        <div class="search-icon">
+                                            <a href="{% static 'travela/img/destination-8.jpg' %}" data-lightbox="destination-8"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-        
-        <div class="text-center mt-5" data-aos="fade-up">
-            <a href="{% url 'destinations:list' %}" class="btn-modern btn-primary-modern">
-                <i class="bi bi-grid-3x3-gap"></i>
-                <span>View All Destinations</span>
-            </a>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- CTA Immersive with Background -->
-<section class="cta-section">
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row align-items-center">
-            <div class="col-lg-8 mx-auto text-center text-white" data-aos="zoom-in">
-                <div class="mb-4">
-                    <span class="badge" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.875rem;">
-                        <i class="bi bi-rocket-takeoff"></i> Start Your Adventure
-                    </span>
-                </div>
-                <h2 class="display-4 fw-bold mb-4" style="color: #ffffff;">Ready to Explore Kenya?</h2>
-                <p class="lead mb-5" style="font-size: 1.25rem; color: #ffffff;">
-                    Join thousands of travelers who've discovered their perfect Kenya adventure with SafariSmart.
-                    Let AI create your personalized itinerary in minutes.
-                </p>
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
-                    <a href="{% url 'core:destination_selection' %}" class="btn-modern btn-secondary-modern btn-lg">
-                        <i class="bi bi-compass"></i>
-                        <span>Start Planning Now</span>
-                    </a>
-                    <a href="{% url 'destinations:list' %}" class="btn-modern btn-outline-modern btn-lg">
-                        <i class="bi bi-map"></i>
-                        <span>Browse Destinations</span>
-                    </a>
-                </div>
-                
-                <!-- Trust Indicators -->
-                <div class="mt-5 d-flex justify-content-center gap-5 flex-wrap">
-                    <div class="text-center">
-                        <div class="h2 fw-bold mb-0" style="color: #ffffff;">1,000+</div>
-                        <div class="small" style="color: #ffffff;">Itineraries Created</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="h2 fw-bold mb-0" style="color: #ffffff;">6</div>
-                        <div class="small" style="color: #ffffff;">Top Destinations</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="h2 fw-bold mb-0" style="color: #ffffff;">4.8★</div>
-                        <div class="small" style="color: #ffffff;">User Rating</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- About Section -->
-<section class="py-5" style="position: relative; overflow: hidden;">
-    <!-- Background with same style as FAQ -->
-    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255, 248, 231, 0.98) 0%, rgba(254, 243, 199, 0.98) 50%, rgba(253, 230, 138, 0.95) 100%); backdrop-filter: blur(8px); box-shadow: inset 0 0 100px rgba(224, 122, 43, 0.1); z-index: 1;"></div>
-    <div class="container" style="position: relative; z-index: 2;">
-        <div class="row">
-            <div class="col-lg-10 mx-auto">
-                <div class="text-center mb-5">
-                    <h2 style="font-size: 2.5rem; font-weight: 700; color: #1a1a1a; margin-bottom: 1rem;">
-                        Plan Your Perfect Kenya Adventure
-                    </h2>
-                    <p style="font-size: 1.125rem; color: #6b7280; max-width: 700px; margin: 0 auto; line-height: 1.7;">
-                        Whether you're dreaming of a Maasai Mara safari, relaxing on Diani Beach, 
-                        or exploring Amboseli National Park, we create personalized itineraries 
-                        tailored to your budget and interests.
-                    </p>
-                </div>
-                
-                <div class="row g-4 mt-4">
-                    <div class="col-md-6">
-                        <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); height: 100%;">
-                            <h3 style="font-size: 1.25rem; font-weight: 700; color: #1a1a1a; margin-bottom: 16px;">
-                                Safari Destinations
-                            </h3>
-                            <ul style="list-style: none; padding: 0; margin: 0; color: #6b7280; line-height: 2;">
-                                <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
-                                    Maasai Mara National Reserve
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
-                                    Amboseli National Park
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
-                                    Tsavo National Park
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
-                                    Samburu National Reserve
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); height: 100%;">
-                            <h3 style="font-size: 1.25rem; font-weight: 700; color: #1a1a1a; margin-bottom: 16px;">
-                                Beach & Coastal
-                            </h3>
-                            <ul style="list-style: none; padding: 0; margin: 0; color: #6b7280; line-height: 2;">
-                                <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
-                                    Diani Beach
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
-                                    Watamu
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
-                                    Malindi
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: #E07A2B;">✓</span>
-                                    Lamu Island
-                                </li>
-                            </ul>
+                        <div class="col-xl-4">
+                            <div class="destination-img h-100">
+                                <img class="img-fluid rounded w-100 h-100" src="{% static 'travela/img/destination-9.jpg' %}" style="object-fit: cover; min-height: 300px;" alt="">
+                                <div class="destination-overlay p-4">
+                                    <a href="#" class="btn btn-primary text-white rounded-pill border py-2 px-3">20 Photos</a>
+                                    <h4 class="text-white mb-2 mt-3">Lake Nakuru</h4>
+                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="{% static 'travela/img/destination-9.jpg' %}" data-lightbox="destination-4"><i class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+<!-- Destination End -->
 
-<!-- FAQ Section - Magical Kenya Style with Giraffe Background -->
-<section class="tk-faq-section">
-  <!-- Giraffe Safari Background -->
-  <div class="tk-faq-background">
-    <div class="tk-faq-overlay"></div>
-  </div>
-  
-  <!-- FAQ Content Section -->
-  <div class="tk-faq-content-section">
-    <div class="tk-container">
-    <div class="tk-faq-header">
-      <h2 class="tk-faq-title">
-        <span class="tk-faq-title--highlight">FREQUENTLY</span><br>
-        <span class="tk-faq-title--main">ASKED QUESTIONS</span><br>
-        <span class="tk-faq-title--accent">ABOUT KENYA</span>
-      </h2>
-    </div>
-    
-    <div class="tk-faq-content">
-      <div class="tk-faq-list">
-        {% for faq in faq_list %}
-        <div class="tk-faq-item" data-faq-item>
-          <button class="tk-faq-question" data-faq-trigger aria-expanded="false">
-            <span class="tk-faq-icon">
-              <i class="bi bi-plus-lg"></i>
-            </span>
-            <span class="tk-faq-question-text">{{ faq.question }}</span>
-          </button>
-          <div class="tk-faq-answer" data-faq-content>
-            <div class="tk-faq-answer-inner">
-              {{ faq.answer|safe }}
-            </div>
-          </div>
+<!-- Packages Start -->
+<div class="container-fluid packages py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Packages</h5>
+            <h1 class="mb-0">Awesome Packages</h1>
         </div>
-        {% endfor %}
-      </div>
+        <div class="packages-carousel owl-carousel">
+            <div class="packages-item">
+                <div class="packages-img">
+                    <img src="{% static 'travela/img/packages-4.jpg' %}" class="img-fluid w-100 rounded-top" alt="Image">
+                    <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute" style="width: 100%; bottom: 0; left: 0; z-index: 5;">
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt me-2"></i>Maasai Mara</small>
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt me-2"></i>3 days</small>
+                        <small class="flex-fill text-center py-2"><i class="fa fa-user me-2"></i>2 Person</small>
+                    </div>
+                    <div class="packages-price py-2 px-4">$349.00</div>
+                </div>
+                <div class="packages-content bg-light">
+                    <div class="p-4 pb-0">
+                        <h5 class="mb-0">Maasai Mara Safari</h5>
+                        <small class="text-uppercase">Hotel Deals</small>
+                        <div class="mb-3">
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                        </div>
+                        <p class="mb-4">Experience the Great Migration and see the Big Five in their natural habitat.</p>
+                    </div>
+                    <div class="row bg-primary rounded-bottom mx-0">
+                        <div class="col-6 text-start px-0">
+                            <a href="#" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                        </div>
+                        <div class="col-6 text-end px-0">
+                            <a href="#" class="btn-hover btn text-white py-2 px-4">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="packages-item">
+                <div class="packages-img">
+                    <img src="{% static 'travela/img/packages-2.jpg' %}" class="img-fluid w-100 rounded-top" alt="Image">
+                    <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute" style="width: 100%; bottom: 0; left: 0; z-index: 5;">
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt me-2"></i>Diani Beach</small>
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt me-2"></i>3 days</small>
+                        <small class="flex-fill text-center py-2"><i class="fa fa-user me-2"></i>2 Person</small>
+                    </div>
+                    <div class="packages-price py-2 px-4">$449.00</div>
+                </div>
+                <div class="packages-content bg-light">
+                    <div class="p-4 pb-0">
+                        <h5 class="mb-0">Diani Beach Getaway</h5>
+                        <small class="text-uppercase">Hotel Deals</small>
+                        <div class="mb-3">
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                        </div>
+                        <p class="mb-4">Relax on the pristine white sands of Diani Beach and enjoy world-class water sports.</p>
+                    </div>
+                    <div class="row bg-primary rounded-bottom mx-0">
+                        <div class="col-6 text-start px-0">
+                            <a href="#" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                        </div>
+                        <div class="col-6 text-end px-0">
+                            <a href="#" class="btn-hover btn text-white py-2 px-4">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="packages-item">
+                <div class="packages-img">
+                    <img src="{% static 'travela/img/packages-3.jpg' %}" class="img-fluid w-100 rounded-top" alt="Image">
+                    <div class="packages-info d-flex border border-start-0 border-end-0 position-absolute" style="width: 100%; bottom: 0; left: 0; z-index: 5;">
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt me-2"></i>Amboseli</small>
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt me-2"></i>3 days</small>
+                        <small class="flex-fill text-center py-2"><i class="fa fa-user me-2"></i>2 Person</small>
+                    </div>
+                    <div class="packages-price py-2 px-4">$549.00</div>
+                </div>
+                <div class="packages-content bg-light">
+                    <div class="p-4 pb-0">
+                        <h5 class="mb-0">Amboseli Adventure</h5>
+                        <small class="text-uppercase">Hotel Deals</small>
+                        <div class="mb-3">
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                        </div>
+                        <p class="mb-4">Witness large herds of elephants with the majestic Mount Kilimanjaro in the backdrop.</p>
+                    </div>
+                    <div class="row bg-primary rounded-bottom mx-0">
+                        <div class="col-6 text-start px-0">
+                            <a href="#" class="btn-hover btn text-white py-2 px-4">Read More</a>
+                        </div>
+                        <div class="col-6 text-end px-0">
+                            <a href="#" class="btn-hover btn text-white py-2 px-4">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</section>
+</div>
+<!-- Packages End -->
 
+<!-- Gallery Start -->
+<div class="container-fluid gallery py-5 my-5">
+    <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+        <h5 class="section-title px-3">Our Gallery</h5>
+        <h1 class="mb-4">Tourism & Traveling Gallery.</h1>
+        <p class="mb-0">Explore the beauty of Kenya through our gallery.</p>
+    </div>
+    <div class="tab-class text-center">
+        <div class="tab-content">
+            <div id="GalleryTab-1" class="tab-pane fade show p-0 active">
+                <div class="row g-2">
+                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-2">
+                        <div class="gallery-item h-100">
+                            <img src="{% static 'travela/img/gallery-1.jpg' %}" class="img-fluid w-100 h-100 rounded" alt="Image">
+                            <div class="gallery-content">
+                                <div class="gallery-info">
+                                    <h5 class="text-white text-uppercase mb-2">Safari</h5>
+                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                            <div class="gallery-plus-icon">
+                                <a href="{% static 'travela/img/gallery-1.jpg' %}" data-lightbox="gallery-1" class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="gallery-item h-100">
+                            <img src="{% static 'travela/img/gallery-2.jpg' %}" class="img-fluid w-100 h-100 rounded" alt="Image">
+                            <div class="gallery-content">
+                                <div class="gallery-info">
+                                    <h5 class="text-white text-uppercase mb-2">Beach</h5>
+                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                            <div class="gallery-plus-icon">
+                                <a href="{% static 'travela/img/gallery-2.jpg' %}" data-lightbox="gallery-2" class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-2">
+                        <div class="gallery-item h-100">
+                            <img src="{% static 'travela/img/gallery-3.jpg' %}" class="img-fluid w-100 h-100 rounded" alt="Image">
+                            <div class="gallery-content">
+                                <div class="gallery-info">
+                                    <h5 class="text-white text-uppercase mb-2">Wildlife</h5>
+                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                            <div class="gallery-plus-icon">
+                                <a href="{% static 'travela/img/gallery-3.jpg' %}" data-lightbox="gallery-3" class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="gallery-item h-100">
+                            <img src="{% static 'travela/img/gallery-4.jpg' %}" class="img-fluid w-100 h-100 rounded" alt="Image">
+                            <div class="gallery-content">
+                                <div class="gallery-info">
+                                    <h5 class="text-white text-uppercase mb-2">Culture</h5>
+                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                            <div class="gallery-plus-icon">
+                                <a href="{% static 'travela/img/gallery-4.jpg' %}" data-lightbox="gallery-4" class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-2">
+                        <div class="gallery-item h-100">
+                            <img src="{% static 'travela/img/gallery-5.jpg' %}" class="img-fluid w-100 h-100 rounded" alt="Image">
+                            <div class="gallery-content">
+                                <div class="gallery-info">
+                                    <h5 class="text-white text-uppercase mb-2">Nature</h5>
+                                    <a href="#" class="btn-hover text-white">View All Place <i class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                            <div class="gallery-plus-icon">
+                                <a href="{% static 'travela/img/gallery-5.jpg' %}" data-lightbox="gallery-5" class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Gallery End -->
 
+<!-- Tour Booking Start -->
+<div class="container-fluid booking py-5">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <h5 class="section-booking-title pe-3">Booking</h5>
+                <h1 class="text-white mb-4">Online Booking</h1>
+                <p class="text-white mb-4">Ready to start your adventure? Fill out the form to book your dream safari or beach vacation.</p>
+                <p class="text-white mb-4">Our team will get back to you with a personalized itinerary and quote.</p>
+                <a href="#" class="btn btn-light text-primary rounded-pill py-3 px-5 mt-2">Read More</a>
+            </div>
+            <div class="col-lg-6">
+                <h1 class="text-white mb-3">Book A Tour Deals</h1>
+                <p class="text-white mb-4">Get <span class="text-warning">50% Off</span> On Your First Adventure Trip With SafariSmart.</p>
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control bg-white border-0" id="name" placeholder="Your Name">
+                                <label for="name">Your Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="email" class="form-control bg-white border-0" id="email" placeholder="Your Email">
+                                <label for="email">Your Email</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating date" id="date3" data-target-input="nearest">
+                                <input type="text" class="form-control bg-white border-0" id="datetime" placeholder="Date & Time" data-target="#date3" data-toggle="datetimepicker" />
+                                <label for="datetime">Date & Time</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select bg-white border-0" id="select1">
+                                    <option value="1">Maasai Mara</option>
+                                    <option value="2">Diani Beach</option>
+                                    <option value="3">Amboseli</option>
+                                </select>
+                                <label for="select1">Destination</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select bg-white border-0" id="SelectPerson">
+                                    <option value="1">Persons 1</option>
+                                    <option value="2">Persons 2</option>
+                                    <option value="3">Persons 3</option>
+                                </select>
+                                <label for="SelectPerson">Persons</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select bg-white border-0" id="CategoriesSelect">
+                                    <option value="1">Kids</option>
+                                    <option value="2">1</option>
+                                    <option value="3">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                                <label for="CategoriesSelect">Categories</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control bg-white border-0" placeholder="Special Request" id="message" style="height: 100px"></textarea>
+                                <label for="message">Special Request</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary text-white w-100 py-3" type="submit">Book Now</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Tour Booking End -->
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const faqItems = document.querySelectorAll('[data-faq-item]');
-  
-  faqItems.forEach(item => {
-    const trigger = item.querySelector('[data-faq-trigger]');
-    
-    trigger.addEventListener('click', () => {
-      const isExpanded = item.getAttribute('data-expanded') === 'true';
-      
-      // Close all other items
-      faqItems.forEach(otherItem => {
-        if (otherItem !== item) {
-          otherItem.setAttribute('data-expanded', 'false');
-          otherItem.querySelector('[data-faq-trigger]').setAttribute('aria-expanded', 'false');
-        }
-      });
-      
-      // Toggle current item
-      const newState = !isExpanded;
-      item.setAttribute('data-expanded', newState);
-      trigger.setAttribute('aria-expanded', newState);
-    });
-  });
-});
-</script>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // ---------------------------------------------
-    // 1. VIDEO LOOP LOGIC 
-    // ---------------------------------------------
-    const videoElement = document.getElementById('hero-video');
-    if (videoElement) {
-        const overlay = document.querySelector('.hero-immersive');
-        let currentIndex = 0;
-
-        // Mobile Check
-        if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-            videoElement.style.display = 'none';
-            if(overlay) {
-                overlay.style.backgroundImage = `url('${videoElement.getAttribute('poster')}')`;
-                overlay.style.backgroundSize = 'cover';
-                overlay.style.backgroundPosition = 'center';
-            }
-        } else {
-            // Desktop: Parse sources
-            let videoSources = [];
-            try {
-                videoSources = JSON.parse(videoElement.getAttribute('data-sources'));
-            } catch (e) {
-                // If parsing fails, just use the default one
-                videoSources = [videoElement.querySelector('source').src];
-            }
-
-            const playNextVideo = () => {
-                // Fade out to black
-                videoElement.style.opacity = 0;
-                setTimeout(() => {
-                    currentIndex = (currentIndex + 1) % videoSources.length;
-                    videoElement.src = videoSources[currentIndex];
-                    videoElement.load();
-                    
-                    // VITAL: Wait for data to load before showing (Fixes Green Flash)
-                    videoElement.onloadeddata = () => {
-                        videoElement.play().then(() => {
-                            videoElement.style.opacity = 1; // Fade in
-                        }).catch(e => { videoElement.style.opacity = 1; });
-                    };
-                }, 500);
-            };
-
-            videoElement.addEventListener('ended', playNextVideo);
-            videoElement.addEventListener('error', () => {
-                videoElement.style.display = 'none';
-                if(overlay) overlay.style.backgroundImage = `url('${videoElement.getAttribute('poster')}')`;
-            });
-        }
-    }
-
-    // ---------------------------------------------
-    // 2. FORM VALIDATION
-    // ---------------------------------------------
-    const form = document.getElementById('quickTripForm');
-    const input = document.getElementById('quickTripInput');
-    const btn = document.getElementById('quickTripBtn');
-    
-    if (form && input && btn) {
-        input.addEventListener('input', function() {
-            const value = this.value.trim();
-            const hasNumber = /\d/.test(value);
-            const hasDestination = value.length > 10;
-            const isValid = hasNumber && hasDestination && value.length >= 15;
-            
-            if (isValid) {
-                input.classList.remove('is-invalid');
-                input.classList.add('is-valid');
-            } else if (value.length > 0) {
-                input.classList.remove('is-valid');
-                input.classList.add('is-invalid');
-            } else {
-                input.classList.remove('is-valid', 'is-invalid');
-            }
-        });
-        
-        form.addEventListener('submit', function(e) {
-            const value = input.value.trim();
-            
-            // Check minimum requirements
-            if (value.length < 15) {
-                e.preventDefault();
-                alert('Please provide more details. Include: days, destination, and budget.');
-                return false;
-            }
-            
-            // Check for numbers (days or budget)
-            if (!/\d+/.test(value)) {
-                e.preventDefault();
-                alert('Please include number of days and budget amount.');
-                return false;
-            }
-            
-            // Check for excessive length
-            if (value.length > 200) {
-                e.preventDefault();
-                alert('Please keep your description under 200 characters.');
-                return false;
-            }
-            
-            // Check for spam patterns (all caps, excessive punctuation)
-            if (value === value.toUpperCase() && value.length > 20) {
-                e.preventDefault();
-                alert('Please use normal capitalization.');
-                return false;
-            }
-            
-            if ((value.match(/[!?]/g) || []).length > 3) {
-                e.preventDefault();
-                alert('Please use less punctuation.');
-                return false;
-            }
-            
-            // Disable button to prevent double submission
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
-        });
-    }
-});
-</script>
+<!-- Testimonial Start -->
+<div class="container-fluid testimonial py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Testimonial</h5>
+            <h1 class="mb-0">Our Clients Say!!!</h1>
+        </div>
+        <div class="testimonial-carousel owl-carousel">
+            <div class="testimonial-item text-center rounded pb-4">
+                <div class="testimonial-comment bg-light rounded p-4">
+                    <p class="text-center mb-5">"SafariSmart made planning our Kenya trip so easy! The itinerary was perfect and we saw everything we wanted."</p>
+                </div>
+                <div class="testimonial-img p-1">
+                    <img src="{% static 'travela/img/testimonial-1.jpg' %}" class="img-fluid rounded-circle" alt="Image">
+                </div>
+                <div style="margin-top: -35px;">
+                    <h5 class="mb-0">John Doe</h5>
+                    <p class="mb-0">New York, USA</p>
+                    <div class="d-flex justify-content-center">
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item text-center rounded pb-4">
+                <div class="testimonial-comment bg-light rounded p-4">
+                    <p class="text-center mb-5">"An unforgettable experience. The guides were knowledgeable and the accommodations were top-notch."</p>
+                </div>
+                <div class="testimonial-img p-1">
+                    <img src="{% static 'travela/img/testimonial-2.jpg' %}" class="img-fluid rounded-circle" alt="Image">
+                </div>
+                <div style="margin-top: -35px;">
+                    <h5 class="mb-0">Jane Smith</h5>
+                    <p class="mb-0">London, UK</p>
+                    <div class="d-flex justify-content-center">
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item text-center rounded pb-4">
+                <div class="testimonial-comment bg-light rounded p-4">
+                    <p class="text-center mb-5">"Highly recommend SafariSmart for anyone looking to explore Kenya. Seamless process from start to finish."</p>
+                </div>
+                <div class="testimonial-img p-1">
+                    <img src="{% static 'travela/img/testimonial-3.jpg' %}" class="img-fluid rounded-circle" alt="Image">
+                </div>
+                <div style="margin-top: -35px;">
+                    <h5 class="mb-0">Michael Brown</h5>
+                    <p class="mb-0">Sydney, Australia</p>
+                    <div class="d-flex justify-content-center">
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                        <i class="fas fa-star text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Testimonial End -->
 {% endblock %}
