@@ -3,160 +3,132 @@
 
 {% block title %}Explore Destinations - SafariSmart Kenya{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages/destinations-list.css' %}">
-{% endblock %}
-
 {% block content %}
-<!-- Header Section -->
-<section class="bg-success text-white py-5">
-    <div class="container">
-        <h1 class="display-4 fw-bold mb-3">
-            Explore Kenya Destinations
-        </h1>
-        <p class="lead">Discover amazing places across Kenya - from wildlife safaris to pristine beaches</p>
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">Explore Destinations</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'core:landing' %}">Home</a></li>
+                <li class="breadcrumb-item active text-white">Destinations</li>
+            </ol>
     </div>
-</section>
+</div>
+<!-- Header End -->
 
-<!-- Filter Section -->
-<section class="py-4 bg-light">
-    <div class="container">
-        <div class="d-flex flex-wrap gap-2 justify-content-center filter-btn-group">
-            <a href="{% url 'destinations:list' %}" 
-               class="btn {% if not selected_type %}btn-orange{% else %}btn-outline-orange{% endif %}">
-                All Destinations
-            </a>
-            <a href="?type=safari" 
-               class="btn {% if selected_type == 'safari' %}btn-orange{% else %}btn-outline-orange{% endif %}">
-                <i class="bi bi-binoculars"></i> Safari
-            </a>
-            <a href="?type=beach" 
-               class="btn {% if selected_type == 'beach' %}btn-orange{% else %}btn-outline-orange{% endif %}">
-                <i class="bi bi-umbrella-fill"></i> Beach
-            </a>
-            <a href="?type=mountain" 
-               class="btn {% if selected_type == 'mountain' %}btn-orange{% else %}btn-outline-orange{% endif %}">
-                <i class="bi bi-mountain"></i> Mountain
-            </a>
-            <a href="?type=cultural" 
-               class="btn {% if selected_type == 'cultural' %}btn-orange{% else %}btn-outline-orange{% endif %}">
-                <i class="bi bi-people"></i> Cultural
-            </a>
-            <a href="?type=city" 
-               class="btn {% if selected_type == 'city' %}btn-orange{% else %}btn-outline-orange{% endif %}">
-                <i class="bi bi-building"></i> City
-            </a>
+<!-- Destination Start -->
+<div class="container-fluid destination py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Destinations</h5>
+            <h1 class="mb-0">Popular Destinations in Kenya</h1>
         </div>
-    </div>
-</section>
 
-<!-- Destinations Grid -->
-<section class="py-5">
-    <div class="container">
-        {% if destinations %}
-        <div class="row g-4">
-            {% for destination in destinations %}
-            <div class="col-12 col-md-6 col-lg-4">
-                <a href="{% url 'destinations:detail' destination.slug %}" class="text-decoration-none">
-                    <div class="destination-card">
-                        <div class="destination-image-container">
-                            {% if destination.image %}
-                            <img src="{{ destination.image.url }}" alt="{{ destination.name }}" class="destination-image">
-                            {% elif destination.image_url %}
-                            <img src="{{ destination.image_url }}" alt="{{ destination.name }}" class="destination-image">
-                            {% else %}
-                            <img src="{% static 'images/destinations/' %}{{ destination.slug }}.jpg" 
-                                 alt="{{ destination.name }}" class="destination-image"
-                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'destination-fallback\'><i class=\'bi bi-image\'></i></div>';">
-                            {% endif %}
-                            
-                            <div class="destination-type-badge">
-                                <i class="bi bi-{% if destination.destination_type == 'safari' %}binoculars{% elif destination.destination_type == 'beach' %}umbrella-beach{% elif destination.destination_type == 'mountain' %}mountain{% else %}geo-alt{% endif %}"></i>
-                                {{ destination.get_destination_type_display }}
-                            </div>
-                            
-                            <div class="destination-hover-overlay">
-                                <div class="destination-info">
-                                    <h3 class="destination-title">{{ destination.name }}</h3>
-                                    <p class="destination-location">
-                                        <i class="bi bi-geo-alt"></i> {{ destination.county }}
-                                    </p>
-                                    <p class="destination-description">{{ destination.description|truncatewords:12 }}</p>
-                                    
-                                    <div class="destination-meta">
-                                        <div class="destination-price">
-                                            <i class="bi bi-cash-coin"></i>
-                                            <span>KSh {{ destination.average_cost_per_day|floatformat:0 }}/day</span>
-                                        </div>
-                                        
-                                        {% for dest_name, weather in weather_data.items %}
-                                        {% if dest_name == destination.name %}
-                                        <div class="destination-weather">
-                                            <img src="https://openweathermap.org/img/wn/{{ weather.icon }}.png" 
-                                                 alt="{{ weather.description }}" style="width: 24px; height: 24px;">
-                                            <span>{{ weather.temperature }}°C</span>
-                                        </div>
-                                        {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                    
-                                    {% if destination.best_time_to_visit %}
-                                    <div class="destination-timing">
-                                        <i class="bi bi-calendar-check"></i>
-                                        <span>Best: {{ destination.best_time_to_visit }}</span>
-                                    </div>
-                                    {% endif %}
-                                    
-                                    <div class="destination-cta">
-                                        <span>Explore</span>
-                                        <i class="bi bi-arrow-right"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Non-hover content -->
-                        <div class="destination-content">
-                            <div class="destination-header">
-                                <h3 class="destination-title">{{ destination.name }}</h3>
-                                <p class="destination-location">
-                                    <i class="bi bi-geo-alt"></i> {{ destination.county }}
-                                </p>
-                            </div>
-                            <p class="destination-description">{{ destination.description|truncatewords:8 }}</p>
-                            <div class="destination-footer">
-                                <div class="destination-price">
-                                    <span class="currency">KSh</span> {{ destination.average_cost_per_day|floatformat:0 }}/day
-                                </div>
-                                <div class="destination-cta">
-                                    Explore
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Filter Tabs -->
+        <div class="tab-class text-center">
+            <div class="d-flex justify-content-center mb-5 flex-wrap gap-2">
+                <a href="{% url 'destinations:list' %}"
+                    class="d-flex mx-2 py-2 px-4 border border-primary bg-light rounded-pill {% if not selected_type %}active text-white bg-primary{% else %}text-dark{% endif %} text-decoration-none">
+                    All
+                </a>
+                <a href="?type=safari"
+                    class="d-flex mx-2 py-2 px-4 border border-primary bg-light rounded-pill {% if selected_type == 'safari' %}active text-white bg-primary{% else %}text-dark{% endif %} text-decoration-none">
+                    Safari
+                </a>
+                <a href="?type=beach"
+                    class="d-flex mx-2 py-2 px-4 border border-primary bg-light rounded-pill {% if selected_type == 'beach' %}active text-white bg-primary{% else %}text-dark{% endif %} text-decoration-none">
+                    Beach
+                </a>
+                <a href="?type=mountain"
+                    class="d-flex mx-2 py-2 px-4 border border-primary bg-light rounded-pill {% if selected_type == 'mountain' %}active text-white bg-primary{% else %}text-dark{% endif %} text-decoration-none">
+                    Mountain
+                </a>
+                <a href="?type=cultural"
+                    class="d-flex mx-2 py-2 px-4 border border-primary bg-light rounded-pill {% if selected_type == 'cultural' %}active text-white bg-primary{% else %}text-dark{% endif %} text-decoration-none">
+                    Cultural
+                </a>
+                <a href="?type=city"
+                    class="d-flex mx-2 py-2 px-4 border border-primary bg-light rounded-pill {% if selected_type == 'city' %}active text-white bg-primary{% else %}text-dark{% endif %} text-decoration-none">
+                    City
                 </a>
             </div>
-            {% endfor %}
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active p-0">
+                    <div class="row g-4">
+                        {% if destinations %}
+                        {% for destination in destinations %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="destination-img">
+                                {% if destination.image %}
+                                <img class="img-fluid rounded w-100" src="{{ destination.image.url }}"
+                                    alt="{{ destination.name }}" style="height: 300px; object-fit: cover;">
+                                {% elif destination.image_url %}
+                                <img class="img-fluid rounded w-100" src="{{ destination.image_url }}"
+                                    alt="{{ destination.name }}" style="height: 300px; object-fit: cover;">
+                                {% else %}
+                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-1.jpg' %}"
+                                    alt="{{ destination.name }}" style="height: 300px; object-fit: cover;">
+                                {% endif %}
+
+                                <div class="destination-overlay p-4">
+                                    <span class="btn btn-primary text-white rounded-pill border py-2 px-3">{{
+                                        destination.get_destination_type_display }}</span>
+                                    <h4 class="text-white mb-2 mt-3">{{ destination.name }}</h4>
+                                    <a href="{% url 'destinations:detail' destination.slug %}"
+                                        class="btn-hover text-white">View Details <i
+                                            class="fa fa-arrow-right ms-2"></i></a>
+                                </div>
+                                <div class="search-icon">
+                                    {% if destination.image %}
+                                    <a href="{{ destination.image.url }}"
+                                        data-lightbox="destination-{{ destination.id }}"><i
+                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                    {% elif destination.image_url %}
+                                    <a href="{{ destination.image_url }}"
+                                        data-lightbox="destination-{{ destination.id }}"><i
+                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                    {% else %}
+                                    <a href="{% static 'travela/img/destination-1.jpg' %}"
+                                        data-lightbox="destination-{{ destination.id }}"><i
+                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="col-12 text-center">
+                            <p class="fs-4 text-muted">No destinations found in this category.</p>
+                            <a href="{% url 'destinations:list' %}" class="btn btn-primary rounded-pill py-3 px-5">View
+                                All Destinations</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
-        {% else %}
-        <div class="text-center py-5">
-            <i class="bi bi-search display-1 text-muted"></i>
-            <h3 class="mt-3">No destinations found</h3>
-            <p class="text-muted">Try selecting a different category</p>
-            <a href="{% url 'destinations:list' %}" class="btn btn-orange">View All</a>
-        </div>
-        {% endif %}
     </div>
-</section>
+</div>
+<!-- Destination End -->
 
 <!-- CTA Section -->
-<section class="py-5 bg-light">
-    <div class="container text-center">
-        <h2 class="mb-3">Ready to Plan Your Trip?</h2>
-        <p class="lead text-muted mb-4">Let our AI create a personalized itinerary for you</p>
-        <a href="{% url 'core:destination_selection' %}" class="btn btn-orange btn-lg px-5">
-            <i class="bi bi-magic"></i> Start Planning
-        </a>
+<div class="container-fluid booking py-5">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <h5 class="section-booking-title pe-3">Plan Your Trip</h5>
+                <h1 class="text-white mb-4">Ready to Explore Kenya?</h1>
+                <p class="text-white mb-4">Let our AI-powered planner create the perfect itinerary for you based on your
+                    preferences, budget, and interests.</p>
+                <a href="{% url 'core:destination_selection' %}"
+                    class="btn btn-light text-primary rounded-pill py-3 px-5 mt-2">Start Planning</a>
+            </div>
+            <div class="col-lg-6">
+                <h1 class="text-white mb-3">Custom Itineraries</h1>
+                <p class="text-white mb-4">Get a personalized day-by-day plan in seconds.</p>
+            </div>
+        </div>
     </div>
-</section>
+</div>
 {% endblock %}
