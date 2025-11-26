@@ -2,177 +2,123 @@
 {% load static_pages_tags %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Primary Meta Tags -->
+    <meta charset="utf-8">
     <title>{% block title %}SafariSmart Kenya - AI-Powered Safari & Beach Trip Planner{% endblock %}</title>
-    <meta name="title" content="{% block meta_title %}SafariSmart Kenya - AI Safari Trip Planner | Plan Your Perfect Kenya Adventure{% endblock %}">
-    <meta name="description" content="{% block meta_description %}Plan your perfect Kenya safari, beach vacation, or adventure with AI-powered itinerary generation. Explore Maasai Mara, Diani Beach, Amboseli & more top destinations. Get personalized day-by-day plans, weather forecasts, and interactive maps. Start planning your dream Kenya trip today!{% endblock %}">
-    <meta name="keywords" content="Kenya safari, Kenya trip planner, Maasai Mara safari, Diani Beach, Kenya vacation, AI trip planner, Kenya itinerary, safari planning, beach vacation Kenya, Amboseli National Park, Kenya tourism, safari packages, Kenya travel guide">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="description"
+        content="{% block meta_description %}Plan your perfect Kenya safari, beach vacation, or adventure with AI-powered itinerary generation.{% endblock %}">
+    <meta name="keywords" content="Kenya safari, Kenya trip planner, Maasai Mara safari, Diani Beach, Kenya vacation">
     <meta name="author" content="SafariSmart Kenya">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{% block canonical %}https://safarismart-kenya.onrender.com{% endblock %}">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://safarismart-kenya.onrender.com/">
-    <meta property="og:title" content="{% block og_title %}SafariSmart Kenya - AI Safari Trip Planner{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Plan your perfect Kenya safari with AI. Explore Maasai Mara, Diani Beach, Amboseli & more. Get personalized itineraries with weather forecasts and interactive maps.{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}https://safarismart-kenya.onrender.com/static/images/og-image.jpg{% endblock %}">
-    <meta property="og:locale" content="en_KE">
-    <meta property="og:site_name" content="SafariSmart Kenya">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://safarismart-kenya.onrender.com/">
-    <meta property="twitter:title" content="{% block twitter_title %}SafariSmart Kenya - AI Safari Trip Planner{% endblock %}">
-    <meta property="twitter:description" content="{% block twitter_description %}Plan your perfect Kenya safari with AI. Explore top destinations including Maasai Mara, Diani Beach, and Amboseli.{% endblock %}">
-    <meta property="twitter:image" content="{% block twitter_image %}https://safarismart-kenya.onrender.com/static/images/twitter-image.jpg{% endblock %}">
-    
-    <!-- Geo Tags -->
-    <meta name="geo.region" content="KE">
-    <meta name="geo.placename" content="Kenya">
-    <meta name="geo.position" content="-1.286389;36.817223">
-    <meta name="ICBM" content="-1.286389, 36.817223">
-    
-    <!-- Language -->
-    <meta http-equiv="content-language" content="en-KE">
-    
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+    <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Google Fonts - Poppins for Modern UI -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <!-- AOS (Animate On Scroll) -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <!-- Modern Theme CSS -->
-    <link rel="stylesheet" href="{% static 'css/modern-theme.css' %}">
-    
-    <!-- Chat Widget CSS -->
-    <link rel="stylesheet" href="{% static 'css/chat-widget.css' %}">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'travela/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'travela/lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'travela/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'travela/css/style.css' %}" rel="stylesheet">
+
     {% block extra_css %}{% endblock %}
-    
-    <!-- Structured Data (JSON-LD) - Organization -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "TravelAgency",
-        "name": "SafariSmart Kenya",
-        "description": "AI-powered trip planning platform for Kenya safaris, beach vacations, and adventures",
-        "url": "https://safarismart.co.ke",
-        "logo": "https://safarismart.co.ke/static/images/logo.png",
-        "image": "https://safarismart.co.ke/static/images/og-image.jpg",
-        "telephone": "+254-XXX-XXXXXX",
-        "email": "info@safarismart.co.ke",
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "KE",
-            "addressLocality": "Nairobi",
-            "addressRegion": "Nairobi"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "-1.286389",
-            "longitude": "36.817223"
-        },
-        "areaServed": {
-            "@type": "Country",
-            "name": "Kenya"
-        },
-        "priceRange": "KSh 10,000 - 500,000",
-        "sameAs": [
-            "https://facebook.com/safarismart",
-            "https://twitter.com/safarismart",
-            "https://instagram.com/safarismart"
-        ],
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "127"
-        }
-    }
-    </script>
-    
-    <!-- Breadcrumb Schema -->
-    {% block breadcrumb_schema %}{% endblock %}
-    
-    <!-- Page-specific Structured Data -->
+    <link rel="stylesheet" href="{% static 'css/chat-widget.css' %}">
     {% block structured_data %}{% endblock %}
 </head>
+
 <body>
-    <!-- Modern Navbar - Hide on auth pages -->
-    {% if not request.resolver_match.app_name == 'accounts' %}
-    <nav class="navbar navbar-expand-lg modern-navbar" id="mainNavbar">
-        <div class="container">
-            <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'core:dashboard' %}{% else %}{% url 'core:landing' %}{% endif %}">
-                <i class="bi bi-globe-africa"></i> SafariSmart Kenya
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-primary px-5 d-none d-lg-block">
+        <div class="row gx-0">
+            <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+                <div class="d-inline-flex align-items-center" style="height: 45px;">
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-twitter fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-facebook-f fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-linkedin-in fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-instagram fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i
+                            class="fab fa-youtube fw-normal"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center text-lg-end">
+                <div class="d-inline-flex align-items-center" style="height: 45px;">
                     {% if user.is_authenticated %}
-                    <!-- Logged-in User Navigation -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:dashboard' %}">
-                            <i class="bi bi-speedometer2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'destinations:browse' %}">
-                            <i class="bi bi-compass"></i> Destinations
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-success text-white ms-2 px-3" href="{% url 'core:destination_selection' %}">
-                            <i class="bi bi-plus-circle"></i> New Trip
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> {{ user.first_name|default:user.username }}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-                        </ul>
-                    </li>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i
+                                    class="fa fa-user me-2"></i> {{ user.username }}</small></a>
+                        <div class="dropdown-menu rounded">
+                            <a href="{% url 'core:dashboard' %}" class="dropdown-item"><i
+                                    class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+                            <a href="#" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> My Profile</a>
+                            <a href="{% url 'accounts:logout' %}" class="dropdown-item"><i
+                                    class="fas fa-power-off me-2"></i> Log Out</a>
+                        </div>
+                    </div>
                     {% else %}
-                    <!-- Public User Navigation -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'destinations:list' %}">Destinations</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white ms-2 px-3" href="{% url 'core:destination_selection' %}">Plan Your Trip</a>
-                    </li>
+                    <a href="{% url 'accounts:register' %}"><small class="me-3 text-light"><i
+                                class="fa fa-user me-2"></i>Register</small></a>
+                    <a href="{% url 'accounts:login' %}"><small class="me-3 text-light"><i
+                                class="fa fa-sign-in-alt me-2"></i>Login</small></a>
                     {% endif %}
-                </ul>
+                </div>
             </div>
         </div>
-    </nav>
-    {% endif %}
+    </div>
+    <!-- Topbar End -->
 
-    <!-- Messages -->
+    <!-- Navbar & Hero Start -->
+    <div class="container-fluid position-relative p-0">
+        <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+            <a href="{% url 'core:landing' %}" class="navbar-brand p-0">
+                <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>SafariSmart</h1>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="{% url 'core:landing' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'destinations:list' %}" class="nav-item nav-link">Destinations</a>
+                    <a href="#" class="nav-item nav-link">Services</a>
+                    <a href="#" class="nav-item nav-link">Packages</a>
+                    <a href="#" class="nav-item nav-link">Contact</a>
+                </div>
+                <a href="{% url 'core:destination_selection' %}"
+                    class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Plan Trip</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section Block (Only for landing page) -->
+        {% block hero %}{% endblock %}
+    </div>
+    <!-- Navbar & Hero End -->
+
     {% if messages %}
-    <div class="container mt-3">
+    <div class="container mt-3" style="padding-top: 100px;">
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
             {{ message }}
@@ -182,445 +128,111 @@
     </div>
     {% endif %}
 
-    <!-- Main Content -->
     {% block content %}{% endblock %}
 
-    <!-- Promotional sections only for non-authenticated users -->
-    {% if not user.is_authenticated %}
-    <!-- Interactive Value Cards Section -->
-    <section style="background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); padding: 3rem 0;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 style="font-size: 2rem; font-weight: 700; color: #1F2937; margin-bottom: 1rem;">Why Choose SafariSmart</h2>
-                <p style="font-size: 1.1rem; color: #6B7280; max-width: 600px; margin: 0 auto;">
-                    Experience the future of travel planning with our intelligent platform
-                </p>
-            </div>
-            
-            <!-- Value Cards - Inline to avoid template issues -->
-            <div class="value-constellation">
-                <!-- AI-Powered Card -->
-                <a href="#how-it-works" class="value-orb" data-tooltip="Smart itineraries in seconds using advanced algorithms">
-                    <div class="value-icon-wrapper">
-                        <i class="bi bi-cpu-fill"></i>
-                    </div>
-                    <h3 class="value-title">AI-Powered</h3>
-                    <p class="value-description">Smart itineraries in seconds using advanced algorithms</p>
-                    <div class="value-stats">
-                        <small>1000+ itineraries generated</small>
-                    </div>
-                </a>
-
-                <!-- Top Destinations Card -->
-                <a href="/destinations/" class="value-orb" data-tooltip="Explore Kenya's best locations from safaris to beaches">
-                    <div class="value-icon-wrapper">
-                        <i class="bi bi-geo-alt-fill"></i>
-                    </div>
-                    <h3 class="value-title">Top Destinations</h3>
-                    <p class="value-description">Kenya's best locations from safaris to beaches</p>
-                    <div class="value-stats">
-                        <small>20+ curated locations</small>
-                    </div>
-                </a>
-
-                <!-- Weather Forecasts Card -->
-                <a href="#weather-info" class="value-orb" data-tooltip="Plan with confidence using real-time weather data">
-                    <div class="value-icon-wrapper">
-                        <i class="bi bi-cloud-sun-fill"></i>
-                    </div>
-                    <h3 class="value-title">Weather Forecasts</h3>
-                    <p class="value-description">Plan with confidence using real-time weather data</p>
-                    <div class="value-stats">
-                        <small>7-day accurate forecasts</small>
-                    </div>
-                </a>
-
-                <!-- 100% Free Card -->
-                <a href="/wizard/destinations/" class="value-orb" data-tooltip="No hidden costs, completely free to use forever">
-                    <div class="value-icon-wrapper">
-                        <i class="bi bi-cash-coin"></i>
-                    </div>
-                    <h3 class="value-title">100% Free</h3>
-                    <p class="value-description">No hidden costs, completely free to use forever</p>
-                    <div class="value-stats">
-                        <small>Trusted by 500+ travelers</small>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <style>
-        /* Value Cards Styles */
-        .value-constellation {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .value-orb {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .value-orb:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            border-color: #E07A2B;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .value-icon-wrapper {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, #E07A2B, #C66820);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .value-icon-wrapper i {
-            font-size: 32px;
-            color: white;
-        }
-
-        .value-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1F2937;
-            margin-bottom: 0.75rem;
-        }
-
-        .value-description {
-            color: #6B7280;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .value-stats {
-            margin-top: 0.5rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid #E5E7EB;
-        }
-
-        .value-stats small {
-            font-size: 0.75rem;
-            color: #9CA3AF;
-            font-weight: 500;
-        }
-
-        /* Tooltip */
-        .value-orb[data-tooltip]:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1F2937;
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            max-width: 250px;
-            white-space: normal;
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .flip-card {
-            background-color: transparent;
-            width: 100%;
-            height: 200px;
-            perspective: 1000px;
-        }
-        
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s ease-in-out;
-            transform-style: preserve-3d;
-        }
-        
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        
-        .flip-card-front {
-            background: white;
-            color: #1F2937;
-        }
-        
-        .flip-card-back {
-            background: linear-gradient(135deg, #10B981, #064E3B);
-            color: white;
-            transform: rotateY(180deg);
-        }
-    </style>
-    {% endif %}
-
-    <!-- Modern Clean Footer -->
-    <footer style="background: #1a1a1a; color: #e5e7eb; padding: 60px 0 30px;">
-        <div class="container">
-            <div class="row">
-                <!-- Brand -->
+    <!-- Footer Start -->
+    <div class="container-fluid footer py-5">
+        <div class="container py-5">
+            <div class="row g-5">
                 {% get_contact_info as contact %}
-                <div class="col-lg-4 mb-4">
-                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: white;">
-                        SafariSmart Kenya
-                    </h3>
-                    <p style="color: #9ca3af; line-height: 1.7; margin-bottom: 24px;">
-                        {{ contact.about_text }}
-                    </p>
-                    <div style="margin-bottom: 16px;">
-                        <p style="color: #9ca3af; font-size: 14px; margin-bottom: 8px;">
-                            <strong style="color: #d1d5db;">Want to meet the person behind this platform?</strong>
-                        </p>
-                        <a href="mailto:{{ contact.email }}" style="color: #3D9A63; text-decoration: none; font-size: 14px; display: block; margin-bottom: 8px;">
-                            {{ contact.email }}
-                        </a>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Get In Touch</h4>
+                        <a href=""><i class="fas fa-home me-2"></i> Nairobi, Kenya</a>
+                        <a href="mailto:{{ contact.email }}"><i class="fas fa-envelope me-2"></i> {{ contact.email
+                            }}</a>
                         {% if contact.phone %}
-                        <a href="tel:{{ contact.phone|cut:' ' }}" style="color: #9ca3af; text-decoration: none; font-size: 13px; display: block; margin-bottom: 8px;">
-                            {{ contact.phone }}
-                        </a>
+                        <a href="tel:{{ contact.phone|cut:' ' }}"><i class="fas fa-phone me-2"></i> {{ contact.phone
+                            }}</a>
                         {% endif %}
-                        <p style="color: #9ca3af; font-size: 13px; margin: 0;">
-                            Built by {{ contact.creator_name }}{% if contact.portfolio_url %} • 
-                            <a href="{{ contact.portfolio_url }}" target="_blank" rel="noopener" style="color: #3D9A63; text-decoration: none;">
-                                {{ contact.portfolio_text }} →
-                            </a>
+                        <div class="d-flex align-items-center mt-3">
+                            {% if contact.twitter_url %}
+                            <a class="btn-square btn btn-primary rounded-circle mx-1"
+                                href="{{ contact.twitter_url }}"><i class="fab fa-twitter"></i></a>
                             {% endif %}
-                        </p>
+                            {% if contact.facebook_url %}
+                            <a class="btn-square btn btn-primary rounded-circle mx-1"
+                                href="{{ contact.facebook_url }}"><i class="fab fa-facebook-f"></i></a>
+                            {% endif %}
+                            {% if contact.linkedin_url %}
+                            <a class="btn-square btn btn-primary rounded-circle mx-1"
+                                href="{{ contact.linkedin_url }}"><i class="fab fa-linkedin-in"></i></a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Quick Links -->
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
-                        Quick Links
-                    </h4>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'core:destination_selection' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px; transition: color 0.2s;">
-                                Plan Trip
-                            </a>
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'destinations:list' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Destinations
-                            </a>
-                        </li>
-                        {% if user.is_authenticated %}
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'core:dashboard' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                My Itineraries
-                            </a>
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'accounts:logout' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Logout
-                            </a>
-                        </li>
-                        {% else %}
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'accounts:login' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Login
-                            </a>
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'accounts:register' %}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Register
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                
-                <!-- Destinations -->
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
-                        Explore
-                    </h4>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'destinations:list' %}?type=safari" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Safari Parks
-                            </a>
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'destinations:list' %}?type=beach" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Beaches
-                            </a>
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'destinations:list' %}?type=mountain" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Mountains
-                            </a>
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            <a href="{% url 'destinations:list' %}?type=city" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Cities
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Company -->
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
-                        Company
-                    </h4>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        {% load static_pages_tags %}
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Company</h4>
+                        <a href="{% url 'core:landing' %}"><i class="fas fa-angle-right me-2"></i> Home</a>
+                        <a href="{% url 'destinations:list' %}"><i class="fas fa-angle-right me-2"></i> Destinations</a>
                         {% get_footer_pages as footer_pages %}
                         {% for page in footer_pages %}
-                        <li style="margin-bottom: 12px;">
-                            <a href="{{ page.get_absolute_url }}" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                {{ page.title }}
-                            </a>
-                        </li>
-                        {% empty %}
-                        <li style="margin-bottom: 12px;">
-                            <a href="mailto:owuorvincent069@gmail.com" style="color: #9ca3af; text-decoration: none; font-size: 14px;">
-                                Contact Us
-                            </a>
-                        </li>
+                        <a href="{{ page.get_absolute_url }}"><i class="fas fa-angle-right me-2"></i> {{ page.title
+                            }}</a>
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
-                
-                <!-- Connect -->
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
-                        Connect
-                    </h4>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        {% if contact.github_url %}
-                        <li style="margin-bottom: 12px;">
-                            <a href="{{ contact.github_url }}" target="_blank" rel="noopener" style="color: #9ca3af; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                                <i class="bi bi-github"></i> GitHub
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% if contact.linkedin_url %}
-                        <li style="margin-bottom: 12px;">
-                            <a href="{{ contact.linkedin_url }}" target="_blank" rel="noopener" style="color: #9ca3af; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                                <i class="bi bi-linkedin"></i> LinkedIn
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% if contact.twitter_url %}
-                        <li style="margin-bottom: 12px;">
-                            <a href="{{ contact.twitter_url }}" target="_blank" rel="noopener" style="color: #9ca3af; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                                <i class="bi bi-twitter"></i> Twitter
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Support</h4>
+                        <a href=""><i class="fas fa-angle-right me-2"></i> Contact</a>
+                        <a href=""><i class="fas fa-angle-right me-2"></i> Legal Notice</a>
+                        <a href=""><i class="fas fa-angle-right me-2"></i> Privacy Policy</a>
+                        <a href=""><i class="fas fa-angle-right me-2"></i> Terms and Conditions</a>
+                        <a href=""><i class="fas fa-angle-right me-2"></i> Sitemap</a>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Bottom -->
-            <div style="border-top: 1px solid #374151; margin-top: 48px; padding-top: 24px; text-align: center;">
-                <p style="color: #6b7280; font-size: 14px; margin: 0;">
-                    © 2025 SafariSmart Kenya. All rights reserved.
-                </p>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item">
+                        <h4 class="text-white mb-3">Payments</h4>
+                        <div class="footer-bank-card">
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
-    
-    <style>
-        /* Footer Hover Effects */
-        .hover-success {
-            transition: all 0.3s ease;
-        }
-        .hover-success:hover {
-            color: var(--kenya-green) !important;
-            transform: translateX(5px);
-        }
-        
-        footer a {
-            display: inline-block;
-        }
-    </style>
+    </div>
+    <!-- Footer End -->
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- AOS (Animate On Scroll) -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <!-- Modern Theme JS -->
-    <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 800,
-            easing: 'ease-out',
-            once: true,
-            offset: 100
-        });
-        
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('mainNavbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
-    
-    <!-- Chat Widget JS -->
+    <!-- Copyright Start -->
+    <div class="container-fluid copyright text-body py-4">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6 text-center text-md-end mb-md-0">
+                    <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">SafariSmart Kenya</a>, All right
+                    reserved.
+                </div>
+                <div class="col-md-6 text-center text-md-start">
+                    Designed By <a class="text-white" href="https://htmlcodex.com">HTML Codex</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
+            class="fa fa-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'travela/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'travela/lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'travela/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'travela/lib/lightbox/js/lightbox.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'travela/js/main.js' %}"></script>
     <script src="{% static 'js/chat-widget.js' %}"></script>
-    
+
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>
