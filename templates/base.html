@@ -96,8 +96,28 @@
                 <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>SafariSmart</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <!-- Hero Section Block (Only for landing page) -->
-                {% block hero %}{% endblock %}
+                <span class="fa fa-bars"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="{% url 'core:landing' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'destinations:list' %}" class="nav-item nav-link">Destinations</a>
+                    <a href="{% url 'core:landing' %}#services" class="nav-item nav-link">Services</a>
+                    <a href="{% url 'core:landing' %}#about" class="nav-item nav-link">About</a>
+                    <a href="#footer" class="nav-item nav-link">Contact</a>
+                </div>
+                {% if not user.is_authenticated %}
+                <a href="{% url 'accounts:register' %}"
+                    class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Register</a>
+                {% else %}
+                <a href="{% url 'core:dashboard' %}"
+                    class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Dashboard</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <!-- Hero Section Block (Only for landing page) -->
+        {% block hero %}{% endblock %}
     </div>
     <!-- Navbar & Hero End -->
 
