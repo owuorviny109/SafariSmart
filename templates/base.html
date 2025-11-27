@@ -96,22 +96,8 @@
                 <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>SafariSmart</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0">
-                    <a href="{% url 'core:landing' %}" class="nav-item nav-link active">Home</a>
-                    <a href="{% url 'destinations:list' %}" class="nav-item nav-link">Destinations</a>
-                    <a href="#services" class="nav-item nav-link">Services</a>
-                    <a href="#footer" class="nav-item nav-link">Contact</a>
-                </div>
-                <a href="{% url 'core:destination_selection' %}"
-                    class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Plan Trip</a>
-            </div>
-        </nav>
-
-        <!-- Hero Section Block (Only for landing page) -->
-        {% block hero %}{% endblock %}
+                <!-- Hero Section Block (Only for landing page) -->
+                {% block hero %}{% endblock %}
     </div>
     <!-- Navbar & Hero End -->
 
@@ -136,7 +122,8 @@
                 <div class="col-md-6 col-lg-6 col-xl-4">
                     <div class="footer-item d-flex flex-column">
                         <h4 class="mb-4 text-white">About SafariSmart</h4>
-                        <p class="text-white mb-3">Your AI-powered companion for discovering and planning unforgettable Kenyan adventures. From safaris to beaches, we make trip planning effortless.</p>
+                        <p class="text-white mb-3">Your AI-powered companion for discovering and planning unforgettable
+                            Kenyan adventures. From safaris to beaches, we make trip planning effortless.</p>
                         <div class="d-flex flex-column">
                             <div class="d-flex align-items-center mb-2">
                                 <i class="fas fa-check-circle text-primary me-2"></i>
