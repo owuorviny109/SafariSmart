@@ -1,228 +1,206 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Dashboard - SafariSmart Kenya{% endblock %}
 
-{% load static %}
-
 {% block extra_css %}
+<!-- We can keep this for specific overrides if needed, but we'll try to rely on Travela styles -->
 <link rel="stylesheet" href="{% static 'css/pages/dashboard.css' %}">
 {% endblock %}
 
 {% block content %}
-<!-- Welcome Header -->
-<section class="dashboard-header">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="dashboard-title">
-                    Welcome back, {{ user.first_name|default:user.username }}!
-                </h1>
-                <p class="dashboard-subtitle">Ready for your next Kenya adventure?</p>
-            </div>
-            <div class="col-md-4 text-md-end">
-                <div class="dashboard-actions">
-                    <a href="{% url 'core:destination_selection' %}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle"></i> Plan New Trip
-                    </a>
-                    <a href="{% url 'destinations:browse' %}" class="btn btn-outline-primary">
-                        <i class="bi bi-compass"></i> Browse
-                    </a>
-                </div>
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">User Dashboard</h3>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'core:landing' %}">Home</a></li>
+            <li class="breadcrumb-item active text-white">Dashboard</li>
+        </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Welcome Section -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Welcome Back</h5>
+            <h1 class="mb-4">Hello, {{ user.first_name|default:user.username }}!</h1>
+            <p class="mb-0">Ready for your next Kenya adventure? Manage your trips and explore new destinations.</p>
+            <div class="mt-4">
+                <a href="{% url 'core:destination_selection' %}" class="btn btn-primary rounded-pill py-3 px-5 me-2">
+                    <i class="fa fa-plus-circle me-2"></i>Plan New Trip
+                </a>
+                <a href="{% url 'destinations:browse' %}" class="btn btn-outline-primary rounded-pill py-3 px-5">
+                    <i class="fa fa-compass me-2"></i>Browse Destinations
+                </a>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Stats Section - Only show if user has trips -->
-{% if total_trips > 0 %}
-<section class="dashboard-stats-section">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-3 col-sm-6">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="bi bi-suitcase-lg"></i>
+        <!-- Stats Section -->
+        {% if total_trips > 0 %}
+        <div class="row g-4 justify-content-center mb-5">
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div
+                    class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0 h-100">
+                    <div class="service-content text-end">
+                        <h5 class="mb-4">Trips Planned</h5>
+                        <p class="mb-0 fs-4 fw-bold text-primary">{{ total_trips }}</p>
                     </div>
-                    <div class="stat-content">
-                        <h3 class="stat-number">{{ total_trips }}</h3>
-                        <p class="stat-label">Trip{% if total_trips != 1 %}s{% endif %} Planned</p>
+                    <div class="service-icon p-4">
+                        <i class="fa fa-suitcase fa-4x text-primary"></i>
                     </div>
                 </div>
             </div>
             {% if total_budget_spent > 0 %}
-            <div class="col-md-3 col-sm-6">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="bi bi-cash-stack"></i>
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div
+                    class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0 h-100">
+                    <div class="service-content text-end">
+                        <h5 class="mb-4">Total Budget</h5>
+                        <p class="mb-0 fs-5 fw-bold text-primary">KSh {{ total_budget_spent|floatformat:0 }}</p>
                     </div>
-                    <div class="stat-content">
-                        <h3 class="stat-number">KSh {{ total_budget_spent|floatformat:0 }}</h3>
-                        <p class="stat-label">Total Budget</p>
+                    <div class="service-icon p-4">
+                        <i class="fa fa-money-bill-wave fa-4x text-primary"></i>
                     </div>
                 </div>
             </div>
             {% endif %}
             {% if total_days_traveled > 0 %}
-            <div class="col-md-3 col-sm-6">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="bi bi-calendar-range"></i>
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div
+                    class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0 h-100">
+                    <div class="service-content text-end">
+                        <h5 class="mb-4">Days Planned</h5>
+                        <p class="mb-0 fs-4 fw-bold text-primary">{{ total_days_traveled }}</p>
                     </div>
-                    <div class="stat-content">
-                        <h3 class="stat-number">{{ total_days_traveled }}</h3>
-                        <p class="stat-label">Days Planned</p>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-            {% if favorite_destinations %}
-            <div class="col-md-3 col-sm-6">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="bi bi-geo-alt"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3 class="stat-number">{{ favorite_destinations|length }}</h3>
-                        <p class="stat-label">Favorite{% if favorite_destinations|length != 1 %}s{% endif %}</p>
+                    <div class="service-icon p-4">
+                        <i class="fa fa-calendar-alt fa-4x text-primary"></i>
                     </div>
                 </div>
             </div>
             {% endif %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Main Content -->
-<section class="dashboard-main">
-    <div class="container">
-        {% if itineraries %}
-        <!-- User has trips -->
-        <div class="row g-4">
-            <!-- Main Content Area -->
-            <div class="col-lg-8">
-                <div class="trips-section">
-                    <div class="section-header">
-                        <h2 class="section-title">Your Trips</h2>
-                        {% if has_more_trips %}
-                        <a href="#" class="view-all-link">View All</a>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="trips-grid">
-                        {% for itinerary in itineraries %}
-                        <div class="trip-card">
-                            <div class="trip-card-header">
-                                <h3 class="trip-title">{{ itinerary.title }}</h3>
-                                <span class="trip-date">{{ itinerary.created_at|date:"M d" }}</span>
-                            </div>
-                            
-                            <div class="trip-details">
-                                <div class="trip-meta">
-                                    <span class="meta-item">
-                                        <i class="bi bi-calendar3"></i>
-                                        {{ itinerary.duration_days }} day{% if itinerary.duration_days > 1 %}s{% endif %}
-                                    </span>
-                                    <span class="meta-item">
-                                        <i class="bi bi-cash"></i>
-                                        KSh {{ itinerary.total_budget|floatformat:0 }}
-                                    </span>
-                                </div>
-                                
-                                <div class="trip-destinations">
-                                    {% for destination in itinerary.destinations.all|slice:":3" %}
-                                    <span class="destination-tag">{{ destination.name }}</span>
-                                    {% endfor %}
-                                    {% if itinerary.destinations.count > 3 %}
-                                    <span class="destination-tag more">+{{ itinerary.destinations.count|add:"-3" }}</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            
-                            <div class="trip-actions">
-                                <a href="{% url 'core:itinerary_detail' itinerary.share_code %}" class="btn-view">
-                                    View Trip
-                                </a>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Sidebar -->
-            <div class="col-lg-4">
-                <div class="sidebar">
-                    <!-- Quick Actions -->
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">Quick Actions</h3>
-                        <div class="quick-actions">
-                            <a href="{% url 'core:destination_selection' %}" class="action-btn primary">
-                                <i class="bi bi-plus-circle"></i>
-                                Plan New Trip
-                            </a>
-                            <a href="{% url 'destinations:browse' %}" class="action-btn secondary">
-                                <i class="bi bi-compass"></i>
-                                Browse Destinations
-                            </a>
-                            <a href="{% url 'core:quick_trip' %}" class="action-btn secondary">
-                                <i class="bi bi-lightning"></i>
-                                Quick Trip Planner
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- Favorite Destinations -->
-                    {% if favorite_destinations %}
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">Your Favorites</h3>
-                        <div class="favorites-list">
-                            {% for dest_name, count in favorite_destinations %}
-                            <div class="favorite-item">
-                                <span class="favorite-name">{{ dest_name }}</span>
-                                <span class="favorite-count">{{ count }}</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        {% else %}
-        <!-- Empty State for New Users -->
-        <div class="empty-state">
-            <div class="empty-state-content">
-                <div class="empty-state-icon">
-                    <i class="bi bi-compass"></i>
-                </div>
-                <h2 class="empty-state-title">Start Your Kenya Adventure</h2>
-                <p class="empty-state-text">
-                    Plan your perfect safari experience with our AI-powered trip planner.
-                    From the Maasai Mara to Mount Kenya, we'll help you discover the best of Kenya.
-                </p>
-                <div class="empty-state-actions">
-                    <a href="{% url 'core:destination_selection' %}" class="btn-primary">
-                        <i class="bi bi-magic"></i>
-                        Plan Your First Trip
-                    </a>
-                    <a href="{% url 'destinations:browse' %}" class="btn-secondary">
-                        <i class="bi bi-compass"></i>
-                        Explore Destinations
-                    </a>
-                </div>
-            </div>
         </div>
         {% endif %}
+
+        <div class="row g-5">
+            <!-- Main Content: Trips -->
+            <div class="col-lg-8">
+                <div class="mb-4 d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Your Trips</h3>
+                    {% if has_more_trips %}
+                    <a href="#" class="btn-hover-bg btn btn-primary rounded-pill text-white py-2 px-4">View All</a>
+                    {% endif %}
+                </div>
+
+                {% if itineraries %}
+                <div class="row g-4">
+                    {% for itinerary in itineraries %}
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4 overflow-hidden">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <div class="destination-img h-100">
+                                        <img class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 200px;"
+                                            src="{% static 'travela/img/destination-1.jpg' %}" alt="Trip Image">
+                                        <div class="destination-overlay p-4">
+                                            <h4 class="text-white mb-2">{{ itinerary.title }}</h4>
+                                            <span class="badge bg-white text-primary rounded-pill px-3 py-1">{{
+                                                itinerary.created_at|date:"M d, Y" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="p-4 d-flex flex-column h-100 justify-content-between">
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h4 class="mb-0 text-dark">{{ itinerary.title }}</h4>
+                                                <span class="text-primary fw-bold">KSh {{
+                                                    itinerary.total_budget|floatformat:0 }}</span>
+                                            </div>
+                                            <p class="mb-3 text-muted">
+                                                <i class="fa fa-clock me-2 text-primary"></i>{{ itinerary.duration_days
+                                                }} Days
+                                            </p>
+                                            <div class="mb-3">
+                                                {% for destination in itinerary.destinations.all|slice:":3" %}
+                                                <span class="badge bg-light text-dark me-1 mb-1 border">{{
+                                                    destination.name }}</span>
+                                                {% endfor %}
+                                                {% if itinerary.destinations.count > 3 %}
+                                                <span class="badge bg-light text-dark me-1 mb-1 border">+{{
+                                                    itinerary.destinations.count|add:"-3" }} more</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <a href="{% url 'core:itinerary_detail' itinerary.share_code %}"
+                                                class="btn btn-primary rounded-pill py-2 px-4">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5 bg-light rounded">
+                    <i class="fa fa-map-marked-alt fa-5x text-primary mb-4"></i>
+                    <h3>No Trips Planned Yet</h3>
+                    <p class="mb-4">Start your journey by creating your first itinerary.</p>
+                    <a href="{% url 'core:destination_selection' %}" class="btn btn-primary rounded-pill py-3 px-5">Plan
+                        Now</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Quick Actions -->
+                <div class="bg-light rounded p-4 mb-4">
+                    <h4 class="mb-4">Quick Actions</h4>
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'core:destination_selection' %}"
+                            class="btn btn-outline-primary py-3 text-start">
+                            <i class="fa fa-plus-circle me-3"></i>Plan New Trip
+                        </a>
+                        <a href="{% url 'destinations:browse' %}" class="btn btn-outline-primary py-3 text-start">
+                            <i class="fa fa-compass me-3"></i>Browse Destinations
+                        </a>
+                        <a href="{% url 'core:quick_trip' %}" class="btn btn-outline-primary py-3 text-start">
+                            <i class="fa fa-bolt me-3"></i>Quick Trip Planner
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Favorites -->
+                {% if favorite_destinations %}
+                <div class="bg-light rounded p-4">
+                    <h4 class="mb-4">Your Favorites</h4>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        {% for dest_name, count in favorite_destinations %}
+                        <li
+                            class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0 py-3">
+                            <span class="fw-bold text-dark">{{ dest_name }}</span>
+                            <span class="badge bg-primary rounded-pill">{{ count }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-</section>
+</div>
+<!-- Welcome Section End -->
 
 <!-- Share Modal (for copy link functionality) -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
     <div id="shareToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header bg-success text-white">
-            <i class="bi bi-check-circle me-2"></i>
+            <i class="fa fa-check-circle me-2"></i>
             <strong class="me-auto">Link Copied!</strong>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
         </div>
@@ -235,18 +213,18 @@
 
 {% block extra_js %}
 <script>
-function copyShareLink(shareCode) {
-    const url = window.location.origin + '/itinerary/' + shareCode + '/';
-    
-    // Copy to clipboard
-    navigator.clipboard.writeText(url).then(function() {
-        // Show toast notification
-        const toastEl = document.getElementById('shareToast');
-        const toast = new bootstrap.Toast(toastEl);
-        toast.show();
-    }).catch(function(err) {
-        alert('Failed to copy link: ' + err);
-    });
-}
+    function copyShareLink(shareCode) {
+        const url = window.location.origin + '/itinerary/' + shareCode + '/';
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(url).then(function () {
+            // Show toast notification
+            const toastEl = document.getElementById('shareToast');
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }).catch(function (err) {
+            alert('Failed to copy link: ' + err);
+        });
+    }
 </script>
 {% endblock %}
