@@ -93,7 +93,7 @@ planning today!{% endblock %}
 
 {% block content %}
 <!-- About Start -->
-<div class="container-fluid about py-5">
+<div id="about" class="container-fluid about py-5">
     <div class="container py-5">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">
@@ -209,106 +209,104 @@ planning today!{% endblock %}
             <h1 class="mb-0">Popular Destinations</h1>
         </div>
         <div>
+            <div class="row g-4">
+                <div class="col-xl-8">
                     <div class="row g-4">
-                        <div class="col-xl-8">
-                            <div class="row g-4">
-                                <div class="col-lg-6">
-                                    <div class="destination-img">
-                                        <img class="img-fluid rounded w-100"
-                                            src="{% static 'travela/img/destination-1.jpg' %}" alt="">
-                                        <div class="destination-overlay p-4">
-                                            <h4 class="text-white mb-3">Maasai Mara</h4>
-                                            <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Wildlife
-                                            </p>
-                                            <p class="text-white mb-0">Witness the Great Migration and encounter the Big
-                                                Five in their natural habitat.</p>
-                                        </div>
-                                        <div class="search-icon">
-                                            <a href="{% static 'travela/img/destination-1.jpg' %}"
-                                                data-lightbox="destination-1"><i
-                                                    class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                        </div>
-                                    </div>
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-1.jpg' %}"
+                                    alt="">
+                                <div class="destination-overlay p-4">
+                                    <h4 class="text-white mb-3">Maasai Mara</h4>
+                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Wildlife
+                                    </p>
+                                    <p class="text-white mb-0">Witness the Great Migration and encounter the Big
+                                        Five in their natural habitat.</p>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="destination-img">
-                                        <img class="img-fluid rounded w-100"
-                                            src="{% static 'travela/img/destination-2.jpg' %}" alt="">
-                                        <div class="destination-overlay p-4">
-                                            <h4 class="text-white mb-3">Amboseli</h4>
-                                            <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Elephants
-                                            </p>
-                                            <p class="text-white mb-0">Large herds of elephants with majestic Mount
-                                                Kilimanjaro as the backdrop.</p>
-                                        </div>
-                                        <div class="search-icon">
-                                            <a href="{% static 'travela/img/destination-2.jpg' %}"
-                                                data-lightbox="destination-2"><i
-                                                    class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="destination-img">
-                                        <img class="img-fluid rounded w-100"
-                                            src="{% static 'travela/img/destination-7.jpg' %}" alt="">
-                                        <div class="destination-overlay p-4">
-                                            <h4 class="text-white mb-3">Diani Beach</h4>
-                                            <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Beach & Water
-                                                Sports</p>
-                                            <p class="text-white mb-0">Pristine white sands and crystal-clear waters
-                                                perfect for relaxation and adventure.</p>
-                                        </div>
-                                        <div class="search-icon">
-                                            <a href="{% static 'travela/img/destination-7.jpg' %}"
-                                                data-lightbox="destination-7"><i
-                                                    class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="destination-img">
-                                        <img class="img-fluid rounded w-100"
-                                            src="{% static 'travela/img/destination-8.jpg' %}" alt="">
-                                        <div class="destination-overlay p-4">
-                                            <h4 class="text-white mb-3">Tsavo East</h4>
-                                            <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Red
-                                                Elephants</p>
-                                            <p class="text-white mb-0">Kenya's largest park, famous for its red
-                                                elephants and diverse wildlife.</p>
-                                        </div>
-                                        <div class="search-icon">
-                                            <a href="{% static 'travela/img/destination-8.jpg' %}"
-                                                data-lightbox="destination-8"><i
-                                                    class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                        </div>
-                                    </div>
+                                <div class="search-icon">
+                                    <a href="{% static 'travela/img/destination-1.jpg' %}"
+                                        data-lightbox="destination-1"><i
+                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4">
-                            <div class="destination-img h-100">
-                                <img class="img-fluid rounded w-100 h-100"
-                                    src="{% static 'travela/img/destination-9.jpg' %}"
-                                    style="object-fit: cover; min-height: 300px;" alt="">
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-2.jpg' %}"
+                                    alt="">
                                 <div class="destination-overlay p-4">
-                                    <h4 class="text-white mb-3">Lake Nakuru</h4>
-                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Wildlife & Flamingos</p>
-                                    <p class="text-white mb-0">Famous for thousands of flamingos and diverse birdlife in
-                                        stunning lake scenery.</p>
+                                    <h4 class="text-white mb-3">Amboseli</h4>
+                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Elephants
+                                    </p>
+                                    <p class="text-white mb-0">Large herds of elephants with majestic Mount
+                                        Kilimanjaro as the backdrop.</p>
                                 </div>
                                 <div class="search-icon">
-                                    <a href="{% static 'travela/img/destination-9.jpg' %}"
-                                        data-lightbox="destination-4"><i
+                                    <a href="{% static 'travela/img/destination-2.jpg' %}"
+                                        data-lightbox="destination-2"><i
+                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-7.jpg' %}"
+                                    alt="">
+                                <div class="destination-overlay p-4">
+                                    <h4 class="text-white mb-3">Diani Beach</h4>
+                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Beach & Water
+                                        Sports</p>
+                                    <p class="text-white mb-0">Pristine white sands and crystal-clear waters
+                                        perfect for relaxation and adventure.</p>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="{% static 'travela/img/destination-7.jpg' %}"
+                                        data-lightbox="destination-7"><i
+                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="destination-img">
+                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-8.jpg' %}"
+                                    alt="">
+                                <div class="destination-overlay p-4">
+                                    <h4 class="text-white mb-3">Tsavo East</h4>
+                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Red
+                                        Elephants</p>
+                                    <p class="text-white mb-0">Kenya's largest park, famous for its red
+                                        elephants and diverse wildlife.</p>
+                                </div>
+                                <div class="search-icon">
+                                    <a href="{% static 'travela/img/destination-8.jpg' %}"
+                                        data-lightbox="destination-8"><i
                                             class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-4">
+                    <div class="destination-img h-100">
+                        <img class="img-fluid rounded w-100 h-100" src="{% static 'travela/img/destination-9.jpg' %}"
+                            style="object-fit: cover; min-height: 300px;" alt="">
+                        <div class="destination-overlay p-4">
+                            <h4 class="text-white mb-3">Lake Nakuru</h4>
+                            <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Wildlife & Flamingos</p>
+                            <p class="text-white mb-0">Famous for thousands of flamingos and diverse birdlife in
+                                stunning lake scenery.</p>
+                        </div>
+                        <div class="search-icon">
+                            <a href="{% static 'travela/img/destination-9.jpg' %}" data-lightbox="destination-4"><i
+                                    class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 <!-- Destination End -->
 
