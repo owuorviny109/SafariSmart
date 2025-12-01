@@ -67,8 +67,9 @@
                                 <img class="img-fluid rounded w-100" src="{{ destination.image_url }}"
                                     alt="{{ destination.name }}" style="height: 300px; object-fit: cover;">
                                 {% else %}
-                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-1.jpg' %}"
-                                    alt="{{ destination.name }}" style="height: 300px; object-fit: cover;">
+                                <img class="img-fluid rounded w-100"
+                                    src="{% static 'assets/theme/img/destination-1.jpg' %}" alt="{{ destination.name }}"
+                                    style="height: 300px; object-fit: cover;">
                                 {% endif %}
 
                                 <div class="destination-overlay p-4">
@@ -89,7 +90,7 @@
                                         data-lightbox="destination-{{ destination.id }}"><i
                                             class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
                                     {% else %}
-                                    <a href="{% static 'travela/img/destination-1.jpg' %}"
+                                    <a href="{% static 'assets/theme/img/destination-1.jpg' %}"
                                         data-lightbox="destination-{{ destination.id }}"><i
                                             class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
                                     {% endif %}

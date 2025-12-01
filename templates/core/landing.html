@@ -17,7 +17,7 @@ planning today!{% endblock %}
         </ol>
         <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
-                <img src="{% static 'travela/img/carousel-2.jpg' %}" class="img-fluid" alt="Image">
+                <img src="{% static 'assets/theme/img/carousel-2.jpg' %}" class="img-fluid" alt="Image">
                 <div class="carousel-caption">
                     <div class="p-3" style="max-width: 900px;">
                         <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore Kenya
@@ -33,7 +33,7 @@ planning today!{% endblock %}
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{% static 'travela/img/carousel-1.jpg' %}" class="img-fluid" alt="Image">
+                <img src="{% static 'assets/theme/img/carousel-1.jpg' %}" class="img-fluid" alt="Image">
                 <div class="carousel-caption">
                     <div class="p-3" style="max-width: 900px;">
                         <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore Kenya
@@ -49,7 +49,7 @@ planning today!{% endblock %}
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{% static 'travela/img/carousel-3.jpg' %}" class="img-fluid" alt="Image">
+                <img src="{% static 'assets/theme/img/carousel-3.jpg' %}" class="img-fluid" alt="Image">
                 <div class="carousel-caption">
                     <div class="p-3" style="max-width: 900px;">
                         <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore Kenya
@@ -98,11 +98,11 @@ planning today!{% endblock %}
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">
                 <div class="h-100" style="border: 50px solid; border-color: transparent #13357B transparent #13357B;">
-                    <img src="{% static 'travela/img/about-img.jpg' %}" class="img-fluid w-100 h-100" alt="">
+                    <img src="{% static 'assets/theme/img/about-img.jpg' %}" class="img-fluid w-100 h-100" alt="">
                 </div>
             </div>
             <div class="col-lg-7"
-                style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url({% static 'travela/img/about-img-1.png' %});">
+                style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url({% static 'assets/theme/img/about-img-1.png' %});">
                 <h5 class="section-about-title pe-3">About Us</h5>
                 <h1 class="mb-4">Welcome to <span class="text-primary">SafariSmart</span></h1>
                 <p class="mb-4">We are revolutionizing how you plan your Kenyan adventure. Our AI-powered platform
@@ -209,100 +209,6 @@ planning today!{% endblock %}
             <h1 class="mb-0">Popular Destinations</h1>
         </div>
         <div>
-            <div class="row g-4">
-                <div class="col-xl-8">
-                    <div class="row g-4">
-                        <div class="col-lg-6">
-                            <div class="destination-img">
-                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-1.jpg' %}"
-                                    alt="">
-                                <div class="destination-overlay p-4">
-                                    <h4 class="text-white mb-3">Maasai Mara</h4>
-                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Wildlife
-                                    </p>
-                                    <p class="text-white mb-0">Witness the Great Migration and encounter the Big
-                                        Five in their natural habitat.</p>
-                                </div>
-                                <div class="search-icon">
-                                    <a href="{% static 'travela/img/destination-1.jpg' %}"
-                                        data-lightbox="destination-1"><i
-                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="destination-img">
-                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-2.jpg' %}"
-                                    alt="">
-                                <div class="destination-overlay p-4">
-                                    <h4 class="text-white mb-3">Amboseli</h4>
-                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Elephants
-                                    </p>
-                                    <p class="text-white mb-0">Large herds of elephants with majestic Mount
-                                        Kilimanjaro as the backdrop.</p>
-                                </div>
-                                <div class="search-icon">
-                                    <a href="{% static 'travela/img/destination-2.jpg' %}"
-                                        data-lightbox="destination-2"><i
-                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="destination-img">
-                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-7.jpg' %}"
-                                    alt="">
-                                <div class="destination-overlay p-4">
-                                    <h4 class="text-white mb-3">Diani Beach</h4>
-                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Beach & Water
-                                        Sports</p>
-                                    <p class="text-white mb-0">Pristine white sands and crystal-clear waters
-                                        perfect for relaxation and adventure.</p>
-                                </div>
-                                <div class="search-icon">
-                                    <a href="{% static 'travela/img/destination-7.jpg' %}"
-                                        data-lightbox="destination-7"><i
-                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="destination-img">
-                                <img class="img-fluid rounded w-100" src="{% static 'travela/img/destination-8.jpg' %}"
-                                    alt="">
-                                <div class="destination-overlay p-4">
-                                    <h4 class="text-white mb-3">Tsavo East</h4>
-                                    <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Safari & Red
-                                        Elephants</p>
-                                    <p class="text-white mb-0">Kenya's largest park, famous for its red
-                                        elephants and diverse wildlife.</p>
-                                </div>
-                                <div class="search-icon">
-                                    <a href="{% static 'travela/img/destination-8.jpg' %}"
-                                        data-lightbox="destination-8"><i
-                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4">
-                    <div class="destination-img h-100">
-                        <img class="img-fluid rounded w-100 h-100" src="{% static 'travela/img/destination-9.jpg' %}"
-                            style="object-fit: cover; min-height: 300px;" alt="">
-                        <div class="destination-overlay p-4">
-                            <h4 class="text-white mb-3">Lake Nakuru</h4>
-                            <p class="text-white mb-2"><i class="fa fa-tag me-2"></i>Wildlife & Flamingos</p>
-                            <p class="text-white mb-0">Famous for thousands of flamingos and diverse birdlife in
-                                stunning lake scenery.</p>
-                        </div>
-                        <div class="search-icon">
-                            <a href="{% static 'travela/img/destination-9.jpg' %}" data-lightbox="destination-4"><i
-                                    class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -325,8 +231,8 @@ planning today!{% endblock %}
                 <div class="row g-2">
                     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-2">
                         <div class="gallery-item h-100">
-                            <img src="{% static 'travela/img/gallery-1.jpg' %}" class="img-fluid w-100 h-100 rounded"
-                                alt="Image">
+                            <img src="{% static 'assets/theme/img/gallery-1.jpg' %}"
+                                class="img-fluid w-100 h-100 rounded" alt="Image">
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Safari</h5>
@@ -335,15 +241,15 @@ planning today!{% endblock %}
                                 </div>
                             </div>
                             <div class="gallery-plus-icon">
-                                <a href="{% static 'travela/img/gallery-1.jpg' %}" data-lightbox="gallery-1"
+                                <a href="{% static 'assets/theme/img/gallery-1.jpg' %}" data-lightbox="gallery-1"
                                     class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
                         <div class="gallery-item h-100">
-                            <img src="{% static 'travela/img/gallery-2.jpg' %}" class="img-fluid w-100 h-100 rounded"
-                                alt="Image">
+                            <img src="{% static 'assets/theme/img/gallery-2.jpg' %}"
+                                class="img-fluid w-100 h-100 rounded" alt="Image">
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Beach</h5>
@@ -352,15 +258,15 @@ planning today!{% endblock %}
                                 </div>
                             </div>
                             <div class="gallery-plus-icon">
-                                <a href="{% static 'travela/img/gallery-2.jpg' %}" data-lightbox="gallery-2"
+                                <a href="{% static 'assets/theme/img/gallery-2.jpg' %}" data-lightbox="gallery-2"
                                     class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-2">
                         <div class="gallery-item h-100">
-                            <img src="{% static 'travela/img/gallery-3.jpg' %}" class="img-fluid w-100 h-100 rounded"
-                                alt="Image">
+                            <img src="{% static 'assets/theme/img/gallery-3.jpg' %}"
+                                class="img-fluid w-100 h-100 rounded" alt="Image">
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Wildlife</h5>
@@ -369,15 +275,15 @@ planning today!{% endblock %}
                                 </div>
                             </div>
                             <div class="gallery-plus-icon">
-                                <a href="{% static 'travela/img/gallery-3.jpg' %}" data-lightbox="gallery-3"
+                                <a href="{% static 'assets/theme/img/gallery-3.jpg' %}" data-lightbox="gallery-3"
                                     class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
                         <div class="gallery-item h-100">
-                            <img src="{% static 'travela/img/gallery-4.jpg' %}" class="img-fluid w-100 h-100 rounded"
-                                alt="Image">
+                            <img src="{% static 'assets/theme/img/gallery-4.jpg' %}"
+                                class="img-fluid w-100 h-100 rounded" alt="Image">
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Culture</h5>
@@ -386,15 +292,15 @@ planning today!{% endblock %}
                                 </div>
                             </div>
                             <div class="gallery-plus-icon">
-                                <a href="{% static 'travela/img/gallery-4.jpg' %}" data-lightbox="gallery-4"
+                                <a href="{% static 'assets/theme/img/gallery-4.jpg' %}" data-lightbox="gallery-4"
                                     class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-2">
                         <div class="gallery-item h-100">
-                            <img src="{% static 'travela/img/gallery-5.jpg' %}" class="img-fluid w-100 h-100 rounded"
-                                alt="Image">
+                            <img src="{% static 'assets/theme/img/gallery-5.jpg' %}"
+                                class="img-fluid w-100 h-100 rounded" alt="Image">
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Nature</h5>
@@ -403,7 +309,7 @@ planning today!{% endblock %}
                                 </div>
                             </div>
                             <div class="gallery-plus-icon">
-                                <a href="{% static 'travela/img/gallery-5.jpg' %}" data-lightbox="gallery-5"
+                                <a href="{% static 'assets/theme/img/gallery-5.jpg' %}" data-lightbox="gallery-5"
                                     class="my-auto"><i class="fas fa-plus fa-2x text-white"></i></a>
                             </div>
                         </div>
@@ -518,7 +424,7 @@ planning today!{% endblock %}
                         perfect and we saw everything we wanted."</p>
                 </div>
                 <div class="testimonial-img p-1">
-                    <img src="{% static 'travela/img/testimonial-1.jpg' %}" class="img-fluid rounded-circle"
+                    <img src="{% static 'assets/theme/img/testimonial-1.jpg' %}" class="img-fluid rounded-circle"
                         alt="Image">
                 </div>
                 <div style="margin-top: -35px;">
@@ -539,7 +445,7 @@ planning today!{% endblock %}
                         accommodations were top-notch."</p>
                 </div>
                 <div class="testimonial-img p-1">
-                    <img src="{% static 'travela/img/testimonial-2.jpg' %}" class="img-fluid rounded-circle"
+                    <img src="{% static 'assets/theme/img/testimonial-2.jpg' %}" class="img-fluid rounded-circle"
                         alt="Image">
                 </div>
                 <div style="margin-top: -35px;">
@@ -560,7 +466,7 @@ planning today!{% endblock %}
                         Seamless process from start to finish."</p>
                 </div>
                 <div class="testimonial-img p-1">
-                    <img src="{% static 'travela/img/testimonial-3.jpg' %}" class="img-fluid rounded-circle"
+                    <img src="{% static 'assets/theme/img/testimonial-3.jpg' %}" class="img-fluid rounded-circle"
                         alt="Image">
                 </div>
                 <div style="margin-top: -35px;">
