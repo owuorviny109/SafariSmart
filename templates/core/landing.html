@@ -254,6 +254,28 @@ planning today!{% endblock %}
 </div>
 <!-- Destination End -->
 
+<!-- Popular Destinations with Hover Cards Start -->
+<div class="container-fluid py-5" style="background-color: #f9f9f9;">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Explore</h5>
+            <h2 class="mb-0">Featured Experiences</h2>
+            <p class="text-muted mt-3">Hover to discover more about each destination</p>
+        </div>
+        <div class="destination-grid">
+            {% for destination in popular_destinations %}
+                {% include "destinations/_card.html" with destination=destination %}
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        <p class="mb-0">No popular destinations available at the moment.</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Popular Destinations with Hover Cards End -->
 
 
 <!-- Gallery Start -->

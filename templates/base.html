@@ -33,6 +33,7 @@
 
     {% block extra_css %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/chat-widget.css' %}">
+    <link rel="stylesheet" href="{% static 'css/destination-cards.css' %}">>
     {% block structured_data %}{% endblock %}
 </head>
 
@@ -171,8 +172,7 @@
                         <a href="{% url 'destinations:list' %}"><i class="fas fa-angle-right me-2"></i> Destinations</a>
                         {% get_footer_pages as footer_pages %}
                         {% for page in footer_pages %}
-                        <a href="{{ page.get_absolute_url }}"><i class="fas fa-angle-right me-2"></i> {{ page.title
-                            }}</a>
+                        <a href="{{ page.get_absolute_url }}"><i class="fas fa-angle-right me-2"></i> {{ page.title }}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -223,6 +223,7 @@
     <!-- Template Javascript -->
     <script src="{% static 'assets/theme/js/main.js' %}"></script>
     <script src="{% static 'js/chat-widget.js' %}"></script>
+    <script src="{% static 'js/destination-cards.js' %}"></script>
 
     {% block extra_js %}{% endblock %}
 </body>

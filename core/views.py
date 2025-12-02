@@ -50,6 +50,8 @@ def landing_page(request: HttpRequest) -> HttpResponse:
         return redirect('core:dashboard')
     
     featured_destinations = Destination.objects.filter(is_featured=True)[:6]
+    # Popular destinations for the homepage section (same as featured for now, can filter differently later)
+    popular_destinations = Destination.objects.filter(is_featured=True).order_by('-created_at')[:8]
     
     # FAQ data - Magical Kenya style
     faq_list = [
@@ -81,6 +83,7 @@ def landing_page(request: HttpRequest) -> HttpResponse:
     
     return render(request, 'core/landing.html', {
         'featured_destinations': featured_destinations,
+        'popular_destinations': popular_destinations,
         'faq_list': faq_list
     })
 

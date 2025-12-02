@@ -9,8 +9,6 @@ Classes:
     StyledAuthenticationForm: Login form with Bootstrap classes
     StyledUserCreationForm: Registration form with Bootstrap classes
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
 """
 
 from django import forms

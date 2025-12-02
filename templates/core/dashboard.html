@@ -106,8 +106,7 @@
                                             src="{% static 'travela/img/destination-1.jpg' %}" alt="Trip Image">
                                         <div class="destination-overlay p-4">
                                             <h4 class="text-white mb-2">{{ itinerary.title }}</h4>
-                                            <span class="badge bg-white text-primary rounded-pill px-3 py-1">{{
-                                                itinerary.created_at|date:"M d, Y" }}</span>
+                                            <span class="badge bg-white text-primary rounded-pill px-3 py-1">{{ itinerary.created_at|date:"M d, Y" }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -116,21 +115,17 @@
                                         <div>
                                             <div class="d-flex justify-content-between align-items-start mb-2">
                                                 <h4 class="mb-0 text-dark">{{ itinerary.title }}</h4>
-                                                <span class="text-primary fw-bold">KSh {{
-                                                    itinerary.total_budget|floatformat:0 }}</span>
+                                                <span class="text-primary fw-bold">KSh {{ itinerary.total_budget|floatformat:0 }}</span>
                                             </div>
                                             <p class="mb-3 text-muted">
-                                                <i class="fa fa-clock me-2 text-primary"></i>{{ itinerary.duration_days
-                                                }} Days
+                                                <i class="fa fa-clock me-2 text-primary"></i>{{ itinerary.duration_days }} Days
                                             </p>
                                             <div class="mb-3">
                                                 {% for destination in itinerary.destinations.all|slice:":3" %}
-                                                <span class="badge bg-light text-dark me-1 mb-1 border">{{
-                                                    destination.name }}</span>
+                                                <span class="badge bg-light text-dark me-1 mb-1 border">{{ destination.name }}</span>
                                                 {% endfor %}
                                                 {% if itinerary.destinations.count > 3 %}
-                                                <span class="badge bg-light text-dark me-1 mb-1 border">+{{
-                                                    itinerary.destinations.count|add:"-3" }} more</span>
+                                                <span class="badge bg-light text-dark me-1 mb-1 border">+{{ itinerary.destinations.count|add:"-3" }} more</span>
                                                 {% endif %}
                                             </div>
                                         </div>

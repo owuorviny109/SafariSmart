@@ -1,0 +1,46 @@
+{# Reusable destination card component with hover-to-reveal overlay #}
+{# Usage: {% include "destinations/_card.html" with destination=destination %} #}
+{% load static %}
+
+<div class="destination-card" tabindex="0" role="group" aria-label="Destination: {{ destination.name }}, {{ destination.get_destination_type_display }}">
+  <!-- Media (image) -->
+  <div class="destination-card__image">
+    {% if destination.image %}
+      <img 
+        class="destination-card__img" 
+        src="{{ destination.image.url }}" 
+        alt="{{ destination.name }}"
+        loading="lazy">
+    {% elif destination.image_url %}
+      <img 
+        class="destination-card__img" 
+        src="{{ destination.image_url }}" 
+        alt="{{ destination.name }}"
+        loading="lazy">
+    {% else %}
+      <img 
+        class="destination-card__img" 
+        src="{% static 'assets/theme/img/destination-1.jpg' %}" 
+        alt="{{ destination.name }}"
+        loading="lazy">
+    {% endif %}
+  </div>
+
+  <!-- Overlay that reveals on hover/focus -->
+  <div class="destination-card__overlay" aria-hidden="true">
+    <div class="destination-card__content">
+      <span class="destination-card__type-pill">{{ destination.get_destination_type_display }}</span>
+      <h3 class="destination-card__title">{{ destination.name }}</h3>
+      {% if destination.county %}
+        <p class="destination-card__location">
+          <i class="fa fa-map-marker-alt me-2"></i>{{ destination.county }}
+        </p>
+      {% endif %}
+      <a 
+        href="{% url 'destinations:detail' destination.slug %}" 
+        class="destination-card__cta">
+        View Details <i class="fa fa-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</div>
