@@ -208,7 +208,45 @@ planning today!{% endblock %}
             <h5 class="section-title px-3">Destination</h5>
             <h1 class="mb-0">Popular Destinations</h1>
         </div>
-        <div>
+        <div class="row g-4">
+            {% for destination in featured_destinations %}
+            <div class="col-lg-4 col-md-6">
+                <div class="destination-item position-relative overflow-hidden rounded" style="height: 400px;">
+                    {% if destination.image %}
+                    <img src="{{ destination.image.url }}" class="img-fluid w-100 h-100" alt="{{ destination.name }}"
+                        style="object-fit: cover;">
+                    {% elif destination.image_url %}
+                    <img src="{{ destination.image_url }}" class="img-fluid w-100 h-100" alt="{{ destination.name }}"
+                        style="object-fit: cover;">
+                    {% else %}
+                    <img src="{% static 'assets/theme/img/gallery-1.jpg' %}" class="img-fluid w-100 h-100"
+                        alt="{{ destination.name }}" style="object-fit: cover;">
+                    {% endif %}
+                    <div class="position-absolute w-100 h-100 top-0 start-0"
+                        style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7));">
+                        <div class="position-absolute bottom-0 start-0 p-4 w-100">
+                            <a href="{% url 'destinations:detail' destination.slug %}"
+                                class="h4 text-white text-decoration-none d-block mb-2">{{ destination.name }}</a>
+                            <p class="text-white mb-3">{{ destination.description|truncatewords:15 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary px-3 py-2">{{ destination.get_destination_type_display }}</span>
+                                <span class="text-white"><i class="fa fa-map-marker-alt me-1"></i>{{ destination.county }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <p class="mb-0">No featured destinations available. Check back soon!</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'destinations:list' %}" class="btn btn-primary rounded-pill py-3 px-5">View All
+                Destinations</a>
         </div>
     </div>
 </div>
