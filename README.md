@@ -1,6 +1,6 @@
 # SafariSmart Kenya
 
-**AI-Powered Safari & Travel Planning Platform** 
+**AI-Powered Safari and Travel Planning Platform**
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://safarismart-kenya.onrender.com)
 [![Python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org/)
@@ -9,116 +9,204 @@
 
 ---
 
-## About This Project
+## Project Overview
 
-SafariSmart Kenya is built with **love for Kenya** and a passion for promoting **domestic tourism**. This platform leverages cutting-edge **AI technology** to make safari and travel planning accessible, affordable, and exciting for everyone.
-
-**Academic Project**: This project is being developed as part of the Web Development course at [eMobilis Mobile Technology Institute](https://learn.emobilis-lms.org/), under the guidance of instructor [Joseph Ridge](https://github.com/JosephRidge).
-
-**Learning Journey**: Currently learning Django, Python, Figma, Bootstrap 5, HTML, CSS, and SCSS while building this project incrementally. The first release is now live, with daily improvements being made as I prepare for the December presentation.
+**SafariSmart Kenya** is a travel platform designed to modernize how users plan their Kenyan safaris. By integrating **Google's Gemini AI**, the system generates personalized, budget-conscious, and interest-based itineraries. The platform aims to promote domestic tourism by making travel planning accessible and transparent.
 
 ### Mission
-To showcase Kenya's breathtaking destinations and make trip planning effortless through intelligent automation, helping both local and international travelers discover the beauty of Kenya.
-
-### Why This Matters
-- **Promoting Domestic Tourism**: Making it easier for Kenyans to explore their own country
-- **AI-Powered Planning**: Intelligent itinerary generation tailored to your budget and interests
-- **Accessible Travel**: Breaking down barriers to safari and adventure travel
-- **Supporting Local Economy**: Connecting travelers with Kenya's tourism industry
+To democratize travel planning in Kenya, enabling users to discover destinations and plan affordable trips through intelligent automation.
 
 ---
 
-## Features
+## System Architecture
 
-**AI-Powered Itinerary Generation**
-- Smart trip planning using Google's Gemini AI
-- Personalized recommendations based on budget, interests, and travel style
+The following diagram illustrates the high-level architecture of the SafariSmart Kenya platform, detailing the data flow between the user, the Django backend, and the external Gemini AI service.
 
-**20+ Kenya Destinations**
-- Maasai Mara, Amboseli, Diani Beach, Mount Kenya, and more
-- Detailed destination information with real-time weather forecasts
+```mermaid
+graph TD
+    User[User Client] -->|HTTP Request| LoadBalancer[Load Balancer/Render]
+    LoadBalancer -->|Forward| Django[Django Backend]
+    
+    subgraph "Application Layer"
+        Django -->|Route| Views[View Controllers]
+        Views -->|Validate| Forms[Form Validation]
+        Views -->|Query| ORM[Django ORM]
+    end
+    
+    subgraph "AI Integration Layer"
+        Views -->|Prepare Prompt| GeminiService[Gemini Service]
+        GeminiService -->|API Call| GeminiAPI[Google Gemini API]
+        GeminiAPI -->|JSON Response| GeminiService
+    end
+    
+    subgraph "Data Layer"
+        ORM -->|Read/Write| DB[(PostgreSQL Database)]
+    end
+    
+    GeminiService -->|Parsed Data| Views
+    Views -->|Render| Templates[HTML Templates]
+    Templates -->|Response| User
+```
 
-**Modern, Beautiful Design**
-- Responsive design that works on all devices
-- Inspired by Kenya's natural beauty
-- Smooth animations and intuitive user experience
+---
 
-**Security First**
-- Rate limiting and abuse detection
-- Secure authentication with Django Axes
-- Content Security Policy (CSP) implementation
+## Database Schema
 
-**Analytics & Insights**
-- API usage tracking
-- User behavior analytics
-- Performance monitoring
+The application uses a relational database to manage users, destinations, and generated itineraries. The core relationships are depicted below.
+
+```mermaid
+erDiagram
+    User ||--o{ Itinerary : "creates"
+    User ||--o{ WizardSession : "has"
+    
+    Destination ||--o{ Itinerary : "included_in"
+    Destination ||--o{ WizardSession : "selected_in"
+    
+    User {
+        int id PK
+        string username
+        string email
+    }
+    
+    Destination {
+        int id PK
+        string name
+        string destination_type
+        decimal average_cost_per_day
+        string popular_activities
+    }
+    
+    Itinerary {
+        int id PK
+        int user_id FK
+        string title
+        int duration_days
+        json itinerary_data
+        int total_budget
+        string share_code
+    }
+    
+    WizardSession {
+        int id PK
+        string session_key
+        int current_step
+        json interests
+        int budget_amount
+    }
+```
+
+---
+
+## Key Features
+
+- **AI-Powered Itinerary Generator**: Utilizes Generative AI to create day-by-day travel plans based on user constraints (budget, group size, interests).
+- **Destination Management**: A curated database of over 20 Kenyan destinations with detailed metadata (costs, activities, weather).
+- **Wizard-Based Interface**: A multi-step form that guides users through the planning process, storing progress in `WizardSession` to prevent data loss.
+- **Security Implementation**:
+    - **Brute-force Protection**: Implemented via `django-axes`.
+    - **Content Security Policy**: Enforced using `django-csp`.
+    - **Rate Limiting**: Applied to API endpoints to prevent abuse.
+- **Responsive Design**: Built with Bootstrap 5 and SCSS for a consistent experience across devices.
 
 ---
 
 ## Technology Stack
 
-- **Backend**: Django 5.0, Python 3.11
-- **AI**: Google Gemini API
-- **Database**: PostgreSQL
-- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5
-- **Deployment**: Render.com
-- **Security**: Django Axes, CSP, Rate Limiting
+- **Backend Framework**: Django 5.0 (Python 3.11)
+- **AI Service**: Google Generative AI (Gemini Pro)
+- **Database**: PostgreSQL (Production), SQLite (Development)
+- **Frontend**: HTML5, SCSS, Bootstrap 5, JavaScript
+- **Security Libraries**: Argon2, Bleach, Django-CSP, Django-Axes
+- **Deployment Platform**: Render.com
 
 ---
 
-## Live Demo
+## Installation and Setup
 
-Visit the live application: **https://safarismart.onrender.com/**
+### Prerequisites
+- Python 3.11 or higher
+- Git
+- Virtualenv
+
+### Step-by-Step Installation
+
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/owuorviny109/safarismart-kenya.git
+    cd safarismart-kenya
+    ```
+
+2.  **Create and Activate Virtual Environment**
+    ```bash
+    python -m venv venv
+    # Windows
+    venv\Scripts\activate
+    # Linux/Mac
+    source venv/bin/activate
+    ```
+
+3.  **Install Dependencies**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Environment Configuration**
+    Create a `.env` file in the root directory with the following variables:
+    ```env
+    DEBUG=True
+    SECRET_KEY=your-secure-secret-key
+    GEMINI_API_KEY=your-google-gemini-api-key
+    OPENWEATHER_API_KEY=your-openweather-api-key
+    DATABASE_URL=sqlite:///db.sqlite3
+    ```
+
+5.  **Apply Database Migrations**
+    ```bash
+    python manage.py migrate
+    ```
+
+6.  **Load Initial Configuration Data**
+    This script populates the database with default travel types, budget categories, and system settings.
+    ```bash
+    python manage.py shell < load_config_data.py
+    ```
+
+7.  **Start the Development Server**
+    ```bash
+    python manage.py runserver
+    ```
 
 ---
 
-## Screenshots
+## Code Structure
 
-### Homepage
-Beautiful hero section with Kenya safari imagery and AI-powered trip planning
+The project follows a standard Django modular structure:
 
-### Destination Gallery
-Explore 20+ stunning Kenya destinations with detailed information
-
-### Smart Itinerary Generator
-Step-by-step wizard that creates personalized travel plans
-
----
-
-## Support This Project
-
-If you love what am building and want to buy me a coffee:
-
-**M-Pesa (Kenya): 0796915745**
-
-Your support helps keep this project running and improving!
+-   `accounts/`: Handles user authentication, registration, and profile management.
+-   `api/`: Contains internal API endpoints for dynamic frontend interactions.
+-   `core/`: Manages the main landing page, dashboard, and itinerary generation logic.
+-   `destinations/`: Manages destination data, listing views, and detail pages.
+-   `safarismart/`: Project-level settings, URL routing, and WSGI configuration.
+-   `static/`: Stores static assets (CSS, JavaScript, Images).
+-   `templates/`: Contains HTML templates organized by app.
+-   `load_config_data.py`: A utility script for seeding the database with initial configuration data.
 
 ---
----
 
-## Acknowledgments
+## Contributing
 
-- Built with passion for Kenya
-- Powered by Google's Gemini AI
-- Inspired by Kenya's incredible natural beauty
-- Developed as part of Web Development training at [eMobilis Mobile Technology Institute](https://learn.emobilis-lms.org/)
-- Special thanks to instructor [Joseph Ridge](https://github.com/JosephRidge) for guidance and mentorship
+Contributions are welcome. Please follow the standard fork-and-pull request workflow:
+1.  Fork the repository.
+2.  Create a feature branch.
+3.  Commit your changes with clear messages.
+4.  Push to your branch.
+5.  Open a Pull Request describing your changes.
 
 ---
 
 ## Contact
 
-**Developer**: Vincent Owuor
+**Vincent Owuor**
 - GitHub: [@owuorviny109](https://github.com/owuorviny109)
 - Email: owuorvincent069@gmail.com
 - Portfolio: [owuorvincent.vercel.app](https://owuorvincent.vercel.app/)
-
----
-
-## Star This Project
-
-If you find this project useful or inspiring, please give it a star on GitHub!
-
----
-
-**Made with love in Kenya for Kenya and the World**
