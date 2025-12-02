@@ -180,16 +180,56 @@ erDiagram
 
 ## Code Structure
 
-The project follows a standard Django modular structure:
-
--   `accounts/`: Handles user authentication, registration, and profile management.
--   `api/`: Contains internal API endpoints for dynamic frontend interactions.
--   `core/`: Manages the main landing page, dashboard, and itinerary generation logic.
--   `destinations/`: Manages destination data, listing views, and detail pages.
--   `safarismart/`: Project-level settings, URL routing, and WSGI configuration.
--   `static/`: Stores static assets (CSS, JavaScript, Images).
--   `templates/`: Contains HTML templates organized by app.
--   `load_config_data.py`: A utility script for seeding the database with initial configuration data.
+```text
+safarismart-kenya/
+├── accounts/                   # User authentication & profile management
+│   ├── forms.py                # Login, Registration, and Profile forms
+│   ├── models.py               # User profile models
+│   ├── urls.py                 # Account-related URL routing
+│   └── views.py                # Authentication logic (Login, Logout, Register)
+├── api/                        # Internal API endpoints
+│   ├── urls.py                 # API URL routing
+│   └── views.py                # API view logic (e.g., dynamic data fetching)
+├── core/                       # Core application logic
+│   ├── management/             # Custom Django management commands
+│   ├── middleware/             # Custom middleware (e.g., analytics)
+│   ├── services/               # Business logic services (AI, Email, etc.)
+│   ├── templatetags/           # Custom template tags and filters
+│   ├── models.py               # Core models (WizardSession, Itinerary)
+│   ├── models_config.py        # System configuration models
+│   ├── urls.py                 # Core URL routing
+│   └── views.py                # Main views (Landing, Dashboard, Wizard)
+├── destinations/               # Destination management
+│   ├── models.py               # Destination models
+│   ├── urls.py                 # Destination URL routing
+│   └── views.py                # Destination listing and detail views
+├── safarismart/                # Project configuration
+│   ├── settings.py             # Main Django settings
+│   ├── settings_production.py  # Production-specific settings
+│   ├── urls.py                 # Root URL configuration
+│   └── wsgi.py                 # WSGI application entry point
+├── static/                     # Static assets
+│   ├── css/                    # Compiled CSS files
+│   ├── images/                 # Project images
+│   └── js/                     # JavaScript files
+├── templates/                  # HTML Templates
+│   ├── accounts/               # Authentication templates
+│   ├── components/             # Reusable UI components (Navbar, Footer)
+│   ├── core/                   # Core templates (Landing, Dashboard)
+│   ├── destinations/           # Destination templates
+│   └── base.html               # Base template with common layout
+├── .gitignore                  # Git exclusion rules
+├── build.sh                    # Render.com build script
+├── db.sqlite3                  # Development database
+├── FAQ.md                      # Frequently Asked Questions
+├── load_config_data.py         # Database seeding script
+├── manage.py                   # Django management utility
+├── package.json                # Frontend dependencies
+├── README.md                   # Project documentation
+├── render.yaml                 # Render.com infrastructure config
+├── requirements.txt            # Python dependencies
+└── USER_GUIDE.md               # User instruction manual
+```
 
 ---
 
