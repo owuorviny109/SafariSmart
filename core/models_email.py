@@ -1,5 +1,6 @@
 from django.template import Template, Context
 from django.utils import timezone
+from django.db import models
 import logging
 
 logger = logging.getLogger(__name__)
