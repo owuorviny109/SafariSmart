@@ -11,6 +11,10 @@ python manage.py migrate --settings=safarismart.settings_production
 echo "Ensuring initial configuration data..."
 python manage.py ensure_initial_data --settings=safarismart.settings_production
 
+# Create superuser if configured
+echo "Checking for superuser creation..."
+python manage.py create_superuser --settings=safarismart.settings_production
+
 # Load destination data
 echo "Loading Kenya destinations..."
 python manage.py loaddata destinations/fixtures/kenya_destinations.json --settings=safarismart.settings_production || echo "Destinations already loaded"
