@@ -55,47 +55,10 @@
 
             <div class="tab-content">
                 <div class="tab-pane fade show active p-0">
-                    <div class="row g-4">
+                    <div class="destination-grid">
                         {% if destinations %}
                         {% for destination in destinations %}
-                        <div class="col-lg-4 col-md-6">
-                            <div class="destination-img">
-                                {% if destination.image %}
-                                <img class="img-fluid rounded w-100" src="{{ destination.image.url }}"
-                                    alt="{{ destination.name }}" style="height: 300px; object-fit: cover;">
-                                {% elif destination.image_url %}
-                                <img class="img-fluid rounded w-100" src="{{ destination.image_url }}"
-                                    alt="{{ destination.name }}" style="height: 300px; object-fit: cover;">
-                                {% else %}
-                                <img class="img-fluid rounded w-100"
-                                    src="{% static 'assets/theme/img/destination-1.jpg' %}" alt="{{ destination.name }}"
-                                    style="height: 300px; object-fit: cover;">
-                                {% endif %}
-
-                                <div class="destination-overlay p-4">
-                                    <span class="btn btn-primary text-white rounded-pill border py-2 px-3">{{ destination.get_destination_type_display }}</span>
-                                    <h4 class="text-white mb-2 mt-3">{{ destination.name }}</h4>
-                                    <a href="{% url 'destinations:detail' destination.slug %}"
-                                        class="btn-hover text-white">View Details <i
-                                            class="fa fa-arrow-right ms-2"></i></a>
-                                </div>
-                                <div class="search-icon">
-                                    {% if destination.image %}
-                                    <a href="{{ destination.image.url }}"
-                                        data-lightbox="destination-{{ destination.id }}"><i
-                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                    {% elif destination.image_url %}
-                                    <a href="{{ destination.image_url }}"
-                                        data-lightbox="destination-{{ destination.id }}"><i
-                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                    {% else %}
-                                    <a href="{% static 'assets/theme/img/destination-1.jpg' %}"
-                                        data-lightbox="destination-{{ destination.id }}"><i
-                                            class="fa fa-plus-square fa-1x btn btn-light btn-lg-square text-primary"></i></a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
+                        {% include "destinations/_card.html" with destination=destination %}
                         {% endfor %}
                         {% else %}
                         <div class="col-12 text-center">
