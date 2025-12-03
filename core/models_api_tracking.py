@@ -8,9 +8,6 @@ and usage analytics.
 Classes:
     APIUsageLog: Individual API call tracking
     APIUsageStats: Aggregated usage statistics
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
 """
 
 from django.db import models

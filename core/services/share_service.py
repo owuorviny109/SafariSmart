@@ -10,8 +10,7 @@ Classes:
     ShareURLGenerator: Generates shareable URLs
     ShareTracker: Tracks share statistics
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
+ 
 """
 
 from typing import Dict, Optional

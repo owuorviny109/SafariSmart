@@ -2,9 +2,6 @@
 Custom security middleware for SafariSmart Kenya.
 
 Provides additional security layers beyond Django's built-in protection.
-
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
 """
 
 import logging

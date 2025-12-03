@@ -10,8 +10,7 @@ APIs Used:
 - OpenTripMap API (free, 1000 requests/day)
 - Nominatim/OpenStreetMap (free geocoding)
 
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
+ 
 """
 
 import logging

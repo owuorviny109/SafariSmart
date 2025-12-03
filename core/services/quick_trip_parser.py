@@ -8,8 +8,7 @@ and extracts structured data for itinerary generation.
 Classes:
     QuickTripParser: Main parser for natural language trip descriptions
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
+ 
 """
 
 import re

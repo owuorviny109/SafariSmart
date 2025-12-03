@@ -7,9 +7,6 @@ that can be edited from the Django admin panel.
 
 Classes:
     StaticPage: Model for static content pages
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-19
 """
 
 from django.db import models

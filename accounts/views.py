@@ -10,9 +10,6 @@ Classes:
     LoginView: Handles user login
     RegisterView: Handles user registration
     LogoutView: Handles user logout
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
 """
 
 from typing import Dict, Any

@@ -4,9 +4,6 @@ Purpose: Security configuration models for admin management
 
 This module provides database models for managing security settings
 through the Django admin interface.
-
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
 """
 
 from django.db import models

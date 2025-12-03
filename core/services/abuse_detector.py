@@ -6,9 +6,7 @@ This module tracks invalid attempts and blocks abusive users.
 
 Classes:
     AbuseDetector: Main abuse detection service
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
+ 
 """
 
 from typing import Optional

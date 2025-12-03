@@ -1,16 +1,3 @@
-"""
-Email Management Models for SafariSmart Kenya
-
-This module contains models for managing email templates and sending logs
-through the Django admin interface.
-
-Author: SafariSmart Kenya Team
-Date: 2025-11-19
-"""
-
-from django.db import models
-from django.contrib.auth.models import User
-from django.core.mail import send_mail
 from django.template import Template, Context
 from django.utils import timezone
 import logging

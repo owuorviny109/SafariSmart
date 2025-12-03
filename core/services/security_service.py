@@ -5,8 +5,7 @@ Purpose: Security service for accessing security settings
 This module provides a centralized service for accessing security
 settings from the database with caching.
 
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
+ 
 """
 
 import logging

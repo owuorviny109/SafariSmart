@@ -9,10 +9,7 @@ Classes:
     GeminiItineraryGenerator: AI-powered itinerary generation
     TemplateItineraryGenerator: Template-based fallback
     ItineraryGeneratorFactory: Factory for selecting generator
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
-Updated: 2025-11-17 - Integrated BaseItineraryGenerator and ConfigurationService
+  
 """
 
 import logging

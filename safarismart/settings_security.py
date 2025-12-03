@@ -3,9 +3,6 @@ Security settings for SafariSmart Kenya.
 
 This file contains all security-related configurations.
 Import this in settings.py for production.
-
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
 """
 
 from decouple import config

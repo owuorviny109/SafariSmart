@@ -11,8 +11,7 @@ Classes:
     SimpleChatFlow: Rule-based chat flow handler
     AIChatHandler: AI-powered conversation handler
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-19
+ 
 """
 
 import logging

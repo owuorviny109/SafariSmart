@@ -9,9 +9,7 @@ Classes:
     ItineraryDisplayService: Main service for itinerary display operations
     RouteVisualizationService: Handles route visualization logic
     CostBreakdownService: Handles cost breakdown calculations
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
+ 
 """
 
 from typing import Dict, List, Optional, Tuple

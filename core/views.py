@@ -10,9 +10,6 @@ Classes:
     
 Functions:
     landing_page: Landing page view
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
 """
 
 import logging

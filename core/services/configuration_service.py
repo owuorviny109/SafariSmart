@@ -8,8 +8,7 @@ data from the database, with caching for performance.
 Classes:
     ConfigurationService: Singleton service for configuration access
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
+ 
 """
 
 from typing import List, Dict, Optional, Tuple

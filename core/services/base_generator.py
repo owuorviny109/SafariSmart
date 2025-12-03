@@ -8,8 +8,7 @@ must implement, ensuring consistency and enabling polymorphism.
 Classes:
     BaseItineraryGenerator: Abstract base class for generators
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
+
 """
 
 from abc import ABC, abstractmethod

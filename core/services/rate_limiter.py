@@ -9,8 +9,7 @@ Classes:
     RateLimiter: Main rate limiting service
     RequestQueue: Queue manager for rate-limited requests
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
+ 
 """
 
 import time

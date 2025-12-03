@@ -4,9 +4,6 @@ Purpose: URL routing for authentication views
 
 This module defines URL patterns for user authentication including
 login, registration, and logout.
-
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
 """
 
 from django.urls import path

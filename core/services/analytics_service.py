@@ -10,8 +10,6 @@ Classes:
     VisitStatsCalculator: Calculates visit statistics
     TrendingDestinationsService: Identifies trending destinations
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
 """
 
 from typing import Dict, List, Optional, Tuple

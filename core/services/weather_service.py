@@ -10,9 +10,7 @@ Classes:
     WeatherAPIClient: Handles API communication
     WeatherDataParser: Parses API responses
     WeatherCacheManager: Manages weather data caching
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
+ 
 """
 
 from typing import Dict, List, Optional, Tuple

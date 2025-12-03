@@ -9,9 +9,7 @@ Classes:
     WizardSessionManager: Manages wizard session state
     WizardService: Orchestrates wizard flow operations
     
-Author: SafariSmart Kenya Team
-Date: 2025-11-16
-Updated: 2025-11-17 - Integrated ConfigurationService and custom exceptions
+ 
 """
 
 from typing import Dict, List, Optional, Any

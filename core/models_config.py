@@ -11,9 +11,6 @@ Classes:
     InterestCategory: User interest categories
     BudgetEstimate: Daily budget breakdowns by category
     SystemConfiguration: Global system settings
-    
-Author: SafariSmart Kenya Team
-Date: 2025-11-17
 """
 
 from django.db import models
