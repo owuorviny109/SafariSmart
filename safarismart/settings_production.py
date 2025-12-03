@@ -40,8 +40,13 @@ MEDIA_URL = '/media/'
 # This ensures uploaded images persist across app restarts
 if os.environ.get('RENDER'):
     MEDIA_ROOT = '/var/www/media'
-else:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    # Ensure media directory exists
+    try:
+        os.makedirs(MEDIA_ROOT, exist_ok=True)
+        # Also create destinations subdir to be safe
+        os.makedirs(os.path.join(MEDIA_ROOT, 'destinations'), exist_ok=True)
+    except Exception as e:
+        print(f"Error creating media directory: {e}")
 
 # WhiteNoise for static file serving - use custom storage that ignores missing source maps
 STATICFILES_STORAGE = 'safarismart.storage.ForgivingManifestStaticFilesStorage'
