@@ -34,11 +34,18 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
+# Media files - CRITICAL: Must be served for updated destination images to show
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # WhiteNoise for static file serving - use custom storage that ignores missing source maps
 STATICFILES_STORAGE = 'safarismart.storage.ForgivingManifestStaticFilesStorage'
 
 # Add WhiteNoise to middleware
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
+# Add cache-busting middleware for media files
+MIDDLEWARE.append('safarismart.media_middleware.MediaCacheBustingMiddleware')
 
 # Security - Only enable SSL redirect if not in debug mode
 if not DEBUG:
