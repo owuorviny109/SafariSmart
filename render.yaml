@@ -17,6 +17,12 @@ services:
         value: False
       - key: ALLOWED_HOSTS
         value: .onrender.com
+    # Persistent disk for media files (destination images, user uploads, etc.)
+    # Without this, uploaded images disappear when app restarts
+    disks:
+      - name: media
+        mountPath: /var/www/media
+        sizeGb: 10
 
 databases:
   - name: safarismart-db

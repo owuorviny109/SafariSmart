@@ -36,7 +36,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Media files - CRITICAL: Must be served for updated destination images to show
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Use persistent Render disk for media storage (mounted at /var/www/media)
+# This ensures uploaded images persist across app restarts
+if os.environ.get('RENDER'):
+    MEDIA_ROOT = '/var/www/media'
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # WhiteNoise for static file serving - use custom storage that ignores missing source maps
 STATICFILES_STORAGE = 'safarismart.storage.ForgivingManifestStaticFilesStorage'
