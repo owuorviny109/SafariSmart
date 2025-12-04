@@ -36,15 +36,17 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Media files - CRITICAL: Must be served for updated destination images to show
 MEDIA_URL = '/media/'
-# Use persistent Render disk for media storage (mounted at /var/www/media)
-# This ensures uploaded images persist across app restarts
+# Use writable directory within project for media storage on Render
+# Render allows writes to /opt/render/project/src (the project directory)
 if os.environ.get('RENDER'):
-    MEDIA_ROOT = '/var/www/media'
+    # Use a writable path within the Render project directory
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     # Ensure media directory exists
     try:
         os.makedirs(MEDIA_ROOT, exist_ok=True)
         # Also create destinations subdir to be safe
         os.makedirs(os.path.join(MEDIA_ROOT, 'destinations'), exist_ok=True)
+        print(f"Media directory configured at: {MEDIA_ROOT}")
     except Exception as e:
         print(f"Error creating media directory: {e}")
 
