@@ -226,8 +226,6 @@ planning today!{% endblock %}
         </div>
     </div>
 </div>
-<!-- Popular Destinations End -->
-
 <!-- Gallery Start -->
 <div class="container-fluid gallery py-5 my-5">
     <div class="mx-auto text-center mb-5" style="max-width: 900px;">
@@ -246,7 +244,8 @@ planning today!{% endblock %}
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Safari</h5>
-                                    <a href="#" class="btn-hover text-white">View All Place <i
+                                    <a href="{% url 'destinations:list' %}?type=safari"
+                                        class="btn-hover text-white">View All Place <i
                                             class="fa fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
@@ -263,8 +262,8 @@ planning today!{% endblock %}
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Beach</h5>
-                                    <a href="#" class="btn-hover text-white">View All Place <i
-                                            class="fa fa-arrow-right ms-2"></i></a>
+                                    <a href="{% url 'destinations:list' %}?type=beach" class="btn-hover text-white">View
+                                        All Place <i class="fa fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
                             <div class="gallery-plus-icon">
@@ -280,7 +279,8 @@ planning today!{% endblock %}
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Wildlife</h5>
-                                    <a href="#" class="btn-hover text-white">View All Place <i
+                                    <a href="{% url 'destinations:list' %}?type=safari"
+                                        class="btn-hover text-white">View All Place <i
                                             class="fa fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
@@ -297,7 +297,8 @@ planning today!{% endblock %}
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Culture</h5>
-                                    <a href="#" class="btn-hover text-white">View All Place <i
+                                    <a href="{% url 'destinations:list' %}?type=cultural"
+                                        class="btn-hover text-white">View All Place <i
                                             class="fa fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
@@ -314,7 +315,8 @@ planning today!{% endblock %}
                             <div class="gallery-content">
                                 <div class="gallery-info">
                                     <h5 class="text-white text-uppercase mb-2">Nature</h5>
-                                    <a href="#" class="btn-hover text-white">View All Place <i
+                                    <a href="{% url 'destinations:list' %}?type=mountain"
+                                        class="btn-hover text-white">View All Place <i
                                             class="fa fa-arrow-right ms-2"></i></a>
                                 </div>
                             </div>
@@ -337,7 +339,8 @@ planning today!{% endblock %}
         <div class="mx-auto text-center mb-5" style="max-width: 900px;">
             <h5 class="section-booking-title pe-3">Start Your Journey</h5>
             <h1 class="text-white mb-4">Plan Your Perfect Kenya Adventure</h1>
-            <p class="text-white mb-0">Use our AI-powered trip planner to create a personalized itinerary in seconds, or
+            <p class="text-white mb-0">Use our AI-powered trip planner to create a personalized itinerary in
+                seconds, or
                 contact us for a custom quote.</p>
         </div>
         <div class="row g-4 mb-5">
@@ -365,7 +368,8 @@ planning today!{% endblock %}
                         <i class="fa fa-headset fa-3x text-primary"></i>
                     </div>
                     <h5 class="mb-3">24/7 Support</h5>
-                    <p class="mb-0">Our team is always available to help you before, during, and after your trip</p>
+                    <p class="mb-0">Our team is always available to help you before, during, and after your trip
+                    </p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
@@ -386,7 +390,8 @@ planning today!{% endblock %}
                         <i class="fa fa-check-circle fa-2x text-warning me-3 mt-1" style="min-width: 40px;"></i>
                         <div>
                             <h5 class="text-white mb-2" style="font-weight: 600;">Instant Itineraries</h5>
-                            <p class="text-white mb-0" style="opacity: 0.95;">Our AI creates detailed, personalized trip
+                            <p class="text-white mb-0" style="opacity: 0.95;">Our AI creates detailed,
+                                personalized trip
                                 plans in seconds based
                                 on your preferences</p>
                         </div>
@@ -395,7 +400,8 @@ planning today!{% endblock %}
                         <i class="fa fa-check-circle fa-2x text-warning me-3 mt-1" style="min-width: 40px;"></i>
                         <div>
                             <h5 class="text-white mb-2" style="font-weight: 600;">Local Expertise</h5>
-                            <p class="text-white mb-0" style="opacity: 0.95;">Benefit from years of local knowledge and
+                            <p class="text-white mb-0" style="opacity: 0.95;">Benefit from years of local
+                                knowledge and
                                 partnerships with
                                 top-rated providers</p>
                         </div>
@@ -404,7 +410,8 @@ planning today!{% endblock %}
                         <i class="fa fa-check-circle fa-2x text-warning me-3 mt-1" style="min-width: 40px;"></i>
                         <div>
                             <h5 class="text-white mb-2" style="font-weight: 600;">Flexible & Customizable</h5>
-                            <p class="text-white mb-0" style="opacity: 0.95;">Every itinerary can be adjusted to match
+                            <p class="text-white mb-0" style="opacity: 0.95;">Every itinerary can be adjusted to
+                                match
                                 your exact needs and
                                 budget</p>
                         </div>
@@ -430,7 +437,8 @@ planning today!{% endblock %}
         <div class="testimonial-carousel owl-carousel">
             <div class="testimonial-item text-center rounded pb-4">
                 <div class="testimonial-comment bg-light rounded p-4">
-                    <p class="text-center mb-5">"SafariSmart made planning our Kenya trip so easy! The itinerary was
+                    <p class="text-center mb-5">"SafariSmart made planning our Kenya trip so easy! The itinerary
+                        was
                         perfect and we saw everything we wanted."</p>
                 </div>
                 <div class="testimonial-img p-1">
@@ -451,7 +459,8 @@ planning today!{% endblock %}
             </div>
             <div class="testimonial-item text-center rounded pb-4">
                 <div class="testimonial-comment bg-light rounded p-4">
-                    <p class="text-center mb-5">"An unforgettable experience. The guides were knowledgeable and the
+                    <p class="text-center mb-5">"An unforgettable experience. The guides were knowledgeable and
+                        the
                         accommodations were top-notch."</p>
                 </div>
                 <div class="testimonial-img p-1">
@@ -472,7 +481,8 @@ planning today!{% endblock %}
             </div>
             <div class="testimonial-item text-center rounded pb-4">
                 <div class="testimonial-comment bg-light rounded p-4">
-                    <p class="text-center mb-5">"Highly recommend SafariSmart for anyone looking to explore Kenya.
+                    <p class="text-center mb-5">"Highly recommend SafariSmart for anyone looking to explore
+                        Kenya.
                         Seamless process from start to finish."</p>
                 </div>
                 <div class="testimonial-img p-1">
