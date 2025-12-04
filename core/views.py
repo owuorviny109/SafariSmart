@@ -1153,8 +1153,13 @@ def dashboard(request):
         created_at__gte=thirty_days_ago
     ).count()
     
+    # Get Payment History
+    from payments.models import PaymentTransaction
+    transactions = PaymentTransaction.objects.filter(user=user).order_by('-created_at')[:10]
+    
     context = {
         'itineraries': recent_itineraries,
+        'transactions': transactions,
         'total_trips': total_trips,
         'total_budget_spent': total_budget_spent,
         'total_days_traveled': total_days_traveled,

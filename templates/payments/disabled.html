@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <div class="alert alert-warning">
+        <h4 class="alert-heading">Feature Disabled</h4>
+        <p>The {{ feature }} feature is currently disabled by the administrator.</p>
+        <hr>
+        <p class="mb-0"><a href="{% url 'core:home' %}">Return Home</a></p>
+    </div>
+</div>
+{% endblock %}

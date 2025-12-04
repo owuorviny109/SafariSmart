@@ -1,0 +1,430 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">Support SafariSmart</h3>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'core:landing' %}">Home</a></li>
+            <li class="breadcrumb-item active text-white">Support Us</li>
+        </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Hero Section -->
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #13357B 0%, #1a4a9e 100%);">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <i class="fas fa-heart text-warning fa-4x mb-4"></i>
+                <h1 class="text-white display-4 mb-4">Love What You See?</h1>
+                <p class="text-white fs-5 mb-0" style="opacity: 0.95;">
+                    Support SafariSmart and help us bring Kenya's wonders to more travelers around the world.
+                    Your contribution helps us maintain this platform and continue providing free trip planning tools.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Why Sponsor Section -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="text-center mb-5">
+                <h2 class="mb-3">Why Sponsor Us?</h2>
+                <p class="text-muted">SafariSmart is more than a platform—it's a gateway that brings communities
+                    together through
+                    the power of travel. Your sponsorship enables us to:</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-check-circle text-primary fa-2x me-3 mt-1"></i>
+                        <div>
+                            <h5>Maintain Free Access</h5>
+                            <p class="text-muted mb-0">Keep our AI-powered trip planning tools free for all travelers
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-check-circle text-primary fa-2x me-3 mt-1"></i>
+                        <div>
+                            <h5>Support Local Communities</h5>
+                            <p class="text-muted mb-0">Promote sustainable tourism that benefits Kenyan communities</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-check-circle text-primary fa-2x me-3 mt-1"></i>
+                        <div>
+                            <h5>Develop New Features</h5>
+                            <p class="text-muted mb-0">Build educational programs and tools for travelers and guides</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-check-circle text-primary fa-2x me-3 mt-1"></i>
+                        <div>
+                            <h5>Expand Our Reach</h5>
+                            <p class="text-muted mb-0">Showcase Kenya's beauty to travelers worldwide</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sponsorship Tiers -->
+<div class="container-fluid bg-light py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Sponsorship Tiers</h2>
+            <p class="text-muted">Choose a sponsorship level that works for you</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Bronze Patron -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-award text-warning fa-3x mb-3"></i>
+                            <h3 class="text-warning">Bronze Patron</h3>
+                            <h4 class="mb-0">KSh 1,000 - 4,999</h4>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Recognition on our website
+                            </li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Quarterly newsletter</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Invitation to annual gala
+                            </li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 10% discount at gift shop
+                            </li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="#payment-form" class="btn btn-outline-warning rounded-pill px-4">Become a Bronze
+                                Patron</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Silver Benefactor -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-primary shadow">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-medal text-secondary fa-3x mb-3"></i>
+                            <h3 class="text-secondary">Silver Benefactor</h3>
+                            <h4 class="mb-0">KSh 5,000 - 9,999</h4>
+                            <span class="badge bg-primary mt-2">Popular</span>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> All Bronze benefits</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Name on donor wall</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Private exhibition tours
+                            </li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> VIP event access</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 20% discount at gift shop
+                            </li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="#payment-form" class="btn btn-secondary rounded-pill px-4">Become a Silver
+                                Benefactor</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gold Guardian -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm" style="border: 2px solid gold !important;">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-crown text-warning fa-3x mb-3"></i>
+                            <h3 style="color: gold;">Gold Guardian</h3>
+                            <h4 class="mb-0">KSh 10,000+</h4>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> All Silver benefits</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Prominent logo placement
+                            </li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Exclusive curator dinners
+                            </li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Naming opportunities</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Complimentary memberships
+                            </li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 30% discount at gift shop
+                            </li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="#payment-form" class="btn rounded-pill px-4"
+                                style="background: gold; color: #000;">Become a Gold Guardian</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Corporate Partnerships -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+                <div class="card-body p-5 text-center text-white">
+                    <i class="fas fa-handshake fa-4x mb-4"></i>
+                    <h2 class="mb-3">Corporate Partnerships</h2>
+                    <p class="fs-5 mb-4">
+                        We offer customized partnership packages for businesses looking to align with travel and
+                        culture.
+                        Benefits include brand visibility, employee engagement opportunities, and community impact.
+                    </p>
+                    <a href="mailto:partnerships@safarismart.co.ke" class="btn btn-warning rounded-pill py-3 px-5">
+                        Discuss Partnership Opportunities
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Other Ways to Support -->
+<div class="container-fluid bg-light py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Other Ways to Support</h2>
+            <p class="text-muted">Not ready to sponsor? There are other ways you can help!</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                    <h4>Volunteer</h4>
+                    <p class="text-muted">Share your time and talents with our community</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <i class="fas fa-gift fa-3x text-primary mb-3"></i>
+                    <h4>Donate Resources</h4>
+                    <p class="text-muted">Contribute content, photos, or expertise to our platform</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <i class="fas fa-bullhorn fa-3x text-primary mb-3"></i>
+                    <h4>Spread the Word</h4>
+                    <p class="text-muted">Help us reach more travelers by sharing SafariSmart</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Form -->
+<div id="payment-form" class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-hand-holding-heart text-primary fa-3x mb-3"></i>
+                        <h3 class="fw-bold">Make Your Contribution</h3>
+                        <p class="text-muted">Support SafariSmart with M-Pesa</p>
+                    </div>
+
+                    <div id="payment-form-content">
+                        <!-- Amount Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold mb-3">Select Amount</label>
+                            <div class="d-grid gap-2 d-sm-flex justify-content-center mb-3">
+                                {% for amount in options %}
+                                <button type="button" class="btn btn-outline-primary btn-lg amount-btn"
+                                    data-amount="{{ amount }}">
+                                    KSh {{ amount }}
+                                </button>
+                                {% endfor %}
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">KSh</span>
+                                <input type="number" id="custom-amount" class="form-control form-control-lg"
+                                    placeholder="Enter custom amount" min="{{ min_amount }}">
+                            </div>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="mb-4">
+                            <label for="phone" class="form-label fw-bold">M-Pesa Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                                <input type="tel" id="phone" class="form-control form-control-lg" placeholder="07..."
+                                    required>
+                            </div>
+                            <div class="form-text">We'll send an M-Pesa prompt to this number.</div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="d-grid">
+                            <button type="button" id="pay-btn" class="btn btn-primary btn-lg rounded-pill">
+                                <i class="fas fa-lock me-2"></i> Pay Securely
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Processing State -->
+                    <div id="processing-state" class="d-none text-center">
+                        <div class="spinner-border text-primary mb-3" role="status"></div>
+                        <h5>Processing Payment...</h5>
+                        <p class="text-muted">Check your phone and enter your PIN.</p>
+                    </div>
+
+                    <!-- Success State -->
+                    <div id="success-state" class="d-none text-center">
+                        <i class="fas fa-check-circle text-success fa-4x mb-3"></i>
+                        <h3>Thank You!</h3>
+                        <p>Your support means the world to us.</p>
+                        <a href="{% url 'core:landing' %}" class="btn btn-primary mt-3">Back to Home</a>
+                    </div>
+
+                    <!-- Error State -->
+                    <div id="error-message" class="alert alert-danger mt-3 d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let selectedAmount = 0;
+        const minAmount = {{ min_amount }
+    };
+
+    // Handle Amount Buttons
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            // Reset others
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active', 'btn-primary'));
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.add('btn-outline-primary'));
+
+            // Set active
+            this.classList.remove('btn-outline-primary');
+            this.classList.add('active', 'btn-primary');
+
+            selectedAmount = this.dataset.amount;
+            document.getElementById('custom-amount').value = ''; // Clear custom
+        });
+    });
+
+    // Handle Custom Input
+    document.getElementById('custom-amount').addEventListener('input', function () {
+        selectedAmount = this.value;
+        // Deselect buttons
+        document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active', 'btn-primary'));
+        document.querySelectorAll('.amount-btn').forEach(b => b.classList.add('btn-outline-primary'));
+    });
+
+    // Handle Pay Button
+    document.getElementById('pay-btn').addEventListener('click', async function () {
+        const phone = document.getElementById('phone').value;
+        const errorDiv = document.getElementById('error-message');
+
+        // Validation
+        if (!selectedAmount || selectedAmount < minAmount) {
+            showError(`Please select an amount (Min KSh ${minAmount})`);
+            return;
+        }
+        if (!phone) {
+            showError('Please enter your phone number');
+            return;
+        }
+
+        // UI Loading
+        document.getElementById('payment-form-content').classList.add('d-none');
+        document.getElementById('processing-state').classList.remove('d-none');
+        errorDiv.classList.add('d-none');
+
+        try {
+            const response = await fetch('{% url "payments:initiate" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    amount: selectedAmount
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Start Polling
+                pollStatus(data.checkout_request_id);
+            } else {
+                showError(data.error || 'Payment initiation failed');
+                resetUI();
+            }
+        } catch (e) {
+            showError('Network error. Please try again.');
+            resetUI();
+        }
+    });
+
+    function showError(msg) {
+        const el = document.getElementById('error-message');
+        el.textContent = msg;
+        el.classList.remove('d-none');
+    }
+
+    function resetUI() {
+        document.getElementById('payment-form-content').classList.remove('d-none');
+        document.getElementById('processing-state').classList.add('d-none');
+    }
+
+    async function pollStatus(checkoutId) {
+        let attempts = 0;
+        const maxAttempts = 20; // 1 minute approx
+
+        const interval = setInterval(async () => {
+            attempts++;
+            try {
+                const res = await fetch(`/payments/status/${checkoutId}/`);
+                const data = await res.json();
+
+                if (data.status === 'completed') {
+                    clearInterval(interval);
+                    document.getElementById('processing-state').classList.add('d-none');
+                    document.getElementById('success-state').classList.remove('d-none');
+                } else if (data.status === 'failed' || data.status === 'cancelled') {
+                    clearInterval(interval);
+                    showError(data.message || 'Payment failed or cancelled');
+                    resetUI();
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(interval);
+                    showError('Payment timeout. Please check your SMS.');
+                    resetUI();
+                }
+            } catch (e) {
+                // Ignore poll errors
+            }
+        }, 3000);
+    }
+    });
+</script>
+{% endblock %}
