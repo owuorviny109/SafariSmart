@@ -153,8 +153,15 @@ class UserRegisterView(CreateView):
             login(self.request, user)
             
             # Send welcome email
-            from core.models_email import EmailService
-            EmailService.send_welcome_email(user)
+            # Send welcome email
+            try:
+                from core.models_email import EmailService
+                if EmailService.send_welcome_email(user):
+                    logger.info(f"Welcome email sent to {user.email}")
+                else:
+                    logger.warning(f"Failed to send welcome email to {user.email}")
+            except Exception as e:
+                logger.error(f"Error sending welcome email: {e}")
             
             logger.info(f"New user registered and logged in: {username}")
             messages.success(

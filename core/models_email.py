@@ -1,6 +1,8 @@
 from django.template import Template, Context
 from django.utils import timezone
 from django.db import models
+from django.core.mail import get_connection, send_mail
+from decouple import config
 import logging
 
 logger = logging.getLogger(__name__)
@@ -94,6 +96,9 @@ class EmailTemplate(models.Model):
                 status='sending'
             )
             
+            # Get connection
+            connection = EmailService.get_connection()
+            
             # Send email
             send_mail(
                 subject=subject,
@@ -101,7 +106,8 @@ class EmailTemplate(models.Model):
                 from_email=from_email,
                 recipient_list=[recipient_email],
                 html_message=html_content,
-                fail_silently=False
+                fail_silently=False,
+                connection=connection
             )
             
             # Update log
@@ -289,6 +295,29 @@ class EmailService:
         return email_map.get(email_type, settings.default_from_email)
     
     @staticmethod
+    def get_connection():
+        """
+        Get email backend connection based on settings.
+        
+        Returns:
+            django.core.mail.backends.base.BaseEmailBackend: Email backend connection
+        """
+        settings_obj = EmailSettings.get_settings()
+        
+        # If SMTP settings are configured in DB, use them
+        if settings_obj.smtp_host:
+            return get_connection(
+                host=settings_obj.smtp_host,
+                port=settings_obj.smtp_port,
+                username=settings_obj.smtp_username,
+                password=config('EMAIL_HOST_PASSWORD', default=''), # Fallback to env for password security
+                use_tls=settings_obj.smtp_use_tls
+            )
+            
+        # Otherwise use default connection (from settings.py)
+        return get_connection()
+    
+    @staticmethod
     def send_welcome_email(user):
         """Send welcome email to new user"""
         settings = EmailSettings.get_settings()
@@ -358,4 +387,30 @@ class EmailService:
             return template.send_email(recipient_email, context_data, from_email)
         except EmailTemplate.DoesNotExist:
             logger.warning(f"Email template '{template_name}' not found")
+            return False
+
+    @staticmethod
+    def send_password_reset_email(user, context):
+        """Send password reset email"""
+        settings = EmailSettings.get_settings()
+        
+        if not settings.enable_email_notifications:
+            logger.info("Email notifications are disabled")
+            return False
+            
+        try:
+            template = EmailTemplate.objects.get(email_type='password_reset', is_active=True)
+            
+            # Add company info to context
+            context.update({
+                'user': user,
+                'site_name': settings.company_name,
+                'company_tagline': settings.company_tagline,
+                'support_email': settings.support_email,
+            })
+            
+            from_email = EmailService.get_from_email('support')
+            return template.send_email(user.email, context, from_email)
+        except EmailTemplate.DoesNotExist:
+            logger.warning("Password reset email template not found")
             return False

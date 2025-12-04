@@ -9,6 +9,7 @@ login, registration, and logout.
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from .forms_custom import CustomPasswordResetForm
 
 app_name = 'accounts'
 
@@ -29,7 +30,8 @@ urlpatterns = [
             template_name='accounts/password_reset.html',
             email_template_name='accounts/password_reset_email.html',
             subject_template_name='accounts/password_reset_subject.txt',
-            success_url='/accounts/password-reset/done/'
+            success_url='/accounts/password-reset/done/',
+            form_class=CustomPasswordResetForm
         ),
         name='password_reset'
     ),
