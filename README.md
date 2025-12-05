@@ -5,6 +5,7 @@
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://safarismart-kenya.onrender.com)
 [![Python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/django-5.0-green)](https://www.djangoproject.com/)
+[![AWS S3](https://img.shields.io/badge/AWS_S3-Enabled-orange)](AWS_DEPLOYMENT_PLAN.md)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
