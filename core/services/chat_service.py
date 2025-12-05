@@ -418,31 +418,6 @@ User: "{user_input}"
 TRIP DATA COLLECTED:
 - Destinations: {context.extracted_data.get('custom_destinations', 'Not yet specified')}
 - Duration: {context.extracted_data.get('duration_days', 'Not yet specified')} days
-- Budget: {context.extracted_data.get('budget_category', 'Not yet specified')}
-- Interests: {context.extracted_data.get('interests', 'Not yet specified')}
-
-YOUR TASK:
-1. Understand the user's intent.
-2. Answer their questions using the OFFICIAL DESTINATION DATA above (don't hallucinate prices).
-3. Extract ANY trip information (destinations, duration, budget, interests).
-4. Be conversational and helpful.
-
-EXTRACTION INTELLIGENCE:
-- Destinations: Match against OFFICIAL DATA first, then accept others.
-- Duration: Numbers indicating days.
-- Budget: 
-  * Under 50,000 KSh OR "budget/cheap" → budget
-  * 50,000-150,000 KSh OR "mid-range" → mid-range  
-  * Over 150,000 KSh OR "luxury" → luxury
-
-RESPOND IN THIS FORMAT:
-
-[Your intelligent response using the data provided]
-
----EXTRACTION---
-DESTINATIONS: [Kenya places, or "none"]
-DURATION: [number, or "none"]
-BUDGET: [budget/mid-range/luxury, or "none"]
 INTERESTS: [comma-separated, or "none"]
 
 EXAMPLE:
