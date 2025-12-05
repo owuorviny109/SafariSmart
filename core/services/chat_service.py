@@ -322,7 +322,28 @@ class AIChatHandler:
             return self.config.error_message, {}
             
     def _build_extraction_prompt(self, user_input: str, context: ChatContext) -> str:
-        """Build prompt for AI to extract trip data intelligently."""
+        """Build prompt for AI to extract trip data intelligently with RAG."""
+        
+        # 1. RAG: Fetch Knowledge Base from DB
+        from destinations.models import Destination
+        all_destinations = Destination.objects.all()
+        
+        knowledge_base = "OFFICIAL DESTINATION DATA (Use this for factual accuracy):\n"
+        for dest in all_destinations:
+            knowledge_base += (
+                f"- {dest.name} ({dest.destination_type}):\n"
+                f"  * Best Time: {dest.best_time_to_visit}\n"
+                f"  * Est. Cost: {dest.average_cost_per_day} KSh/day\n"
+                f"  * Activities: {dest.popular_activities}\n"
+            )
+
+        # 2. 2025 Pricing Context
+        pricing_context = """
+        PRICING CONTEXT (2025 Estimates):
+        - Park Fees have increased. Use these estimates:
+          * Premium Parks (Mara, Amboseli, Nakuru): ~1,500-2,000 KSh (Citizen), ~$80-100 (Non-Res)
+          * Standard Parks (Tsavo, Meru): ~800-1,000 KSh (Citizen), ~$50-60 (Non-Res)
+        """
         
         # Check what we still need
         needs_dest = not context.extracted_data.get('custom_destinations')
@@ -330,7 +351,12 @@ class AIChatHandler:
         needs_budget = not context.extracted_data.get('budget_category')
         needs_interests = not context.extracted_data.get('interests')
         
-        prompt = f"""You are an intelligent Kenyan safari planning assistant. Use your full understanding to help plan trips.
+        prompt = f"""You are Juma, an intelligent Kenyan safari planning assistant. 
+You have access to real-time data about destinations. Use it to be accurate.
+
+{knowledge_base}
+
+{pricing_context}
 
 CONVERSATION SO FAR:
 User: "{user_input}"
@@ -342,24 +368,22 @@ TRIP DATA COLLECTED:
 - Interests: {context.extracted_data.get('interests', 'Not yet specified')}
 
 YOUR TASK:
-1. Understand what the user is saying using your intelligence
-2. Extract ANY trip information from their message (destinations, duration, budget amounts, interests/activities)
-3. Respond naturally and helpfully
-4. If they've given you trip details, acknowledge them and ask for what's still missing
-5. Be conversational and intelligent - don't just repeat questions
+1. Understand the user's intent.
+2. Answer their questions using the OFFICIAL DESTINATION DATA above (don't hallucinate prices).
+3. Extract ANY trip information (destinations, duration, budget, interests).
+4. Be conversational and helpful.
 
 EXTRACTION INTELLIGENCE:
-- Destinations: ANY Kenya location (Kakamega, Nairobi, Masai Mara, Mombasa, Rongo, etc.)
-- Duration: Numbers indicating days (1 day, 3 days, "one day" = 1, "a week" = 7, "weekend" = 2)
+- Destinations: Match against OFFICIAL DATA first, then accept others.
+- Duration: Numbers indicating days.
 - Budget: 
-  * Under 50,000 KSh OR "budget/cheap/affordable" → budget
-  * 50,000-150,000 KSh OR "mid-range/moderate" → mid-range  
-  * Over 150,000 KSh OR "luxury/premium/expensive" → luxury
-- Interests: wildlife, safari, culture, food, adventure, beach, nature, photography, relaxation, hiking, etc.
+  * Under 50,000 KSh OR "budget/cheap" → budget
+  * 50,000-150,000 KSh OR "mid-range" → mid-range  
+  * Over 150,000 KSh OR "luxury" → luxury
 
 RESPOND IN THIS FORMAT:
 
-[Your intelligent, natural response - be helpful and conversational]
+[Your intelligent response using the data provided]
 
 ---EXTRACTION---
 DESTINATIONS: [Kenya places, or "none"]
@@ -368,14 +392,13 @@ BUDGET: [budget/mid-range/luxury, or "none"]
 INTERESTS: [comma-separated, or "none"]
 
 EXAMPLE:
-User: "i want to have a one day trip to kakamega with a budget of 10000"
-
-Perfect! A day trip to Kakamega Forest with 10,000 KSh is totally doable. The forest is amazing for nature walks and birdwatching. What kind of activities interest you most?
+User: "how much is mara?"
+Response: Based on 2025 rates, Maasai Mara entry is around $80-100 for non-residents. A mid-range safari there typically costs 15,000 KSh/day. Shall we add it to your plan?
 
 ---EXTRACTION---
-DESTINATIONS: Kakamega
-DURATION: 1
-BUDGET: budget
+DESTINATIONS: Maasai Mara
+DURATION: none
+BUDGET: none
 INTERESTS: none
 
 NOW RESPOND TO THE USER'S MESSAGE ABOVE."""
