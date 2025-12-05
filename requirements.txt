@@ -28,3 +28,7 @@ requests==2.31.0                # HTTP library for M-Pesa API calls
 
 # Payments
 django-daraja==1.3.0            # M-Pesa integration
+
+# AWS S3 Storage
+boto3>=1.34.0
+django-storages>=1.14.2

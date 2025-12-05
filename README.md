@@ -235,22 +235,20 @@ safarismart-kenya/
 
 ## Production Deployment
 
-### AWS Infrastructure (Planned)
+### Hybrid Architecture (Render + AWS S3)
 
-For production deployment to AWS using Infrastructure as Code (Terraform), refer to:
+The project utilizes a hybrid deployment strategy to maximize reliability while minimizing costs:
 
-**[AWS_DEPLOYMENT_PLAN.md](AWS_DEPLOYMENT_PLAN.md)**
+*   **Application & Database:** Hosted on **Render.com** (Free Tier)
+*   **Media Storage:** Hosted on **AWS S3** (Permanent Storage)
 
-This comprehensive deployment plan covers:
-- AWS Well-Architected Framework implementation
-- Terraform infrastructure modules (EC2, RDS, S3, IAM)
-- Security configuration and best practices
-- Cost optimization within AWS Free Tier
-- Monitoring and disaster recovery procedures
+This architecture ensures that user-uploaded images (destinations, avatars) persist across deployments, solving Render's ephemeral filesystem limitation.
 
-**Status:** Planned for implementation after core functionality completion.
+**Configuration:**
+- See `AWS_DEPLOYMENT_PLAN.md` for architecture details.
+- See `aws/S3_SETUP_GUIDE.md` for setup instructions.
 
-**Current Deployment:** Render.com (see `render.yaml` for configuration)
+**Status:** Live & Integrated
 
 ---
 

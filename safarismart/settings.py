@@ -201,3 +201,25 @@ FLW_ENCRYPTION_KEY = config('FLW_ENCRYPTION_KEY', default='')
 
 # Callback URL (Must be HTTPS and publicly accessible)
 FLW_CALLBACK_URL = config('FLW_CALLBACK_URL', default='https://safarismart.co.ke/payments/flutterwave/callback/')
+
+# =============================================================================
+# AWS S3 STORAGE CONFIGURATION
+# =============================================================================
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default=None)
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default=None)
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default=None)
+
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
+    AWS_S3_REGION_NAME = 'us-east-1'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_LOCATION = 'media'
+
+    # Use S3 for media files
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+
