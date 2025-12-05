@@ -338,11 +338,65 @@ class AIChatHandler:
             )
 
         # 2. 2025 Pricing Context
+        # 2. OFFICIAL KWS FEES 2024 (Source: User Provided Documents)
         pricing_context = """
-        PRICING CONTEXT (2025 Estimates):
-        - Park Fees have increased. Use these estimates:
-          * Premium Parks (Mara, Amboseli, Nakuru): ~1,500-2,000 KSh (Citizen), ~$80-100 (Non-Res)
-          * Standard Parks (Tsavo, Meru): ~800-1,000 KSh (Citizen), ~$50-60 (Non-Res)
+        OFFICIAL KWS CONSERVATION FEES (2024/2025):
+        Use these EXACT figures. Do NOT estimate.
+
+        1. PARK ENTRY FEES (Per Day):
+           - PREMIUM PARKS (Amboseli, Lake Nakuru):
+             * Citizen/Resident: Adult 860 KSh, Child 215 KSh
+             * Non-Resident: Adult $60, Child $35
+           - WILDERNESS PARKS A (Tsavo East & West):
+             * Citizen/Resident: Adult 515 KSh, Child 215 KSh
+             * Non-Resident: Adult $52, Child $35
+           - WILDERNESS PARKS B (Meru, Aberdare, Mt. Kenya):
+             * Citizen/Resident: Adult 300 KSh, Child 215 KSh
+             * Non-Resident: Adult $52, Child $35
+           - URBAN SAFARI (Nairobi National Park):
+             * Citizen/Resident: Adult 430 KSh, Child 215 KSh
+             * Non-Resident: Adult $43, Child $22
+           - MARINE PARKS (Kisite Mpunguti):
+             * Citizen/Resident: Adult 215 KSh, Child 125 KSh
+             * Non-Resident: Adult $17, Child $13
+
+        2. CAMPING FEES (Per Person Per Day):
+           - SPECIAL CAMPSITES (Premium Parks):
+             * Citizen/Resident: Adult 500 KSh, Child 250 KSh
+             * Non-Resident: Adult $50, Child $25
+           - SPECIAL CAMPSITES (Other Parks):
+             * Citizen/Resident: Adult 250 KSh, Child 200 KSh
+             * Non-Resident: Adult $35, Child $20
+           - PUBLIC CAMPSITES (Premium Parks):
+             * Citizen/Resident: Adult 250 KSh, Child 200 KSh
+             * Non-Resident: Adult $30, Child $25
+           - PUBLIC CAMPSITES (Other Parks):
+             * Citizen/Resident: Adult 200 KSh, Child 150 KSh
+             * Non-Resident: Adult $20, Child $15
+           - Reservation Fees (Non-Refundable): 7,500 KSh
+
+        3. VEHICLE FEES (Per Day):
+           - Less than 6 seats: 300 KSh
+           - 6-12 seats: 1,030 KSh
+           - 13-24 seats: 2,585 KSh
+           - 25-44 seats: 4,050 KSh
+           - 45+ seats: 5,000 KSh
+
+        4. SPECIAL ACTIVITIES (Per Person):
+           - Night Game Drive: 2,155 KSh (per trip)
+           - Lake Boating: 1,290 KSh (per hour)
+           - Security/Guided Tours: 1,720 - 3,015 KSh (per guide up to 4hrs)
+           - River Rafting: 1,720 KSh
+           - Horse Riding (KWS horses): 2,585 KSh (excluding rider)
+           - Private Horses: 1,030 KSh (per day)
+           - Fishing (per line per day): 515 KSh (Mt. Kenya: 1,550 KSh)
+           - Cycling: 215 KSh (per day)
+           - Walking Safaris: 1,500 KSh (per person per day)
+
+        5. OTHER CHARGES:
+           - Event Security: 75,000 KSh
+           - Vehicle Recovery: 7,500 KSh
+           - Annual Passes (Adult): 43,100 KSh
         """
         
         # Check what we still need

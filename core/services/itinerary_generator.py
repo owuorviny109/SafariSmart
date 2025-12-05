@@ -136,16 +136,10 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
                 generator_type="ai",
                 original_error=e
             )
-            
     def _build_prompt(self, preferences: Dict[str, Any]) -> str:
         """
         Build detailed prompt for Gemini AI with RAG and Intelligence.
-        
-        Args:
-            preferences (Dict[str, Any]): User preferences
-            
-        Returns:
-            str: Formatted prompt for AI
+        Requests JSON output for reliable parsing.
         """
         destinations = preferences.get('destinations', [])
         custom_destinations = preferences.get('custom_destinations', [])
@@ -169,16 +163,68 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
                     f"  * Activities: {dest.popular_activities}\n"
                 )
 
-        # 2. 2025 Pricing Context (KWS Fees)
+        # 2. OFFICIAL KWS FEES 2024 (Source: User Provided Documents)
         pricing_context = """
-        PRICING CONTEXT (2025 Estimates):
-        - Park Fees have increased. Use these estimates:
-          * Premium Parks (Mara, Amboseli, Nakuru): ~1,500-2,000 KSh (Citizen), ~$80-100 (Non-Res)
-          * Standard Parks (Tsavo, Meru): ~800-1,000 KSh (Citizen), ~$50-60 (Non-Res)
-        - Budget for eCitizen transaction fees.
+        OFFICIAL KWS CONSERVATION FEES (2024/2025):
+        Use these EXACT figures. Do NOT estimate.
+
+        1. PARK ENTRY FEES (Per Day):
+           - PREMIUM PARKS (Amboseli, Lake Nakuru):
+             * Citizen/Resident: Adult 860 KSh, Child 215 KSh
+             * Non-Resident: Adult $60, Child $35
+           - WILDERNESS PARKS A (Tsavo East & West):
+             * Citizen/Resident: Adult 515 KSh, Child 215 KSh
+             * Non-Resident: Adult $52, Child $35
+           - WILDERNESS PARKS B (Meru, Aberdare, Mt. Kenya):
+             * Citizen/Resident: Adult 300 KSh, Child 215 KSh
+             * Non-Resident: Adult $52, Child $35
+           - URBAN SAFARI (Nairobi National Park):
+             * Citizen/Resident: Adult 430 KSh, Child 215 KSh
+             * Non-Resident: Adult $43, Child $22
+           - MARINE PARKS (Kisite Mpunguti):
+             * Citizen/Resident: Adult 215 KSh, Child 125 KSh
+             * Non-Resident: Adult $17, Child $13
+
+        2. CAMPING FEES (Per Person Per Day):
+           - SPECIAL CAMPSITES (Premium Parks):
+             * Citizen/Resident: Adult 500 KSh, Child 250 KSh
+             * Non-Resident: Adult $50, Child $25
+           - SPECIAL CAMPSITES (Other Parks):
+             * Citizen/Resident: Adult 250 KSh, Child 200 KSh
+             * Non-Resident: Adult $35, Child $20
+           - PUBLIC CAMPSITES (Premium Parks):
+             * Citizen/Resident: Adult 250 KSh, Child 200 KSh
+             * Non-Resident: Adult $30, Child $25
+           - PUBLIC CAMPSITES (Other Parks):
+             * Citizen/Resident: Adult 200 KSh, Child 150 KSh
+             * Non-Resident: Adult $20, Child $15
+           - Reservation Fees (Non-Refundable): 7,500 KSh
+
+        3. VEHICLE FEES (Per Day):
+           - Less than 6 seats: 300 KSh
+           - 6-12 seats: 1,030 KSh
+           - 13-24 seats: 2,585 KSh
+           - 25-44 seats: 4,050 KSh
+           - 45+ seats: 5,000 KSh
+
+        4. SPECIAL ACTIVITIES (Per Person):
+           - Night Game Drive: 2,155 KSh (per trip)
+           - Lake Boating: 1,290 KSh (per hour)
+           - Security/Guided Tours: 1,720 - 3,015 KSh (per guide up to 4hrs)
+           - River Rafting: 1,720 KSh
+           - Horse Riding (KWS horses): 2,585 KSh (excluding rider)
+           - Private Horses: 1,030 KSh (per day)
+           - Fishing (per line per day): 515 KSh (Mt. Kenya: 1,550 KSh)
+           - Cycling: 215 KSh (per day)
+           - Walking Safaris: 1,500 KSh (per person per day)
+
+        5. OTHER CHARGES:
+           - Event Security: 75,000 KSh
+           - Vehicle Recovery: 7,500 KSh
+           - Annual Passes (Adult): 43,100 KSh
         """
 
-        prompt = f"""You are Juma, an expert Kenyan Safari Guide with 20 years of experience. 
+        prompt = f"""You are Juma, an expert Kenyan Safari Guide.
 You don't just list places; you craft "Vibe-Matched" experiences.
 
 USER PROFILE:
@@ -195,44 +241,56 @@ USER PROFILE:
 
 INSTRUCTIONS:
 1. **Vibe Match:** Adjust the PACE and ACTIVITIES based on interests.
-   - If 'Photography': Schedule early morning/late evening "Golden Hour" drives.
-   - If 'Relaxation': Include pool time, late breakfasts, and leisure.
-   - If 'Culture': Prioritize village visits and local interactions.
+2. **Smart Budget:** Provide realistic costs based on the OFFICIAL KWS FEES above.
+3. **Hidden Gem:** Suggest ONE unique alternative.
 
-2. **Smart Budget Optimizer:**
-   - Provide realistic costs based on the 2025 Pricing Context.
-   - Include a specific "Money Saving Tip" or "Value Upgrade" relevant to this trip.
+CRITICAL: You MUST output valid JSON only. No markdown formatting.
+Follow this EXACT schema:
 
-3. **The Hidden Gem:**
-   - Suggest ONE unique, less-touristy alternative or addition that fits their vibe (e.g., "If you love forests, try Kakamega instead of just the Mara").
-
-4. **Itinerary Structure:**
-   - Create a day-by-day plan.
-   - Be specific about lodges/camps (suggest real names matching the budget).
-
-FORMAT (Strictly follow this structure):
-# [Catchy Title]
-
-**Trip Summary:**
-[2-3 sentences explaining WHY this itinerary fits their specific vibe]
-
-**Day-by-Day Plan:**
-
-**Day 1: [Location] - [Theme]**
-*   **Morning:** [Activity] (Why: [Link to interest])
-*   **Afternoon:** [Activity]
-*   **Evening:** [Activity]
-*   **Stay:** [Hotel/Camp Name] (Est. [Price] KSh)
-
-[Repeat for all days]
-
-**Smart Budget Tip:**
-[Specific advice to save money or get better value]
-
-**Hidden Gem Suggestion:**
-[One alternative idea]
-
-**Estimated Total Cost:** ~[Total] KSh (Includes park fees, stay, transport)
+{{
+  "title": "Catchy Trip Title",
+  "summary": "2-3 sentences explaining the vibe.",
+  "days": [
+    {{
+      "day": 1,
+      "location": "Location Name",
+      "theme": "Day Theme",
+      "activities": [
+        {{
+          "time": "Morning",
+          "activity": "Activity Name",
+          "description": "Brief description",
+          "cost": 5000
+        }},
+        {{
+          "time": "Afternoon",
+          "activity": "Activity Name",
+          "description": "Brief description",
+          "cost": 2000
+        }},
+        {{
+          "time": "Evening",
+          "activity": "Activity Name",
+          "description": "Brief description",
+          "cost": 0
+        }}
+      ],
+      "accommodation": {{
+        "name": "Hotel Name",
+        "cost": 15000
+      }}
+    }}
+  ],
+  "budget_summary": {{
+    "accommodation": 50000,
+    "activities": 20000,
+    "meals": 10000,
+    "transport": 15000,
+    "total": 95000
+  }},
+  "smart_tip": "Money saving tip here",
+  "hidden_gem": "Hidden gem suggestion here"
+}}
 """
         return prompt
         
@@ -242,30 +300,68 @@ FORMAT (Strictly follow this structure):
         preferences: Dict[str, Any]
     ) -> Dict[str, Any]:
         """
-        Parse AI response into structured itinerary format.
-        
-        Args:
-            response_text (str): Raw AI response
-            preferences (Dict[str, Any]): Original preferences
-            
-        Returns:
-            Dict[str, Any]: Structured itinerary data
+        Parse AI JSON response into structured itinerary format.
         """
-        return {
-            'title': self._generate_title(preferences),
-            'duration_days': preferences.get('duration_days', 3),
-            'destinations': [
-                dest.name for dest in preferences.get('destinations', [])
-            ],
-            'budget_amount': preferences.get('budget_amount', 0),
-            'travelers': {
-                'adults': preferences.get('adults_count', 1),
-                'children': preferences.get('children_count', 0)
-            },
-            'content': response_text,
-            'generated_by': 'gemini-ai',
-            'interests': preferences.get('interests', [])
-        }
+        import json
+        import re
+        
+        try:
+            # Clean response text (remove markdown code blocks if any)
+            clean_text = response_text.replace('```json', '').replace('```', '').strip()
+            
+            # Parse JSON
+            data = json.loads(clean_text)
+            
+            # Reconstruct text format for legacy compatibility
+            content_text = f"# {data.get('title', 'My Safari')}\n\n"
+            content_text += f"**Trip Summary:**\n{data.get('summary', '')}\n\n"
+            content_text += "**Day-by-Day Plan:**\n\n"
+            
+            for day in data.get('days', []):
+                content_text += f"**Day {day['day']}: {day['location']} - {day['theme']}**\n"
+                for act in day.get('activities', []):
+                    cost_str = f" (KSh {act['cost']})" if act.get('cost') else ""
+                    content_text += f"*   **{act['time']}:** {act['activity']}{cost_str}\n"
+                
+                acc = day.get('accommodation', {})
+                acc_cost = f" (Est. {acc.get('cost')} KSh)" if acc.get('cost') else ""
+                content_text += f"*   **Stay:** {acc.get('name')}{acc_cost}\n\n"
+            
+            bs = data.get('budget_summary', {})
+            content_text += "**Estimated Total Cost:**\n"
+            content_text += f"Accommodation: KSh {bs.get('accommodation', 0)}\n"
+            content_text += f"Activities: KSh {bs.get('activities', 0)}\n"
+            content_text += f"Total: ~KSh {bs.get('total', 0)}\n\n"
+            
+            content_text += f"**Smart Budget Tip:**\n{data.get('smart_tip', '')}\n\n"
+            content_text += f"**Hidden Gem Suggestion:**\n{data.get('hidden_gem', '')}\n"
+
+            return {
+                'title': data.get('title'),
+                'duration_days': preferences.get('duration_days', 3),
+                'destinations': [d.name for d in preferences.get('destinations', [])],
+                'budget_amount': bs.get('total', preferences.get('budget_amount', 0)),
+                'travelers': {
+                    'adults': preferences.get('adults_count', 1),
+                    'children': preferences.get('children_count', 0)
+                },
+                'content': content_text, # Legacy text support
+                'structured_data': data, # New JSON support
+                'generated_by': 'gemini-ai-json',
+                'interests': preferences.get('interests', [])
+            }
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse AI JSON response: {e}")
+            # Fallback to raw text if JSON fails
+            return {
+                'title': self._generate_title(preferences),
+                'content': response_text,
+                'generated_by': 'gemini-ai-fallback',
+                'destinations': [],
+                'travelers': {},
+                'budget_amount': 0
+            }
         
     def _generate_title(self, preferences: Dict[str, Any]) -> str:
         """
@@ -395,40 +491,6 @@ class TemplateItineraryGenerator(BaseItineraryGenerator):
         
         # Daily itinerary
         days_per_dest = max(1, duration // total_destinations) if total_destinations else duration
-        
-        current_day = 1
-        
-        # Handle database destinations
-        for dest in destinations:
-            dest_days = min(days_per_dest, duration - current_day + 1)
-            
-            for day_num in range(dest_days):
-                day_content = self._generate_day_template(
-                    current_day,
-                    dest,
-                    budget_category,
-                    interests
-                )
-                content_parts.append(day_content)
-                current_day += 1
-                
-                if current_day > duration:
-                    break
-                    
-            if current_day > duration:
-                break
-        
-        # Handle custom destinations
-        for custom_dest_name in custom_destinations:
-            if current_day > duration:
-                break
-                
-            dest_days = min(days_per_dest, duration - current_day + 1)
-            
-            for day_num in range(dest_days):
-                day_content = self._generate_custom_day_template(
-                    current_day,
-                    custom_dest_name,
                     budget_category,
                     interests
                 )

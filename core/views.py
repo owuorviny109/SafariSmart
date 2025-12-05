@@ -1654,3 +1654,18 @@ def chat_message_api(request: HttpRequest) -> JsonResponse:
             'status': 'error',
             'message': 'Failed to process message'
         }, status=500)
+
+@staff_member_required
+def debug_s3(request):
+    """Debug view to check S3 configuration."""
+    from django.conf import settings
+    from django.http import JsonResponse
+    
+    return JsonResponse({
+        'AWS_ACCESS_KEY_ID_SET': bool(settings.AWS_ACCESS_KEY_ID),
+        'AWS_SECRET_ACCESS_KEY_SET': bool(settings.AWS_SECRET_ACCESS_KEY),
+        'AWS_STORAGE_BUCKET_NAME': settings.AWS_STORAGE_BUCKET_NAME,
+        'DEFAULT_FILE_STORAGE': settings.DEFAULT_FILE_STORAGE,
+        'MEDIA_URL': settings.MEDIA_URL,
+        'AWS_LOCATION': getattr(settings, 'AWS_LOCATION', 'Not Set'),
+    })
