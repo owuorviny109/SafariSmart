@@ -1,7 +1,23 @@
 # SafariSmart AWS Deployment Plan
-## AWS Well-Architected Framework Implementation
+## Optimized Architecture for Cost and Performance
 
-**Objective:** Deploy SafariSmart Django application to AWS using Terraform IaC while maintaining Free Tier eligibility and following AWS best practices.
+**Objective:** Deploy SafariSmart to AWS to solve Render's limitations (cold starts, database delays, media file persistence) while minimizing costs and maintaining simplicity.
+
+---
+
+## Problems Being Solved
+
+### Current Render Issues:
+1. **Cold Starts:** App sleeps after 15 minutes of inactivity, takes 30-60 seconds to wake up
+2. **Database Delays:** PostgreSQL also sleeps on free tier
+3. **Media File Loss:** Uploaded images deleted on every deployment (ephemeral storage)
+4. **Database Expiration:** Render will deny database access after December 19, 2025
+
+### AWS Solutions:
+1. EC2 runs 24/7 - no cold starts, instant response
+2. SQLite on EC2 - no network latency, always ready
+3. S3 permanent storage - media files persist forever
+4. Full database control - no expiration dates
 
 ---
 
@@ -9,413 +25,539 @@
 
 ```mermaid
 graph TB
-    Internet[Internet]
-    Route53[Route 53]
-    EC2[EC2 t2.micro<br/>Django + Nginx + Gunicorn]
-    RDS[(RDS db.t2.micro<br/>PostgreSQL)]
-    S3[S3<br/>Static & Media]
-    IAM[IAM]
-    CloudWatch[CloudWatch]
+    Internet[Internet Users]
+    EC2[EC2 t2.micro<br/>Ubuntu 22.04]
+    S3[S3 Bucket<br/>Media Storage]
+    CW[CloudWatch<br/>Logs & Monitoring]
     
-    Internet -->|HTTPS| Route53
-    Route53 --> EC2
-    EC2 --> RDS
-    EC2 --> S3
-    IAM -.-> EC2
-    IAM -.-> S3
-    CloudWatch -.-> EC2
-    CloudWatch -.-> RDS
+    Internet -->|HTTPS| EC2
+    EC2 -->|Upload/Download| S3
+    EC2 -->|Send Logs| CW
+    
+    subgraph EC2_Instance[EC2 Instance]
+        Django[Django App]
+        Nginx[Nginx]
+        Gunicorn[Gunicorn]
+        SQLite[(SQLite DB)]
+        
+        Nginx --> Gunicorn
+        Gunicorn --> Django
+        Django --> SQLite
+    end
 ```
 
 ---
 
-## Phase 1: Prerequisites
+## AWS Services Used
 
-### 1.1 AWS Account Configuration
-- Enable MFA on root account
-- Create IAM admin user
-- Configure AWS CLI credentials
-- Enable billing alerts and Free Tier usage notifications
+### 1. EC2 (Elastic Compute Cloud)
 
-### 1.2 Required Tools
-```bash
-# Install Terraform
-winget install Hashicorp.Terraform
+**Purpose:** Run Django application server 24/7
 
-# Install AWS CLI
-winget install Amazon.AWSCLI
+**Why EC2:**
+- Solves cold start problem (always running)
+- Full control over server configuration
+- Can install any software (Python, Nginx, etc.)
+- Free Tier: 750 hours/month (enough for 24/7 operation)
 
-# Verify
-terraform --version
-aws --version
-```
+**Why NOT alternatives:**
+- Lambda: Not suitable for Django (cold starts, 15-minute timeout)
+- Elastic Beanstalk: Adds unnecessary complexity and cost
+- Lightsail: Not in Free Tier, costs $3.50/month minimum
 
-### 1.3 AWS CLI Configuration
-```bash
-aws configure
-# Region: us-east-1
-# Output: json
-```
+**Configuration:**
+- Instance Type: t2.micro (1 vCPU, 1 GB RAM)
+- OS: Ubuntu 22.04 LTS
+- Storage: 20 GB EBS (Free Tier: 30 GB)
+- Runs: Django + Nginx + Gunicorn
 
-### 1.4 Billing Protection
-- Set budget alert: $5/month threshold
-- Enable Free Tier usage alerts
-- Configure CloudWatch billing alarms
+**Cost:**
+- Free Tier (5 months): $0
+- With credits (4 months): $0
+- After: $8/month
 
 ---
 
-## Phase 2: Terraform Infrastructure
+### 2. S3 (Simple Storage Service)
 
-### 2.1 Directory Structure
-```
-terraform/
-├── main.tf
-├── variables.tf
-├── outputs.tf
-├── terraform.tfvars
-├── modules/
-│   ├── networking/
-│   ├── compute/
-│   ├── database/
-│   ├── storage/
-│   ├── iam/
-│   └── monitoring/
-├── environments/
-│   ├── dev.tfvars
-│   └── prod.tfvars
-└── scripts/
-    ├── user_data.sh
-    └── deploy_app.sh
-```
+**Purpose:** Permanent storage for user-uploaded media files (destination images, user avatars)
 
-### 2.2 Module Specifications
+**Why S3:**
+- Solves media persistence problem (files never deleted)
+- Highly durable (99.999999999% durability)
+- Scalable (handles unlimited files)
+- Free Tier: 5 GB storage, 20,000 GET, 2,000 PUT requests/month
 
-#### Networking Module
-**Resources:**
-- VPC with CIDR 10.0.0.0/16
-- Public subnet (10.0.1.0/24)
-- Internet Gateway
-- Route table
-- Security groups:
-  - SSH (22): Restricted to admin IP
-  - HTTP (80): 0.0.0.0/0
-  - HTTPS (443): 0.0.0.0/0
-  - PostgreSQL (5432): EC2 security group only
-
-#### Compute Module
-**Instance:** t2.micro (Free Tier: 750 hrs/month)
-
-**User Data:**
-```bash
-#!/bin/bash
-apt-get update
-apt-get install -y python3-pip python3-venv nginx postgresql-client
-git clone <repository>
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-# Configure Nginx, Gunicorn, SSL
-```
-
-#### Database Module
-**Instance:** db.t2.micro (Free Tier: 750 hrs/month)
-**Storage:** 20 GB (Free Tier limit)
-**Configuration:**
-- Engine: PostgreSQL 14
-- Encryption at rest: Enabled
-- Encryption in transit: SSL required
-- Public access: Disabled
-- Multi-AZ: Disabled
-- Automated backups: 7-day retention
-
-#### Storage Module
-**S3 Buckets:**
-1. `safarismart-media` - User uploads
-2. `safarismart-static` - Static assets
+**Why NOT alternatives:**
+- EC2 disk: Files lost on instance termination
+- EFS: Costs $0.30/GB/month (not in Free Tier)
+- EBS snapshots: Complex, not designed for application files
 
 **Configuration:**
-- Versioning: Enabled
+- Bucket: `safarismart-media`
+- Versioning: Enabled (keep file history)
 - Encryption: AES-256
 - Public access: Read-only for static files
 - Lifecycle: Delete old versions after 90 days
-- CORS: Configured for admin uploads
 
-#### IAM Module
-**Roles:**
-- `EC2-S3-Access-Role`: EC2 instance profile
-- `Django-S3-User`: Application access
-
-**Policies (Least Privilege):**
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"],
-      "Resource": "arn:aws:s3:::safarismart-media/*"
-    }
-  ]
-}
-```
-
-#### Monitoring Module
-**CloudWatch Alarms:**
-- CPU utilization > 80% for 5 minutes
-- Disk usage > 80%
-- RDS connections > 80% of max
-- Estimated monthly charges > $5
+**Cost:**
+- Free Tier: 5 GB (enough for 1000s of images)
+- After: $0.023/GB/month (~$0.02/month for typical usage)
 
 ---
 
-## Phase 3: Security Configuration
+### 3. SQLite Database (On EC2)
 
-### 3.1 Security Checklist
-- Enable AWS CloudTrail
-- Enable VPC Flow Logs
-- Configure security groups (least privilege)
-- Use IAM roles (no hardcoded credentials)
-- Enable RDS encryption
-- Enable S3 encryption
-- Configure SSL/TLS (Let's Encrypt)
-- Implement credential rotation policy
+**Purpose:** Application database for users, destinations, itineraries, payments
 
-### 3.2 Secrets Management
-**AWS Systems Manager Parameter Store:**
-```hcl
-resource "aws_ssm_parameter" "django_secret_key" {
-  name  = "/safarismart/prod/DJANGO_SECRET_KEY"
-  type  = "SecureString"
-  value = var.django_secret_key
-}
+**Why SQLite:**
+- FREE (no separate database server cost)
+- Fast (no network latency, same server as app)
+- Simple (single file, easy backups)
+- Sufficient for current scale (handles 1000s of concurrent users)
+- Easy migration from Render PostgreSQL
+
+**Why NOT alternatives:**
+- RDS PostgreSQL: Costs $12/month after Free Tier
+- RDS MySQL: Costs $12/month after Free Tier
+- DynamoDB: NoSQL, not compatible with Django ORM
+- Aurora: Expensive ($0.10/hour minimum)
+
+**Backup Strategy:**
+- Automated daily backups to S3
+- 7-day retention
+- Cron job: 2 AM daily
+- Recovery time: < 5 minutes
+
+**Migration Plan:**
+```bash
+# Export from Render PostgreSQL
+pg_dump $DATABASE_URL > render_backup.sql
+
+# Convert to SQLite
+python manage.py dumpdata > data.json
+python manage.py loaddata data.json
 ```
 
-**Django Integration:**
-```python
-import boto3
-ssm = boto3.client('ssm', region_name='us-east-1')
-SECRET_KEY = ssm.get_parameter(
-    Name='/safarismart/prod/DJANGO_SECRET_KEY',
-    WithDecryption=True
-)['Parameter']['Value']
-```
+**Cost:** $0 (included in EC2 storage)
 
 ---
 
-## Phase 4: Deployment Process
+### 4. CloudWatch Logs
 
-### 4.1 Infrastructure Deployment
-```bash
-cd terraform
-terraform init
-terraform validate
-terraform plan -out=tfplan
-terraform apply tfplan
-terraform output
-```
+**Purpose:** Centralized logging for application errors, transactions, and activity
 
-### 4.2 Application Deployment
-```bash
-ssh -i safarismart-key.pem ubuntu@<ec2-ip>
-cd /opt/safarismart
-git pull origin main
-source venv/bin/activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py collectstatic --noinput
-sudo systemctl restart gunicorn nginx
-```
+**Why CloudWatch Logs:**
+- FREE (5 GB/month in Free Tier)
+- Searchable logs
+- Long-term retention
+- Integration with Django logging
 
-### 4.3 Database Initialization
-```bash
-python manage.py migrate
-python manage.py loaddata fixtures/initial_data.json
-python manage.py createsuperuser
-```
+**Why NOT alternatives:**
+- Local log files: Lost on instance termination
+- Third-party (Papertrail, Loggly): Costs money
+- CloudWatch Logs Insights: Costs extra, not needed
+
+**Configuration:**
+- Log Groups:
+  - `/aws/ec2/safarismart/django` - Application logs
+  - `/aws/ec2/safarismart/nginx` - Web server logs
+  - `/aws/ec2/safarismart/mpesa` - Payment transaction logs
+- Retention: 7 days (Free Tier)
+
+**Cost:**
+- Free Tier: 5 GB ingestion, 5 GB storage
+- After: $0.50/GB (you won't exceed this)
 
 ---
 
-## Phase 5: Monitoring & Maintenance
+### 5. CloudWatch Metrics
 
-### 5.1 Daily Operations
-- Monitor AWS Free Tier usage dashboard
-- Review CloudWatch alarms
-- Check application logs
-- Verify automated backups
+**Purpose:** Monitor server health (CPU, memory, disk usage)
 
-### 5.2 Weekly Operations
-- Review cost and usage reports
-- Audit security group rules
-- Review CloudTrail logs
-- Test disaster recovery procedures
+**Why CloudWatch Metrics:**
+- FREE (10 custom metrics in Free Tier)
+- Real-time monitoring
+- Historical data
+- Integration with alarms
 
-### 5.3 Monthly Operations
-- Review IAM access
-- Rotate credentials
-- Update dependencies
-- Optimize resource utilization
+**Why NOT alternatives:**
+- Third-party (Datadog, New Relic): Expensive
+- Manual monitoring: Not scalable
 
----
+**Metrics Tracked:**
+- CPU utilization
+- Memory usage
+- Disk usage
+- Network traffic
+- Application response time
 
-## Phase 6: Cost Management
-
-### 6.1 Free Tier Resource Allocation
-
-| Service | Free Tier Limit | Allocated | Status |
-|---------|----------------|-----------|--------|
-| EC2 t2.micro | 750 hrs/mo | 720 hrs/mo | Within limit |
-| RDS db.t2.micro | 750 hrs/mo | 720 hrs/mo | Within limit |
-| EBS Storage | 30 GB | 20 GB | Within limit |
-| RDS Storage | 20 GB | 20 GB | At limit |
-| S3 Storage | 5 GB | 2 GB | Within limit |
-| Data Transfer OUT | 100 GB/mo | ~10 GB/mo | Within limit |
-
-### 6.2 Cost Optimization
-**Development Environment:**
-```bash
-terraform destroy -target=module.dev_environment
-terraform apply -target=module.dev_environment
-```
-
-**Budget Configuration:**
-```hcl
-resource "aws_budgets_budget" "monthly_cost" {
-  name              = "monthly-cost-budget"
-  budget_type       = "COST"
-  limit_amount      = "5"
-  limit_unit        = "USD"
-  time_unit         = "MONTHLY"
-  
-  notification {
-    comparison_operator        = "GREATER_THAN"
-    threshold                  = 80
-    threshold_type             = "PERCENTAGE"
-    notification_type          = "ACTUAL"
-    subscriber_email_addresses = ["admin@safarismart.co.ke"]
-  }
-}
-```
+**Cost:**
+- Free Tier: 10 metrics
+- After: $0.30/metric (you won't exceed this)
 
 ---
 
-## Phase 7: Disaster Recovery
+### 6. CloudWatch Alarms
 
-### 7.1 Backup Strategy
-**RDS:**
-- Automated daily backups
-- 7-day retention period
-- Backup window: 03:00-04:00 UTC
+**Purpose:** Email alerts when issues occur
 
-**S3:**
-- Versioning enabled
-- 90-day version retention
-- Cross-region replication (optional)
+**Why CloudWatch Alarms:**
+- FREE (10 alarms in Free Tier)
+- Proactive issue detection
+- Email notifications
+- Prevents downtime
 
-**Application:**
-- Git repository with tagged releases
-- Infrastructure as Code in version control
+**Alarms Configured:**
+1. CPU > 80% for 5 minutes
+2. Disk usage > 80%
+3. Memory > 80%
+4. Application errors > 10/hour
+5. Database backup failed
 
-### 7.2 Recovery Procedures
-
-**EC2 Instance Failure:**
-```bash
-terraform taint module.compute.aws_instance.app_server
-terraform apply
-```
-
-**Database Corruption:**
-```bash
-aws rds restore-db-instance-from-db-snapshot \
-  --db-instance-identifier safarismart-restored \
-  --db-snapshot-identifier <snapshot-id>
-```
-
-**S3 Object Recovery:**
-```bash
-aws s3api list-object-versions --bucket safarismart-media --prefix <path>
-aws s3api get-object --bucket safarismart-media --key <key> --version-id <id> <output>
-```
+**Cost:**
+- Free Tier: 10 alarms
+- After: $0.10/alarm (you won't exceed this)
 
 ---
 
-## AWS Well-Architected Framework Compliance
+### 7. VPC (Virtual Private Cloud)
 
-### Operational Excellence
-- Infrastructure as Code (Terraform)
-- Automated deployments
-- Centralized logging (CloudWatch)
-- Monitoring and alerting
+**Purpose:** Network isolation and security
 
-### Security
-- Encryption at rest and in transit
-- IAM least privilege policies
-- Network isolation (VPC, Security Groups)
-- Secrets management (Parameter Store)
-- Audit logging (CloudTrail)
+**Why VPC:**
+- FREE (always)
+- Security isolation
+- Control network traffic
+- Required for EC2
 
-### Reliability
-- Automated backups
-- Multi-AZ capability (disabled for cost)
-- Health monitoring
-- Disaster recovery procedures
+**Configuration:**
+- CIDR: 10.0.0.0/16
+- Public Subnet: 10.0.1.0/24
+- Internet Gateway: Enabled
 
-### Performance Efficiency
-- Right-sized instances (t2.micro)
-- S3 for static content delivery
-- Database query optimization
-- Application-level caching
-
-### Cost Optimization
-- Free Tier maximization
-- Resource tagging
-- Budget alerts
-- Automated resource cleanup
-
-### Sustainability
-- Minimal resource footprint
-- Efficient instance sizing
-- Lifecycle policies for data retention
+**Cost:** $0 (always free)
 
 ---
 
-## Documentation References
+### 8. Security Groups
 
-### AWS Services
-- [EC2 Documentation](https://docs.aws.amazon.com/ec2/)
-- [RDS Documentation](https://docs.aws.amazon.com/rds/)
-- [S3 Documentation](https://docs.aws.amazon.com/s3/)
-- [IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+**Purpose:** Firewall rules to control access
 
-### Well-Architected Framework
-- [Framework Overview](https://aws.amazon.com/architecture/well-architected/)
-- [Operational Excellence](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/)
-- [Security](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/)
-- [Reliability](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/)
-- [Performance Efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/)
-- [Cost Optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/)
+**Why Security Groups:**
+- FREE (always)
+- Stateful firewall
+- Easy to manage
+- Required for security
 
-### Terraform
-- [AWS Provider Documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
-- [Terraform Best Practices](https://www.terraform-best-practices.com/)
+**Rules:**
+- SSH (22): Restricted to admin IP only
+- HTTP (80): 0.0.0.0/0 (public)
+- HTTPS (443): 0.0.0.0/0 (public)
+- PostgreSQL (5432): Blocked (using SQLite)
+
+**Cost:** $0 (always free)
+
+---
+
+## Services NOT Used (Cost Savings)
+
+### RDS (Relational Database Service)
+**Why NOT:**
+- Costs $12/month after Free Tier
+- Network latency (slower than SQLite)
+- Overkill for current scale
+- SQLite is sufficient
+
+**Savings:** $12/month
+
+---
+
+### Route 53 (DNS Service)
+**Why NOT:**
+- Costs $0.50/month per hosted zone
+- Can use domain registrar's DNS for free
+- Not needed for basic DNS
+
+**Savings:** $0.50/month
+
+---
+
+### Elastic IP
+**Why NOT:**
+- Costs $3.60/month if instance stops
+- Regular public IP works fine
+- Can update DNS if IP changes (rare)
+
+**Savings:** $3.60/month (risk avoidance)
+
+---
+
+### Application Load Balancer
+**Why NOT:**
+- Costs $16/month minimum
+- Not needed for single instance
+- Overkill for current traffic
+
+**Savings:** $16/month
+
+---
+
+### Auto Scaling
+**Why NOT:**
+- Requires Load Balancer ($16/month)
+- Current traffic doesn't need it
+- Single t2.micro handles 100-500 concurrent users
+- Can add later if needed
+
+**Savings:** $16+/month
+
+---
+
+### NAT Gateway
+**Why NOT:**
+- Costs $32/month
+- Not needed (using public subnet)
+- Most expensive AWS service to avoid
+
+**Savings:** $32/month
+
+---
+
+### ElastiCache (Redis/Memcached)
+**Why NOT:**
+- Costs $13/month minimum
+- Not needed yet
+- Can use Django's built-in caching
+
+**Savings:** $13/month
+
+---
+
+### CloudFront (CDN)
+**Why NOT:**
+- Not in Free Tier
+- S3 direct access is fast enough
+- Can add later if needed
+
+**Savings:** Variable
+
+---
+
+**Total Monthly Savings:** $93/month by avoiding unnecessary services
+
+---
+
+## Cost Summary
+
+### Monthly Costs
+
+| Period | EC2 | S3 | CloudWatch | Total |
+|--------|-----|----|-----------:|------:|
+| Months 1-5 (Free Tier) | $0 | $0 | $0 | **$0** |
+| Months 6-9 ($100 credits) | $0 | $0 | $0 | **$0** |
+| Month 10+ | $8 | $0.02 | $0 | **$8.02** |
+
+### Cost Comparison
+
+| Platform | Monthly Cost | Issues |
+|----------|------------:|--------|
+| **Render** | $0 | Cold starts, media loss, DB expires |
+| **AWS (This Plan)** | $0-8 | None |
+| **AWS (Full Services)** | $26+ | Unnecessary complexity |
+| **Heroku** | $7+ | Same issues as Render |
+| **DigitalOcean** | $6+ | Manual management |
 
 ---
 
 ## Implementation Timeline
 
-**Day 1:** Prerequisites and AWS account setup
-**Day 2-3:** Terraform module development
-**Day 3:** Security configuration
-**Day 4:** Initial deployment and testing
-**Ongoing:** Monitoring, maintenance, and optimization
+### Day 1: Prerequisites (2 hours)
+- Install Terraform and AWS CLI
+- Configure AWS credentials
+- Set up billing alerts
+- Review architecture
+
+### Day 2: Infrastructure (3 hours)
+- Create Terraform modules
+- Deploy EC2, S3, VPC, Security Groups
+- Configure CloudWatch
+
+### Day 3: Application Deployment (3 hours)
+- SSH into EC2
+- Install Django, Nginx, Gunicorn
+- Migrate database from Render
+- Configure S3 for media files
+- Set up SSL (Let's Encrypt)
+
+### Day 4: Testing & Monitoring (2 hours)
+- Test application functionality
+- Verify M-Pesa payments
+- Configure CloudWatch alarms
+- Set up automated backups
+
+**Total Time:** 10 hours (2-3 days part-time)
+
+---
+
+## Terraform Modules
+
+### Directory Structure
+```
+terraform/
+├── main.tf                 # Provider configuration
+├── variables.tf            # Input variables
+├── outputs.tf              # Output values
+├── modules/
+│   ├── networking/         # VPC, subnets, security groups
+│   ├── compute/            # EC2 instance
+│   ├── storage/            # S3 buckets
+│   └── monitoring/         # CloudWatch logs, metrics, alarms
+└── scripts/
+    ├── user_data.sh        # EC2 initialization
+    ├── backup_db.sh        # Database backup script
+    └── deploy_app.sh       # Application deployment
+```
+
+---
+
+## Security Best Practices
+
+1. **SSH Access:** Restricted to admin IP only
+2. **Database:** Not exposed to internet (SQLite on EC2)
+3. **Secrets:** Stored in environment variables, not in code
+4. **SSL/TLS:** Let's Encrypt certificate (free)
+5. **Firewall:** Security groups with least privilege
+6. **Backups:** Automated daily backups to S3
+7. **Monitoring:** CloudWatch alarms for anomalies
+8. **Updates:** Automated security updates enabled
+
+---
+
+## Disaster Recovery
+
+### Backup Strategy
+- **Database:** Daily backups to S3, 7-day retention
+- **Media Files:** S3 versioning enabled
+- **Application Code:** Git repository
+
+### Recovery Procedures
+
+**EC2 Instance Failure:**
+```bash
+terraform taint module.compute.aws_instance.app_server
+terraform apply
+# Instance recreated in 5 minutes
+```
+
+**Database Corruption:**
+```bash
+aws s3 cp s3://safarismart-backups/db-latest.sqlite3 /opt/safarismart/db.sqlite3
+sudo systemctl restart gunicorn
+# Restored in 2 minutes
+```
+
+**Accidental File Deletion (S3):**
+```bash
+aws s3api list-object-versions --bucket safarismart-media
+aws s3api get-object --version-id <id> restored-file.jpg
+# Restored in 1 minute
+```
+
+---
+
+## Monitoring & Alerts
+
+### CloudWatch Dashboards
+- Real-time CPU, memory, disk usage
+- Request count and response time
+- Error rate and types
+- M-Pesa transaction volume
+
+### Email Alerts
+- CPU > 80% for 5 minutes
+- Disk > 80%
+- Memory > 80%
+- Application errors > 10/hour
+- Backup failures
+
+---
+
+## Migration from Render
+
+### Pre-Migration Checklist
+- [ ] Export Render PostgreSQL database
+- [ ] Download all media files from Render
+- [ ] Update DNS records (prepare, don't apply yet)
+- [ ] Test AWS deployment with sample data
+
+### Migration Steps
+1. Deploy AWS infrastructure (Terraform)
+2. Import database to SQLite
+3. Upload media files to S3
+4. Update Django settings for S3
+5. Test application on AWS
+6. Update DNS to point to AWS
+7. Monitor for 24 hours
+8. Decommission Render
+
+### Rollback Plan
+- Keep Render active for 7 days
+- Can revert DNS if issues occur
+- Database and media backed up
+
+---
+
+## Future Enhancements
+
+### When Traffic Grows:
+1. **Upgrade EC2:** t2.micro → t2.small ($17/month)
+2. **Add RDS:** Migrate SQLite → PostgreSQL ($12/month)
+3. **Add Auto Scaling:** Load Balancer + multiple EC2s ($24+/month)
+4. **Add CloudFront:** CDN for faster global access
+5. **Add ElastiCache:** Redis for session storage
+
+### When Revenue Grows:
+1. **Reserved Instances:** Save 40% on EC2 costs
+2. **S3 Intelligent Tiering:** Automatic cost optimization
+3. **CloudWatch Logs Insights:** Advanced log analysis
+
+---
+
+## Success Metrics
+
+### Performance
+- Page load time: < 2 seconds (vs 30-60s on Render)
+- Database query time: < 50ms (vs 200ms+ on Render)
+- Uptime: 99.9% (vs 95% on Render)
+
+### Cost
+- Months 1-9: $0
+- Month 10+: $8/month
+- Savings vs alternatives: $18+/month
+
+### Reliability
+- No cold starts
+- No media file loss
+- No database expiration
+- Automated backups
+
+---
+
+## Documentation References
+
+- [EC2 Documentation](https://docs.aws.amazon.com/ec2/)
+- [S3 Documentation](https://docs.aws.amazon.com/s3/)
+- [CloudWatch Documentation](https://docs.aws.amazon.com/cloudwatch/)
+- [Terraform AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [Django on AWS Best Practices](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html)
 
 ---
 
 ## Next Steps
 
-1. Review and approve architecture
-2. Set up AWS prerequisites
-3. Develop Terraform modules
-4. Deploy to development environment
-5. Test and validate
-6. Deploy to production
-7. Implement monitoring and maintenance procedures
+1. Review and approve this architecture
+2. Answer configuration questions (region, domain, etc.)
+3. Create Terraform modules
+4. Deploy to AWS
+5. Migrate from Render before December 19
