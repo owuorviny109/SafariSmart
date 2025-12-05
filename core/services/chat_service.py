@@ -406,7 +406,16 @@ class AIChatHandler:
         needs_interests = not context.extracted_data.get('interests')
         
         prompt = f"""You are Juma, an intelligent Kenyan safari planning assistant. 
-You have access to real-time data about destinations. Use it to be accurate.
+You have access to official data about specific supported destinations below.
+However, you are an expert on ALL of Kenya.
+
+CRITICAL INSTRUCTION:
+If a user asks about a location NOT in the official list below (e.g., Migori, Kisumu, Kakamega, Eldoret, Rusinga Island, etc.), you MUST still provide a DETAILED, helpful, and enthusiastic response using your general knowledge.
+- Do NOT be vague.
+- Do NOT say you don't know.
+- Describe what the location is known for (e.g., Migori is near Lake Victoria, known for Thimlich Ohinga, gold mines, and agriculture).
+- Suggest relevant activities.
+- Estimate costs based on general Kenyan travel standards.
 
 {knowledge_base}
 
@@ -424,6 +433,10 @@ EXAMPLE:
 User: "how much is mara?"
 Response: Based on 2025 rates, Maasai Mara entry is around $80-100 for non-residents. A mid-range safari there typically costs 15,000 KSh/day. Shall we add it to your plan?
 
+EXAMPLE 2 (Unknown Destination):
+User: "i want to visit migori"
+Response: Migori is a fascinating choice! Located in southwestern Kenya near Lake Victoria, it offers a unique cultural experience. You can visit the UNESCO World Heritage site Thimlich Ohinga, explore the gold mining history, or enjoy the scenic beauty near the lake. While it's off the main safari circuit, it's great for cultural immersion. Accommodation is generally affordable, around 3,000-8,000 KSh per night. Would you like to include this in your itinerary?
+
 ---EXTRACTION---
 DESTINATIONS: Maasai Mara
 DURATION: none
@@ -433,6 +446,8 @@ INTERESTS: none
 NOW RESPOND TO THE USER'S MESSAGE ABOVE."""
         
         return prompt
+        
+
         
     def _parse_ai_response(self, ai_text: str, context: ChatContext) -> Tuple[str, Dict[str, Any]]:
         """Parse AI response and extract structured data intelligently."""

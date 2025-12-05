@@ -491,14 +491,37 @@ class TemplateItineraryGenerator(BaseItineraryGenerator):
         
         # Daily itinerary
         days_per_dest = max(1, duration // total_destinations) if total_destinations else duration
+        current_day = 1
+        
+        # Process database destinations
+        for dest in destinations:
+            for _ in range(days_per_dest):
+                if current_day > duration:
+                    break
+                
+                day_content = self._generate_day_template(
+                    current_day,
+                    dest,
                     budget_category,
                     interests
                 )
                 content_parts.append(day_content)
                 current_day += 1
-                
+        
+        # Process custom destinations
+        for dest_name in custom_destinations:
+            for _ in range(days_per_dest):
                 if current_day > duration:
                     break
+                
+                day_content = self._generate_custom_day_template(
+                    current_day,
+                    dest_name,
+                    budget_category,
+                    interests
+                )
+                content_parts.append(day_content)
+                current_day += 1
         
         # Budget breakdown
         content_parts.append(self._generate_budget_template(budget_category))
