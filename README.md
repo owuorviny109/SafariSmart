@@ -233,6 +233,27 @@ safarismart-kenya/
 
 ---
 
+## Production Deployment
+
+### AWS Infrastructure (Planned)
+
+For production deployment to AWS using Infrastructure as Code (Terraform), refer to:
+
+**[AWS_DEPLOYMENT_PLAN.md](AWS_DEPLOYMENT_PLAN.md)**
+
+This comprehensive deployment plan covers:
+- AWS Well-Architected Framework implementation
+- Terraform infrastructure modules (EC2, RDS, S3, IAM)
+- Security configuration and best practices
+- Cost optimization within AWS Free Tier
+- Monitoring and disaster recovery procedures
+
+**Status:** Planned for implementation after core functionality completion.
+
+**Current Deployment:** Render.com (see `render.yaml` for configuration)
+
+---
+
 ## Contributing
 
 Contributions are welcome. Please follow the standard fork-and-pull request workflow:
