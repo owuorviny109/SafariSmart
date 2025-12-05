@@ -390,8 +390,10 @@
         }
     });
 
-    // Handle Card Pay Button
-    document.getElementById('pay-card-btn').addEventListener('click', async function () {
+    // Handle Card Pay Button (only if Flutterwave is enabled)
+    const cardButton = document.getElementById('pay-card-btn');
+    if (cardButton) {
+        cardButton.addEventListener('click', async function () {
         const errorDiv = document.getElementById('error-message');
 
         // Validation
@@ -441,7 +443,8 @@
             showError('Network error. Please try again.');
             resetUI();
         }
-    });
+        });
+    }
 
     function showError(msg) {
         const el = document.getElementById('error-message');
