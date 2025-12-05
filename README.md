@@ -254,6 +254,15 @@ This comprehensive deployment plan covers:
 
 ---
 
+## Documentation
+
+- **[FAQ.md](FAQ.md)** - Frequently Asked Questions
+- **[USER_GUIDE.md](USER_GUIDE.md)** - User instruction manual
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history and release notes
+- **[AWS_DEPLOYMENT_PLAN.md](AWS_DEPLOYMENT_PLAN.md)** - Production deployment guide
+
+---
+
 ## Contributing
 
 Contributions are welcome. Please follow the standard fork-and-pull request workflow:
