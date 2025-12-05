@@ -3,10 +3,10 @@ from .models import PaymentTransaction, PaymentConfiguration
 
 @admin.register(PaymentConfiguration)
 class PaymentConfigurationAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'enable_mpesa', 'enable_sponsorship', 'mpesa_environment')
+    list_display = ('__str__', 'enable_mpesa', 'enable_flutterwave', 'enable_sponsorship', 'mpesa_environment')
     fieldsets = (
         ('Feature Toggles', {
-            'fields': ('enable_mpesa', 'enable_sponsorship', 'enable_subscriptions')
+            'fields': ('enable_mpesa', 'enable_flutterwave', 'enable_sponsorship', 'enable_subscriptions')
         }),
         ('Environment', {
             'fields': ('mpesa_environment', 'min_transaction_amount')

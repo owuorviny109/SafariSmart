@@ -144,8 +144,7 @@
                 <div class="col-md-6 col-lg-6 col-xl-4">
                     <div class="footer-item d-flex flex-column">
                         <h4 class="mb-4 text-white">About SafariSmart</h4>
-                        <p class="text-white mb-3">Your AI-powered companion for discovering and planning unforgettable
-                            Kenyan adventures. From safaris to beaches, we make trip planning effortless.</p>
+                        <p class="text-white mb-3">{{ contact.about_text }}</p>
                         <div class="d-flex flex-column">
                             <div class="d-flex align-items-center mb-2">
                                 <i class="fas fa-check-circle text-primary me-2"></i>
@@ -171,6 +170,10 @@
                         <h4 class="mb-4 text-white">Company</h4>
                         <a href="{% url 'core:landing' %}"><i class="fas fa-angle-right me-2"></i> Home</a>
                         <a href="{% url 'destinations:list' %}"><i class="fas fa-angle-right me-2"></i> Destinations</a>
+                        <a href="{% url 'core:landing' %}#services"><i class="fas fa-angle-right me-2"></i> Services</a>
+                        <a href="{% url 'core:landing' %}#about"><i class="fas fa-angle-right me-2"></i> About</a>
+                        <a href="#footer"><i class="fas fa-angle-right me-2"></i> Contact</a>
+                        <a href="{% url 'payments:sponsorship' %}"><i class="fas fa-angle-right me-2"></i> Support Us</a>
                         {% get_footer_pages as footer_pages %}
                         {% for page in footer_pages %}
                         <a href="{{ page.get_absolute_url }}"><i class="fas fa-angle-right me-2"></i> {{ page.title
@@ -180,13 +183,16 @@
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-4">
                     <div class="footer-item d-flex flex-column">
-                        <h4 class="mb-4 text-white">Support the Developer</h4>
+                        <h4 class="mb-4 text-white">Support {{ contact.creator_name }}</h4>
                         <p class="text-white mb-3">Want to support the person behind this platform?</p>
-                        <a href="mailto:owuorvincent069@gmail.com"><i class="fas fa-envelope me-2"></i>
-                            owuorvincent069@gmail.com</a>
-                        <a href="tel:+254796915745"><i class="fas fa-phone me-2"></i> +254 796 915 745</a>
-                        <a href="https://owuorvincent.vercel.app/" target="_blank"><i class="fas fa-globe me-2"></i> See
-                            My Portfolio</a>
+                        <a href="mailto:{{ contact.email }}"><i class="fas fa-envelope me-2"></i>
+                            {{ contact.email }}</a>
+                        {% if contact.phone %}
+                        <a href="tel:{{ contact.phone }}"><i class="fas fa-phone me-2"></i> {{ contact.phone }}</a>
+                        {% endif %}
+                        {% if contact.portfolio_url %}
+                        <a href="{{ contact.portfolio_url }}" target="_blank"><i class="fas fa-globe me-2"></i> {{ contact.portfolio_text }}</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

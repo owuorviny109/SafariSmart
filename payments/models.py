@@ -25,6 +25,10 @@ class PaymentConfiguration(models.Model):
         default=False,
         help_text="Enable recurring subscription plans (Future use)"
     )
+    enable_flutterwave = models.BooleanField(
+        default=True,
+        help_text="Enable Card/Global payments via Flutterwave"
+    )
     
     # Environment Configuration
     MPESA_ENV_CHOICES = [
@@ -113,6 +117,23 @@ class PaymentTransaction(models.Model):
         max_length=100,
         null=True, 
         blank=True
+    )
+    
+    # Provider Info
+    PROVIDER_CHOICES = [
+        ('mpesa', 'M-Pesa'),
+        ('flutterwave', 'Flutterwave (Card)'),
+    ]
+    payment_provider = models.CharField(
+        max_length=20, 
+        choices=PROVIDER_CHOICES, 
+        default='mpesa'
+    )
+    flutterwave_ref = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text="Flutterwave Transaction Reference (tx_ref)"
     )
     
     # Transaction Details

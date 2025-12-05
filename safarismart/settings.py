@@ -190,3 +190,14 @@ MPESA_INITIATOR_PASSWORD = config('MPESA_INITIATOR_PASSWORD', default='')
 
 # Callback URL (Must be HTTPS and publicly accessible)
 MPESA_CALLBACK_URL = config('MPESA_CALLBACK_URL', default='https://safarismart.co.ke/payments/callback/')
+
+# =============================================================================
+# FLUTTERWAVE CONFIGURATION
+# =============================================================================
+
+FLW_PUBLIC_KEY = config('FLW_PUBLIC_KEY', default='')
+FLW_SECRET_KEY = config('FLW_SECRET_KEY', default='')
+FLW_ENCRYPTION_KEY = config('FLW_ENCRYPTION_KEY', default='')
+
+# Callback URL (Must be HTTPS and publicly accessible)
+FLW_CALLBACK_URL = config('FLW_CALLBACK_URL', default='https://safarismart.co.ke/payments/flutterwave/callback/')

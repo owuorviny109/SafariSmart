@@ -1,0 +1,53 @@
+
+    // Handle Card Pay Button
+    document.getElementById('pay-card-btn').addEventListener('click', async function () {
+        const errorDiv = document.getElementById('error-message');
+
+        // Validation
+        if (!selectedAmount || selectedAmount < minAmount) {
+            showError(`Please select an amount (Min KSh ${minAmount})`);
+            return;
+        }
+
+        // For card, we need email (optional in UI but good for receipt)
+        // For now, we'll ask for it or use a placeholder if user is logged in
+        let email = "{{ request.user.email|default:'' }}";
+        if (!email) {
+            email = prompt("Please enter your email for the receipt:");
+            if (!email) return;
+        }
+
+        // UI Loading
+        document.getElementById('payment-form-content').classList.add('d-none');
+        document.getElementById('processing-state').classList.remove('d-none');
+        document.querySelector('#processing-state h5').textContent = "Redirecting to Secure Checkout...";
+        document.querySelector('#processing-state p').textContent = "You will be redirected to Flutterwave to complete payment.";
+        errorDiv.classList.add('d-none');
+
+        try {
+            const response = await fetch('{% url "payments:initiate_card" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    amount: selectedAmount,
+                    email: email
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.redirect_url) {
+                // Redirect to Flutterwave
+                window.location.href = data.redirect_url;
+            } else {
+                showError(data.error || 'Payment initiation failed');
+                resetUI();
+            }
+        } catch (e) {
+            showError('Network error. Please try again.');
+            resetUI();
+        }
+    });
