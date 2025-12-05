@@ -9,8 +9,8 @@
 
 ```mermaid
 graph TB
-    User[User] -->|HTTPS| Render[Render.com<br/>(App & Database)]
-    Render -->|Uploads| S3[AWS S3<br/>(Media Storage)]
+    User[User] -->|HTTPS| Render[Render.com App & DB]
+    Render -->|Uploads| S3[AWS S3 Media Storage]
     Render -->|Reads| S3
 ```
 
