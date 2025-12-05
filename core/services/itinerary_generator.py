@@ -139,7 +139,7 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
             
     def _build_prompt(self, preferences: Dict[str, Any]) -> str:
         """
-        Build detailed prompt for Gemini AI.
+        Build detailed prompt for Gemini AI with RAG and Intelligence.
         
         Args:
             preferences (Dict[str, Any]): User preferences
@@ -156,46 +156,84 @@ class GeminiItineraryGenerator(BaseItineraryGenerator):
         children = preferences.get('children_count', 0)
         interests = preferences.get('interests', [])
         
-        # Build combined destination list
-        all_dest_names = [d.name for d in destinations]
-        all_dest_names.extend(custom_destinations)
-        destinations_text = ', '.join(all_dest_names)
-        
-        # Build interests text
-        interests_text = ", ".join(interests) if interests else "general tourism"
-        
-        prompt = f"""Create a {duration}-day Kenya itinerary.
+        # 1. RAG: Build Knowledge Base from DB
+        destination_context = ""
+        if destinations:
+            destination_context = "KNOWN DESTINATION DATA (Use this for accuracy):\n"
+            for dest in destinations:
+                destination_context += (
+                    f"- {dest.name}:\n"
+                    f"  * Description: {dest.description}\n"
+                    f"  * Best Time: {dest.best_time_to_visit}\n"
+                    f"  * Est. Cost: {dest.average_cost_per_day} KSh/day\n"
+                    f"  * Activities: {dest.popular_activities}\n"
+                )
 
-DETAILS:
-Destinations: {destinations_text}
-Budget: KSh {budget:,} ({budget_category})
-Travelers: {adults} adult(s), {children} child(ren)
-Interests: {interests_text}
+        # 2. 2025 Pricing Context (KWS Fees)
+        pricing_context = """
+        PRICING CONTEXT (2025 Estimates):
+        - Park Fees have increased. Use these estimates:
+          * Premium Parks (Mara, Amboseli, Nakuru): ~1,500-2,000 KSh (Citizen), ~$80-100 (Non-Res)
+          * Standard Parks (Tsavo, Meru): ~800-1,000 KSh (Citizen), ~$50-60 (Non-Res)
+        - Budget for eCitizen transaction fees.
+        """
 
-NOTE: Include detailed information for ALL destinations, especially custom ones like {', '.join(custom_destinations) if custom_destinations else 'any lesser-known places'}. Research and provide specific activities, accommodations, and local attractions.
+        prompt = f"""You are Juma, an expert Kenyan Safari Guide with 20 years of experience. 
+You don't just list places; you craft "Vibe-Matched" experiences.
 
-FORMAT (be concise):
-Day 1: [Location]
-Morning: [Activity] (KSh X)
-Afternoon: [Activity] (KSh X)
-Evening: [Activity]
-Stay: [Hotel] (KSh X/night)
+USER PROFILE:
+- Duration: {duration} days
+- Budget: {budget} KSh ({budget_category})
+- Travelers: {adults} Adults, {children} Children
+- Interests: {', '.join(interests)}
+- Selected Destinations: {', '.join([d.name for d in destinations])}
+- Custom Requests: {', '.join(custom_destinations)}
 
-[Repeat for {duration} days]
+{destination_context}
 
-Budget Summary:
-Accommodation: KSh X
-Activities: KSh X
-Meals: KSh X
-Transport: KSh X
-Total: KSh X
+{pricing_context}
 
-Tips: [2-3 key tips]
-- [Tip 2]
-- [Tip 3]
+INSTRUCTIONS:
+1. **Vibe Match:** Adjust the PACE and ACTIVITIES based on interests.
+   - If 'Photography': Schedule early morning/late evening "Golden Hour" drives.
+   - If 'Relaxation': Include pool time, late breakfasts, and leisure.
+   - If 'Culture': Prioritize village visits and local interactions.
 
-Generate a realistic, exciting, and practical itinerary."""
+2. **Smart Budget Optimizer:**
+   - Provide realistic costs based on the 2025 Pricing Context.
+   - Include a specific "Money Saving Tip" or "Value Upgrade" relevant to this trip.
 
+3. **The Hidden Gem:**
+   - Suggest ONE unique, less-touristy alternative or addition that fits their vibe (e.g., "If you love forests, try Kakamega instead of just the Mara").
+
+4. **Itinerary Structure:**
+   - Create a day-by-day plan.
+   - Be specific about lodges/camps (suggest real names matching the budget).
+
+FORMAT (Strictly follow this structure):
+# [Catchy Title]
+
+**Trip Summary:**
+[2-3 sentences explaining WHY this itinerary fits their specific vibe]
+
+**Day-by-Day Plan:**
+
+**Day 1: [Location] - [Theme]**
+*   **Morning:** [Activity] (Why: [Link to interest])
+*   **Afternoon:** [Activity]
+*   **Evening:** [Activity]
+*   **Stay:** [Hotel/Camp Name] (Est. [Price] KSh)
+
+[Repeat for all days]
+
+**Smart Budget Tip:**
+[Specific advice to save money or get better value]
+
+**Hidden Gem Suggestion:**
+[One alternative idea]
+
+**Estimated Total Cost:** ~[Total] KSh (Includes park fees, stay, transport)
+"""
         return prompt
         
     def _parse_response(
