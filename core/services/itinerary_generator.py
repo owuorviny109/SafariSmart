@@ -243,6 +243,11 @@ INSTRUCTIONS:
 1. **Vibe Match:** Adjust the PACE and ACTIVITIES based on interests.
 2. **Smart Budget:** Provide realistic costs based on the OFFICIAL KWS FEES above.
 3. **Hidden Gem:** Suggest ONE unique alternative.
+4. **Unknown Destinations:** If a user requests a destination NOT in the "KNOWN DESTINATION DATA" (e.g., Migori, Eldoret, etc.), DO NOT IGNORE IT. Use your general expert knowledge to include it in the itinerary effectively.
+
+CRITICAL:
+- If a custom destination is requested, you MUST include it in the day-by-day plan.
+- Do not make up prices if unknown; use reasonable estimates for the region.
 
 CRITICAL: You MUST output valid JSON only. No markdown formatting.
 Follow this EXACT schema:
