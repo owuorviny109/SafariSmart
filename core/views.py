@@ -1107,7 +1107,7 @@ def itinerary_detail(request: HttpRequest, share_code: str) -> HttpResponse:
     
     logger.info(f"Displaying itinerary {itinerary.id} (views: {itinerary.view_count})")
     
-    return render(request, 'core/itinerary_detail_new.html', context)
+    return render(request, 'core/itinerary_detail_kws.html', context)
 
 
 def shared_itinerary(request, share_code):
