@@ -1,0 +1,116 @@
+# Commit Message Convention
+
+## Purpose
+
+Commit messages in this repository must communicate intent clearly and professionally.
+They exist to explain *why a change exists*, not to narrate activity.
+
+Poor commit history signals low engineering discipline and is unacceptable.
+
+---
+
+## Commit Message Format
+
+All commits MUST follow the Conventional Commits standard.
+
+<type>(scope): <imperative summary>
+
+<optional body explaining why, not how>
+
+### Rules
+- Use the imperative mood (“add”, “fix”, “remove”, not “added”, “fixed”).
+- Keep the summary under 72 characters.
+- Do not explain implementation details.
+- Do not combine unrelated changes in one commit.
+
+---
+
+## Allowed Commit Types
+
+| Type | Meaning |
+|-----|--------|
+| feat | New user-facing functionality |
+| fix | Bug fix |
+| refactor | Code change without behavior change |
+| perf | Performance improvement |
+| test | Add or modify tests |
+| docs | Documentation only |
+| chore | Tooling, config, non-runtime changes |
+| ci | CI/CD pipeline changes |
+| build | Build system or dependency changes |
+
+No other types are permitted.
+
+---
+
+## Examples
+
+### Feature
+
+feat(auth): add JWT-based authentication middleware
+
+### Bug Fix
+
+fix(api): handle null userId in order creation
+
+### Refactor
+
+refactor(lambda): extract shared validation logic
+
+### Performance
+
+perf(dynamodb): add GSI for customerId queries
+
+### Documentation
+
+docs(readme): document local setup and environment variables
+
+---
+
+## What Is Forbidden
+
+The following commit messages are unacceptable:
+
+updated stuff
+fix
+final changes
+working now
+minor edits
+
+These indicate lack of intent and will be rejected in serious codebases.
+
+---
+
+## The Golden Rule
+
+- The summary explains **what changed**.
+- The body explains **why it changed**.
+- Never explain *how*. The code already does that.
+
+---
+
+## Using AI Assistance
+
+AI may be used only to refine wording.
+AI must not invent intent, infer changes, or summarize large unfocused commits.
+
+If you cannot explain the change in two sentences, do not commit yet.
+
+---
+
+## Breaking Changes
+
+Breaking changes must be explicitly marked.
+
+feat(api)!: remove legacy v1 endpoints
+
+BREAKING CHANGE: Clients must migrate to v2 endpoints.
+
+---
+
+## Final Note
+
+A clean commit history:
+- Speeds up code reviews
+- Protects the project during audits
+- Signals senior-level engineering discipline
