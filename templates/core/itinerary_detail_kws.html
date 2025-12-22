@@ -1,0 +1,371 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ itinerary.title }} - Safari Itinerary - SafariSmart Kenya{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/itinerary_kws_style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="itinerary-document">
+
+        <!-- Document Header -->
+        <div class="doc-header">
+            <div class="doc-brand">
+                <div class="doc-logo">
+                    <div class="doc-logo-icon">🦁</div>
+                    <div>
+                        <div>SafariSmart</div>
+                        <div class="doc-tagline">Your Intelligent Safari Companion</div>
+                    </div>
+                </div>
+            </div>
+            <div class="doc-title-section">
+                <div class="doc-main-title">Safari Itinerary</div>
+                <div class="doc-trip-name">{{ itinerary.title }}</div>
+            </div>
+        </div>
+
+        <!-- Action Buttons (Web Only) -->
+        <div class="doc-actions">
+            <button class="btn btn-kws-primary" onclick="window.print()">
+                <i class="bi bi-printer"></i> Print Itinerary
+            </button>
+            <a href="{% url 'core:download_itinerary_pdf' itinerary.share_code %}" class="btn btn-kws-outline">
+                <i class="bi bi-file-pdf"></i> Download PDF
+            </a>
+            <button class="btn btn-kws-outline" onclick="shareItinerary()">
+                <i class="bi bi-share"></i> Share
+            </button>
+            {% if user.is_authenticated %}
+            {% csrf_token %}
+            <button class="btn btn-kws-outline" onclick="saveItinerary()">
+                <i class="bi bi-bookmark{% if itinerary.is_saved %}-fill{% endif %}"></i>
+                {% if itinerary.is_saved %}Saved{% else %}Save{% endif %}
+            </button>
+            {% endif %}
+            <a href="{% url 'core:destination_selection' %}" class="btn btn-kws-outline">
+                <i class="bi bi-plus-circle"></i> Plan New Trip
+            </a>
+        </div>
+
+        <!-- Trip Summary Bar -->
+        <div class="trip-summary-bar">
+            <div class="summary-item">
+                <div class="summary-label">Duration</div>
+                <div class="summary-value">{{ itinerary.duration_days }} Day{{ itinerary.duration_days|pluralize }}
+                </div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Destinations</div>
+                <div class="summary-value">{{ itinerary.destinations.count }} Location{{
+                    itinerary.destinations.count|pluralize }}</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Travelers</div>
+                <div class="summary-value">
+                    {% if itinerary.itinerary_data.travelers %}
+                    {{ itinerary.itinerary_data.travelers.adults|default:1 }} Adult{{
+                    itinerary.itinerary_data.travelers.adults|default:1|pluralize }}
+                    {% else %}
+                    2 Adults
+                    {% endif %}
+                </div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Estimated Cost</div>
+                <div class="summary-value highlight">KSh {{ itinerary.total_budget|floatformat:0 }}</div>
+            </div>
+        </div>
+
+        <!-- Day Sections -->
+        {% if itinerary.itinerary_data.structured_data.days %}
+        {% for day in itinerary.itinerary_data.structured_data.days %}
+        <div class="day-section">
+            <div class="day-header-bar">
+                <div class="day-title">
+                    <span class="day-number">{{ forloop.counter }}</span>
+                    Day {{ forloop.counter }}{% if day.title %} - {{ day.title }}{% endif %}
+                </div>
+                {% if day.location %}
+                <div class="day-location">
+                    <i class="bi bi-geo-alt"></i> {{ day.location }}
+                </div>
+                {% endif %}
+            </div>
+
+            <table class="activity-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Activity</th>
+                        <th>Location</th>
+                        <th>Duration</th>
+                        <th>Cost (KSh)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in day.activities %}
+                    <tr>
+                        <td class="col-time">{{ activity.time|default:"--:--" }}</td>
+                        <td class="col-activity">
+                            {% if activity.type %}
+                            <span class="activity-badge badge-{{ activity.type|lower }}">{{ activity.type }}</span>
+                            {% endif %}
+                            <div class="activity-name">{{ activity.name }}</div>
+                            {% if activity.description %}
+                            <div class="activity-desc">{{ activity.description }}</div>
+                            {% endif %}
+                        </td>
+                        <td class="col-location">
+                            {% if activity.location %}
+                            <i class="bi bi-pin-map"></i> {{ activity.location }}
+                            {% else %}
+                            --
+                            {% endif %}
+                        </td>
+                        <td class="col-duration">{{ activity.duration|default:"--" }}</td>
+                        <td class="col-cost">
+                            {% if activity.cost == 0 or activity.cost == "0" or activity.cost == "Included" %}
+                            <span class="cost-included">Included</span>
+                            {% elif activity.cost %}
+                            {{ activity.cost|floatformat:0 }}
+                            {% else %}
+                            --
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 20px; color: var(--kws-text-muted);">
+                            Activities to be planned
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    <!-- Day Total Row -->
+                    <tr class="day-total-row">
+                        <td colspan="4" class="day-total-label">Day {{ forloop.counter }} Total:</td>
+                        <td class="day-total-value">
+                            KSh {{ day.total_cost|default:0|floatformat:0 }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+        {% else %}
+        <!-- Fallback for non-structured itineraries -->
+        <div class="day-section">
+            <div class="itinerary-content-fallback" style="background: white; padding: 30px; border-radius: 8px;">
+                {{ itinerary.itinerary_data.content|linebreaks }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Cost Summary Section -->
+        <div class="cost-summary-section">
+            <h3 class="section-title">Cost Summary</h3>
+
+            <table class="cost-table">
+                {% if itinerary.cost_breakdown %}
+                {% for category, amount in itinerary.cost_breakdown.items %}
+                <tr>
+                    <td class="cost-category">{{ category|title }}</td>
+                    <td class="cost-amount">KSh {{ amount|floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td class="cost-category">Park Entry Fees</td>
+                    <td class="cost-amount">KSh --</td>
+                </tr>
+                <tr>
+                    <td class="cost-category">Accommodation</td>
+                    <td class="cost-amount">KSh --</td>
+                </tr>
+                <tr>
+                    <td class="cost-category">Transport</td>
+                    <td class="cost-amount">KSh --</td>
+                </tr>
+                <tr>
+                    <td class="cost-category">Activities & Meals</td>
+                    <td class="cost-amount">KSh --</td>
+                </tr>
+                {% endif %}
+                <tr class="cost-total-row">
+                    <td class="cost-total-label">GRAND TOTAL</td>
+                    <td class="cost-total-amount">KSh {{ itinerary.total_budget|floatformat:0 }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Guidelines Section -->
+        <div class="guidelines-section">
+            <div class="guidelines-box">
+                <h4 class="guidelines-title">Useful Guidelines</h4>
+                <ul class="guidelines-list">
+                    <li><strong>DAILY FEE:</strong> Park entry fees are valid for 24 hours of continuous stay inside a
+                        KWS National Park / Reserve / Sanctuary.</li>
+                    <li><strong>KENYAN RESIDENT:</strong> Refers to persons of other nationalities residing in Kenya
+                        with valid documentation from the Kenyan Government.</li>
+                    <li><strong>BOOKING:</strong> We recommend booking accommodations at least 2 weeks in advance,
+                        especially during peak season (July-October, December-January).</li>
+                    <li><strong>PAYMENTS:</strong> Most parks accept M-Pesa and card payments via eCitizen platform.
+                        Carry some cash for local vendors.</li>
+                    <li><strong>IDENTIFICATION:</strong> Valid ID/Passport is required for park entry. Kenyan citizens
+                        must carry national ID for resident rates.</li>
+                    <li><strong>ESTIMATED COSTS:</strong> Prices are estimates based on 2024/2025 rates and may vary.
+                        Confirm current prices before booking.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Document Footer -->
+        <div class="doc-footer">
+            <div class="footer-brand">SafariSmart Kenya</div>
+            <div class="footer-website">www.safarismart.co.ke</div>
+            <div class="footer-contact">
+                <span><i class="bi bi-envelope"></i> info@safarismart.co.ke</span>
+                <span><i class="bi bi-telephone"></i> +254 700 000 000</span>
+                <span><i class="bi bi-geo-alt"></i> Nairobi, Kenya</span>
+            </div>
+            <div class="footer-generated">
+                <i class="bi bi-calendar3"></i> Generated on {{ itinerary.created_at|date:"F d, Y" }}
+                | Share Code: <strong>{{ itinerary.share_code }}</strong>
+                {% if itinerary.itinerary_data.generated_by == 'gemini-ai' or itinerary.itinerary_data.generated_by ==
+                'gemini-ai-json' %}
+                | <i class="bi bi-stars"></i> AI-Powered Itinerary
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function shareItinerary() {
+        const url = window.location.href;
+        const title = '{{ itinerary.title|escapejs }}';
+
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: 'Check out my Kenya safari itinerary! 🦁🌍',
+                url: url
+            }).catch(err => {
+                if (err.name !== 'AbortError') {
+                    copyToClipboard(url);
+                }
+            });
+        } else {
+            copyToClipboard(url);
+        }
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Link copied to clipboard! 📋', 'success');
+        }).catch(err => {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Link copied to clipboard! 📋', 'success');
+        });
+    }
+
+    function saveItinerary() {
+        {% if user.is_authenticated %}
+        const saveBtn = document.querySelector('button[onclick="saveItinerary()"]');
+        const originalText = saveBtn.innerHTML;
+
+        saveBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Saving...';
+        saveBtn.disabled = true;
+
+        fetch('{% url "core:save_itinerary" itinerary.share_code %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    if (data.is_saved) {
+                        saveBtn.innerHTML = '<i class="bi bi-bookmark-fill"></i> Saved';
+                    } else {
+                        saveBtn.innerHTML = '<i class="bi bi-bookmark"></i> Save';
+                    }
+                } else {
+                    showToast(data.message, 'error');
+                    saveBtn.innerHTML = originalText;
+                }
+            })
+            .catch(error => {
+                showToast('Failed to save itinerary. Please try again.', 'error');
+                saveBtn.innerHTML = originalText;
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+            });
+        {% else %}
+        showToast('Please login to save itineraries', 'info');
+        setTimeout(() => {
+            window.location.href = '/accounts/login/?next={{ request.path }}';
+        }, 1500);
+        {% endif %}
+    }
+
+    function showToast(message, type = 'info') {
+        const colors = {
+            success: '#6B7B3C',
+            info: '#17a2b8',
+            error: '#dc3545',
+            warning: '#DAA520'
+        };
+
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${colors[type] || colors.info};
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        z-index: 9999;
+        animation: slideIn 0.3s ease-out;
+        font-weight: 500;
+        font-family: 'Poppins', sans-serif;
+    `;
+
+        const style = document.createElement('style');
+        style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+        document.head.appendChild(style);
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+</script>
+{% endblock %}

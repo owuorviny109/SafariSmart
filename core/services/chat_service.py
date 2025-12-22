@@ -106,6 +106,33 @@ class ChatContext:
             self.extracted_data['budget_category'] is not None
         )
 
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert context to dictionary for session storage."""
+        return {
+            'messages': [m.to_dict() for m in self.messages],
+            'extracted_data': self.extracted_data,
+            'current_step': self.current_step,
+            'turn_count': self.turn_count
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'ChatContext':
+        """Reconstruct context from dictionary."""
+        context = cls()
+        context.extracted_data = data.get('extracted_data', context.extracted_data)
+        context.current_step = data.get('current_step', 'welcome')
+        context.turn_count = data.get('turn_count', 0)
+        
+        # Reconstruct messages
+        for msg_data in data.get('messages', []):
+            context.messages.append(ChatMessage(
+                role=msg_data['role'],
+                content=msg_data['content'],
+                metadata=msg_data.get('metadata')
+            ))
+            
+        return context
+
 
 class SimpleChatFlow:
     """
@@ -322,7 +349,82 @@ class AIChatHandler:
             return self.config.error_message, {}
             
     def _build_extraction_prompt(self, user_input: str, context: ChatContext) -> str:
-        """Build prompt for AI to extract trip data intelligently."""
+        """Build prompt for AI to extract trip data intelligently with RAG."""
+        
+        # 1. RAG: Fetch Knowledge Base from DB
+        from destinations.models import Destination
+        all_destinations = Destination.objects.all()
+        
+        knowledge_base = "OFFICIAL DESTINATION DATA (Use this for factual accuracy):\n"
+        for dest in all_destinations:
+            knowledge_base += (
+                f"- {dest.name} ({dest.destination_type}):\n"
+                f"  * Best Time: {dest.best_time_to_visit}\n"
+                f"  * Est. Cost: {dest.average_cost_per_day} KSh/day\n"
+                f"  * Activities: {dest.popular_activities}\n"
+            )
+
+        # 2. 2025 Pricing Context
+        # 2. OFFICIAL KWS FEES 2024 (Source: User Provided Documents)
+        pricing_context = """
+        OFFICIAL KWS CONSERVATION FEES (2024/2025):
+        Use these EXACT figures. Do NOT estimate.
+
+        1. PARK ENTRY FEES (Per Day):
+           - PREMIUM PARKS (Amboseli, Lake Nakuru):
+             * Citizen/Resident: Adult 860 KSh, Child 215 KSh
+             * Non-Resident: Adult $60, Child $35
+           - WILDERNESS PARKS A (Tsavo East & West):
+             * Citizen/Resident: Adult 515 KSh, Child 215 KSh
+             * Non-Resident: Adult $52, Child $35
+           - WILDERNESS PARKS B (Meru, Aberdare, Mt. Kenya):
+             * Citizen/Resident: Adult 300 KSh, Child 215 KSh
+             * Non-Resident: Adult $52, Child $35
+           - URBAN SAFARI (Nairobi National Park):
+             * Citizen/Resident: Adult 430 KSh, Child 215 KSh
+             * Non-Resident: Adult $43, Child $22
+           - MARINE PARKS (Kisite Mpunguti):
+             * Citizen/Resident: Adult 215 KSh, Child 125 KSh
+             * Non-Resident: Adult $17, Child $13
+
+        2. CAMPING FEES (Per Person Per Day):
+           - SPECIAL CAMPSITES (Premium Parks):
+             * Citizen/Resident: Adult 500 KSh, Child 250 KSh
+             * Non-Resident: Adult $50, Child $25
+           - SPECIAL CAMPSITES (Other Parks):
+             * Citizen/Resident: Adult 250 KSh, Child 200 KSh
+             * Non-Resident: Adult $35, Child $20
+           - PUBLIC CAMPSITES (Premium Parks):
+             * Citizen/Resident: Adult 250 KSh, Child 200 KSh
+             * Non-Resident: Adult $30, Child $25
+           - PUBLIC CAMPSITES (Other Parks):
+             * Citizen/Resident: Adult 200 KSh, Child 150 KSh
+             * Non-Resident: Adult $20, Child $15
+           - Reservation Fees (Non-Refundable): 7,500 KSh
+
+        3. VEHICLE FEES (Per Day):
+           - Less than 6 seats: 300 KSh
+           - 6-12 seats: 1,030 KSh
+           - 13-24 seats: 2,585 KSh
+           - 25-44 seats: 4,050 KSh
+           - 45+ seats: 5,000 KSh
+
+        4. SPECIAL ACTIVITIES (Per Person):
+           - Night Game Drive: 2,155 KSh (per trip)
+           - Lake Boating: 1,290 KSh (per hour)
+           - Security/Guided Tours: 1,720 - 3,015 KSh (per guide up to 4hrs)
+           - River Rafting: 1,720 KSh
+           - Horse Riding (KWS horses): 2,585 KSh (excluding rider)
+           - Private Horses: 1,030 KSh (per day)
+           - Fishing (per line per day): 515 KSh (Mt. Kenya: 1,550 KSh)
+           - Cycling: 215 KSh (per day)
+           - Walking Safaris: 1,500 KSh (per person per day)
+
+        5. OTHER CHARGES:
+           - Event Security: 75,000 KSh
+           - Vehicle Recovery: 7,500 KSh
+           - Annual Passes (Adult): 43,100 KSh
+        """
         
         # Check what we still need
         needs_dest = not context.extracted_data.get('custom_destinations')
@@ -330,57 +432,97 @@ class AIChatHandler:
         needs_budget = not context.extracted_data.get('budget_category')
         needs_interests = not context.extracted_data.get('interests')
         
-        prompt = f"""You are an intelligent Kenyan safari planning assistant. Use your full understanding to help plan trips.
+        # Build conversation history for context
+        conversation_history = ""
+        for msg in context.messages[-6:]:  # Last 6 messages for context
+            role = "User" if msg.role == "user" else "Juma"
+            conversation_history += f"{role}: {msg.content}\n"
+        
+        prompt = f"""You are Juma, an intelligent Kenyan safari planning assistant. 
+You have access to official data about specific supported destinations below.
+However, you are an expert on ALL of Kenya.
 
-CONVERSATION SO FAR:
-User: "{user_input}"
+CRITICAL INSTRUCTIONS:
+1. If a user asks about a location NOT in the official list (e.g., Migori, Kisumu, Kakamega, Eldoret, Rusinga Island, Western Kenya, etc.), you MUST still provide a DETAILED, helpful response using your general knowledge.
+2. ALWAYS extract trip planning data from user messages:
+   - If they mention a budget amount (e.g., "5000 ksh", "10k", "50,000"), extract it
+   - If they mention days/duration (e.g., "5 days", "a week", "3 nights"), extract the number
+   - Classify budget: Under 10,000 KSh/day = "budget", 10,000-30,000 = "mid-range", 30,000+ = "luxury"
+3. Be helpful, enthusiastic, and never say "I don't understand" for travel-related queries.
 
-TRIP DATA COLLECTED:
+{knowledge_base}
+
+{pricing_context}
+
+CONVERSATION HISTORY:
+{conversation_history}
+
+CURRENT USER MESSAGE: "{user_input}"
+
+CURRENT TRIP DATA COLLECTED:
 - Destinations: {context.extracted_data.get('custom_destinations', 'Not yet specified')}
 - Duration: {context.extracted_data.get('duration_days', 'Not yet specified')} days
-- Budget: {context.extracted_data.get('budget_category', 'Not yet specified')}
+- Budget Category: {context.extracted_data.get('budget_category', 'Not yet specified')}
 - Interests: {context.extracted_data.get('interests', 'Not yet specified')}
 
 YOUR TASK:
-1. Understand what the user is saying using your intelligence
-2. Extract ANY trip information from their message (destinations, duration, budget amounts, interests/activities)
-3. Respond naturally and helpfully
-4. If they've given you trip details, acknowledge them and ask for what's still missing
-5. Be conversational and intelligent - don't just repeat questions
+1. Respond helpfully to the user's message
+2. If they provide budget/duration/destination info, acknowledge it and incorporate it
+3. If they ask for a plan, provide a realistic itinerary suggestion based on their constraints
+4. For low budgets (e.g., 5000 KSh for 5 days = 1000 KSh/day), suggest budget-friendly options like local guesthouses, public transport, and free attractions
 
-EXTRACTION INTELLIGENCE:
-- Destinations: ANY Kenya location (Kakamega, Nairobi, Masai Mara, Mombasa, Rongo, etc.)
-- Duration: Numbers indicating days (1 day, 3 days, "one day" = 1, "a week" = 7, "weekend" = 2)
-- Budget: 
-  * Under 50,000 KSh OR "budget/cheap/affordable" → budget
-  * 50,000-150,000 KSh OR "mid-range/moderate" → mid-range  
-  * Over 150,000 KSh OR "luxury/premium/expensive" → luxury
-- Interests: wildlife, safari, culture, food, adventure, beach, nature, photography, relaxation, hiking, etc.
+RESPONSE FORMAT:
+Write your helpful response first, then on a new line add:
+---EXTRACTION---
+DESTINATIONS: [destination names comma-separated, or "none" if not mentioned]
+DURATION: [number of days, or "none" if not mentioned]
+BUDGET: [budget/mid-range/luxury based on amount, or "none" if not mentioned]
+INTERESTS: [interests comma-separated, or "none" if not mentioned]
 
-RESPOND IN THIS FORMAT:
+EXAMPLE 1:
+User: "I have 5000 ksh and want to stay for 5 days, plan for me"
+Response: That's a great budget-conscious adventure! With 5,000 KSh for 5 days (about 1,000 KSh per day), here's what I'd suggest for Western Kenya:
 
-[Your intelligent, natural response - be helpful and conversational]
+**Day 1-2: Kisumu City**
+- Stay at a budget guesthouse (500-800 KSh/night)
+- Visit Kit Mikayi rock formation (free entry)
+- Explore Dunga Beach for sunset views
+
+**Day 3-4: Kakamega Forest**
+- Take a matatu to Kakamega (300 KSh)
+- Budget camping or homestay
+- Guided forest walks (200-500 KSh)
+
+**Day 5: Return via Kisumu**
+- Final exploration and departure
+
+This keeps you within budget while experiencing the best of Western Kenya! Want me to add more details?
 
 ---EXTRACTION---
-DESTINATIONS: [Kenya places, or "none"]
-DURATION: [number, or "none"]
-BUDGET: [budget/mid-range/luxury, or "none"]
-INTERESTS: [comma-separated, or "none"]
-
-EXAMPLE:
-User: "i want to have a one day trip to kakamega with a budget of 10000"
-
-Perfect! A day trip to Kakamega Forest with 10,000 KSh is totally doable. The forest is amazing for nature walks and birdwatching. What kind of activities interest you most?
-
----EXTRACTION---
-DESTINATIONS: Kakamega
-DURATION: 1
+DESTINATIONS: Western Kenya, Kisumu, Kakamega
+DURATION: 5
 BUDGET: budget
-INTERESTS: none
+INTERESTS: nature, culture
 
-NOW RESPOND TO THE USER'S MESSAGE ABOVE."""
+EXAMPLE 2:
+User: "how much is mara?"
+Response: Great question! Based on 2024/2025 rates, Maasai Mara entry fees are:
+- **Non-Residents:** $80 per adult per day
+- **Kenyan Citizens/Residents:** 1,200 KSh per adult per day
+
+A typical mid-range safari there costs around 15,000-25,000 KSh per day including accommodation and game drives. Shall we add Maasai Mara to your trip?
+
+---EXTRACTION---
+DESTINATIONS: Maasai Mara
+DURATION: none
+BUDGET: none
+INTERESTS: wildlife, safari
+
+NOW RESPOND TO THE CURRENT USER MESSAGE."""
         
         return prompt
+        
+
         
     def _parse_ai_response(self, ai_text: str, context: ChatContext) -> Tuple[str, Dict[str, Any]]:
         """Parse AI response and extract structured data intelligently."""

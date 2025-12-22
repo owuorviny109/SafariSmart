@@ -16,6 +16,7 @@ import logging
 from typing import Dict, Any
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.views import View
@@ -1106,7 +1107,7 @@ def itinerary_detail(request: HttpRequest, share_code: str) -> HttpResponse:
     
     logger.info(f"Displaying itinerary {itinerary.id} (views: {itinerary.view_count})")
     
-    return render(request, 'core/itinerary_detail_new.html', context)
+    return render(request, 'core/itinerary_detail_kws.html', context)
 
 
 def shared_itinerary(request, share_code):
@@ -1540,20 +1541,6 @@ def chat_start_api(request: HttpRequest) -> JsonResponse:
     API endpoint to start a new chat conversation.
     
     Initializes chat service and returns welcome message.
-    
-    Args:
-        request (HttpRequest): HTTP request object
-        
-    Returns:
-        JsonResponse: Welcome message and session info
-        
-    Example:
-        POST /api/chat/start/
-        Returns: {
-            'status': 'success',
-            'message': 'Hi! I'm your Safari planning assistant...',
-            'session_id': 'abc123'
-        }
     """
     if request.method != 'POST':
         return JsonResponse({
@@ -1563,19 +1550,26 @@ def chat_start_api(request: HttpRequest) -> JsonResponse:
         
     try:
         chat_service = TripPlannerChatService()
-        response = chat_service.start_conversation()
+        
+        # Initialize fresh context
+        context = ChatContext()
+        context.add_message('bot', chat_service.config.welcome_message)
         
         # Store context in session
-        if not hasattr(request.session, 'chat_context'):
-            request.session['chat_context'] = {}
+        request.session['chat_context'] = context.to_dict()
+        request.session.modified = True
             
         session_id = request.session.session_key or request.session.create()
         
+        # Clear any quick trip abuse tracking for fresh start
+        if 'quick_trip_invalid_attempts' in request.session:
+            del request.session['quick_trip_invalid_attempts']
+        
         return JsonResponse({
             'status': 'success',
-            'message': response['message'],
+            'message': chat_service.config.welcome_message,
             'session_id': session_id,
-            'type': response['type']
+            'type': 'welcome'
         })
         
     except Exception as e:
@@ -1590,25 +1584,6 @@ def chat_start_api(request: HttpRequest) -> JsonResponse:
 def chat_message_api(request: HttpRequest) -> JsonResponse:
     """
     API endpoint to process chat messages.
-    
-    Handles user messages and returns bot responses with
-    extracted trip data.
-    
-    Args:
-        request (HttpRequest): HTTP request object with message
-        
-    Returns:
-        JsonResponse: Bot response and extracted data
-        
-    Example:
-        POST /api/chat/message/
-        Body: {'message': 'I want to visit Rongo for 3 days'}
-        Returns: {
-            'status': 'success',
-            'message': 'Great! What's your budget level?',
-            'completed': false,
-            'extracted_data': {...}
-        }
     """
     if request.method != 'POST':
         return JsonResponse({
@@ -1627,13 +1602,21 @@ def chat_message_api(request: HttpRequest) -> JsonResponse:
                 'message': 'Message is required'
             }, status=400)
             
-        # Get or create chat context
-        # In production, use proper session management
-        context = ChatContext()
-        
+        # Get context from session
+        context_data = request.session.get('chat_context')
+        if context_data:
+            context = ChatContext.from_dict(context_data)
+        else:
+            # Fallback for expired/missing sessions
+            context = ChatContext()
+            
         # Process message
         chat_service = TripPlannerChatService()
         response = chat_service.process_message(user_message, context)
+        
+        # Save updated context to session
+        request.session['chat_context'] = context.to_dict()
+        request.session.modified = True
         
         return JsonResponse({
             'status': 'success',
@@ -1654,3 +1637,18 @@ def chat_message_api(request: HttpRequest) -> JsonResponse:
             'status': 'error',
             'message': 'Failed to process message'
         }, status=500)
+
+@staff_member_required
+def debug_s3(request):
+    """Debug view to check S3 configuration."""
+    from django.conf import settings
+    from django.http import JsonResponse
+    
+    return JsonResponse({
+        'AWS_ACCESS_KEY_ID_SET': bool(settings.AWS_ACCESS_KEY_ID),
+        'AWS_SECRET_ACCESS_KEY_SET': bool(settings.AWS_SECRET_ACCESS_KEY),
+        'AWS_STORAGE_BUCKET_NAME': settings.AWS_STORAGE_BUCKET_NAME,
+        'DEFAULT_FILE_STORAGE': settings.DEFAULT_FILE_STORAGE,
+        'MEDIA_URL': settings.MEDIA_URL,
+        'AWS_LOCATION': getattr(settings, 'AWS_LOCATION', 'Not Set'),
+    })
