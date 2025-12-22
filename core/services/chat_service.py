@@ -106,6 +106,33 @@ class ChatContext:
             self.extracted_data['budget_category'] is not None
         )
 
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert context to dictionary for session storage."""
+        return {
+            'messages': [m.to_dict() for m in self.messages],
+            'extracted_data': self.extracted_data,
+            'current_step': self.current_step,
+            'turn_count': self.turn_count
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'ChatContext':
+        """Reconstruct context from dictionary."""
+        context = cls()
+        context.extracted_data = data.get('extracted_data', context.extracted_data)
+        context.current_step = data.get('current_step', 'welcome')
+        context.turn_count = data.get('turn_count', 0)
+        
+        # Reconstruct messages
+        for msg_data in data.get('messages', []):
+            context.messages.append(ChatMessage(
+                role=msg_data['role'],
+                content=msg_data['content'],
+                metadata=msg_data.get('metadata')
+            ))
+            
+        return context
+
 
 class SimpleChatFlow:
     """

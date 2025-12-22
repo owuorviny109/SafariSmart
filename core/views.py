@@ -1541,20 +1541,6 @@ def chat_start_api(request: HttpRequest) -> JsonResponse:
     API endpoint to start a new chat conversation.
     
     Initializes chat service and returns welcome message.
-    
-    Args:
-        request (HttpRequest): HTTP request object
-        
-    Returns:
-        JsonResponse: Welcome message and session info
-        
-    Example:
-        POST /api/chat/start/
-        Returns: {
-            'status': 'success',
-            'message': 'Hi! I'm your Safari planning assistant...',
-            'session_id': 'abc123'
-        }
     """
     if request.method != 'POST':
         return JsonResponse({
@@ -1564,19 +1550,26 @@ def chat_start_api(request: HttpRequest) -> JsonResponse:
         
     try:
         chat_service = TripPlannerChatService()
-        response = chat_service.start_conversation()
+        
+        # Initialize fresh context
+        context = ChatContext()
+        context.add_message('bot', chat_service.config.welcome_message)
         
         # Store context in session
-        if not hasattr(request.session, 'chat_context'):
-            request.session['chat_context'] = {}
+        request.session['chat_context'] = context.to_dict()
+        request.session.modified = True
             
         session_id = request.session.session_key or request.session.create()
         
+        # Clear any quick trip abuse tracking for fresh start
+        if 'quick_trip_invalid_attempts' in request.session:
+            del request.session['quick_trip_invalid_attempts']
+        
         return JsonResponse({
             'status': 'success',
-            'message': response['message'],
+            'message': chat_service.config.welcome_message,
             'session_id': session_id,
-            'type': response['type']
+            'type': 'welcome'
         })
         
     except Exception as e:
@@ -1591,25 +1584,6 @@ def chat_start_api(request: HttpRequest) -> JsonResponse:
 def chat_message_api(request: HttpRequest) -> JsonResponse:
     """
     API endpoint to process chat messages.
-    
-    Handles user messages and returns bot responses with
-    extracted trip data.
-    
-    Args:
-        request (HttpRequest): HTTP request object with message
-        
-    Returns:
-        JsonResponse: Bot response and extracted data
-        
-    Example:
-        POST /api/chat/message/
-        Body: {'message': 'I want to visit Rongo for 3 days'}
-        Returns: {
-            'status': 'success',
-            'message': 'Great! What's your budget level?',
-            'completed': false,
-            'extracted_data': {...}
-        }
     """
     if request.method != 'POST':
         return JsonResponse({
@@ -1628,13 +1602,21 @@ def chat_message_api(request: HttpRequest) -> JsonResponse:
                 'message': 'Message is required'
             }, status=400)
             
-        # Get or create chat context
-        # In production, use proper session management
-        context = ChatContext()
-        
+        # Get context from session
+        context_data = request.session.get('chat_context')
+        if context_data:
+            context = ChatContext.from_dict(context_data)
+        else:
+            # Fallback for expired/missing sessions
+            context = ChatContext()
+            
         # Process message
         chat_service = TripPlannerChatService()
         response = chat_service.process_message(user_message, context)
+        
+        # Save updated context to session
+        request.session['chat_context'] = context.to_dict()
+        request.session.modified = True
         
         return JsonResponse({
             'status': 'success',
